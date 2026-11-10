@@ -1,0 +1,251 @@
+meta:
+  app: lanyard-portal-web
+  convention: role-and-text
+  base_url_env: BASE_URL
+  default_base_url: http://demo.localhost:3010
+  note: >
+    Selector map for @lanyard/web ui-testing. lp-fn5.7.1 adds Agents UI
+    refresh surfaces (Agents/Tools tabs, unified + create menu, agent
+    rename, Scheduled Tasks folder). lp-lv9.9 extends Agents v2 proofs
+    (folder last, job rows, scheduled-task config pane, Tools without
+    crons after lp-lv9.6, header purpose/prompt when lp-lv9.4 lands).
+    lp-hdzm.29 adds FakeOps /admin keys (testing.md). Prefer testid for
+    dynamic rows; role+name for chrome. data-testid values use hyphens.
+
+selectors:
+  # --- Auth ---
+  sign_in_heading:
+    role: heading
+    name: Sign in
+  email_field:
+    role: textbox
+    name: Email
+  sign_in_text:
+    text: Sign in
+  login_button:
+    role: button
+    name: Log in
+  password_field:
+    css: 'input[type="password"]'
+
+  # --- Shell top nav (lp-fn5.1) ---
+  nav_agents:
+    role: button
+    name: Agents
+  nav_vault:
+    role: button
+    name: Vault
+  nav_tools:
+    role: button
+    name: Connectors
+  nav_connectors:
+    role: button
+    name: Connectors
+  # Legacy labels must be absent after Agents UI refresh
+  nav_chat_legacy:
+    role: button
+    name: Chat
+  nav_settings_legacy:
+    role: button
+    name: Settings
+
+  # --- Agents side nav create menu (lp-fn5.2 / lp-7st.2) ---
+  create_menu:
+    testid: create-menu
+  create_menu_new_button:
+    role: button
+    name: New Agent
+  create_menu_new_chat:
+    role: menuitem
+    name: Agent
+  create_menu_new_channel:
+    role: menuitem
+    name: Channel
+  new_channel_dialog:
+    testid: new-channel-dialog
+  create_channel_submit:
+    testid: create-channel-submit
+  channel_name_field:
+    role: textbox
+    name: Channel name
+  new_agent_name_field:
+    role: textbox
+    name: New agent name
+  add_agent_button:
+    role: button
+    name: Add agent
+
+  # --- Agent rows / rename (lp-fn5.3) ---
+  # Dynamic: agent-side-nav-row-{thread_id}, agent-side-nav-title-{thread_id},
+  # agent-side-nav-title-{thread_id}-editing, agent-side-nav-subtitle-{thread_id},
+  # agent-dither-{thread_id}
+  agent_side_nav_row:
+    css: '[data-testid^="agent-side-nav-row-"]'
+  agent_side_nav_title:
+    css: '[data-testid^="agent-side-nav-title-"]:not([data-testid$="-editing"])'
+  agent_side_nav_title_editing:
+    css: '[data-testid$="-editing"]'
+  agent_title_input:
+    label: Agent name
+  agent_dither:
+    css: '[data-testid^="agent-dither-"]'
+  chat_history_sidenav:
+    css: '[aria-label="Chat history"]'
+
+  # --- Group rooms (lac-bx3.16 U1–U4) ---
+  group_rooms_story:
+    testid: group-rooms-proof-story
+  group_room_roster:
+    testid: group-room-roster
+  group_rooms_composer:
+    testid: group-rooms-composer
+  chat_speaker_skip:
+    testid: chat-speaker-persona-skip
+  chat_speaker_lev:
+    testid: chat-speaker-persona-lev
+  chat_speaker_bana:
+    testid: chat-speaker-persona-bana
+
+  # --- Scheduled Tasks folder (lp-fn5.5 / lp-lv9.1) ---
+  scheduled_tasks_folder:
+    testid: scheduled-tasks-folder
+  scheduled_tasks_folder_icon:
+    testid: scheduled-tasks-folder-icon
+  scheduled_tasks_folder_label:
+    text: Scheduled Tasks
+  channels_folder:
+    testid: channels-folder
+  channels_folder_icon:
+    testid: channels-folder-icon
+  agents_folder:
+    testid: agents-folder
+  agents_folder_icon:
+    testid: agents-folder-icon
+  # Job-stream rows under the folder set data-job-stream="true"
+  job_stream_row:
+    css: '[data-testid^="agent-side-nav-row-"][data-job-stream="true"]'
+  # Optional Off dim from composite status (lp-lv9.2)
+  job_stream_row_off:
+    css: '[data-testid^="agent-side-nav-row-"][data-job-stream="true"][data-job-off="true"]'
+  agent_side_nav_subtitle:
+    css: '[data-testid^="agent-side-nav-subtitle-"]'
+
+  # --- Scheduled-task config side pane (lp-lv9.5) ---
+  scheduled_task_config_pane:
+    testid: scheduled-task-config-pane
+  scheduled_task_config_enabled:
+    testid: scheduled-task-config-enabled
+  scheduled_task_config_toggle:
+    role: switch
+  scheduled_task_config_meta:
+    testid: scheduled-task-config-meta
+  scheduled_task_config_schedule:
+    testid: scheduled-task-config-schedule
+  scheduled_task_config_last_run:
+    testid: scheduled-task-config-last-run
+  scheduled_task_config_next_run:
+    testid: scheduled-task-config-next-run
+  scheduled_task_config_last_status:
+    testid: scheduled-task-config-last-status
+  scheduled_task_config_instructions:
+    testid: scheduled-task-config-instructions
+  scheduled_task_config_instructions_input:
+    testid: scheduled-task-config-instructions-input
+  scheduled_task_config_save_instructions:
+    testid: scheduled-task-config-save-instructions
+
+  # --- Chat header / purpose prompt (lp-lv9.4 when present) ---
+  agent_chat_header:
+    css: '[data-testid^="agent-chat-header-"]'
+  agent_chat_header_title:
+    css: '[data-testid^="agent-chat-header-title-"]:not([data-testid$="-editing"])'
+  # Optional — only after lp-lv9.4 lands; tests skip when zero matches
+  agent_system_prompt_editor:
+    css: '[data-testid*="system-prompt"], [data-testid*="purpose-prompt"], [data-testid*="agent-purpose"]'
+  agent_system_prompt_open:
+    css: '[data-testid*="system-prompt"] button, [aria-label*="system prompt" i], [aria-label*="purpose" i]'
+
+  # --- Connectors tab / sections (lp-xhf4.4; Tools renamed) ---
+  tools_sections_nav:
+    css: '[aria-label="Connectors sections"]'
+  connectors_sections_nav:
+    css: '[aria-label="Connectors sections"]'
+  connectors_page:
+    testid: connectors-page
+  connector_row_saas:
+    css: '[data-connector-kind="saas"]'
+  connector_row_bound:
+    css: '[data-connector-kind="bound"]'
+  connector_on_this_brain:
+    testid: on-this-brain
+  tools_section_connectors:
+    text: Connectors
+  tools_section_workflows:
+    text: Workflows
+  tools_section_models:
+    text: Models
+  tools_overview_absent:
+    text: Overview
+  skills_table:
+    testid: skills-table
+  # Legacy Tools crons selectors — must stay absent under Tools after lp-lv9.6.
+  # Prefer Agents scheduled_tasks_folder / job_stream_row for ops UI.
+  scheduled_tasks_table:
+    testid: scheduled-tasks-table
+  crons_table:
+    testid: crons-table
+  new_scheduled_task_open:
+    testid: new-scheduled-task-open
+  tools_refresh:
+    role: button
+    name: Refresh
+
+  # --- FakeOps /admin (lp-hdzm.29; docs/plans/0018 testing.md) ---
+  # Keys are snake_case. testid values are hyphenated data-testid strings.
+  # Dynamic rows use a prefix CSS locator; slug/id is not baked into the key.
+  admin_nav_tenants:
+    testid: admin-nav-tenants
+  admin_nav_registry:
+    testid: admin-nav-registry
+  admin_nav_connectors:
+    testid: admin-nav-connectors
+  admin_nav_users:
+    testid: admin-nav-users
+  admin_nav_instances:
+    testid: admin-nav-instances
+  admin_nav_roles:
+    testid: admin-nav-roles
+  admin_nav_audit:
+    testid: admin-nav-audit
+  admin_nav_secrets:
+    testid: admin-nav-secrets
+  admin_tenant_chip:
+    testid: admin-tenant-chip
+  admin_tenant_switcher:
+    testid: admin-tenant-switcher
+  admin_tenant_row:
+    css: '[data-testid^="ops-tenant-row-"]'
+  admin_tenant_row_mocklab:
+    testid: ops-tenant-row-mocklab
+  ops_add_user:
+    testid: ops-add-user
+  ops_user_row:
+    css: '[data-testid^="ops-user-row-"]'
+  ops_connector_row:
+    css: '[data-testid^="ops-connector-row-"]'
+  ops_connector_onboard:
+    testid: ops-connector-onboard
+  ops_surface_mcp:
+    testid: ops-surface-mcp
+  ops_surface_cli:
+    testid: ops-surface-cli
+  ops_surface_api:
+    testid: ops-surface-api
+  ops_surface_graphql:
+    testid: ops-surface-graphql
+  ops_connector_grant:
+    css: '[data-testid^="ops-connector-grant-"]'
+  ops_registry_search:
+    testid: ops-registry-search
+  ops_registry_promote:
+    testid: ops-registry-promote
