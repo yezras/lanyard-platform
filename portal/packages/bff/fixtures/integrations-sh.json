@@ -1,0 +1,274 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-26T00:00:00.000Z",
+  "entries": [
+    {
+      "domain": "stripe.com",
+      "name": "Stripe",
+      "description": "Payments infrastructure for the internet.",
+      "kinds": ["mcp", "openapi", "cli"],
+      "surface": {
+        "version": 3,
+        "domain": "stripe.com",
+        "summary": "Stripe MCP, OpenAPI, and CLI.",
+        "discoveredAt": "2026-08-26T00:00:00.000Z",
+        "credentials": {
+          "restricted_key": {
+            "type": "api_key",
+            "label": "Stripe restricted key",
+            "setup": "Create a restricted key in the Stripe Dashboard."
+          }
+        },
+        "surfaces": [
+          {
+            "type": "mcp",
+            "slug": "stripe-mcp",
+            "name": "Stripe MCP",
+            "url": "https://mcp.stripe.com",
+            "transports": ["streamable-http"],
+            "basis": {
+              "via": "declared",
+              "source": "https://stripe.com/.well-known/integrations.json"
+            },
+            "auth": {
+              "status": "required",
+              "entries": [
+                {
+                  "use": [
+                    {
+                      "id": "restricted_key",
+                      "mechanics": {
+                        "source": "http",
+                        "in": "header",
+                        "scheme": "Bearer"
+                      }
+                    }
+                  ],
+                  "basis": {
+                    "via": "declared",
+                    "source": "https://stripe.com/.well-known/integrations.json"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "http",
+            "slug": "stripe-api",
+            "name": "Stripe API",
+            "spec": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
+            "openapi": {
+              "openapi": "3.0.0",
+              "info": { "title": "Stripe", "version": "1" },
+              "paths": {
+                "/v1/customers": {
+                  "get": { "operationId": "listCustomers" }
+                }
+              }
+            },
+            "url": "https://api.stripe.com",
+            "basis": {
+              "via": "declared",
+              "source": "https://stripe.com/.well-known/integrations.json"
+            },
+            "auth": {
+              "status": "required",
+              "entries": [
+                {
+                  "use": [
+                    {
+                      "id": "restricted_key",
+                      "mechanics": {
+                        "source": "http",
+                        "in": "header",
+                        "headerName": "Authorization",
+                        "scheme": "Bearer"
+                      }
+                    }
+                  ],
+                  "basis": {
+                    "via": "declared",
+                    "source": "https://stripe.com/.well-known/integrations.json"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "cli",
+            "slug": "stripe-cli",
+            "name": "Stripe CLI",
+            "command": "stripe",
+            "packages": [
+              {
+                "registryType": "brew",
+                "identifier": "stripe/stripe-cli"
+              }
+            ],
+            "basis": {
+              "via": "discovered",
+              "evidence": ["https://docs.stripe.com/stripe-cli"]
+            },
+            "auth": {
+              "status": "required",
+              "entries": [
+                {
+                  "use": [
+                    {
+                      "id": "restricted_key",
+                      "mechanics": {
+                        "source": "cli",
+                        "env": ["STRIPE_API_KEY"]
+                      }
+                    }
+                  ],
+                  "basis": {
+                    "via": "discovered",
+                    "evidence": ["https://docs.stripe.com/stripe-cli"]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "domain": "slack.com",
+      "name": "Slack",
+      "description": "Channel messaging and workspace APIs.",
+      "kinds": ["mcp", "openapi"],
+      "surface": {
+        "version": 3,
+        "domain": "slack.com",
+        "summary": "Slack MCP and Web API.",
+        "discoveredAt": "2026-08-26T00:00:00.000Z",
+        "credentials": {
+          "bot_token": {
+            "type": "oauth2",
+            "label": "Slack bot token",
+            "setup": "Create a Slack app and install it to a workspace."
+          }
+        },
+        "surfaces": [
+          {
+            "type": "mcp",
+            "slug": "slack-mcp",
+            "name": "Slack MCP",
+            "url": "https://mcp.slack.com/mcp",
+            "transports": ["streamable-http"],
+            "basis": {
+              "via": "declared",
+              "source": "https://slack.com/.well-known/integrations.json"
+            },
+            "auth": {
+              "status": "required",
+              "entries": [
+                {
+                  "use": [
+                    {
+                      "id": "bot_token",
+                      "mechanics": { "source": "well-known" }
+                    }
+                  ],
+                  "basis": {
+                    "via": "declared",
+                    "source": "https://slack.com/.well-known/integrations.json"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "domain": "google.com",
+      "name": "Google",
+      "description": "Gmail, Calendar, Drive, and Google APIs.",
+      "kinds": ["mcp", "openapi", "cli"],
+      "surface": {
+        "version": 3,
+        "domain": "google.com",
+        "summary": "Google Workspace surfaces. Promote aliases onto first-class google.",
+        "discoveredAt": "2026-08-26T00:00:00.000Z",
+        "credentials": {
+          "oauth": {
+            "type": "oauth2",
+            "label": "Google OAuth",
+            "setup": "Lanyard Google app. Do not mint gmail as a connector id."
+          }
+        },
+        "surfaces": [
+          {
+            "type": "cli",
+            "slug": "gws",
+            "name": "gws CLI",
+            "command": "gws",
+            "basis": {
+              "via": "declared",
+              "source": "https://google.com/.well-known/integrations.json"
+            },
+            "auth": {
+              "status": "required",
+              "entries": [
+                {
+                  "use": [
+                    {
+                      "id": "oauth",
+                      "mechanics": { "source": "cli", "command": "gws auth" }
+                    }
+                  ],
+                  "basis": {
+                    "via": "declared",
+                    "source": "https://google.com/.well-known/integrations.json"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "domain": "graphql.example",
+      "name": "GraphQL Example",
+      "description": "GraphQL-only catalog row. Promote must reject.",
+      "kinds": ["graphql"],
+      "surface": {
+        "version": 3,
+        "domain": "graphql.example",
+        "summary": "GraphQL only.",
+        "discoveredAt": "2026-08-26T00:00:00.000Z",
+        "surfaces": [
+          {
+            "type": "graphql",
+            "slug": "graphql-api",
+            "name": "GraphQL API",
+            "url": "https://graphql.example/graphql"
+          }
+        ]
+      }
+    },
+    {
+      "domain": "pointer.example",
+      "name": "Pointer Example",
+      "description": "OpenAPI pointer only. Promote is not_runnable.",
+      "kinds": ["openapi"],
+      "surface": {
+        "version": 3,
+        "domain": "pointer.example",
+        "summary": "Pointer-only OpenAPI.",
+        "discoveredAt": "2026-08-26T00:00:00.000Z",
+        "surfaces": [
+          {
+            "type": "http",
+            "slug": "pointer-api",
+            "name": "Pointer API",
+            "spec": "https://pointer.example/openapi.json"
+          }
+        ]
+      }
+    }
+  ]
+}
