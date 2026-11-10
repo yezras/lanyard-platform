@@ -94,7 +94,7 @@ export function looksLikeHostFilesystemPath(path: string): boolean {
     }
   }
   // Windows drive / UNC disguised as POSIX
-  if (/^\/[a-z]:/i.test(trimmed) || lower.startsWith("/\\")) {
+  if (/^\/[a-z]:/i.test(trimmed) || lower.startsWith("/\\\\")) {
     return true;
   }
   return false;
