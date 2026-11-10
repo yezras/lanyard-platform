@@ -61,20 +61,73 @@ function parseSend(input: {
 
 function seedFredAndBill(store = new ChatThreadStore()) {
   const fred = store.createAgent({
-      tenant_id: tenantId,
-      user_id: userId,
-      name: "Fred",
-      objective: "Ping teammates.",
+    tenant_id: tenantId,
+    user_id: userId,
+    name: "Fred",
+    objective: "Ping teammates.",
   });
   const bill = store.createAgent({
-      tenant_id: tenantId,
-      user_id: userId,
-      name: "Bill",
-      objective: "Lead the room.",
+    tenant_id: tenantId,
+    user_id: userId,
+    name: "Bill",
+    objective: "Lead the room.",
   });
   return { store, fred, bill };
 }
 
 function sseBody(event: Record<string, unknown>): ReadableStream<Uint8Array> {
   return readableStreamFromText(`data: ${JSON.stringify(event)}\n\n`);
+}
+
+function harnessThatReplies(reply: Record<string, unknown>) {
+  const opened: string[] = [];
+  return {
+    opened,
+    client: {
+      openTurnEventStream: async (turnId: string) => {
+        opened.push(turnId);
+        return {
+          status: 200,
+          ok: true,
+          headers: { get: () => "text/event-stream" },
+          body: sseBody(reply),
+          text: async () => "",
+          json: async () => ({}),
+        };
+      },
+    },
+  };
+}
+
+function recordingStartTurn(turnId = "turn_bill_1") {
+  const calls: TurnRequest[] = [];
+  const startTurn: SpineStartTurn = async (request) => {
+    calls.push(request);
+    return { ok: true, turn_id: asTurnId(turnId) };
+  };
+  return { startTurn, calls, turnId: asTurnId(turnId) };
+}
+
+function spineFor(input: {
+  startTurn: SpineStartTurn;
+  registry: ReturnType<typeof createHarnessTurnRegistry>;
+  harnessClient: MailboxSpineEnqueue["persist"] extends infer P
+    ? P extends { harnessClient: infer C }
+      ? C
+      : never
+    : never;
+}): MailboxSpineEnqueue {
+  const queue = createMemoryInboundQueue();
+  return {
+    store: queue,
+    startTurn: input.startTurn,
+    owner: "mailbox-persist-worker",
+    remember: async (threadId, turnId) => {
+      await input.registry.remember(threadId, turnId);
+    },
+    persist: {
+      harnessClient: input.harnessClient,
+      registry: input.registry,
+    },
+  };
 }
