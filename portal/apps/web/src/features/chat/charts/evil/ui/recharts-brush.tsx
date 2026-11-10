@@ -350,7 +350,7 @@ function EvilBrush({
     [data, xDataKey, formatLabel],
   );
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // ── Render ──────────────────────────────────────────────────────────────
 
   if (totalPoints === 0) return null;
 
