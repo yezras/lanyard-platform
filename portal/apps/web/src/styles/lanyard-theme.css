@@ -1,0 +1,27 @@
+/*
+ * Lanyard brand overrides on Astryx neutral (light default).
+ * Colors: Core dev/design/colors.md — #0047ab, #000080, #4f81bd
+ * Typography: P22 Mackinac Pro with system-ui fallback until webfonts ship.
+ */
+
+:root,
+[data-astryx-theme="neutral"] {
+  color-scheme: light;
+
+  --lanyard-primary: #0047ab;
+  --lanyard-navy: #000080;
+  --lanyard-supporting: #4f81bd;
+
+  --font-family-body: "P22 Mackinac Pro", system-ui, -apple-system, sans-serif;
+  --font-family-heading: "P22 Mackinac Pro", system-ui, -apple-system, sans-serif;
+
+  --color-text-blue: var(--lanyard-primary);
+  --color-icon-blue: var(--lanyard-primary);
+  --color-border-blue: var(--lanyard-supporting);
+  --color-background-blue: color-mix(in srgb, var(--lanyard-supporting) 18%, white);
+
+  --color-accent: var(--lanyard-primary);
+  --color-text-accent: var(--lanyard-primary);
+  --color-icon-accent: var(--lanyard-primary);
+  --color-on-accent: #ffffff;
+}
