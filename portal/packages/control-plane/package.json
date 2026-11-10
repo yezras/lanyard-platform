@@ -1,0 +1,48 @@
+{
+  "name": "@lanyard/control-plane",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lanyard control plane — tenants, relay instance registry, audit metadata",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "." : {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:slo-harness": "vitest run test/slo-harness.test.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-kms": "^3.1110.0",
+    "@aws-sdk/client-s3": "^3.1110.0",
+    "@aws-sdk/client-secrets-manager": "^3.1112.0",
+    "@aws-sdk/client-sts": "^3.1110.0",
+    "@hono/node-server": "^2.0.12",
+    "@lanyard/shared": "workspace:*",
+    "hono": "^4.7.10",
+    "jose": "^5.10.0",
+    "pg": "^8.16.0",
+    "zod": "^3.25.28"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/pg": "^8.15.4",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.6"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
