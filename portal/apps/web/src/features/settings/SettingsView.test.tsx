@@ -997,6 +997,7 @@ describe("SettingsView skills and models (Slice D)", () => {
 
 describe("SettingsView integrations health", () => {
   beforeEach(() => {
+    fetchSettingsSnapshot.mockReset();
     fetchConnectors.mockReset();
     fetchConnectorsTeam.mockReset();
     putConnectorGrant.mockReset();
@@ -1112,7 +1113,7 @@ describe("SettingsView inventory refresh (lp-a8u.7)", () => {
     expect(screen.queryByText("Snapshot loaded.")).toBeNull();
   });
 
-  it("re-fetches snapshot when Settings tab gains focus (false \u2192 true)", async () => {
+  it("re-fetches snapshot when Settings tab gains focus (false → true)", async () => {
     function FocusHarness() {
       const [active, setActive] = useState(false);
       return (
@@ -1204,7 +1205,7 @@ describe("SettingsView snapshot error + retry (lp-75r.3)", () => {
       within(errorRegion).getByText(/brain rpc timed out after 10000ms/i),
     ).toBeTruthy();
     expect(screen.queryByTestId("settings-snapshot-loading")).toBeNull();
-    expect(screen.queryByText(/^Loading snapshot\u2026$/)).toBeNull();
+    expect(screen.queryByText(/^Loading snapshot…$/)).toBeNull();
 
     const retryBtn = screen.getByRole("button", {
       name: "Retry settings snapshot",
@@ -1287,7 +1288,7 @@ describe("SettingsView detail drawer (lp-a8u.8 / lp-75r.4)", () => {
     expect(drawer).toBeTruthy();
     const skillDetail = await screen.findByTestId("settings-detail-skill");
     expect(skillDetail).toBeTruthy();
-    // Title in DialogHeader \u2014 name also appears in table
+    // Title in DialogHeader — name also appears in table
     expect(
       screen.getByRole("heading", { name: "Post-meeting triage" }),
     ).toBeTruthy();
@@ -1329,14 +1330,14 @@ describe("SettingsView detail drawer (lp-a8u.8 / lp-75r.4)", () => {
       if (path.endsWith("notes.md")) {
         return Promise.resolve({
           path: "skills/crm/post-meeting-triage/notes.md",
-          content: "# Notes\\n\\nSecondary notes body.",
+          content: "# Notes\n\nSecondary notes body.",
           mime_type: "text/markdown; charset=utf-8",
           encoding: "utf-8",
         });
       }
       return Promise.resolve({
         path: "skills/crm/post-meeting-triage/SKILL.md",
-        content: "# Post-meeting triage\\n\\nDo the **thing**.",
+        content: "# Post-meeting triage\n\nDo the **thing**.",
         mime_type: "text/markdown; charset=utf-8",
         encoding: "utf-8",
       });
@@ -1448,7 +1449,7 @@ describe("SettingsView detail drawer (lp-a8u.8 / lp-75r.4)", () => {
     await waitFor(() => {
       expect(screen.queryByTestId("settings-detail-skill")).toBeNull();
     });
-    // Connectors catalog still selected \u2014 unbound skills table remains mounted.
+    // Connectors catalog still selected — unbound skills table remains mounted.
     expect(screen.getByTestId("connectors-page")).toBeTruthy();
     expect(screen.getByTestId("skills-table")).toBeTruthy();
   });
@@ -1809,7 +1810,7 @@ describe("SettingsView connectors Team pane (lp-xhf4.5)", () => {
     expect(screen.getByTestId("connectors-skills")).toBeTruthy();
   });
 
-  it("lets an admin toggle role \u00d7 google|hubspot|whatsapp grants and shows status not secrets", async () => {
+  it("lets an admin toggle role × google|hubspot|whatsapp grants and shows status not secrets", async () => {
     fetchConnectorsTeam.mockResolvedValue({
       ...mockTeam,
       oauth_refresh: "rtok-secret-do-not-leak",
