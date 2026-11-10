@@ -1,0 +1,35 @@
+{
+  "name": "@lanyard/web-settings-schema",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Pure UI control descriptors for Portal web settings driven by settings.snapshot + backend capabilities + config.schema categories (backend-runtime-v1). Pre-import scaffolding.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.2.6"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
