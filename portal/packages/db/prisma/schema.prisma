@@ -1,0 +1,160 @@
+// Prisma owns this schema end to end against Postgres `portal_app`.
+// Control-plane identity/RBAC stays in `portal_cp` (see ADR 0009).
+// `User.authUserId` is the AWS Cognito `sub`. Cognito is not modelled here;
+// there is no foreign key to an IdP table (ADR 0010).
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Business {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  settings            BusinessSettings?
+  users               User[]
+  folders             Folder[]
+  modelProviderTokens BusinessModelProviderToken[]
+
+  @@map("businesses")
+}
+
+model BusinessSettings {
+  businessId             String   @id @map("business_id") @db.Uuid
+  defaultModelProviderId String?  @map("default_model_provider_id") @db.Uuid
+  defaultModelName       String?  @map("default_model_name")
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+
+  business             Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  defaultModelProvider ModelProvider? @relation(fields: [defaultModelProviderId], references: [id], onDelete: SetNull)
+
+  @@map("business_settings")
+}
+
+model User {
+  id         String   @id @default(uuid()) @db.Uuid
+  /// Cognito `sub` for the matching user pool account.
+  authUserId String   @unique @map("auth_user_id") @db.Uuid
+  businessId String   @map("business_id") @db.Uuid
+  email      String   @unique
+  /// Administrator within their own business. Platform operators live in `PlatformAdmin`.
+  isAdmin    Boolean  @default(false) @map("is_admin")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  business          Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  folderPermissions UserFolderPermission[]
+  oauthTokens       OAuthToken[]
+
+  @@index([businessId])
+  @@map("users")
+}
+
+/// Platform operators for the superadmin app. Kept separate from `User` so that a superadmin is
+/// never accidentally granted tenant access by a query that only checks `isAdmin`.
+model PlatformAdmin {
+  id         String   @id @default(uuid()) @db.Uuid
+  authUserId String   @unique @map("auth_user_id") @db.Uuid
+  email      String   @unique
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("platform_admins")
+}
+
+/// A top-level folder owned by one business. Only business admins can create folders.
+model Folder {
+  id         String   @id @default(uuid()) @db.Uuid
+  businessId String   @map("business_id") @db.Uuid
+  name       String
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  business    Business               @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  permissions UserFolderPermission[]
+
+  @@unique([businessId, name])
+  @@index([businessId])
+  @@map("folders")
+}
+
+/// Grants a user access to one top-level folder in their business.
+model UserFolderPermission {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  folderId   String   @map("folder_id") @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, folderId])
+  @@index([folderId])
+  @@map("folder_permissions")
+}
+
+/// Third-party integrations a user can connect. Values are fixed here;
+/// adding a service is a schema migration, not admin CRUD.
+enum Service {
+  google
+  monday
+  hubspot
+}
+
+/// Tokens are never exposed to the agent: they are read here and injected into outbound requests
+/// server-side. Encryption at rest is a follow-up.
+model OAuthToken {
+  id           String    @id @default(uuid()) @db.Uuid
+  userId       String    @map("user_id") @db.Uuid
+  service      Service
+  accessToken  String    @map("access_token")
+  refreshToken String?   @map("refresh_token")
+  expiresAt    DateTime? @map("expires_at")
+  scopes       String[]  @default([])
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, service])
+  @@map("oauth_tokens")
+}
+
+model ModelProvider {
+  id        String   @id @default(uuid()) @db.Uuid
+  slug      String   @unique
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tokens           BusinessModelProviderToken[]
+  businessDefaults BusinessSettings[]
+
+  @@map("model_providers")
+}
+
+model BusinessModelProviderToken {
+  id              String   @id @default(uuid()) @db.Uuid
+  businessId      String   @map("business_id") @db.Uuid
+  modelProviderId String   @map("model_provider_id") @db.Uuid
+  apiToken        String   @map("api_token")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  business      Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  modelProvider ModelProvider @relation(fields: [modelProviderId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, modelProviderId])
+  @@map("business_model_provider_tokens")
+}
