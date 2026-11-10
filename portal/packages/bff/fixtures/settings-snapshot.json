@@ -1,0 +1,93 @@
+{
+  "exported_at": "2026-07-01T08:00:00.000Z",
+  "skills": [
+    {
+      "id": "post-meeting-triage",
+      "name": "Post-meeting triage",
+      "path": "skills/crm/post-meeting-triage",
+      "enabled": true
+    },
+    {
+      "id": "company-brain-proposal-pipeline",
+      "name": "Company proposal pipeline",
+      "path": "skills/productivity/company-brain-proposal-pipeline",
+      "enabled": true
+    }
+  ],
+  "crons": [
+    {
+      "id": "vault-index",
+      "name": "Vault index refresh",
+      "schedule": "Daily at 3:00 AM",
+      "enabled": true,
+      "last_run_at": "2026-07-01T03:00:12.000Z",
+      "next_run_at": "2026-07-02T03:00:00.000Z"
+    },
+    {
+      "id": "settings-snapshot-export",
+      "name": "Settings snapshot export",
+      "schedule": "Every 15 minutes",
+      "enabled": true,
+      "last_run_at": "2026-07-01T07:45:00.000Z",
+      "next_run_at": "2026-07-01T08:00:00.000Z"
+    }
+  ],
+  "mcp_servers": [
+    {
+      "name": "gmail",
+      "transport": "stdio",
+      "command": "gws",
+      "api_key": "gws-live-secret-should-never-leak"
+    },
+    {
+      "name": "slack",
+      "transport": "stdio",
+      "command": "slack-mcp",
+      "token": "xoxb-slack-bot-token-redact-me"
+    }
+  ],
+  "models": [
+    {
+      "provider": "xai",
+      "model": "grok-3",
+      "is_active": true,
+      "connected": true,
+      "api_key": "xai-zdr-secret-key-abc123"
+    },
+    {
+      "provider": "xai",
+      "model": "grok-4",
+      "is_active": false,
+      "connected": true
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "is_active": false,
+      "connected": false,
+      "api_key": "sk-openai-secret-should-redact"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "is_active": false,
+      "connected": false
+    }
+  ],
+  "integrations": [
+    { "id": "gmail", "name": "Gmail", "type": "mcp" },
+    { "id": "slack", "name": "Slack", "type": "connector" },
+    { "id": "google-calendar", "name": "Google Calendar", "type": "mcp" },
+    { "id": "notion", "name": "Notion", "type": "connector" }
+  ],
+  "workflows": [
+    {
+      "id": "fizzbuzz-algorithm-test-report",
+      "name": "FizzBuzz algorithm test report",
+      "path": ".lanyard/workflows/fizzbuzz-algorithm-test-report.yaml",
+      "description": "Seed workflow def for Settings Workflows tab (lp-vnz.5)",
+      "enabled": true,
+      "updated_at": "2026-07-01T07:30:00.000Z"
+    }
+  ]
+}
