@@ -63,8 +63,11 @@ export function stripHostPort(host: string): string {
 }
 
 export function isValidTenantSlug(slug: string): boolean {
-  return SLUG_RE.test(slug.trim().toLowerCase()) &&
-    !RESERVED_TENANT_PATH_SEGMENTS.has(slug.trim().toLowerCase());
+  const s = slug.trim().toLowerCase();
+  if (!s || RESERVED_TENANT_PATH_SEGMENTS.has(s)) {
+    return false;
+  }
+  return SLUG_RE.test(s);
 }
 
 export type ParseTenantSlugOptions = {
