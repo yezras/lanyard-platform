@@ -1,0 +1,44 @@
+# Dependencies and build outputs (rebuilt in image)
+node_modules
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+**/coverage
+
+# VCS / local agent state
+.git
+.github
+.beads
+.agents
+.claude
+.codex
+.grok
+.dolt
+
+# Local runtime / secrets
+.data
+**/*.db
+.env
+.env.*
+.DS_Store
+
+# Docs and non-runtime assets (keep Dockerfiles/READMEs out of context bloat)
+artifacts
+testing.md
+**/*.md
+!packages/*/README.md
+
+# Web SPA is not a runtime image in G7.P2 (G7.P1 is separate).
+# Keep package.json so the pnpm workspace stays valid; ignore sources.
+packages/web/src
+packages/web/public
+packages/web/index.html
+packages/web/vite.config.*
+packages/web/tsconfig*
+packages/web/*.css
+
+# Tests (not needed for image build)
+**/test
+**/*.test.ts
+**/*.spec.ts
+packages/bff/fixtures
