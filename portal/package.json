@@ -1,0 +1,47 @@
+{
+  "name": "lanyard-portal",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Lanyard Web Portal monorepo (web, BFF, relay, control-plane, shared)",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "dev:web": "bash scripts/dev-web.sh",
+    "dev:admin": "pnpm --filter @lanyard/admin run dev",
+    "dev:bff": "pnpm --filter @lanyard/bff run dev",
+    "start:bff": "pnpm --filter @lanyard/bff run start",
+    "dev:relay": "pnpm --filter @lanyard/relay run dev",
+    "start:relay": "pnpm --filter @lanyard/relay run start",
+    "dev:control-plane": "pnpm --filter @lanyard/control-plane run dev",
+    "start:control-plane": "pnpm --filter @lanyard/control-plane run start",
+    "dev:tmux": "bash scripts/dev-tmux.sh",
+    "pack:web": "bash scripts/pack-web.sh",
+    "proof:local-topology": "bash scripts/local-topology-proof.sh",
+    "proof:staging-g1": "bash scripts/staging-g1-cp-boundary-proof.sh",
+    "proof:staging-g3": "bash scripts/staging-g3-brain-rpc-proof.sh",
+    "migrate:sqlite-to-postgres": "node scripts/migrate-sqlite-to-postgres.mjs",
+    "test:migrate-sqlite-to-postgres": "bash scripts/test-migrate-sqlite-to-postgres.sh",
+    "test:db-integration": "bash scripts/run-db-backed-integration-tests.sh",
+    "test:db-integration:security": "bash scripts/run-db-backed-integration-tests.sh --security-focus",
+    "test:db-integration:cp": "bash scripts/run-db-backed-integration-tests.sh --cp-only",
+    "test:db-integration:bff": "bash scripts/run-db-backed-integration-tests.sh --bff-only",
+    "astryx": "pnpm --filter @lanyard/web astryx --"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "pg": "^8.22.0",
+    "tsx": "^4.19.2",
+    "ws": "^8.21.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "uuid": ">=11.1.1",
+      "echarts": ">=6.1.0",
+      "postcss": ">=8.5.18",
+      "esbuild": ">=0.25.0",
+      "ws": ">=8.21.0"
+    }
+  }
+}

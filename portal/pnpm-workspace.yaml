@@ -1,0 +1,21 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  prisma: true
+  "@prisma/engines": true
+minimumReleaseAgeExclude:
+  - '@astryxdesign/cli@0.1.4'
+  - '@astryxdesign/core@0.1.4'
+  - '@astryxdesign/theme-neutral@0.1.4'
+
+# Security overrides (lp-p37.12) — force patched transitive floors.
+overrides:
+  uuid: ">=11.1.1"
+  echarts: ">=6.1.0"
+  postcss: ">=8.5.18"
+  esbuild: ">=0.25.0"
+  ws: ">=8.21.0"
+
