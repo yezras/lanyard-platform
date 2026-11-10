@@ -1,0 +1,33 @@
+# Local environment
+.env
+.env.*
+!.env.example
+# Mocklab / agent-dev env (never commit real credentials)
+.env.mocklab*
+
+# Node / Python / Terraform working files once code migration begins
+node_modules/
+.venv/
+__pycache__/
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Local artifacts
+dist/
+build/
+coverage/
+*.log
+
+# Local portal data + Playwright session secrets (lp-p37.13)
+.data/
+artifacts/ui/.auth/
+**/artifacts/ui/.auth/
+
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/proxieddb/
+.venv-anydoc/
