@@ -1,0 +1,68 @@
+{
+  "schema": "lanyard.harness.turn_contract_fixture",
+  "fixture_id": "harness-turn-contract.v1",
+  "fixture_version": 1,
+  "notes": {
+    "authority": "BFF ↔ harness HTTP turn wire (plan 0015 / ADR 0011 / lp-oop.26)",
+    "platform_types": "lanyard-platform/portal/packages/shared/src/harness/turn.ts",
+    "la_server": "lanyard-agent/packages/adapters-portal/src/harness/",
+    "mirror_target": "lanyard-platform/portal/packages/shared/src/fixtures/harness-turn-contract.v1.json"
+  },
+  "http": {
+    "service_token_header": "x-harness-service-token",
+    "turns_path": "/internal/turns",
+    "events_path_template": "/internal/turns/{turn_id}/events",
+    "interrupt_path_template": "/internal/turns/{turn_id}/interrupt"
+  },
+  "request": {
+    "tenant_id": "ten_1",
+    "user_id": "usr_1",
+    "instance_id": "inst_1",
+    "thread_id": "thr_1",
+    "message": "hello"
+  },
+  "start_response": {
+    "turn_id": "turn_1"
+  },
+  "events": [
+    {
+      "type": "message_send",
+      "chat_id": "thr_1",
+      "message_id": "msg_turn_1",
+      "content": "echo: hello"
+    }
+  ],
+  "interrupt_response": {
+    "ok": true,
+    "interrupted": true
+  },
+  "errors": {
+    "unauthorized": {
+      "status": 401,
+      "body": { "error": "Unauthorized" }
+    },
+    "invalid_json": {
+      "status": 400,
+      "body": { "error": "Invalid JSON body" }
+    },
+    "invalid_request": {
+      "status": 400
+    },
+    "turn_not_found": {
+      "status": 404,
+      "body": { "error": "Turn not found" }
+    },
+    "method_not_allowed": {
+      "status": 405,
+      "body": { "error": "Method not allowed" }
+    }
+  },
+  "event_types": [
+    "message_send",
+    "message_edit",
+    "typing",
+    "tool_progress",
+    "reasoning",
+    "mcq"
+  ]
+}
