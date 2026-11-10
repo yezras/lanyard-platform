@@ -428,9 +428,9 @@ def test_lp_86d5_subagents_chips_and_activity_pane(
             if detail.count() and detail.first.is_visible():
                 live["detail_visible"] = True
                 live["detail_run_id"] = detail.first.get_attribute("data-run-id")
-            st = page.get_by_test_id("chat-subagent-detail-status")
-            if st.count():
-                live["detail_status"] = st.first.inner_text().strip()
+                st = page.get_by_test_id("chat-subagent-detail-status")
+                if st.count():
+                    live["detail_status"] = st.first.inner_text().strip()
             shots.append(str(_shot(page, artifacts_dir, "14-live-activity-detail.png")))
 
             roster_btn = page.get_by_role(
