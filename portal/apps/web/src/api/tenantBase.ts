@@ -109,8 +109,7 @@ export function apiPrefix(loc: TenantBaseLocation = currentLocation()): string {
 export function withApiBase(
   path: string,
   loc: TenantBaseLocation = currentLocation(),
-):
-  string {
+): string {
   if (!path.startsWith("/api")) {
     return path;
   }
