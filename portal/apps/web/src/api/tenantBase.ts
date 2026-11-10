@@ -69,9 +69,6 @@ export function parseTenantSlugFromPathname(pathname: string): string | null {
  * to know whether the first path segment is the tenant slug for fetch URLs.
  */
 export function isPathBasedAppHost(hostname: string): boolean {
-  if (!hostname) {
-    return false;
-  }
   const host = hostname.toLowerCase().split(":")[0] ?? hostname;
   // Legacy subdomain hosts: acme.withlanyard.com / demo.localhost
   if (
@@ -112,7 +109,8 @@ export function apiPrefix(loc: TenantBaseLocation = currentLocation()): string {
 export function withApiBase(
   path: string,
   loc: TenantBaseLocation = currentLocation(),
-): string {
+):
+  string {
   if (!path.startsWith("/api")) {
     return path;
   }
