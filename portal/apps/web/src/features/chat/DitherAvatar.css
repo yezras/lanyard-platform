@@ -1,0 +1,61 @@
+/**
+ * DitherAvatar running-state motion (lp-lv9.8).
+ *
+ * Idle/static avatars are unstyled beyond the component's inline layout.
+ * When data-running="true", apply a subtle breathe + pulse ring.
+ * prefers-reduced-motion disables all motion (static ring may remain).
+ */
+
+.dither-avatar-root {
+  /* Layout is mostly inline; class exists for CSS targeting + cascade. */
+  transform-origin: center center;
+}
+
+.dither-avatar-root[data-running="true"] {
+  animation: dither-avatar-breathe 1.4s ease-in-out infinite;
+}
+
+.dither-avatar-pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.35;
+  pointer-events: none;
+  animation: dither-avatar-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes dither-avatar-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes dither-avatar-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.15;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dither-avatar-root[data-running="true"],
+  .dither-avatar-pulse {
+    animation: none !important;
+  }
+
+  /* Keep a quiet static affordance when reduced motion is preferred. */
+  .dither-avatar-pulse {
+    opacity: 0.4;
+    transform: none;
+  }
+}
