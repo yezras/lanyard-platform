@@ -1,0 +1,41 @@
+/*
+ * Chart styling bridge (Option A — Tailwind v4 + Astryx tokens).
+ *
+ * Scoped under `.portal-chart` via tailwind.chart.config.mjs `important`.
+ * Skip Tailwind preflight — Portal already loads `@astryxdesign/core/reset.css`.
+ *
+ * Import from chart surfaces / ChartBarProofStory (or a lazy chart chunk).
+ * Do not pull this into global `styles/globals.css` unless hybrid styling expands.
+ */
+
+@config "./tailwind.chart.config.mjs";
+
+/* Limit Tailwind content scan to chart sources (keeps CSS small). */
+@source "./evil/**/*.{ts,tsx}";
+@source "./*.{ts,tsx}";
+
+@import "tailwindcss/theme.css" layer(theme);
+
+/* Map Astryx design tokens → Tailwind v4 theme utilities (text-primary, border-*, …). */
+@import "@astryxdesign/core/tailwind-theme.css";
+
+/*
+ * Evil Charts / shadcn-style token aliases not present in Astryx tailwind-theme.
+ * Registered as Tailwind theme colors so utilities like bg-background work.
+ */
+@theme inline {
+  --color-background: var(--color-background-surface);
+  --color-foreground: var(--color-text-primary);
+  --color-muted: var(--color-background-muted);
+  --color-muted-foreground: var(--color-text-secondary);
+  /* --color-border is already provided by astryx tailwind-theme */
+}
+
+/* Utilities only (no preflight). */
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Isolation root for chart surfaces */
+.portal-chart {
+  color: var(--color-text-primary);
+  min-width: 0;
+}
