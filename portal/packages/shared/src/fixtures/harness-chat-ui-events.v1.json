@@ -1,0 +1,82 @@
+{
+  "schema": "lanyard.harness.chat_ui_events_fixture",
+  "fixture_id": "harness-chat-ui-events.v1",
+  "fixture_version": 1,
+  "notes": {
+    "authority": "lp-oop.38.7 / lp-oop.38.14 — tools runner emits existing Relay chat UI events; spawn is isolation none not SUBAGENTS_DISABLED",
+    "platform_mapper": "portal/apps/web ChatTimeline / useChatEvents / artifact-normalize",
+    "la_emit": "lanyard-agent/packages/adapters-portal/src/harness/chat-ui-events.ts"
+  },
+  "events": [
+    {
+      "type": "tool_progress",
+      "chat_id": "thr_1",
+      "message_id": "tool_turn_1_call_read",
+      "tool_name": "read",
+      "tool_call_id": "call_read",
+      "tool_status": "running",
+      "tool_target": "/Notes/memo.md",
+      "metadata": {
+        "portal_event": "tool_progress",
+        "tool_name": "read",
+        "tool_call_id": "call_read",
+        "status": "running",
+        "tool_target": "/Notes/memo.md"
+      }
+    },
+    {
+      "type": "tool_progress",
+      "chat_id": "thr_1",
+      "message_id": "tool_turn_1_call_read",
+      "tool_name": "read",
+      "tool_call_id": "call_read",
+      "tool_status": "completed",
+      "tool_target": "/Notes/memo.md",
+      "result": "# memo\n",
+      "metadata": {
+        "portal_event": "tool_progress",
+        "tool_name": "read",
+        "tool_call_id": "call_read",
+        "status": "completed",
+        "tool_target": "/Notes/memo.md",
+        "result": "# memo\n"
+      }
+    },
+    {
+      "type": "tool_progress",
+      "chat_id": "thr_1",
+      "message_id": "tool_turn_1_call_spawn",
+      "tool_name": "spawn_subagent",
+      "tool_call_id": "call_spawn",
+      "tool_status": "completed",
+      "tool_kind": "subagent",
+      "subagent_name": "researcher",
+      "result": "{\"id\":\"call_spawn\",\"status\":\"completed\",\"isolationEffective\":\"none\",\"resultSummary\":\"SUBAGENT_OK\"}",
+      "tool_target": "Scan memo",
+      "tool_label": "researcher",
+      "metadata": {
+        "portal_event": "subagent",
+        "tool_name": "spawn_subagent",
+        "tool_call_id": "call_spawn",
+        "status": "completed",
+        "tool_kind": "subagent",
+        "subagent_name": "researcher",
+        "tool_target": "Scan memo",
+        "tool_label": "researcher",
+        "result": "{\"id\":\"call_spawn\",\"status\":\"completed\",\"isolationEffective\":\"none\",\"resultSummary\":\"SUBAGENT_OK\"}"
+      }
+    },
+    {
+      "type": "message_send",
+      "chat_id": "thr_1",
+      "message_id": "msg_turn_1",
+      "content": "Here is the mix.\n```chart\n{\"version\":1,\"type\":\"bar\",\"title\":\"Mix\",\"xKey\":\"x\",\"series\":[{\"key\":\"y\",\"label\":\"Y\"}],\"data\":[{\"x\":\"A\",\"y\":1},{\"x\":\"B\",\"y\":2}]}\n```",
+      "model": "test-model",
+      "citations": [{ "path": "/Notes/memo.md", "title": "memo.md" }],
+      "metadata": {
+        "model": "test-model",
+        "citations": [{ "path": "/Notes/memo.md", "title": "memo.md" }]
+      }
+    }
+  ]
+}
