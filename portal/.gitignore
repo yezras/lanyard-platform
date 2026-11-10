@@ -1,0 +1,17 @@
+node_modules/
+dist/
+packages/db/src/generated/
+.tanstack/
+*.tsbuildinfo
+.DS_Store
+*.db
+.env
+.env.*
+# Local dev runtime (demo-env, relay secrets, optional chat.db) — mode 0700/0600
+# See docs/runbooks/local-secret-hygiene.md (lp-p37.13)
+.data/
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+.beads-credential-key
+.beads/proxieddb/
