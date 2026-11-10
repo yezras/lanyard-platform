@@ -1,0 +1,743 @@
+.chat-mcq-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+.chat-turn {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.chat-turn[data-speaker-kind="human"] {
+  align-items: flex-end;
+}
+
+.chat-speaker-label {
+  min-width: 0;
+}
+
+/*
+ * Channel transcript bubble rows (lp-cxhb.15.3).
+ * WhatsApp/iMessage grouping: persona bubbles sit left under a dither avatar
+ * gutter; local human sends right-align without identity chrome. Consecutive
+ * same-speaker rows share Astryx ChatMessageBubble group corner tightening.
+ */
+.chat-channel-row {
+  display: flex;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.chat-channel-row[data-channel-side="right"] {
+  justify-content: flex-end;
+}
+
+.chat-channel-gutter {
+  flex-shrink: 0;
+  width: 20px; /* DitherAvatar "sm" — keeps grouped rows aligned. */
+  align-self: flex-end;
+  padding-bottom: 1.4rem; /* optically center against the last bubble + meta row */
+}
+
+.chat-channel-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  max-width: min(78%, 42rem);
+}
+
+.chat-channel-row[data-channel-side="right"] .chat-channel-body {
+  align-items: flex-end;
+}
+
+.chat-channel-name {
+  margin: 0 0 0.15rem 0.35rem;
+}
+
+.group-room-roster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  min-width: 0;
+}
+
+.group-room-roster-member {
+  min-width: 0;
+}
+
+/*
+ * Inter-tool thinking pulse (lp-95v.6) — Claude-style non-tool status chip.
+ * Not a ChatToolCalls row; soft pulse + rotating cooking keywords.
+ */
+.chat-thinking-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: 100%;
+  padding: 0.2rem 0.15rem;
+  user-select: none;
+}
+
+.chat-thinking-pulse-dot {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--color-text-secondary, #64748b);
+  flex-shrink: 0;
+  animation: chat-thinking-pulse-breathe 1.2s ease-in-out infinite;
+}
+
+.chat-thinking-pulse-label {
+  /* Soft opacity pulse on the keyword line (not the tool rows). */
+  animation: chat-thinking-pulse-fade 1.6s ease-in-out infinite;
+}
+
+@keyframes chat-thinking-pulse-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes chat-thinking-pulse-fade {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-thinking-pulse-dot,
+  .chat-thinking-pulse-label {
+    animation: none;
+    opacity: 0.85;
+    transform: none;
+  }
+}
+
+/* Subagent run chips (lp-dpr.5) — distinct from generic ChatToolCalls rows. */
+.chat-subagent-run-chip,
+.chat-subagent-run-row {
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.chat-subagent-run-chip:hover,
+.chat-subagent-run-row:hover {
+  filter: brightness(0.98);
+}
+
+.chat-subagent-run-chip:focus-visible,
+.chat-subagent-run-row:focus-visible {
+  outline: 2px solid var(--color-focus-ring, #3b82f6);
+  outline-offset: 2px;
+}
+
+.chat-subagent-chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-block: 0.15rem;
+}
+
+/* Workflow run cards (lp-dpr.7) — stages expand/collapse + nested subagents. */
+.chat-workflow-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-block: 0.2rem;
+  max-width: 100%;
+}
+
+/* Condensed header — stacked sources + dither avatars (lp-n6e). */
+.chat-condensed-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.45rem 0.5rem;
+  margin-bottom: 0.35rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+  background: var(--color-background-surface, #fff);
+}
+
+.chat-condensed-divider {
+  width: 1px;
+  height: 1.6rem;
+  background: var(--color-border, #e5e7eb);
+  flex-shrink: 0;
+}
+
+.source-stack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.source-stack-icons {
+  display: inline-flex;
+  align-items: center;
+}
+
+.source-stack-icon {
+  position: relative;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-background-surface, #fff);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -0.5rem;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.source-stack-icon:first-child {
+  margin-left: 0;
+}
+
+.source-stack-icon-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--color-background-surface, #fff);
+  position: relative;
+}
+
+.source-stack-favicon {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.source-stack-favicon-fallback {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-text-secondary, #64748b);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.source-stack-icon img.source-stack-favicon {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.source-stack-icon img[style*="display: none"] {
+  display: none !important;
+}
+
+.source-stack-hover-card {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.4rem);
+  transform: translateX(-50%);
+  min-width: 14rem;
+  max-width: 18rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.45rem;
+  background: var(--color-background-surface, #fff);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  display: none;
+  flex-direction: column;
+  gap: 0.2rem;
+  z-index: 10;
+  text-align: left;
+  pointer-events: none;
+}
+
+.source-stack-icon:hover .source-stack-hover-card,
+.source-stack-icon:focus-visible .source-stack-hover-card {
+  display: flex;
+}
+
+.source-stack-hover-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text-primary, #0f172a);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.source-stack-hover-desc {
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--color-text-secondary, #64748b);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.source-stack-hover-url,
+.source-stack-hover-provider {
+  font-size: 0.65rem;
+  color: var(--color-text-secondary, #64748b);
+}
+
+.source-stack-label,
+.dither-avatar-label {
+  font-size: 0.72rem;
+  color: var(--color-text-secondary, #64748b);
+  white-space: nowrap;
+}
+
+.source-stack-overflow,
+.dither-avatar-overflow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-background-muted, #f1f5f9);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-secondary, #64748b);
+  margin-left: -0.5rem;
+}
+
+.dither-avatar-roster {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dither-avatar-stack {
+  display: inline-flex;
+  align-items: center;
+}
+
+.dither-avatar {
+  position: relative;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -0.35rem;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.dither-avatar:first-child {
+  margin-left: 0;
+}
+
+.dither-avatar-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  display: block;
+}
+
+.dither-avatar-pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.35;
+  animation: dither-avatar-pulse 1.4s ease-in-out infinite;
+}
+
+.collapsed-tool-pill {
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+  background: var(--color-background-surface, #fff);
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.collapsed-tool-pill-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.collapsed-tool-pill-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--color-text-secondary, #64748b);
+  animation: collapsed-pill-breathe 1.4s ease-in-out infinite;
+}
+
+.collapsed-tool-pill-chevron {
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: var(--color-text-secondary, #64748b);
+}
+
+.collapsed-tool-pill-content {
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  padding: 0.4rem;
+  background: var(--color-background-muted, #f8fafc);
+}
+
+@keyframes collapsed-pill-breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapsed-tool-pill-dot {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+@keyframes dither-avatar-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.15;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dither-avatar,
+  .dither-avatar-root[data-running="true"],
+  .dither-avatar-pulse,
+  .source-stack-icon {
+    animation: none !important;
+  }
+}
+
+/* Document reopen chips after pane close (lp-a8u.2) — citation-parity Tokens. */
+.chat-document-reopen-chip-bar {
+  padding-block: 0.35rem 0.15rem;
+  max-width: 100%;
+}
+
+.chat-workflow-run-card,
+.chat-workflow-run-tree {
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.chat-workflow-run-header:focus-visible {
+  outline: 2px solid var(--color-focus-ring, #3b82f6);
+  outline-offset: 2px;
+  border-radius: 0.35rem;
+}
+
+.chat-workflow-stage-header:hover {
+  background: var(--color-surface-hover, rgba(15, 23, 42, 0.04));
+}
+
+/*
+ * Structured web search / Firecrawl result cards (lp-uxy.7).
+ * Used in ChatToolCalls expandable detail + proof story.
+ */
+.web-search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 100%;
+  margin-top: 0.25rem;
+}
+
+.web-search-results-heading {
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+}
+
+.web-search-results-count {
+  opacity: 0.75;
+}
+
+.web-search-results-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 100%;
+}
+
+.web-search-result-card {
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+  background: var(--color-background-surface, #fff);
+  overflow: hidden;
+}
+
+.web-search-result-card-button {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 0.55rem 0.65rem;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.web-search-result-card-button:hover {
+  background: var(--color-surface-hover, rgba(15, 23, 42, 0.04));
+}
+
+.web-search-result-card-button:focus-visible {
+  outline: 2px solid var(--color-focus-ring, #3b82f6);
+  outline-offset: -2px;
+}
+
+.web-search-result-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: var(--color-text-secondary, #64748b);
+}
+
+.web-search-result-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.web-search-result-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.web-search-result-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: var(--color-text-primary, #0f172a);
+  word-break: break-word;
+}
+
+.web-search-result-provider {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary, #64748b);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 999px;
+  padding: 0.05rem 0.4rem;
+  flex-shrink: 0;
+}
+
+.web-search-result-host {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #64748b);
+  word-break: break-all;
+}
+
+.web-search-result-snippet {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--color-text-secondary, #475569);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.web-search-result-date {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary, #94a3b8);
+}
+
+/* Richer final-answer web citation chip with optional snippet (lp-uxy.7). */
+.web-citation-rich {
+  display: inline-flex;
+  max-width: min(100%, 22rem);
+  vertical-align: top;
+}
+
+.web-citation-rich-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+  background: var(--color-background-surface, #fff);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.web-citation-rich-inner:hover {
+  background: var(--color-surface-hover, rgba(15, 23, 42, 0.04));
+}
+
+.web-citation-rich-inner:focus-visible {
+  outline: 2px solid var(--color-focus-ring, #3b82f6);
+  outline-offset: 2px;
+}
+
+.web-citation-rich-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.web-citation-rich-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-primary, #0f172a);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 16rem;
+}
+
+.web-citation-rich-host {
+  font-size: 0.7rem;
+  color: var(--color-text-secondary, #64748b);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.web-citation-rich-snippet {
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: var(--color-text-secondary, #475569);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 0.1rem;
+}
+
+.chat-workflow-stage-header:focus-visible {
+  outline: 2px solid var(--color-focus-ring, #3b82f6);
+  outline-offset: 1px;
+}
+
+.chat-workflow-nested-subagent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* Nested workflow subagent: dither avatar + short name/status (lp-khq.9). */
+.chat-workflow-nested-subagent-btn:hover {
+  background: var(--color-surface-hover, rgba(15, 23, 42, 0.04));
+}
+
+.chat-workflow-nested-subagent-btn:focus-visible {
+  outline: 2px solid var(--color-focus-ring, #3b82f6);
+  outline-offset: 1px;
+}
+
+/* Hermes / request failure surface (bottom-right of the chat page). */
+.chat-failure-banner {
+  position: fixed;
+  right: var(--spacing-4, 1rem);
+  bottom: var(--spacing-4, 1rem);
+  z-index: 50;
+  max-width: min(360px, calc(100vw - 2rem));
+  box-shadow: var(--shadow-raised, 0 8px 24px rgba(0, 0, 0, 0.12));
+}
+
+/*
+ * Chat document pane (lp-5q6.13 / lp-5q6.15).
+ * Desktop: split column + resize handle.
+ * Narrow chat container: hide split chrome; DocumentPaneHost opens a
+ * full-screen Dialog drawer instead so the pane is never squeezed beside chat.
+ */
+.chat-document-pane-resize-handle {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.chat-document-pane--split {
+  /* width comes from --chat-document-pane-width (useResizable). */
+  min-width: 0;
+}
+
+.chat-document-pane--drawer {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-inline-start: none;
+}
+
+/* Toolbar title + path must truncate; icon buttons stay visible. */
+.chat-document-pane .chat-document-pane-body {
+  min-width: 0;
+}
+
+@container chat (max-width: 767px) {
+  .chat-document-pane--split,
+  .chat-document-pane-resize-handle {
+    display: none !important;
+  }
+}
