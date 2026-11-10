@@ -1,0 +1,37 @@
+{
+  "name": "@lanyard/backend-runtime",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Portal BFF boundary for backend runtime operations (backend-runtime-v1). Pre-import scaffolding; merges with full Portal under portal/.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@lanyard/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.2.6"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
