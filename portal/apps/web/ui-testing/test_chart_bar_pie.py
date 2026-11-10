@@ -60,7 +60,7 @@ def test_chart_bar_pie_in_chat(page: Page, base_url: str, artifacts_dir: Path):
     expect(pie.get_by_test_id("portal-chart-card-plot")).to_be_visible()
 
     # Require real SVG paint (not blank plot shells). Lazy load + Recharts need time.
-    # Pie SVG shell is often visible ~1\u20131.5s before sector <path> nodes paint
+    # Pie SVG shell is often visible ~1–1.5s before sector <path> nodes paint
     # (lp-4h6.1 / lp-dax race: assert path count only after wait).
     bar_svg = bar.locator("svg").first
     pie_svg = pie.locator("svg").first
@@ -70,7 +70,7 @@ def test_chart_bar_pie_in_chat(page: Page, base_url: str, artifacts_dir: Path):
     pie_box = pie_svg.bounding_box()
     assert bar_box is not None and bar_box["width"] >= 80 and bar_box["height"] >= 80, bar_box
     assert pie_box is not None and pie_box["width"] >= 80 and pie_box["height"] >= 80, pie_box
-    # Wait for Recharts geometry \u2014 SVG visible alone is not enough for pie paths.
+    # Wait for Recharts geometry — SVG visible alone is not enough for pie paths.
     pie_path_loc = pie_svg.locator("path")
     bar_shape_loc = bar_svg.locator("path, rect")
     expect(pie_path_loc.first).to_be_attached(timeout=45_000)
@@ -80,7 +80,7 @@ def test_chart_bar_pie_in_chat(page: Page, base_url: str, artifacts_dir: Path):
     bar_shapes = bar_shape_loc.count()
     assert bar_shapes >= 1, f"bar SVG has no shapes (blank?): {bar_shapes}"
 
-    # Invalid fence \u2192 error card, no crash
+    # Invalid fence → error card, no crash
     err = page.get_by_test_id("chart-spec-error-card")
     expect(err).to_be_visible()
     expect(err).to_have_attribute("role", "alert")
@@ -115,7 +115,7 @@ def test_chart_bar_pie_in_chat(page: Page, base_url: str, artifacts_dir: Path):
         },
         "notes": (
             "Bar + pie charts in chat via ```chart fences "
-            "(ChatMessageContent \u2192 ChatRichCodeBlock \u2192 PortalChartCard). "
+            "(ChatMessageContent → ChatRichCodeBlock → PortalChartCard). "
             "SVG paint asserted after waiting for pie path / bar shape attach "
             "(lp-4h6.1 race fix). "
             "Invalid fence shows ChartSpecErrorCard without crashing the tree."

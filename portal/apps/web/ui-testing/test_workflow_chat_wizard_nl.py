@@ -89,7 +89,7 @@ def test_workflow_wizard_nl_first(page: Page, base_url: str, artifacts_dir: Path
     stages = page.evaluate(
         "() => (window.__workflowWizardProof && window.__workflowWizardProof.lastCreateBody && window.__workflowWizardProof.lastCreateBody.stages) || []"
     )
-    assert isinstance(stages, list) and len(stages) >= 2, f"expected \u22652 stages, got {stages!r}"
+    assert isinstance(stages, list) and len(stages) >= 2, f"expected ≥2 stages, got {stages!r}"
 
     report = {
         "bead": "lp-khq.12.1",
@@ -111,11 +111,11 @@ def test_workflow_wizard_nl_first(page: Page, base_url: str, artifacts_dir: Path
         json.dumps(report, indent=2) + "\n", encoding="utf-8"
     )
     (artifacts_dir / "RESULT.md").write_text(
-        "# lp-khq.12.1 \u2014 Workflow wizard NL-first\n\n"
+        "# lp-khq.12.1 — Workflow wizard NL-first\n\n"
         f"**Verdict: {report['verdict']}**\n\n"
         f"- Stages parsed: {report['stages']}\n"
         f"- Name: `{report['name']}`\n"
         "- No IR JSON / JSON paste / host workflow tool / Call workflow({ / kebab-case in user chrome\n"
-        "- Screenshots: 01\u201304 under this directory\n",
+        "- Screenshots: 01–04 under this directory\n",
         encoding="utf-8",
     )
