@@ -455,7 +455,7 @@ describe("ChatView", () => {
       expect(createChatThread).toHaveBeenCalled();
     });
 
-    expect(screen.getByText("Message your agent\u2026")).toBeTruthy();
+    expect(screen.getByText("Message your agent…")).toBeTruthy();
     expect(composerInput()).toBeTruthy();
     // lp-khq.12.3: no standalone paperclip; single + in former paperclip slot
     expect(screen.queryByRole("button", { name: "Attach file" })).toBeNull();
@@ -537,7 +537,7 @@ describe("ChatView", () => {
       ).toBe("vault");
     });
 
-    fireEvent.click(await screen.findByRole("menuitem", { name: /Business\\//i }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: /Business\//i }));
     await waitFor(() => {
       expect(
         screen
@@ -545,7 +545,7 @@ describe("ChatView", () => {
           .getAttribute("data-vault-browse-path"),
       ).toBe("/Business");
     });
-    fireEvent.click(await screen.findByRole("menuitem", { name: /MSA\\.docx/i }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: /MSA\.docx/i }));
 
     // Controlled messageText updated — submit carries path_reference form.
     await waitFor(() => {
@@ -615,7 +615,7 @@ describe("ChatView", () => {
       ).toBe("vault");
     });
     expect(screen.queryByRole("menuitem", { name: /Open vault/i })).toBeNull();
-    fireEvent.click(await screen.findByRole("menuitem", { name: /Projects\\//i }));
+    fireEvent.click(await screen.findByRole("menuitem", { name: /Projects\//i }));
     await waitFor(() => {
       expect(
         screen
@@ -624,7 +624,7 @@ describe("ChatView", () => {
       ).toBe("/Projects");
     });
     expect(screen.queryByRole("menuitem", { name: /Open vault/i })).toBeNull();
-    expect(screen.getByRole("menuitem", { name: /notes\\.md/i })).toBeTruthy();
+    expect(screen.getByRole("menuitem", { name: /notes\.md/i })).toBeTruthy();
     expect(onOpenInVault).not.toHaveBeenCalled();
   });
 
@@ -751,7 +751,7 @@ describe("ChatView", () => {
     });
 
     expect(screen.getByText("notes.txt")).toBeTruthy();
-    expect(screen.queryByText(/Uploaded notes\\.txt/)).toBeNull();
+    expect(screen.queryByText(/Uploaded notes\.txt/)).toBeNull();
   });
 
   it("does not show a Projects scope chip in the composer (lp-cxhb.3)", async () => {
@@ -906,7 +906,7 @@ describe("ChatView", () => {
 
     expect(
       await screen.findByRole("status", {
-        name: "Waiting for response \u2014 click to stop",
+        name: "Waiting for response — click to stop",
       }),
     ).toBeTruthy();
 
@@ -914,7 +914,7 @@ describe("ChatView", () => {
     const stopButton =
       screen.queryByRole("button", { name: /^Stop$/i }) ??
       screen.getByRole("status", {
-        name: "Waiting for response \u2014 click to stop",
+        name: "Waiting for response — click to stop",
       }).closest("button");
     expect(stopButton).toBeTruthy();
     fireEvent.click(stopButton!);
@@ -964,14 +964,14 @@ describe("ChatView", () => {
 
     expect(
       await screen.findByRole("status", {
-        name: "Waiting for response \u2014 click to stop",
+        name: "Waiting for response — click to stop",
       }),
     ).toBeTruthy();
 
     const stopButton =
       screen.queryByRole("button", { name: /^Stop$/i }) ??
       screen.getByRole("status", {
-        name: "Waiting for response \u2014 click to stop",
+        name: "Waiting for response — click to stop",
       }).closest("button");
     fireEvent.click(stopButton!);
 
@@ -1004,14 +1004,14 @@ describe("ChatView", () => {
 
     expect(
       await screen.findByRole("status", {
-        name: "Waiting for response \u2014 click to stop",
+        name: "Waiting for response — click to stop",
       }),
     ).toBeTruthy();
 
     const stopButton =
       screen.queryByRole("button", { name: /^Stop$/i }) ??
       screen.getByRole("status", {
-        name: "Waiting for response \u2014 click to stop",
+        name: "Waiting for response — click to stop",
       }).closest("button");
     fireEvent.click(stopButton!);
 
@@ -1198,7 +1198,7 @@ it("lp-dpr.2 soft mode A: office path mention without open-verb opens document p
       expect(createChatThread).toHaveBeenCalled();
     });
 
-    setComposerValue("Hello brain \u2014 no documents here");
+    setComposerValue("Hello brain — no documents here");
     fireEvent.keyDown(composerInput(), { key: "Enter", code: "Enter" });
 
     await waitFor(() => {
@@ -1625,7 +1625,7 @@ it("lp-dpr.2 soft mode A: office path mention without open-verb opens document p
       path: "/AGENTS.md",
       mime_type: "text/markdown",
       encoding: "utf-8",
-      content: "# AGENTS\\n",
+      content: "# AGENTS\n",
     });
     vi.mocked(fetchThreadHistory).mockResolvedValue([
       {
@@ -2223,7 +2223,7 @@ it("lp-dpr.2 soft mode A: office path mention without open-verb opens document p
       // Preview body still loads for the same path (reopen dispatch).
       await waitFor(() => {
         expect(document.body.textContent).toMatch(
-          /preview body|Lanyard_MSA|revised\\.docx/,
+          /preview body|Lanyard_MSA|revised\.docx/,
         );
       });
     });
@@ -2400,7 +2400,7 @@ describe("ChatView composer connectors group (lp-xhf4.16)", () => {
     );
     // Honest local status turn — no pending-tool wizard involved.
     expect(
-      await screen.findByText("Connecting Google\u2026 finish in the opened tab."),
+      await screen.findByText("Connecting Google… finish in the opened tab."),
     ).toBeTruthy();
     expect(beginConnectorChatUse).not.toHaveBeenCalled();
   });
@@ -2415,7 +2415,7 @@ describe("ChatView composer connectors group (lp-xhf4.16)", () => {
       ),
     );
 
-    expect(await screen.findByText(/Pop-up blocked\\./)).toBeTruthy();
+    expect(await screen.findByText(/Pop-up blocked\./)).toBeTruthy();
     // Markdown-link fallback keeps the OAuth one click away.
     const openLink = await screen.findByRole("link", { name: "Open Google" });
     expect(openLink.getAttribute("href")).toBe(
@@ -2481,7 +2481,7 @@ describe("ChatView composer connectors group (lp-xhf4.16)", () => {
     const card = await screen.findByTestId("connector-oauth-card");
     expect(card.getAttribute("data-connector")).toBe("google");
     expect(card.getAttribute("data-phase")).toBe("connect");
-    expect(await screen.findByText("Connecting Google\u2026 finish in the opened tab.")).toBeTruthy();
+    expect(await screen.findByText("Connecting Google… finish in the opened tab.")).toBeTruthy();
   });
 
   it("OAuth success postMessage paints the Connected chip with account label (lp-xhf4.19)", async () => {
@@ -2548,3 +2548,4 @@ describe("ChatView composer connectors group (lp-xhf4.16)", () => {
     ).toBeNull();
   });
 });
+
