@@ -22,7 +22,6 @@ import {
   DaytonaHttpError,
   DaytonaTimeoutError,
 } from "../src/daytona-sdk-client.js";
-
 import {
   createDaytonaToolboxClient,
   DEFAULT_DAYTONA_TOOLBOX_BASE_URL,
