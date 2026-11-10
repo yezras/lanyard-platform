@@ -18,7 +18,7 @@ Backend agents (`hermes_upstream`, `hermes_lanyard`, `lanyard_agent`) are **not*
 ## Architecture at a glance
 
 ```
-Browser  →  CloudFront + WAF + S3 (static) ┌┐
+Browser  →  CloudFront + WAF + S3 (static) ─┐
          →  ALB → BFF (Hono + Node) ────────┤→  Valkey (ElastiCache)  →  Relay (ws)  ←→  Agent gateway
          →  ALB → Relay (ws) ───────────────┘         ↕                        ↕
                                                     Control Plane (Hono + Postgres) → S3 vault + Secrets Manager
