@@ -1,0 +1,19 @@
+{
+  "_comment": "TEMPLATE lp-t86 / lp-kng.2.5 — trust policy for base sandbox vault mount role. Only ${ORCHESTRATOR_ROLE_ARN} may sts:AssumeRole; optional ExternalId. No Principal wildcard. Apply via platform TF/ops only.",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "OrchestratorAssumeOnly",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "${ORCHESTRATOR_ROLE_ARN}"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "${OPTIONAL_EXTERNAL_ID}"
+        }
+      }
+    }
+  ]
+}
