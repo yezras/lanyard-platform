@@ -114,8 +114,8 @@ When CloudTrail writes to a log group, common filters:
 
 | Filter | Pattern (illustrative) | Alarm |
 |--------|------------------------|-------|
-| Unauthorized API | `{ ($.errorCode = "*UnauthorizedOperation") \\|\| ($.errorCode = "AccessDenied*") }` | ≥ 1 in 5m |
-| SG / NACL change | `{ ($.eventName = AuthorizeSecurityGroupIngress) \\|\| ($.eventName = RevokeSecurityGroup*) \\|\| ($.eventName = CreateSecurityGroup) \\|\| ($.eventName = DeleteSecurityGroup) }` | ≥ 1 |
+| Unauthorized API | `{ ($.errorCode = "*UnauthorizedOperation") \|\| ($.errorCode = "AccessDenied*") }` | ≥ 1 in 5m |
+| SG / NACL change | `{ ($.eventName = AuthorizeSecurityGroupIngress) \|\| ($.eventName = RevokeSecurityGroup*) \|\| ($.eventName = CreateSecurityGroup) \|\| ($.eventName = DeleteSecurityGroup) }` | ≥ 1 |
 | Console login without MFA | `{ ($.eventName = ConsoleLogin) && ($.additionalEventData.MFAUsed != "Yes") }` | ≥ 1 |
 
 Wire alarms to the **ops** SNS topic (account) or per-tenant security SNS from `modules/security-observability`.
