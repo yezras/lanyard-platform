@@ -1,0 +1,182 @@
+{
+  "bead_id": "lp-86d.7",
+  "base_url": "http://demo.localhost:3010",
+  "login": "dev@demo.local",
+  "started_at": "2026-08-19T23:11:24.654974+00:00",
+  "checks": {
+    "login": {
+      "ok": true,
+      "detail": "dev@demo.local",
+      "screenshot": "01-live-home.png"
+    },
+    "settings-snapshot-api": {
+      "ok": true,
+      "detail": "{\"http_status\": 200, \"source\": \"fixture\", \"mcp_count\": 3, \"skills_count\": 2}",
+      "screenshot": null
+    },
+    "settings-nav-inventory": {
+      "ok": true,
+      "detail": "nav=['Skills', 'Workflows', 'MCP', 'Models', 'Integrations'] mcp_nav=True tools_rail=1",
+      "screenshot": "02-tools-overview.png"
+    },
+    "mcp-inventory-list": {
+      "ok": true,
+      "detail": "advertised=True table=1 names=['lab_echo', 'gmail', 'slack'] in_ui=['lab_echo', 'gmail', 'slack']",
+      "screenshot": "03-tools-mcp.png"
+    },
+    "settings-mcp-acceptance": {
+      "ok": true,
+      "detail": "mode=listed",
+      "screenshot": null
+    },
+    "new-chat": {
+      "ok": true,
+      "detail": "opened",
+      "screenshot": "04-live-new-chat.png"
+    },
+    "prompt-sent": {
+      "ok": true,
+      "detail": "marker=lp86d7-mcp-ui-marker visible=True",
+      "screenshot": "05-live-prompt-sent.png"
+    },
+    "chat-tool-rows-present": {
+      "ok": true,
+      "detail": "{\"chat_tool_calls_roots\": 1, \"humanized_button_count\": 1, \"labels_in_tool_roots\": [\"Searching files\"], \"duration_markers\": 3, \"collapsed_tool_pill\": 0, \"finished_labels\": 0, \"error_labels\": 0, \"mcp_name_hits\": [\"search_tool\"], \"toolish_count\": 2}",
+      "screenshot": "06-live-tool-rows.png"
+    },
+    "mcp-tool-name-status-indicator": {
+      "ok": true,
+      "detail": "mcp_hits=['search_tool'] labels=['Searching files'] toolish=2 assistant='Mcp lab echo lab echo\\nlab_echo\\n2\\nSearching files\\ncli:remote-server\\nsearch_tool\\n40ms\\nMcp lab echo lab echo\\ncli:remote-server\\nlab_echo\\n55ms\\nDemo brain (local mock) used MCP meta-tools for:\\nIMPORTANT: Do not run workflows. Do not call /workflo'",
+      "screenshot": "07-live-tools-expanded.png"
+    },
+    "assistant-reply": {
+      "ok": true,
+      "detail": "Mcp lab echo lab echo\nlab_echo\n2\nSearching files\ncli:remote-server\nsearch_tool\n40ms\nMcp lab echo lab echo\ncli:remote-server\nlab_echo\n55ms\nDemo brain (local mock) used MCP meta-tools for:\nIMPORTANT: Do not run workflows. Do not call /workflow. You have meta-tools search_tool and use_tool for MCP/integration tools. First call search_tool with query 'mcp' (or 'web' / 'search'). If any MCP-qualified tool name is returned (mcp__\u2026 or server__\u2026), call use_tool on one of them with minimal args. If the catalog is empty, call a normal web search or a single builtin list_dir/ls tool once, then stop. Repl",
+      "screenshot": null
+    }
+  },
+  "screenshots": [
+    "01-live-home.png",
+    "02-tools-overview.png",
+    "03-tools-mcp.png",
+    "04-live-new-chat.png",
+    "05-live-prompt-sent.png",
+    "06-live-tool-rows.png",
+    "07-live-tools-expanded.png"
+  ],
+  "errors": [],
+  "settings_snapshot": {
+    "http_status": 200,
+    "source": "fixture",
+    "backend_home": null,
+    "mcp_servers": [
+      {
+        "name": "lab_echo",
+        "transport": "stdio",
+        "command": "python3",
+        "enabled": true
+      },
+      {
+        "name": "gmail",
+        "transport": "stdio",
+        "command": "gws"
+      },
+      {
+        "name": "slack",
+        "transport": "stdio",
+        "command": "slack-mcp"
+      }
+    ],
+    "mcp_count": 3,
+    "skills_count": 2,
+    "integrations": [
+      {
+        "id": "gmail",
+        "name": "Gmail",
+        "type": "mcp"
+      },
+      {
+        "id": "slack",
+        "name": "Slack",
+        "type": "connector"
+      },
+      {
+        "id": "google-calendar",
+        "name": "Google Calendar",
+        "type": "mcp"
+      },
+      {
+        "id": "notion",
+        "name": "Notion",
+        "type": "connector"
+      }
+    ],
+    "exported_at": "2026-07-01T08:00:00.000Z"
+  },
+  "mcp_settings": {
+    "mode": "listed",
+    "nav_present": true,
+    "nav_labels": [
+      "Skills",
+      "Workflows",
+      "MCP",
+      "Models",
+      "Integrations"
+    ],
+    "table_count": 1,
+    "empty_message": false,
+    "api_mcp_count": 3,
+    "api_mcp_servers": [
+      {
+        "name": "lab_echo",
+        "transport": "stdio",
+        "command": "python3",
+        "enabled": true
+      },
+      {
+        "name": "gmail",
+        "transport": "stdio",
+        "command": "gws"
+      },
+      {
+        "name": "slack",
+        "transport": "stdio",
+        "command": "slack-mcp"
+      }
+    ],
+    "row_names": [
+      "lab_echo",
+      "gmail",
+      "slack"
+    ]
+  },
+  "chat_mcp": {
+    "scan": {
+      "chat_tool_calls_roots": 1,
+      "humanized_button_count": 1,
+      "labels_in_tool_roots": [
+        "Searching files"
+      ],
+      "duration_markers": 3,
+      "collapsed_tool_pill": 0,
+      "finished_labels": 0,
+      "error_labels": 0,
+      "mcp_name_hits": [
+        "search_tool"
+      ],
+      "toolish_count": 2
+    },
+    "mcp_indicator": true,
+    "assistant_preview": "Mcp lab echo lab echo\nlab_echo\n2\nSearching files\ncli:remote-server\nsearch_tool\n40ms\nMcp lab echo lab echo\ncli:remote-server\nlab_echo\n55ms\nDemo brain (local mock) used MCP meta-tools for:\nIMPORTANT: Do not run workflows. Do not call /workflow. You have meta-tools search_tool and use_tool for MCP/integration tools. First call search_tool with query 'mcp' (or 'web' / 'search'). If any MCP-qualified tool name is returned (mcp__\u2026 or server__\u2026), call use_tool on one of them with minimal args. If the catalog is empty, call a normal web search or a single builtin list_dir/ls tool once, then stop. Reply with one short sentence summarizing what tools you found or used. Do not ask questions. Marker: lp86d7-mcp-ui-marker\nCalled search_tool \u2192 use_tool on mcp__lab_echo__lab_echo (lab_echo). Marker path ",
+    "prompt_marker": "lp86d7-mcp-ui-marker"
+  },
+  "passed": true,
+  "acceptance_met": true,
+  "verdict": "PASS",
+  "gap": {
+    "mcp_chat_indicator_unproven": false,
+    "reason": null,
+    "fix_bead_recommended": false
+  },
+  "finished_at": "2026-08-19T23:11:44.792366+00:00"
+}
