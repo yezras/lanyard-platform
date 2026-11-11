@@ -356,6 +356,7 @@ def main() -> int:
         engine = "jsonschema"
     except ImportError:
         engine = "stdlib-subset"
+
     print(f"    validator engine: {engine}")
     print()
 
