@@ -1,0 +1,18 @@
+# mocklab-vault-seed:lp-zuh.9.5
+version: 1
+name: mocklab-vault-seed
+product: mocklab
+seed_gate: AGENTS.md
+kitchen_sink: lp-oop.38.18
+harness_backend_home_files:
+  - config.yaml
+  - skills/
+  - workflows/
+default_project:
+  name: Workspace
+  slug: workspace
+  primary_path: /mnt/vault/Projects/Workspace
+skills_roots:
+  - /mnt/vault/skills
+workflow_definition_roots:
+  - /mnt/vault/workflows

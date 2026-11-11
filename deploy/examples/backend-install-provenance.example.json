@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "hermes_lanyard",
+  "version": "v0.1.0-g7h2",
+  "url": "s3://company-brain-artifacts/backends/hermes-lanyard/v0.1.0-g7h2/hermes-lanyard.tar.gz",
+  "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "contract": {
+    "runtime_layout": 1,
+    "relay": 1,
+    "brain_rpc": 1
+  },
+  "installed_at": "2026-07-20T12:00:00Z",
+  "install_root": "/opt/company-brain-backend",
+  "install_path": "/opt/company-brain-backend/versions/v0.1.0-g7h2",
+  "layout": "versioned",
+  "current_symlink": "/opt/company-brain-backend/current",
+  "attestation_status": "skipped",
+  "attestation_alg": "ed25519",
+  "signing_pubkey_sha256": "",
+  "signing_identity": "",
+  "entrypoint": "bin/company-brain-backend",
+  "bootstrap": "artifact"
+}
