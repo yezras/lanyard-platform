@@ -1,0 +1,14 @@
+{
+  "marker": "lp-zuh.10.8-subwf-20260814T173743Z",
+  "when": "2026-08-14T17:37:43Z",
+  "subagents": {
+    "ok": false
+  },
+  "workflows": {
+    "ok": false
+  },
+  "ui_has_tools": true,
+  "ui_has_scheduled": true,
+  "tools_url": "https://app.withlanyard.com/mocklab/",
+  "tools_snip": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nSkills\nWorkflows\nMCP\nRefresh\nLoading\nLoading snapshot\u2026\nLoading snapshot\u2026"
+}
