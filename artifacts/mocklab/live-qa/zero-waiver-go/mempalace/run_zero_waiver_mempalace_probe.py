@@ -220,11 +220,13 @@ cat > "$BINDIR/command" <<'SHIM'
 if [ "$1" = "-v" ] && [ -n "${2:-}" ]; then
   if [ -x /usr/bin/which ]; then
     out="$(/usr/bin/which -- "$2" 2>/dev/null || true)"
-    if [ -n "$out" ]; then printf '%s\n' "$out"; exit 0; fi
+    if [ -n "$out" ]; then printf '%s
+' "$out"; exit 0; fi
   fi
   if [ -x /bin/bash ]; then
     out="$(/bin/bash -c 'type -P -- "$1"' _ "$2" 2>/dev/null || true)"
-    if [ -n "$out" ]; then printf '%s\n' "$out"; exit 0; fi
+    if [ -n "$out" ]; then printf '%s
+' "$out"; exit 0; fi
   fi
   exit 1
 fi
