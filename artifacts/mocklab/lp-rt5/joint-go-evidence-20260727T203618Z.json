@@ -1,0 +1,110 @@
+{
+  "bead_id": "lp-rt5.8",
+  "sister_bead_id": "lac-yt3.6",
+  "title": "Docker mocklab joint GO with Lanyard Agent",
+  "timestamp_utc": "2026-07-27T20:36:23Z",
+  "stamp": "20260727T203618Z",
+  "environment": "docker_mocklab_agent_parity",
+  "topology": {
+    "name": "docker_mocklab_agent_parity",
+    "doc": "docs/architecture/mocklab-agent-parity-topology.md",
+    "compose": "deploy/dev/mocklab-agent-parity/docker-compose.yml",
+    "deployment_mode": "hybrid_host_process_or_compose",
+    "components": [
+      "postgres",
+      "control-plane",
+      "relay",
+      "bff",
+      "web",
+      "lanyard_agent"
+    ],
+    "optional_components": [
+      "lab_document_server"
+    ],
+    "components_probed": {
+      "postgres": true,
+      "control-plane": true,
+      "relay": true,
+      "bff": true,
+      "web": true,
+      "lanyard_agent": true,
+      "lab_document_server_optional": true
+    },
+    "live_probe": {
+      "bff_ok": true,
+      "cp_ok": true,
+      "relay_ok": true,
+      "la_ok": true,
+      "web_ok": true,
+      "postgres_ok": true,
+      "lab_ds_ok": true
+    }
+  },
+  "backend": {
+    "kind": "lanyard_agent",
+    "health_service": "lanyard-agent-gateway",
+    "version": "1",
+    "health_url": "http://127.0.0.1:9100"
+  },
+  "joint_go": "GO",
+  "checks": {
+    "backend.kind_lanyard_agent": true,
+    "settings.sections_match_capabilities": true,
+    "projects.list_nonempty": true,
+    "chat.working_directory_stamped": true,
+    "composer.skills_from_host": true,
+    "composer.no_default_agent_stubs": true,
+    "office.preview_inline_docx": true,
+    "office.preview_inline_xlsx": true,
+    "office.preview_inline_pptx": true,
+    "office.no_unsupported_placeholder": true,
+    "host.sandbox_enforced": true,
+    "hermes_lanyard.regression": true,
+    "brain_rpc.live": true,
+    "topology.components": true
+  },
+  "check_provenance": {
+    "backend.kind_lanyard_agent": "live",
+    "settings.sections_match_capabilities": "live",
+    "projects.list_nonempty": "live",
+    "chat.working_directory_stamped": "live",
+    "composer.skills_from_host": "live",
+    "composer.no_default_agent_stubs": "unit",
+    "office.preview_inline_docx": "unit",
+    "office.preview_inline_xlsx": "unit",
+    "office.preview_inline_pptx": "unit",
+    "office.no_unsupported_placeholder": "unit",
+    "host.sandbox_enforced": "unit",
+    "hermes_lanyard.regression": "unit",
+    "brain_rpc.live": "live",
+    "topology.components": "live"
+  },
+  "fail_closed": {
+    "residual_source_never_sets_required": true,
+    "required_provenance": [
+      "live",
+      "unit"
+    ]
+  },
+  "metrics": {
+    "skill_count": 9,
+    "project_count": 1,
+    "primary_path_prefix": "/home/operator/.lanyard-agent/workspace",
+    "stamped_vault_path_prefix": "/home/operator/.lanyard-agent/workspace",
+    "stamped_thread_id": "3edb7229-31d3-41d6-8b3b-b81573cba10a"
+  },
+  "notes": [
+    "topology docs+compose present; live_probe finalizes topology_components",
+    "chat-working-directory unit residual exit 0 (live stamp still required for GO)",
+    "preferred /api/agent/projects 404 \u2014 used legacy dual-mount /api/hermes/projects (HL dual-mount still live)"
+  ],
+  "non_claims": [
+    "Not AWS staging",
+    "Not production customer OnlyOffice",
+    "Not third harness (Codex/OpenCode/Pi)",
+    "Not CP vault project store unification",
+    "Joint GO is Docker mocklab / localhost mocklab topology only",
+    "Office preview residual is unit (vaultPreviewKind), not browser UI QA"
+  ],
+  "log": "prove-20260727T203618Z.log"
+}
