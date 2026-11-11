@@ -103,6 +103,11 @@ export type InjectUserConnectorReason =
   | "needs_reauth"
   | "access_token_missing";
 
+export type ConnectorPostCommand = {
+  argv: readonly string[];
+  env: Record<string, string>;
+};
+
 export type InjectUserConnectorResult = {
   tenant_id: string;
   owner_user_id: string;
@@ -115,11 +120,6 @@ export type InjectUserConnectorResult = {
   files: string[];
   /** After restore, run wacli sync on the user sandbox. Never a new QR. */
   post_commands: ConnectorPostCommand[];
-};
-
-export type ConnectorPostCommand = {
-  argv: readonly string[];
-  env: Record<string, string>;
 };
 
 export const WACLI_SYNC_ARGV = ["wacli", "sync"] as const;
