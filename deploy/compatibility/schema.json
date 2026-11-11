@@ -1,0 +1,190 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lanyard.local/company-brain-deploy/compatibility/schema.json",
+  "title": "company-brain-deploy compatibility pins",
+  "description": "Immutable pin set for Portal images, Hermes runtime, client-core seed, and relay contract major. No live git branches.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "portal",
+    "hermes",
+    "client_core",
+    "relay_contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1,
+      "description": "Manifest schema major; bump only with breaking field changes."
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "description": { "type": "string" },
+        "created_at": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "portal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["images"],
+      "properties": {
+        "web": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "sha256", "url"],
+          "description": "Optional static SPA pin (portal-web tarball). Preferred over a web runtime container.",
+          "properties": {
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Immutable release label (e.g. v0.1.0). Not a git branch."
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^([a-fA-F0-9]{64}|sha256:[a-f0-9]{64})$"
+            },
+            "url": {
+              "type": "string",
+              "minLength": 1,
+              "description": "s3:// or https:// portal-web.tar.gz object URL."
+            },
+            "signature_b64": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional base64 raw Ed25519 signature over artifact bytes."
+            }
+          }
+        },
+        "images": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["repository", "digest"],
+            "properties": {
+              "repository": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Image repository without mutable tag as the sole pin."
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$",
+                "description": "Immutable image digest (sha256: + 64 hex)."
+              },
+              "tag": {
+                "type": "string",
+                "description": "Optional human label; digest is authoritative."
+              }
+            }
+          }
+        }
+      }
+    },
+    "hermes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "sha256", "url"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Immutable release label (e.g. v0.1.0). Not a git branch."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^([a-fA-F0-9]{64}|sha256:[a-fA-F0-9]{64})$"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "description": "s3:// or https:// artifact object URL. Prefer arch-labeled keys (…/linux-x86_64/…); unlabeled hermes/<version>/… is deprecated once labeled objects exist."
+        },
+        "arch": {
+          "type": "string",
+          "enum": ["linux-x86_64", "linux-aarch64"],
+          "description": "Runtime platform label (product TARGET_ARCH / hermes.target_arch). Default product linux-x86_64. Maps to pins v2 backend.arch and Terraform backend_artifact_arch."
+        },
+        "target_arch": {
+          "type": "string",
+          "enum": ["linux-x86_64", "linux-aarch64"],
+          "description": "Alias of arch (product workflow pin echo). Prefer arch in new files; either maps to backend.arch on v2 translation."
+        },
+        "signature_b64": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional base64 raw Ed25519 signature over artifact bytes (maps to HERMES_ARTIFACT_SIGNATURE_B64)."
+        }
+      }
+    },
+    "client_core": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "sha256", "url"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Immutable release label. Not a git branch."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^([a-fA-F0-9]{64}|sha256:[a-fA-F0-9]{64})$"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "description": "s3:// or https:// artifact object URL."
+        },
+        "signature_b64": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional base64 raw Ed25519 signature over artifact bytes (maps to CLIENT_CORE_ARTIFACT_SIGNATURE_B64)."
+        }
+      }
+    },
+    "relay_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["major"],
+      "properties": {
+        "major": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Hermes relay connector contract major version."
+        }
+      }
+    },
+    "artifact_attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional Ed25519 publisher attestation (openssl). SHA-256 pins remain required.",
+      "properties": {
+        "alg": {
+          "type": "string",
+          "enum": ["ed25519"],
+          "description": "Signature algorithm; only ed25519 is implemented offline via openssl pkeyutl."
+        },
+        "signing_pubkey_b64": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Base64 of PEM public key (maps to ARTIFACT_SIGNING_PUBKEY_B64)."
+        },
+        "signing_identity": {
+          "type": "string",
+          "description": "Optional human label for the release key (maps to ARTIFACT_SIGNING_IDENTITY)."
+        },
+        "require": {
+          "type": "boolean",
+          "description": "When true, map to REQUIRE_ARTIFACT_ATTESTATION=1 (fail-closed if sig/pubkey missing)."
+        }
+      }
+    }
+  }
+}
