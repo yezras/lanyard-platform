@@ -1,0 +1,22 @@
+{
+  "bead": "lp-zuh.12.1",
+  "when_utc": "2026-08-18T02:08:31Z",
+  "portal_web_version": "v0.1.6-mocklab-oo-zuh121-20260818",
+  "portal_web_sha256": "5ebde183538f771a8efc8687a3dbe147c09d2293672fffa8168286bcb4cabf33",
+  "cloudfront_invalidation": "IEW5DOM9USC2G6R6K62OSGFIPP",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "index_script": "/assets/index-DzazbXcP.js",
+  "acceptance": {
+    "VITE_ONLYOFFICE_EDITOR_true": true,
+    "VITE_ONLYOFFICE_DS_URL_points_at_staging_ds": true,
+    "allowlist_includes_ds_and_app": true,
+    "deployed_flag_on": true
+  },
+  "https_residual": {
+    "ds_alb_http_api_js": 200,
+    "ds_alb_https": "timeout_no_443_listener",
+    "note": "SPA bakes HTTPS DS URL; DocsAPI mount waits on lp-zuh.12.2"
+  },
+  "vite_env_object_sample": "{VITE_ONLYOFFICE_EDITOR:\"true\",VITE_FEATURE_ONLYOFFICE_EDITOR:void 0,VITE_ONLYOFFICE_DS_URL:\"https://lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com\",VITE_ONLYOFFICE_DOCUMENT_SERVER_URL:void 0,VITE_ONLYOFFICE_DS_ALLOWED_ORIGINS:\"https://lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com,https://app.withlanyard.com\"}",
+  "no_secrets": true
+}
