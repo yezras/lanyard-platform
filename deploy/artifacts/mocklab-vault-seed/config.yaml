@@ -1,0 +1,43 @@
+# MockLab kitchen-sink for harness BACKEND_HOME (lp-oop.38.18).
+# Same document the vault seed pack and CP/S3 serve. Guest stays tool-only
+# (no lanyard-agent tree). Fat-guest entrypoint seed is not restored.
+#
+# Snapshot (GET /internal/settings/snapshot) reads this file plus skills/
+# and workflows/ under BACKEND_HOME. Empty home → Tools page honestly empty.
+#
+# Secrets stay in env / SM. Do not commit keys.
+tenant_id: mocklab
+vault_root: /mnt/vault
+# Skill packages next to this file when BACKEND_HOME is the vault projection.
+skills_roots:
+  - skills
+skills:
+  disabled: []
+default_model: "poolside/laguna-s-2.1"
+litellm:
+  base_url: https://inference.poolside.ai
+  master_key_env: POOLSIDE_API_KEY
+tools:
+  catalog_search:
+    enabled: true
+subagents:
+  enabled: true
+  max_concurrent: 0
+  max_depth: 1
+  default_isolation: none
+mempalace:
+  enabled: true
+  path: mempalace
+  wing: mocklab
+  write_policy:
+    mode: disabled
+cron:
+  enabled: true
+  state_dir: .
+workflow:
+  enabled: true
+  agent_budget: 128
+  max_active_runs: 16
+  state_dir: .
+  definition_roots:
+    - workflows
