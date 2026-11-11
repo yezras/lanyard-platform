@@ -1,0 +1,191 @@
+{
+  "bead_id": "lp-uxy.15.12",
+  "shipped_feature": "brain-rpc + LA gateway",
+  "base_url": "http://demo.localhost:3010",
+  "when": "2026-08-05T14:35:02.871403+00:00",
+  "login": "dev@demo.local",
+  "passed": true,
+  "verdict": "PASS",
+  "brain_rpc_enabled": true,
+  "backend_kind": "lanyard_agent",
+  "hermes_profile": "admin",
+  "capabilities_source": "brain_rpc",
+  "ping": {
+    "ok": true,
+    "status": 200,
+    "pong": true,
+    "instance_id": "1555e820-2eba-4e83-80bd-a93f3ae09e7c"
+  },
+  "health": {
+    "status": 404,
+    "unknown_expected": true,
+    "ok_200": false,
+    "body_snip": "{\"error\": \"unknown method brain.health\"}"
+  },
+  "health_unknown_expected": true,
+  "projects": {
+    "status": 200,
+    "count": 8,
+    "names": [
+      "Workspace",
+      "Clients",
+      "demo",
+      "legal_work",
+      "QaBugWd24645",
+      "FixWd25140",
+      "k",
+      "dmeo"
+    ],
+    "visible": [
+      "Workspace",
+      "Clients",
+      "demo",
+      "legal_work",
+      "QaBugWd24645",
+      "FixWd25140",
+      "k",
+      "dmeo"
+    ]
+  },
+  "settings": {
+    "status": 200,
+    "source": "lanyard_agent",
+    "backend_home": "/home/operator/.lanyard-agent",
+    "hermes_home": "/home/operator/.lanyard-agent",
+    "cron_count": 3
+  },
+  "vault": {
+    "status": 200,
+    "root_count": 21,
+    "root_names": [
+      "__pycache__",
+      "Archive",
+      "Business",
+      "Clients",
+      "dev",
+      "Education",
+      "lp-uxy-15-6-soft-archive-qa",
+      "Relationships",
+      "skills",
+      "_count_sessions.py",
+      "Acme_Ops_Q1_Fake_Stats.xlsx",
+      "AGENTS.md",
+      "clients_crm.db",
+      "entities.json",
+      "evals.db",
+      "mempalace.yaml",
+      "qa-fix-office.docx",
+      "qa-open-test.docx",
+      "self-improve-last-report.json",
+      "self-improve-run-latest.log"
+    ],
+    "entries_sample": {
+      "path": "/__pycache__",
+      "status": 200,
+      "count": 0,
+      "names": []
+    }
+  },
+  "checks": [
+    {
+      "feature": "login",
+      "ok": true,
+      "detail": "logged in as dev@demo.local",
+      "shot": "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/01-post-login.png"
+    },
+    {
+      "feature": "brain-rpc-enabled",
+      "ok": true,
+      "detail": "brain_rpc_enabled=True kind=lanyard_agent profile=admin capabilities_source=brain_rpc",
+      "shot": null
+    },
+    {
+      "feature": "backend-kind-lanyard-agent",
+      "ok": true,
+      "detail": "kind=lanyard_agent",
+      "shot": null
+    },
+    {
+      "feature": "brain-ping",
+      "ok": true,
+      "detail": "status=200 pong=True instance=1555e820-2eba-4e83-80bd-a93f3ae09e7c",
+      "shot": null
+    },
+    {
+      "feature": "brain-health-honest",
+      "ok": true,
+      "detail": "status=404 unknown_or_error_expected=True ok_200=False body_snip='{\"error\": \"unknown method brain.health\"}'",
+      "shot": null
+    },
+    {
+      "feature": "projects-list-api",
+      "ok": true,
+      "detail": "status=200 count=8 names=['Workspace', 'Clients', 'demo', 'legal_work', 'QaBugWd24645', 'FixWd25140', 'k', 'dmeo']",
+      "shot": null
+    },
+    {
+      "feature": "capabilities-projects-list",
+      "ok": true,
+      "detail": "projects.list in methods=True features.projects_list=True",
+      "shot": null
+    },
+    {
+      "feature": "settings-snapshot-api",
+      "ok": true,
+      "detail": "status=200 source=lanyard_agent backend_home=/home/operator/.lanyard-agent crons=3",
+      "shot": null
+    },
+    {
+      "feature": "capabilities-settings-snapshot",
+      "ok": true,
+      "detail": "settings.snapshot in methods=True features.settings_snapshot=True",
+      "shot": null
+    },
+    {
+      "feature": "vault-tree-api",
+      "ok": true,
+      "detail": "status=200 root_count=21 names=['__pycache__', 'Archive', 'Business', 'Clients', 'dev', 'Education', 'lp-uxy-15-6-soft-archive-qa', 'Relationships', 'skills', '_count_sessions.py', 'Acme_Ops_Q1_Fake_Stats.xlsx', 'AGENTS.md']",
+      "shot": null
+    },
+    {
+      "feature": "vault-entries-api",
+      "ok": true,
+      "detail": "path=/__pycache__ status=200 count=0 names=[]",
+      "shot": null
+    },
+    {
+      "feature": "directory-ui-projects",
+      "ok": true,
+      "detail": "dir_chrome=True names_visible=['Workspace', 'Clients', 'demo', 'legal_work', 'QaBugWd24645', 'FixWd25140', 'k', 'dmeo'] api_count=8",
+      "shot": "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/02-directory-projects.png"
+    },
+    {
+      "feature": "settings-ui-snapshot",
+      "ok": true,
+      "detail": "settings_ui_ok=True la_hint=True source=lanyard_agent len=417",
+      "shot": "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/03-settings-snapshot.png"
+    },
+    {
+      "feature": "vault-ui-browser",
+      "ok": true,
+      "detail": "vault_ui_ok=True api_ok=True root_names=['__pycache__', 'Archive', 'Business', 'Clients', 'dev', 'Education', 'lp-uxy-15-6-soft-archive-qa', 'Relationships'] body_snip='Skip to content\\nLanyard Portal\\nChat\\nVault\\nSettings\\nD\\ndev@demo.local\\nSearch\\n__pycache__\\nArchive\\nBusiness\\nClients\\ndev\\nEducation\\nlp-uxy-15-6-soft-archive-qa\\nRelationships\\nskills\\n_coun'",
+      "shot": "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/04-vault-browser.png"
+    },
+    {
+      "feature": "vault-ui-open-entry",
+      "ok": true,
+      "detail": "opened first treeitem",
+      "shot": "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/05-vault-entry.png"
+    }
+  ],
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/01-post-login.png",
+    "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/02-directory-projects.png",
+    "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/03-settings-snapshot.png",
+    "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/04-vault-browser.png",
+    "/tmp/lp-bead-lp-uxy.15.12/artifacts/ui/lp-uxy-ship-qa/brain-rpc-live/05-vault-entry.png"
+  ],
+  "fix_bead": null,
+  "fail_detail": "",
+  "summary": "Brain RPC host ops via LA: ping ok, projects=8, settings source=lanyard_agent, vault roots=21; brain.health unknown expected=True."
+}
