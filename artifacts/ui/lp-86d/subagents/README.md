@@ -8,3 +8,4 @@ Playwright proof for subagent chip surface + activity pane roster/detail.
 - Story: `/?story=activity-plane&phase=subagent`
 - Live: demo.localhost + LA gateway spawn_subagent
 - See RESULT.md and REPORT.json
+
