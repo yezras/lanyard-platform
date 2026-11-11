@@ -1,0 +1,103 @@
+# Company Brain backend gateway — unprivileged, sandboxed systemd unit (lp-k7g.7.5).
+# Generic replacement for hermes-gateway.service assumptions.
+# Install via modules/company-brain-ec2/setup.sh or scripts/ensure-runtime-hardening.sh
+# (after company-brain-deploy import / phase 6 merge).
+# Design: docs/architecture/deploy-backend-systemd-service.md
+# Layout: contracts/backend-runtime-v1/filesystem-layout.md
+#
+# Entrypoint is always the contract binary + gateway subcommand.
+# Secrets live in EnvironmentFile (mode 0600, service-user owned).
+# systemd does not expand Environment= into other Environment= values —
+# HERMES_* aliases must use the same literal path as BACKEND_*.
+
+[Unit]
+Description=Company Brain backend gateway (unprivileged)
+Documentation=file:///opt/company-brain/AGENTS.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=company-brain
+Group=company-brain
+
+# --- platform env (backend-neutral) ---
+# Service account home (may differ from runtime state home).
+Environment=HOME=/home/company-brain
+# Canonical runtime home (config.yaml, profiles, sessions, logs, …).
+Environment=BACKEND_HOME=/var/lib/company-brain-backend
+# Product family; override via /etc/company-brain/backend.env when needed.
+Environment=BACKEND_KIND=hermes_lanyard
+# Active install tree (versioned layout current symlink; lp-k7g.7.4).
+Environment=BACKEND_INSTALL_PATH=/opt/company-brain-backend/current
+# Vault root is outside BACKEND_HOME (client-core seed + live content).
+Environment=VAULT_ROOT=/opt/company-brain
+
+# --- Hermes-compatible aliases only (same literals as platform paths) ---
+# Required for hermes_lanyard / hermes_upstream at process start.
+# Leave unset for pure lanyard_agent unless dual-run tooling needs them.
+Environment=HERMES_HOME=/var/lib/company-brain-backend
+Environment=HERMES_INSTALL_PATH=/opt/company-brain-backend/current
+
+# Backend-neutral env files (optional if missing). Paths are under BACKEND_HOME
+# and /etc/company-brain — not Hermes-only homes.
+EnvironmentFile=-/var/lib/company-brain-backend/.env
+EnvironmentFile=-/etc/company-brain/backend.env
+# Non-secret ARN/region for materialize (written by user_data when SM wired).
+EnvironmentFile=-/etc/company-brain/backend-runtime-secrets.env
+# SM materialize output (mode 0600). Prefer separate file over embedding secrets in TF.
+EnvironmentFile=-/var/lib/company-brain-backend/.env.secrets
+
+WorkingDirectory=/var/lib/company-brain-backend
+
+# Refresh secrets from SM before start (ARN only in env; values never in Terraform).
+# No-op when wrapper missing (lab) or ARN unset; fails closed when wired and materialize fails.
+# Rotation: update SM then systemctl restart (or run materialize first so EnvironmentFile is fresh).
+ExecStartPre=/usr/bin/bash -c 'if [ -x /usr/local/sbin/materialize-backend-secrets ]; then exec /usr/local/sbin/materialize-backend-secrets; fi'
+
+# Contract entrypoint (lp-k7g.7.4 install root + current symlink).
+ExecStart=/opt/company-brain-backend/current/bin/company-brain-backend gateway
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+
+# --- sandbox / least privilege (systemd) ---
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+MemoryDenyWriteExecute=false
+# Backend needs network for model APIs + portal relay WSS
+PrivateNetwork=false
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0077
+
+# Writable paths under ProtectSystem=strict / ProtectHome=true.
+# Align with contracts/backend-runtime-v1/filesystem-layout.md:
+#   BACKEND_HOME (full required tree), VAULT_ROOT, tmp, service HOME.
+# Install tree (/opt/company-brain-backend) is intentionally omitted —
+# binaries under current should stay immutable. Kind-private install RW
+# (legacy Hermes) belongs in a drop-in only when required.
+ReadWritePaths=/var/lib/company-brain-backend /opt/company-brain /home/company-brain /var/tmp
+# Operators may add drop-ins under company-brain-backend.service.d/ for
+# extra paths (e.g. /data when vault lives on a secondary volume).
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=company-brain-backend
+
+[Install]
+WantedBy=multi-user.target
