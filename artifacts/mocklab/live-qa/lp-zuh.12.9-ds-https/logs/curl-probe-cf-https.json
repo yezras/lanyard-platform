@@ -1,0 +1,24 @@
+{
+  "probed_at_utc": "2026-08-19T13:14:31Z",
+  "bead": "lp-zuh.12.9",
+  "ds_host": "d3sqcebajd6ueb.cloudfront.net",
+  "preferred_scheme": "https",
+  "http": {
+    "healthcheck_status": 301,
+    "api_js_status": 301,
+    "api_js_bytes": 167,
+    "api_js_content_type": "text/html"
+  },
+  "https": {
+    "healthcheck_status": 200,
+    "api_js_status": 200,
+    "api_js_bytes": 65363,
+    "api_js_content_type": "application/javascript",
+    "ok": true
+  },
+  "verdict": "HTTPS_GO",
+  "editor_go_claimed": false,
+  "editor_blocker": null,
+  "bff_allowlist_note": "BFF_OFFICE_DOCUMENT_SERVER_HOSTS is hostname-only (no scheme). On HTTPS cutover, compose injects <cf-domain|public-hostname>,<alb-dns>.",
+  "secrets": "none \u2014 probe does not read JWT/session values"
+}

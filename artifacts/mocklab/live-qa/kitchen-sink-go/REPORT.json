@@ -1,0 +1,109 @@
+{
+  "bead": "lp-zuh.10.8",
+  "parent": "lp-zuh.10",
+  "when_utc": "2026-08-14T17:40:00Z",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1",
+  "instance_id": "452b1348-772a-49d0-8038-a410eda8accf",
+  "sandbox_id": "32d6e20f-3c8e-4141-b20e-a11c514f5ba2",
+  "snapshot": "lanyard-la-main-508b0b736ad5-mounts3-zuh94-20260814",
+  "overall_verdict": "GO_WITH_WAIVERS",
+  "secrets_in_package": false,
+  "matrix": [
+    {
+      "surface": "tool_calling_bash",
+      "verdict": "GO",
+      "evidence": "thread 42db55a5-c511-470f-a0f3-f6d3ed011d18 bash complete pwd=/mnt/vault"
+    },
+    {
+      "surface": "web_search",
+      "verdict": "GO",
+      "evidence": "same thread web_search complete duckduckgo results fetch_failed=false",
+      "residual_closed": "lp-zuh.10.1"
+    },
+    {
+      "surface": "sub_agents",
+      "verdict": "GO_CARRIED",
+      "evidence": "lp-zuh.7.3 live PASS; gate re-probe flaky empty history",
+      "waiver": null
+    },
+    {
+      "surface": "workflows_launch",
+      "verdict": "GO_CARRIED",
+      "evidence": "lp-zuh.7.5 PASS; guest workflow.state_dir=/mnt/vault mkdir GO",
+      "waiver_bead": "lp-zuh.10.5"
+    },
+    {
+      "surface": "cron_vault_fire",
+      "verdict": "GO",
+      "evidence": "jobs.json 09b7330db248 last_status=ok; tickerAlive; S3 durable",
+      "residual_closed": "lp-zuh.10.4",
+      "waiver_bead": "lp-zuh.10.9"
+    },
+    {
+      "surface": "vault_write_tree",
+      "verdict": "GO",
+      "evidence": "guest note + S3; portal vault tree 11 roots"
+    },
+    {
+      "surface": "onlyoffice",
+      "verdict": "WAIVED",
+      "evidence": "path docs lp-zuh.10.3; live mint SPA + vault_edit=false",
+      "residual_closed": "lp-zuh.10.3",
+      "operator_apply": true
+    },
+    {
+      "surface": "mempalace",
+      "verdict": "WAIVED",
+      "evidence": "bake lp-zuh.10.2; live ready mempalace.ok=false binary_missing",
+      "residual_closed": "lp-zuh.10.2"
+    },
+    {
+      "surface": "mcp",
+      "verdict": "WAIVED_OPTIONAL",
+      "evidence": "mcp_servers=[]; honest residual lp-zuh.10.6",
+      "residual_closed": "lp-zuh.10.6"
+    },
+    {
+      "surface": "projects_primary_path",
+      "verdict": "PARTIAL_WAIVED",
+      "evidence": "projects count=1 primary_path under BACKEND_HOME not vault",
+      "waiver_bead": "lp-zuh.10.7"
+    },
+    {
+      "surface": "kitchen_sink_config_vault_paths",
+      "verdict": "GO",
+      "evidence": "HYBRID_RESIDUAL_NO; cron/workflow state_dir=/mnt/vault"
+    },
+    {
+      "surface": "gateway_ready",
+      "verdict": "GO_WITH_NOTE",
+      "evidence": "manual start after entrypoint vault-writable race; ready ok portal channel"
+    }
+  ],
+  "chat_proof": {
+    "marker": "lp-zuh.10.8-gate-20260814T173227Z",
+    "thread_id": "42db55a5-c511-470f-a0f3-f6d3ed011d18",
+    "bash_complete": true,
+    "web_search_complete": true,
+    "fetch_failed": false,
+    "pwd": "/mnt/vault"
+  },
+  "guest_checks": {
+    "writable_vault": true,
+    "seed_agents": true,
+    "seed_welcome": true,
+    "vault_write": true,
+    "workflow_mkdir": true,
+    "cron_jobs_json": true,
+    "cron_last_status_ok": true,
+    "hybrid_residual": false,
+    "mempalace_on_path": false,
+    "rg_on_path": false
+  },
+  "open_residuals": [
+    "lp-zuh.10.5",
+    "lp-zuh.10.7",
+    "lp-zuh.10.9"
+  ]
+}

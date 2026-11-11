@@ -1,0 +1,24 @@
+{
+  "probed_at_utc": "2026-08-19T13:15:02Z",
+  "bead": "lp-zuh.12.9",
+  "ds_host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+  "preferred_scheme": "http",
+  "http": {
+    "healthcheck_status": 200,
+    "api_js_status": 200,
+    "api_js_bytes": 65363,
+    "api_js_content_type": "application/javascript"
+  },
+  "https": {
+    "healthcheck_status": 0,
+    "api_js_status": 0,
+    "api_js_bytes": 0,
+    "api_js_content_type": "",
+    "ok": false
+  },
+  "verdict": "HTTP_GO_HTTPS_BLOCKED",
+  "editor_go_claimed": false,
+  "editor_blocker": "https_required \u2014 SPA rejects non-loopback http Document Server origins",
+  "bff_allowlist_note": "BFF_OFFICE_DOCUMENT_SERVER_HOSTS is hostname-only (no scheme). On HTTPS cutover, compose injects <cf-domain|public-hostname>,<alb-dns>.",
+  "secrets": "none \u2014 probe does not read JWT/session values"
+}
