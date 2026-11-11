@@ -1,0 +1,11 @@
+# Keep image context minimal. Never send secrets into the build.
+**/.env
+**/.env.*
+**/*secret*
+**/*credential*
+**/*.pem
+**/*.key
+.git
+*.md
+smoke-entrypoint.sh
+build-local.sh
