@@ -1,0 +1,77 @@
+# ---------------------------------------------------------------------------
+# Backend artifact pins — tenant tfvars example (lp-k7g.7.3)
+#
+# Placeholder-safe for git. Replace UNCONFIGURED in private overlays.
+# Align fields with monorepo compatibility/pins.example.yaml (schema_version 2).
+#
+# Preferred (generic backend):
+# ---------------------------------------------------------------------------
+
+backend_artifact_kind    = "hermes_lanyard"
+# Runtime arch (pins: backend.arch). Default product = linux-x86_64 (mocklab / t3.*).
+# Optional linux-aarch64 only when an arm runtime tarball was published.
+backend_artifact_arch    = "linux-x86_64"
+backend_artifact_url     = "UNCONFIGURED"
+backend_artifact_version = "UNCONFIGURED"
+backend_artifact_sha256  = "UNCONFIGURED"
+# backend_artifact_signature_b64 = ""  # optional
+
+backend_contract_runtime_layout = 1
+backend_contract_relay          = 1
+backend_contract_brain_rpc      = 1
+
+# Optional: versioned install root (lp-k7g.7.4 default: /opt/company-brain-backend)
+# backend_install_path = "/opt/company-brain-backend"
+
+# client-core remains SEPARATE (unchanged names; arch-neutral seed tarball)
+client_core_artifact_url     = "UNCONFIGURED"
+client_core_artifact_version = "UNCONFIGURED"
+client_core_artifact_sha256  = "UNCONFIGURED"
+
+# ---------------------------------------------------------------------------
+# TEMPORARY legacy aliases — do not set these in new tenants.
+# If an existing private tfvars still has hermes_artifact_*, leave them until
+# cutover; module locals accept either name. Do not set both to different values.
+# ---------------------------------------------------------------------------
+
+# hermes_artifact_url     = "UNCONFIGURED"
+# hermes_artifact_version = "UNCONFIGURED"
+# hermes_artifact_sha256  = "UNCONFIGURED"
+# relay_contract_major    = "1"
+# hermes_install_path     = "/opt/hermes-lanyard"
+
+# ---------------------------------------------------------------------------
+# Worked example coordinates (Hermes-Lanyard; illustrative — same shape as
+# company-brain-deploy real-release pins / translation-v1-to-v2.md)
+#
+# Preferred S3 landing zones (lp-k7g.7.6 + lp-2md arch labels):
+#   s3://$BUCKET/backends/hermes-lanyard/<version>/linux-x86_64/…
+#   s3://$BUCKET/backends/lanyard-agent/<version>/linux-x86_64/…
+#   s3://$BUCKET/hermes/<version>/linux-x86_64/hermes-<version>.tar.gz  # product publish
+#   s3://$BUCKET/client-core/<version>/…   (UNCHANGED; arch-neutral seed)
+#   s3://$BUCKET/portal-web/<version>/…    (UNCHANGED)
+# DEPRECATED unlabeled hermes/<version>/hermes-<version>.* — do not pin once labeled objects exist.
+# Design: docs/architecture/deploy-artifact-landing-zones.md
+# ---------------------------------------------------------------------------
+
+# backend_artifact_kind    = "hermes_lanyard"
+# backend_artifact_arch    = "linux-x86_64"
+# backend_artifact_url     = "s3://example-artifacts-bucket/backends/hermes-lanyard/v0.1.0-g7h2/linux-x86_64/backend.tar.gz"
+# # or product hermes/ prefix (same arch segment):
+# # backend_artifact_url   = "s3://example-artifacts-bucket/hermes/v0.1.0-g7h2/linux-x86_64/hermes-v0.1.0-g7h2.tar.gz"
+# # HTTPS GitHub Release still accepted during migration:
+# # backend_artifact_url   = "https://github.com/LanyardBrain/hermes-lanyard/releases/download/v0.1.0-g7h2/hermes-v0.1.0-g7h2.tar.gz"
+# backend_artifact_version = "v0.1.0-g7h2"
+# backend_artifact_sha256  = "046f9987b10ae6f19a0e1e74bf2e68e5ce8ddeb853dee6a50211bc5cdffa71f4"
+# backend_contract_relay   = 1
+#
+# Lanyard Agent example (same Terraform vars; different kind + URL prefix):
+# backend_artifact_kind    = "lanyard_agent"
+# backend_artifact_arch    = "linux-x86_64"
+# backend_artifact_url     = "s3://example-artifacts-bucket/backends/lanyard-agent/v0.1.0/linux-x86_64/backend.tar.gz"
+# backend_artifact_version = "v0.1.0"
+#
+# client_core_artifact_url     = "s3://example-artifacts-bucket/client-core/v0.1.0-g7c2/client-core.tar.gz"
+# # or: "https://github.com/LanyardBrain/client-core/releases/download/v0.1.0-g7c2/client-core-v0.1.0-g7c2.tar.gz"
+# client_core_artifact_version = "v0.1.0-g7c2"
+# client_core_artifact_sha256  = "ef21c313525afdca9902c40814293bbe924f428c219d93cf80398941c1f181e1"
