@@ -1,0 +1,40 @@
+{
+  "_comment": "TEMPLATE lp-gkh.3 — bucket policy for L10 chat corpus S3. Substitute ${LANYARD_CHAT_CORPUS_BUCKET}. TLS-only + deny public object ACLs. Module apply: deploy/modules/chat-corpus-infra/s3.tf. No public access; Block Public Access must stay all-on.",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyInsecureTransport",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::${LANYARD_CHAT_CORPUS_BUCKET}",
+        "arn:aws:s3:::${LANYARD_CHAT_CORPUS_BUCKET}/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "DenyPublicObjectAcls",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": "arn:aws:s3:::${LANYARD_CHAT_CORPUS_BUCKET}/*",
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": [
+            "public-read",
+            "public-read-write",
+            "authenticated-read"
+          ]
+        }
+      }
+    }
+  ]
+}
