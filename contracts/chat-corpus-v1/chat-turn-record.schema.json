@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/chat-corpus-v1/chat-turn-record.schema.json",
+  "title": "ChatTurnRecord v1 (L10 chat corpus)",
+  "description": "Immutable per-turn archive record for the tenant chat corpus (plan 0011 / epic lp-gkh). Captured at the platform boundary after a user input and agent output are known. One S3 object per turn_id. Not for UI hydrate (BFF remains temporary cache).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_type",
+    "tenant_id",
+    "user_id",
+    "instance_id",
+    "thread_id",
+    "turn_id",
+    "created_at",
+    "model",
+    "input",
+    "output",
+    "tool_events",
+    "meta"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "ChatTurnRecord schema major. Required. Bump only with breaking shape changes; store under chat-corpus/v1/ prefix for this major."
+    },
+    "record_type": {
+      "type": "string",
+      "const": "chat_turn",
+      "description": "Discriminator for multi-type corpus objects (v1 only defines chat_turn)."
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Tenant partition key (UUID string in Portal). S3 prefix uses this id; not a per-user root."
+    },
+    "user_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Authenticated end-user who initiated the turn. Metadata for filtering; not an S3 partition root."
+    },
+    "instance_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Agent/sandbox instance id that handled the turn (control-plane instance registry)."
+    },
+    "thread_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Portal chat thread id."
+    },
+    "turn_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable unique id for this request/response pair. Used as S3 object key component for idempotent PUT."
+    },
+    "session_key": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional relay/agent session key (e.g. agent:main:relay:dm:…)."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC3339 timestamp when the turn completed (corpus write time / outbound known). Prefer UTC."
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional RFC3339 when assistant output finished; may equal created_at."
+    },
+    "model": {
+      "$ref": "#/$defs/modelRef"
+    },
+    "input": {
+      "$ref": "#/$defs/turnMessageInput"
+    },
+    "output": {
+      "$ref": "#/$defs/turnMessageOutput"
+    },
+    "tool_events": {
+      "type": "array",
+      "description": "Structured tool call lifecycle events observed during the turn (may be empty).",
+      "items": {
+        "$ref": "#/$defs/toolEvent"
+      }
+    },
+    "meta": {
+      "$ref": "#/$defs/turnMeta"
+    }
+  },
+  "$defs": {
+    "sha256Hex": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Lowercase hex SHA-256 digest (no sha256: prefix)."
+    },
+    "modelRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "name"],
+      "description": "Model that produced the assistant output when known.",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Provider / router id (e.g. poolside, openai, litellm slot name)."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Model name (e.g. laguna-s-2.1)."
+        },
+        "api_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional provider-native model id when distinct from display name."
+        }
+      }
+    },
+    "turnMessageInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "content", "content_sha256"],
+      "description": "User (or system-injected) turn input body with integrity hash.",
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": ["user", "system"],
+          "description": "Input role. Primary path is user; system allowed for scheduled/job-driven turns."
+        },
+        "content": {
+          "type": "string",
+          "description": "Full input text as delivered to the agent. Empty string allowed only for non-text attachments-only turns when content_sha256 still covers the empty UTF-8 body."
+        },
+        "content_sha256": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "SHA-256 of UTF-8 bytes of content (lowercase hex). Required for integrity / idempotent equality."
+        },
+        "content_type": {
+          "type": "string",
+          "enum": ["text/plain", "text/markdown"],
+          "default": "text/plain",
+          "description": "Optional MIME hint for content."
+        }
+      }
+    },
+    "turnMessageOutput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "content", "content_sha256"],
+      "description": "Assistant turn output body with integrity hash.",
+      "properties": {
+        "role": {
+          "type": "string",
+          "const": "assistant"
+        },
+        "content": {
+          "type": "string",
+          "description": "Full assistant text as delivered to the client (post tool loop)."
+        },
+        "content_sha256": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "SHA-256 of UTF-8 bytes of content (lowercase hex)."
+        },
+        "finish_reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Model/provider finish reason when known (e.g. stop, length, tool_calls, error, cancelled)."
+        },
+        "content_type": {
+          "type": "string",
+          "enum": ["text/plain", "text/markdown"],
+          "default": "text/plain"
+        }
+      }
+    },
+    "toolEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_call_id", "tool_name", "status"],
+      "description": "One tool invocation phase archived with the turn (prefer final status; intermediate phases optional).",
+      "properties": {
+        "tool_call_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable tool call id within the turn."
+        },
+        "tool_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Tool function name (e.g. read_file, bash, web_search)."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "running", "complete", "error"],
+          "description": "Canonical tool lifecycle status (Portal ChatToolCalls)."
+        },
+        "target": {
+          "type": "string",
+          "description": "Optional path/URL/query target of the tool."
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Wall time for the tool call when known."
+        },
+        "result_summary": {
+          "type": "string",
+          "description": "Optional truncated/redacted result body for training/debug. Writers may omit large blobs."
+        },
+        "error_message": {
+          "type": "string",
+          "description": "Error detail when status is error."
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finished_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "turnMeta": {
+      "type": "object",
+      "description": "Non-body operational metadata. additionalProperties allowed for forward-compatible writer tags.",
+      "additionalProperties": true,
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "BFF/request correlation id."
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "End-to-end turn duration from user message accept to assistant delivery."
+        },
+        "sandbox_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Daytona/sandbox id when applicable."
+        },
+        "client": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Client surface (e.g. portal_web, scheduled_task, api)."
+        },
+        "relay_session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "job_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Scheduled-task / job id when the turn was job-driven."
+        }
+      }
+    }
+  }
+}
