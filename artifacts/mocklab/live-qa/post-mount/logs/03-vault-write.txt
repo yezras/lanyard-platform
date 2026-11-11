@@ -1,0 +1,10 @@
+-rw-r--r-- 1 brain brain 246 Aug 14  2026 /mnt/vault/Projects/Workspace/notes/lp-zuh96-gpu-note-20260814T170823Z.md
+# GPU capacity note (lp-zuh.9.6 post-mount re-QA)
+
+Marker: lp-zuh.9.6-vault-write
+Timestamp: 20260814T170823Z
+Sandbox: 32d6e20f-3c8e-4141-b20e-a11c514f5ba2
+
+- B200 rack density planning placeholder
+- Durable path under /mnt/vault (Mountpoint S3)
+WRITE_OK

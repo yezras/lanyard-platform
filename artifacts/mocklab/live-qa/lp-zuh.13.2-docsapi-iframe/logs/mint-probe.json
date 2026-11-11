@@ -1,0 +1,11 @@
+{
+  "status": 200,
+  "ct": "application/json",
+  "spa": false,
+  "session_id_present": true,
+  "document_key_present": true,
+  "editor_config_present": true,
+  "token_present": true,
+  "document_server_url": null,
+  "error": null
+}

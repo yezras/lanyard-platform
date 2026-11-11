@@ -1,0 +1,6 @@
+[
+    {
+        "name": "BFF_OFFICE_DOCUMENT_SERVER_HOSTS",
+        "value": "d3sqcebajd6ueb.cloudfront.net,lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com"
+    }
+]

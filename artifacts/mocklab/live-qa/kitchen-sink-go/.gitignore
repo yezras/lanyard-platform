@@ -1,0 +1,5 @@
+# Never commit live auth or secret dumps
+.auth/
+*.env
+*secret*
+*token*

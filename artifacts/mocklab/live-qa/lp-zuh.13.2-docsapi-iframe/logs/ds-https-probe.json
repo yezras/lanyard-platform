@@ -1,0 +1,16 @@
+{
+  "health": {
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/healthcheck",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "bytes": 4,
+    "ok": true
+  },
+  "api_js": {
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/web-apps/apps/api/documents/api.js",
+    "status": 200,
+    "content_type": "application/javascript",
+    "bytes": 65363,
+    "ok": true
+  }
+}

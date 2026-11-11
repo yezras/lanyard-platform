@@ -1,0 +1,6 @@
+total 1
+drwxr-xr-x 2 brain brain  0 Aug 14 17:07 .
+drwxr-xr-x 2 brain brain  0 Aug 14 17:07 ..
+-rw-r--r-- 1 brain brain 29 Aug 14  2026 probe.txt
+state_probe 20260814T170823Z
+WORKFLOW_MKDIR_OK

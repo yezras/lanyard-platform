@@ -1,0 +1,5 @@
+OK /mnt/vault/workflows
+OK /mnt/vault/cron
+OK /mnt/vault/Projects/Workspace/notes
+OK /mnt/vault/mempalace
+EACCES_NONE
