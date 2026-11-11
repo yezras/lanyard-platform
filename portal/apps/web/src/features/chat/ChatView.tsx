@@ -258,3 +258,12 @@ export function captureThreadSidePaneSnapshot(
 export function displayNameFromEmail(email: string): string {
   return email.split("@")[0] || email;
 }
+
+/** External request to open a vault path in the chat document pane. */
+export type DocumentOpenRequest = {
+  path: string;
+  /** Monotonic key so re-open of the same path re-runs the open effect. */
+  key: number;
+  title?: string;
+  source?: VaultArtifactRef["source"];
+};
