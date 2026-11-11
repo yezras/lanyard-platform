@@ -1,0 +1,86 @@
+{
+  "bead_id": "lp-uxy.15.3",
+  "shipped_bead": "lp-uxy.2",
+  "base_url": "http://demo.localhost:3010",
+  "method": "web-ui-testing / Playwright headless",
+  "route": "?story=activity-plane&phase=artifacts",
+  "login": "auth-free story (demo credentials N/A for story mount)",
+  "timestamp": "2026-08-05T13:46:30.224771+00:00",
+  "verdict": "PASS",
+  "results": [
+    {
+      "feature": "writer-a-host-artifacts-index",
+      "ok": true,
+      "detail": "sa-writer-a detail shows vault + web chips (host artifacts[])",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/01-writer-a-detail-artifacts.png"
+    },
+    {
+      "feature": "vault-artifact-openable-from-detail",
+      "ok": true,
+      "detail": "clicked vault chip \u2192 document pane soft-open /Notes/explore-findings.md",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/02-vault-chip-soft-open-findings.png"
+    },
+    {
+      "feature": "web-artifact-not-vault-pane",
+      "ok": true,
+      "detail": "web chip leaves side mode=activity; no chat-document-pane",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/03-web-chip-no-vault-pane.png"
+    },
+    {
+      "feature": "nested-tool-harvest-when-host-omits-artifacts",
+      "ok": true,
+      "detail": "sa-writer-b harvests nested write \u2192 vault chip /Notes/coder-report.md",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/04-writer-b-harvested-artifacts.png"
+    },
+    {
+      "feature": "harvested-vault-openable-from-detail",
+      "ok": true,
+      "detail": "harvested vault chip soft-opens /Notes/coder-report.md",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/05-harvest-chip-soft-open-report.png"
+    },
+    {
+      "feature": "final-report-clickable-citations",
+      "ok": true,
+      "detail": "assistant turn has vault-citation-1/2 + web-citation-3",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/06-final-report-citations.png"
+    },
+    {
+      "feature": "final-citation-openable",
+      "ok": true,
+      "detail": "vault-citation-1 soft-opens explore-findings body",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/07-final-citation-soft-open.png"
+    },
+    {
+      "feature": "web-citation-not-vault-pane",
+      "ok": true,
+      "detail": "web-citation-3 does not open document pane",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/08-web-citation-no-vault-pane.png"
+    },
+    {
+      "feature": "history-reload-paths-openable",
+      "ok": true,
+      "detail": "after reload: vault chips + final citations still present",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/artifacts/09-after-reload-chips-and-citations.png"
+    }
+  ],
+  "shots": {
+    "writer_a_detail": "artifacts/ui/lp-uxy-ship-qa/artifacts/01-writer-a-detail-artifacts.png",
+    "vault_soft_open": "artifacts/ui/lp-uxy-ship-qa/artifacts/02-vault-chip-soft-open-findings.png",
+    "web_no_vault": "artifacts/ui/lp-uxy-ship-qa/artifacts/03-web-chip-no-vault-pane.png",
+    "writer_b_harvest": "artifacts/ui/lp-uxy-ship-qa/artifacts/04-writer-b-harvested-artifacts.png",
+    "harvest_soft_open": "artifacts/ui/lp-uxy-ship-qa/artifacts/05-harvest-chip-soft-open-report.png",
+    "final_citations": "artifacts/ui/lp-uxy-ship-qa/artifacts/06-final-report-citations.png",
+    "citation_soft_open": "artifacts/ui/lp-uxy-ship-qa/artifacts/07-final-citation-soft-open.png",
+    "web_citation_no_vault": "artifacts/ui/lp-uxy-ship-qa/artifacts/08-web-citation-no-vault-pane.png",
+    "after_reload": "artifacts/ui/lp-uxy-ship-qa/artifacts/09-after-reload-chips-and-citations.png",
+    "composite": "artifacts/ui/lp-uxy-ship-qa/artifacts/10-composite-artifacts-phase.png"
+  },
+  "acceptance": {
+    "vault_artifact_openable_from_subagent_detail": true,
+    "final_report_clickable_citations": true,
+    "history_reload_keeps_paths": true,
+    "web_urls_use_web_chips_not_vault_pane": true,
+    "nested_tool_harvest_when_host_omits_artifacts": true
+  },
+  "notes": "Story fixture exercises host artifacts[] (writer-a), nested-tool harvest (writer-b), final-report citation chips, and web vs vault open paths. Live host multi-subagent write was not required for Portal UI contract proof; Brain RPC remains linked per lp-uxy.15.1."
+}

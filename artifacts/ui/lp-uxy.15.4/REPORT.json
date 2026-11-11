@@ -1,0 +1,154 @@
+{
+  "bead_id": "lp-uxy.15.4",
+  "shipped_feature": "lp-uxy.3",
+  "base_url": "http://demo.localhost:3010",
+  "when": "2026-08-05T14:00:52.090545+00:00",
+  "passed": true,
+  "verdict": "PASS",
+  "brain_rpc_enabled": true,
+  "not_hermes_only_path": true,
+  "snapshot": {
+    "source": "lanyard_agent",
+    "backend_home": "/home/operator/.lanyard-agent",
+    "hermes_home": "/home/operator/.lanyard-agent",
+    "cron_count": 3,
+    "cron_ids": [
+      "la-vault-index",
+      "la-weekly-digest",
+      "la-manual-start"
+    ],
+    "cron_names": [
+      "LA vault index refresh",
+      "LA weekly digest",
+      "LA manual start example"
+    ],
+    "cron_paths": [
+      "cron/jobs.json",
+      "cron/jobs.json",
+      "cron/jobs.json"
+    ]
+  },
+  "capabilities": {
+    "kind": "lanyard_agent",
+    "features_cron": false,
+    "cron_manager": "unsupported",
+    "settings_patch": true,
+    "brain_rpc_methods": [
+      "brain.capabilities",
+      "brain.ping",
+      "projects.create",
+      "projects.delete",
+      "projects.list",
+      "settings.patch",
+      "settings.snapshot",
+      "vault.list",
+      "vault.read",
+      "vault.stat"
+    ]
+  },
+  "ui": {
+    "crons_section_visible": true,
+    "names_found": [
+      "LA vault index refresh",
+      "LA weekly digest",
+      "LA manual start example"
+    ],
+    "toggle_controls": 0
+  },
+  "checks": [
+    {
+      "feature": "login",
+      "ok": true,
+      "detail": "logged in as dev@demo.local",
+      "shot": "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/01-post-login.png"
+    },
+    {
+      "feature": "brain-rpc-enabled",
+      "ok": true,
+      "detail": "brain_rpc_enabled=True kind=lanyard_agent profile=admin",
+      "shot": null
+    },
+    {
+      "feature": "backend-kind-lanyard-agent",
+      "ok": true,
+      "detail": "kind=lanyard_agent",
+      "shot": null
+    },
+    {
+      "feature": "brain-ping",
+      "ok": true,
+      "detail": "status=200 pong=True instance=1555e820-2eba-4e83-80bd-a93f3ae09e7c",
+      "shot": null
+    },
+    {
+      "feature": "settings-snapshot-source-la",
+      "ok": true,
+      "detail": "source=lanyard_agent backend_home=/home/operator/.lanyard-agent",
+      "shot": null
+    },
+    {
+      "feature": "backend-home-not-hermes-install",
+      "ok": true,
+      "detail": "backend_home=/home/operator/.lanyard-agent hermes_home=/home/operator/.lanyard-agent",
+      "shot": null
+    },
+    {
+      "feature": "settings-snapshot-crons",
+      "ok": true,
+      "detail": "status=200 count=3 ids=['la-vault-index', 'la-weekly-digest', 'la-manual-start'] paths=['cron/jobs.json', 'cron/jobs.json', 'cron/jobs.json']",
+      "shot": null
+    },
+    {
+      "feature": "cron-paths-la-layout",
+      "ok": true,
+      "detail": "paths=['cron/jobs.json', 'cron/jobs.json', 'cron/jobs.json']",
+      "shot": null
+    },
+    {
+      "feature": "capabilities-honest-cron-baseline",
+      "ok": true,
+      "detail": "features.cron=False cron_manager=unsupported settings_patch=True methods_include_settings.snapshot=True",
+      "shot": null
+    },
+    {
+      "feature": "settings-overview-la",
+      "ok": true,
+      "detail": "overview mentions LA/crons; len=417",
+      "shot": "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/02-settings-overview.png"
+    },
+    {
+      "feature": "settings-crons-section-visible",
+      "ok": true,
+      "detail": "Crons nav count=1",
+      "shot": null
+    },
+    {
+      "feature": "settings-crons-list-jobs",
+      "ok": true,
+      "detail": "names_found=['LA vault index refresh', 'LA weekly digest', 'LA manual start example'] table_like=True snapshot_names=['LA vault index refresh', 'LA weekly digest', 'LA manual start example']",
+      "shot": "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/03-settings-crons-list.png"
+    },
+    {
+      "feature": "settings-crons-enable-toggles",
+      "ok": true,
+      "detail": "switch/checkbox count=0 settings_patch=True",
+      "shot": "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/03-settings-crons-list.png"
+    },
+    {
+      "feature": "settings-cron-row-detail",
+      "ok": true,
+      "detail": "opened first cron row",
+      "shot": "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/04-settings-cron-detail.png"
+    }
+  ],
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/01-post-login.png",
+    "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/02-settings-overview.png",
+    "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/03-settings-crons-list.png",
+    "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/03-settings-crons-list.png",
+    "/tmp/lp-bead-lp-uxy.15.4/artifacts/ui/lp-uxy-ship-qa/la-cron/04-settings-cron-detail.png"
+  ],
+  "fix_bead": null,
+  "fail_detail": "",
+  "summary": "LA cron jobs visible under Settings via Brain RPC settings.snapshot (source=lanyard_agent, count=3, backend_home=/home/operator/.lanyard-agent)."
+}
