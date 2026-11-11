@@ -1,0 +1,67 @@
+{
+  "schema_comment": "Machine-readable Office binary transfer policy (lp-5q6.17). Mirrors x-lanyard-office-binary-transfer on brain-rpc.schema.json and docs/architecture/portal-binary-vault-transfer-and-revision.md.",
+  "bead": "lp-5q6.17",
+  "document_server_plane": "bff_signed_http_url",
+  "host_plane": "chunked_brain_rpc",
+  "host_method": "vault.read_chunk",
+  "forbidden_production_office_surfaces": [
+    "vault.read",
+    "GET /api/vault/content"
+  ],
+  "lab_fixture_exception": {
+    "deployment_tiers": ["lab", "test"],
+    "max_bytes": 4194304,
+    "note": "Mechanical proof only; not production Office edit."
+  },
+  "revision": {
+    "production_kinds": ["etag", "content_hash", "host_revision"],
+    "lab_only_kinds": ["mtime_size_fallback"],
+    "required_for_office_session_mint": true,
+    "cas_write_mode": "replace_if_match",
+    "expected_revision_field": "expected_revision",
+    "mismatch_error_code": "conflict",
+    "mismatch_reason": "revision_mismatch"
+  },
+  "limits": {
+    "vault_read_default_max_bytes": 1048576,
+    "vault_read_hard_max_bytes": 4194304,
+    "chunk_default_max_bytes": 262144,
+    "chunk_hard_max_bytes": 1048576,
+    "office_file_default_max_bytes": 52428800,
+    "office_file_hard_max_bytes": 104857600,
+    "sniff_prefix_bytes": 8192
+  },
+  "allowed_edit_extensions": [".docx", ".xlsx", ".pptx"],
+  "allowed_view_extensions": [".pdf"],
+  "mime_map": {
+    ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    ".pdf": "application/pdf"
+  },
+  "sniff": {
+    "ooxml_magic_prefixes": ["PK\\x03\\x04", "PK\\x05\\x06", "PK\\x07\\x08"],
+    "pdf_magic_prefix": "%PDF-",
+    "log_payload_bytes": false
+  },
+  "logging": {
+    "log_file_bodies": false,
+    "log_signed_tokens": false,
+    "allowed_fields": [
+      "path",
+      "size_bytes",
+      "mime_class",
+      "revision_token_fingerprint",
+      "session_id",
+      "duration_ms",
+      "status_code",
+      "error_code"
+    ]
+  },
+  "write_cas": {
+    "office_callback_mode": "replace_if_match",
+    "expected_revision_source": "OfficeDocumentSession.base_revision",
+    "partial_write_on_mismatch": false,
+    "idempotency_required_for_callback_retry": true
+  }
+}
