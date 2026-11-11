@@ -18,9 +18,6 @@ PACK="${1:-}"
 
 log() { echo "[enable-pack] $*"; }
 
-# List pack directory names that contain pack.yaml (discoverable catalog).
-# Falls back to bare directories under packs/ if metadata is absent (still listed,
-# but validate-packs.py will fail closed on missing metadata).
 discover_packs() {
   local d name
   if [ ! -d "$ROOT/packs" ]; then
@@ -29,7 +26,6 @@ discover_packs() {
   for d in "$ROOT/packs"/*/; do
     [ -d "$d" ] || continue
     name="$(basename "$d")"
-    # Skip non-pack files/dirs (e.g. nothing unexpected)
     case "$name" in
       .* ) continue ;;
     esac
@@ -37,7 +33,6 @@ discover_packs() {
   done | sort -u
 }
 
-# Human-readable list: name + summary from pack.yaml when present.
 list_packs() {
   local name meta summary line
   local -a packs
@@ -51,7 +46,6 @@ list_packs() {
     meta="$ROOT/packs/$name/pack.yaml"
     summary=""
     if [ -f "$meta" ]; then
-      # Prefer summary:, else when_to_enable:
       summary="$(
         awk '
           /^summary:[[:space:]]*/ {
@@ -101,7 +95,6 @@ usage() {
 
 if [ -z "$PACK" ] || [ "$PACK" = "list" ] || [ "$PACK" = "--list" ] || [ "$PACK" = "-l" ]; then
   list_packs
-  # Empty arg / list is not an error — pack list is discoverable without enabling.
   exit 0
 fi
 
@@ -187,7 +180,6 @@ case "$PACK" in
     ;;
 esac
 
-# Record enabled packs
 mkdir -p "$ROOT/.seed"
 echo "$PACK" >> "$ROOT/.seed/enabled-packs.txt"
 sort -u "$ROOT/.seed/enabled-packs.txt" -o "$ROOT/.seed/enabled-packs.txt"
