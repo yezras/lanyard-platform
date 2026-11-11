@@ -34,6 +34,27 @@ No secrets in this package (no passwords, JWT, CSRF, download tokens, or SM valu
   "VITE_ONLYOFFICE_DS_URL": "https://d3sqcebajd6ueb.cloudfront.net",
   "VITE_ONLYOFFICE_DS_ALLOWED_ORIGINS": "https://d3sqcebajd6ueb.cloudfront.net,https://app.withlanyard.com"
 }` |
+
+---
+
+## Live path
+
+| Step | Result |
+|------|--------|
+| Login / shell | `https://app.withlanyard.com/mocklab/chat` |
+| Vault open | `{"ok": true, "via": "nav_vault"}` |
+| Office click | `{"ok": true, "label": "lp-zuh123-mint-proof.docx", "via": "exact_basename", "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx"}` |
+| Mint probe (edit) | `{
+  "status": 200,
+  "ct": "application/json",
+  "spa": false,
+  "session_id_present": true,
+  "document_key_present": true,
+  "editor_config_present": true,
+  "token_present": true,
+  "document_server_url": null,
+  "error": null
+}` |
 | UI final | `{
   "vault_document_host": true,
   "editor_host": true,
