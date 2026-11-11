@@ -1,0 +1,88 @@
+# Local multi-service stack for Portal backend images (G7.P2) + Postgres (G4.1).
+# Build context is monorepo root so workspace packages resolve.
+#
+#   docker compose up -d postgres          # DB only (local pnpm dev)
+#   docker compose build && docker compose up -d
+#   curl -sf http://127.0.0.1:4000/health
+#   curl -sf http://127.0.0.1:8787/health
+#   curl -sf http://127.0.0.1:3100/health
+#
+# Prefer scripts/docker-smoke.sh for one-shot build + health verification.
+# Tags are local artifacts; production pins ECR digests (G7.P3), not :latest.
+#
+# G1.3 — control-plane is private-only in production topology.
+# Host publish for CP is loopback-bound (127.0.0.1) so it is not advertised
+# on LAN interfaces. BFF reaches CP via the compose network hostname
+# `control-plane`. Never map CP to a public cloud load balancer.
+# See artifacts/portal-production-topology.md and docs/staging-proofs.md.
+# Secrets: never commit real credentials. Local defaults below are for lab only.
+# Cloud: inject CONTROL_PLANE_DATABASE_URL / DATABASE_URL from secret store
+# (GitHub Secrets names: DATABASE_URL or CONTROL_PLANE_DATABASE_URL).
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: portal
+      POSTGRES_DB: portal_cp
+    volumes:
+      - portal-pg-data:/var/lib/postgresql/data
+      - ./docker/postgres-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portal -d portal_cp"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+  bff:
+    image: lanyard/bff:local
+    build:
+      context: .
+      dockerfile: packages/bff/Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      BFF_PORT: "4000"
+      CONTROL_PLANE_URL: http://control-plane:3100
+      # Shared with control-plane (local only — never use this value in prod).
+      CONTROL_PLANE_SERVICE_TOKEN: placeholder-control-plane-service-token
+      RELAY_URL: http://relay:8787
+    depends_on:
+      - control-plane
+      - relay
+
+  relay:
+    image: lanyard/relay:local
+    build:
+      context: .
+      dockerfile: packages/relay/Dockerfile
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: "8787"
+      RELAY_PORT: "8787"
+      RELAY_HOST: "0.0.0.0"
+
+  control-plane:
+    image: lanyard/control-plane:local
+    build:
+      context: .
+      dockerfile: packages/control-plane/Dockerfile
+    # G1.3: loopback-only host bind — not 0.0.0.0 / bare 3100:3100.
+    ports:
+      - "127.0.0.1:3100:3100"
+    environment:
+      CONTROL_PLANE_PORT: "3100"
+      CONTROL_PLANE_SERVICE_TOKEN: placeholder-control-plane-service-token
+      # Leave CONTROL_PLANE_AUTH_MODE unset → development for local smoke.
+      # Local lab URL only — not for production. Cloud injects via secret store.
+      CONTROL_PLANE_DATABASE_URL: postgres://portal:portal@postgres:5432/portal_cp
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  portal-pg-data:

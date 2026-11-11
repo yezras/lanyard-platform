@@ -1,0 +1,90 @@
+{
+  "bead": "lp-zuh.11.5",
+  "parent": "lp-zuh.11",
+  "when_utc": "2026-08-14T23:11:43Z",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "marker": "lpzuh115-mcp-probe-20260814T231143Z",
+  "platform_path": {
+    "lab_echo": "deploy/daytona/agent-gateway/lab-mcp/lab_echo_server.py",
+    "fragment": "deploy/daytona/agent-gateway/kitchen-sink-mcp.fragment.yaml",
+    "seed_env": "LANYARD_ENTRY_SEED_MCP (default off; requires LA Zod mcp_servers)",
+    "docs": "docs/plans/0008-daytona-agent-sandboxes/mcp-product-surface-mocklab.md",
+    "residual": "artifacts/mocklab/live-qa/residuals/mcp/",
+    "fix_bead": "lp-vw3",
+    "external_la": "https://github.com/LanyardBrain/lanyard-agent/issues/239"
+  },
+  "offline_lab_echo": {
+    "server_present": true,
+    "fragment_present": true,
+    "probe_ok": true,
+    "server_info_name": "lab_echo",
+    "tools": [
+      "lab_echo"
+    ],
+    "echo_ok": true,
+    "probe_rc": 0,
+    "response_lines": 3,
+    "echo_error": false
+  },
+  "auth": {
+    "me": {
+      "status": 200,
+      "ok": true,
+      "email": "<redacted>"
+    },
+    "storage_state_present": true,
+    "password_login_used": true,
+    "email_domain": "mocklab.withlanyard.com"
+  },
+  "api": {
+    "settings_snapshot": {
+      "status": 200,
+      "source": "lanyard_agent",
+      "mcp_count": 0,
+      "mcp_servers": [],
+      "skills_count": 2
+    }
+  },
+  "ui": {
+    "mcp": {
+      "nav_mcp_present": true,
+      "empty_honest": true,
+      "table_rows": 0,
+      "server_names": [],
+      "body_sample": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\n<redacted-email>\nSkills\nWorkflows\nMCP\nModels\nIntegrations\nRefresh\nNo MCP servers in this snapshot."
+    }
+  },
+  "chat": {
+    "attempted": false,
+    "reason": "mcp_servers empty \u2014 product N/A branch; chat MCP tool path not exercised"
+  },
+  "branch": "product_na",
+  "verdict": "PRODUCT_NA_SIGNED_WAIVER",
+  "acceptance": {
+    "auth_ok": true,
+    "settings_snapshot_probed": true,
+    "mcp_count": 0,
+    "tools_mcp_ui_probed": true,
+    "offline_lab_echo_ok": true,
+    "branch": "product_na",
+    "explicit_product_na_or_lab_go": true,
+    "not_silent_waiver": true
+  },
+  "residuals": [
+    "mcp_unavailable",
+    "lp_vw3_open",
+    "LANYARD_ENTRY_SEED_MCP_default_off"
+  ],
+  "human_signoff": {
+    "required": true,
+    "kind": "product_na_mcp_waiver",
+    "fix_bead": "lp-vw3",
+    "external_la": "https://github.com/LanyardBrain/lanyard-agent/issues/239",
+    "note": "MockLab kitchen-sink MCP is product N/A until Lanyard Agent ships Zod mcp_servers + stdio client + registerHidden (lp-vw3 / LA#239). Platform path (lab_echo + fragment + optional LANYARD_ENTRY_SEED_MCP) is ready but must stay default-off so strict LA parse never bricks wake. Zero-waiver epic accepts this as explicit PRODUCT_NA waiver \u2014 not silent green.",
+    "live_evidence": {
+      "settings_snapshot_mcp_count": 0,
+      "tools_mcp_empty_honest": true,
+      "offline_lab_echo_ok": true
+    }
+  }
+}
