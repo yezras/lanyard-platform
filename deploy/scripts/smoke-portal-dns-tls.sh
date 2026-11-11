@@ -56,7 +56,7 @@ pass "regional ACM for BFF/relay/Docs SANs"
 
 # --- Route53 aliases to CF / ALBs ---
 for r in portal_web bff relay; do
-  grep -Eq "resource[[:space:]]+\"aws_route53_record\"[[:space:]]+\"${r}\\"" "$MOD/main.tf" \
+  grep -Eq "resource[[:space:]]+\"aws_route53_record\"[[:space:]]+\"${r}\"" "$MOD/main.tf" \
     || fail "portal-dns-tls must declare aws_route53_record.${r}"
 done
 grep -Eq 'alias[[:space:]]*\{' "$MOD/main.tf" \
@@ -83,7 +83,7 @@ pass "existing zone/certs supported; create zone defaults off"
 
 # --- Placeholder-safe hostnames (reject schemes) ---
 for v in portal_web_hostname bff_hostname relay_hostname document_server_hostname; do
-  grep -Eq "variable[[:space:]]+\"${v}\\"" "$MOD/variables.tf" \
+  grep -Eq "variable[[:space:]]+\"${v}\"" "$MOD/variables.tf" \
     || fail "portal-dns-tls missing variable $v"
 done
 grep -Eq 'https\?://|wss\?://|no scheme' "$MOD/variables.tf" \
