@@ -306,3 +306,206 @@ export class ControlPlaneStore {
       options.connectorKms ?? null,
     );
   }
+
+  /**
+   * Put show-once secret into the platform material store (lp-9my).
+   * Best-effort only when a store is wired; never writes secret to Postgres
+   * or audit metadata. Failures surface so operators do not lose the secret
+   * silently after a successful register response path.
+   */
+  private async putSecretMaterial(input: {
+    instance_id: string;
+    tenant_id: string;
+    secret: string;
+    relay_wss_url: string;
+    relay_tier: RelayTier;
+    issued_at?: string;
+  }): Promise<void> {
+    if (!this.secretMaterial) return;
+    await this.secretMaterial.put(materialFromIssued(input));
+  }
+
+  private async deleteSecretMaterial(instanceId: string): Promise<void> {
+    if (!this.secretMaterial) return;
+    await this.secretMaterial.delete(instanceId);
+  }
+
+  async close(): Promise<void> {
+    await this.db.close();
+  }
+
+  private mapTenantRow(row: {
+    tenant_id: string;
+    tenant_slug: string;
+    display_name: string;
+    created_at: string;
+    interaction_export_enabled?: number | boolean;
+    retention_mode?: string;
+    chat_corpus_enabled?: number | boolean;
+    chat_corpus_retention_days?: number | null;
+    relay_tier?: string;
+    dedicated_relay_wss_url?: string | null;
+    chat_delivery?: string | null;
+  }): Tenant {
+    const relay = this.resolveTenantRelayPolicy({
+      tenant_slug: row.tenant_slug,
+      relay_tier: parseRelayTier(row.relay_tier),
+      dedicated_relay_wss_url: row.dedicated_relay_wss_url ?? null,
+    });
+
+    const rawRetentionDays = row.chat_corpus_retention_days;
+    const chat_corpus_retention_days =
+      rawRetentionDays === undefined || rawRetentionDays === null
+        ? null
+        : Number(rawRetentionDays);
+
+    return {
+      tenant_id: row.tenant_id,
+      tenant_slug: row.tenant_slug,
+      display_name: row.display_name,
+      host: tenantHost(row.tenant_slug),
+      created_at: row.created_at,
+      retention: {
+        interaction_export_enabled: Boolean(
+          row.interaction_export_enabled ?? 0,
+        ),
+        retention_mode: parseRetentionMode(row.retention_mode),
+        chat_corpus_enabled: Boolean(row.chat_corpus_enabled ?? 0),
+        chat_corpus_retention_days: Number.isFinite(chat_corpus_retention_days)
+          ? chat_corpus_retention_days
+          : null,
+      },
+      relay,
+      chat_delivery: parseOptionalChatDelivery(row.chat_delivery),
+    };
+  }
+
+  resolveTenantRelayPolicy(input: {
+    tenant_slug: string;
+    relay_tier: RelayTier;
+    dedicated_relay_wss_url: string | null;
+  }): TenantRelayPolicy {
+    return {
+      relay_tier: input.relay_tier,
+      dedicated_relay_wss_url: input.dedicated_relay_wss_url,
+      relay_wss_url: resolveTenantRelayWssUrl(input, this.sharedRelayWssUrl),
+    };
+  }
+
+  async createTenant(input: {
+    slug: string;
+    display_name: string;
+    actor?: string;
+  }): Promise<Tenant> {
+    const tenant_id = randomUUID();
+    const created_at = new Date().toISOString();
+    const tenant_slug = input.slug.trim().toLowerCase();
+
+    try {
+      await this.db.run(
+        `INSERT INTO tenants (tenant_id, tenant_slug, display_name, created_at)
+         VALUES (?, ?, ?, ?)`,
+        [tenant_id, tenant_slug, input.display_name, created_at],
+      );
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new TenantSlugConflictError(tenant_slug);
+      }
+      throw error;
+    }
+
+    await this.recordAudit({
+      tenant_id,
+      action: "tenant.created",
+      actor: input.actor ?? null,
+      metadata: {
+        tenant_slug,
+        display_name: input.display_name,
+        host: tenantHost(tenant_slug),
+      },
+    });
+
+    return this.mapTenantRow({
+      tenant_id,
+      tenant_slug,
+      display_name: input.display_name,
+      created_at,
+      interaction_export_enabled: 0,
+      retention_mode: "none",
+      chat_corpus_enabled: 0,
+      chat_corpus_retention_days: null,
+      relay_tier: "shared",
+      dedicated_relay_wss_url: null,
+      chat_delivery: null,
+    });
+  }
+
+  async getTenantById(tenant_id: string): Promise<Tenant | null> {
+    let row: {
+      tenant_id: string;
+      tenant_slug: string;
+      display_name: string;
+      created_at: string;
+      interaction_export_enabled: number;
+      retention_mode: string;
+      chat_corpus_enabled: number;
+      chat_corpus_retention_days: number | null;
+      relay_tier: string;
+      dedicated_relay_wss_url: string | null;
+      chat_delivery: string | null;
+    } | undefined;
+    try {
+      row = await this.db.get<{
+        tenant_id: string;
+        tenant_slug: string;
+        display_name: string;
+        created_at: string;
+        interaction_export_enabled: number;
+        retention_mode: string;
+        chat_corpus_enabled: number;
+        chat_corpus_retention_days: number | null;
+        relay_tier: string;
+        dedicated_relay_wss_url: string | null;
+        chat_delivery: string | null;
+      }>(
+        `SELECT tenant_id, tenant_slug, display_name, created_at,
+                interaction_export_enabled, retention_mode,
+                chat_corpus_enabled, chat_corpus_retention_days,
+                relay_tier, dedicated_relay_wss_url, chat_delivery
+         FROM tenants WHERE tenant_id = ?`,
+        [tenant_id],
+      );
+    } catch (error) {
+      // lp-k5c4.13 Phase 10 — column dropped; fallback without chat_delivery
+      if (/column.*chat_delivery/i.test(String(error))) {
+        const fallback = await this.db.get<{
+          tenant_id: string;
+          tenant_slug: string;
+          display_name: string;
+          created_at: string;
+          interaction_export_enabled: number;
+          retention_mode: string;
+          chat_corpus_enabled: number;
+          chat_corpus_retention_days: number | null;
+          relay_tier: string;
+          dedicated_relay_wss_url: string | null;
+        }>(
+          `SELECT tenant_id, tenant_slug, display_name, created_at,
+                  interaction_export_enabled, retention_mode,
+                  chat_corpus_enabled, chat_corpus_retention_days,
+                  relay_tier, dedicated_relay_wss_url
+           FROM tenants WHERE tenant_id = ?`,
+          [tenant_id],
+        );
+        if (!fallback) return null;
+        return this.mapTenantRow({ ...fallback, chat_delivery: null });
+      }
+      throw error;
+    }
+
+    if (!row) {
+      return null;
+    }
+
+    return this.mapTenantRow(row);
+  }
