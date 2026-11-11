@@ -33,7 +33,7 @@ Related:
 ## 2. Residual taxonomy (from live QA + re-probe)
 
 | Residual | Live signal | Unblock |
-|----------|-------------|---------||
+|----------|-------------|---------|
 | `mint_spa_html_fallback` | `POST …/api/office/sessions` → `text/html` when BFF would 404 | Seed vault docx + mint `missing_file`→**422** (this bead); confirm POST reaches BFF |
 | `ui.can.vault_edit=false` | `GET /api/context` → `vault_edit: false` | Set `BFF_OFFICE_VAULT_EDIT=true` on MockLab BFF (lab writeback only) |
 | `vault_write=false` / empty tree roots | Capabilities / vault UI empty for Office paths | `lp-zuh.9` mount+seed; agent `vault_write` when product advertises it |
@@ -89,7 +89,7 @@ Edge must route `/*/api/*` (and bare `/api/*`) to BFF with **POST/PUT** allowed 
 ### 4.1 SPA HTML vs JSON (diagnose)
 
 | Observation | Meaning |
-|-------------|---------||
+|-------------|---------|
 | `Content-Type: text/html` + `<!doctype html>` + `server: AmazonS3` | SPA fallback (default behavior or **403/404 rewritten**) |
 | `application/json` error body | Hit BFF |
 | `201` + `session_id` + `editor_config.token` (presence only in logs) | Mint success |
