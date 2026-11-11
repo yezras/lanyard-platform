@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "record_type": "signed_operation",
+  "operation_id": "op_01WSTREEADV0001",
+  "tenant_id": "ten_example",
+  "instance_id": "inst_example",
+  "occurred_at": "2026-07-12T00:00:05.500Z",
+  "kind": "file_create",
+  "actor": {
+    "kind": "agent",
+    "subject_id": "agent:main",
+    "agent_id": "agent:main",
+    "run_id": "run-99",
+    "session_id": "sess_agent_example",
+    "backend_profile": "contributor"
+  },
+  "target": {
+    "scope": "file",
+    "path": "/Projects/Legal/notes/new-brief.md",
+    "workspace_id": "default"
+  },
+  "parents": ["op_01HUMANWRITE0001"],
+  "body_hash": {
+    "alg": "sha256",
+    "hex": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "size_bytes": 24
+  },
+  "result": {
+    "status": "committed",
+    "reason": "ok",
+    "revision": {
+      "token": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "kind": "content_hash",
+      "size_bytes": 24,
+      "modified_at": "2026-07-12T00:00:05.500Z"
+    },
+    "write_kind": "create",
+    "created": true
+  },
+  "signature": {
+    "alg": "ed25519",
+    "key_id": "fixture-host-key-v1",
+    "value": "Zml4dHVyZS1zaWduYXR1cmUtd3MtdHJlZS1hZHYtdjE",
+    "signed_at": "2026-07-12T00:00:05.510Z",
+    "signed_fields": [
+      "operation_id",
+      "tenant_id",
+      "kind",
+      "target",
+      "parents",
+      "body_hash",
+      "result.status",
+      "result.revision"
+    ]
+  },
+  "idempotency_key": "agent-create-new-brief-run-99",
+  "vault_write_mode": "create_new",
+  "advances_artifact_head": true,
+  "advances_workspace_head": true,
+  "meta": {
+    "request_id": "01JEXAMPLECREATE001",
+    "tool_call_id": "tool_create_brief_99"
+  }
+}

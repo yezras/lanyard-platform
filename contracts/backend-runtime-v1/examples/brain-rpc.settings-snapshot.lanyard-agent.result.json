@@ -1,0 +1,71 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLELASETTINGS1",
+  "ok": true,
+  "result": {
+    "exported_at": "2026-08-04T12:00:00.000Z",
+    "backend_home": "/var/lib/lanyard-agent",
+    "hermes_home": "/var/lib/lanyard-agent",
+    "source": "lanyard_agent",
+    "skills": [
+      {
+        "id": "post-meeting-triage",
+        "name": "Post-meeting triage",
+        "enabled": true,
+        "path": "skills/crm/post-meeting-triage",
+        "source": "vault"
+      }
+    ],
+    "crons": [
+      {
+        "id": "la-vault-index",
+        "name": "LA vault index refresh",
+        "schedule": "Daily at 3:00 AM",
+        "enabled": true,
+        "path": "cron/jobs.json",
+        "last_run_at": "2026-08-04T03:00:11.000Z",
+        "next_run_at": "2026-08-05T03:00:00.000Z",
+        "state": "scheduled",
+        "last_status": "ok"
+      },
+      {
+        "id": "la-weekly-digest",
+        "name": "LA weekly digest",
+        "schedule": "Weekly on Monday at 9:00 AM",
+        "enabled": false,
+        "path": "cron/jobs.json",
+        "last_run_at": null,
+        "next_run_at": null,
+        "state": "paused",
+        "last_status": null
+      },
+      {
+        "id": "la-manual-start",
+        "name": "LA manual start example",
+        "schedule": "One-shot (manual start)",
+        "enabled": true,
+        "path": "cron/jobs.json",
+        "last_run_at": "2026-08-04T15:00:01.000Z",
+        "next_run_at": null,
+        "state": "running",
+        "last_status": null
+      }
+    ],
+    "mcp_servers": [],
+    "models": [
+      {
+        "provider": "xai",
+        "model": "grok-4",
+        "is_active": true,
+        "connected": true
+      }
+    ],
+    "integrations": []
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 12,
+    "host_time": "2026-08-04T12:00:00.050Z"
+  }
+}

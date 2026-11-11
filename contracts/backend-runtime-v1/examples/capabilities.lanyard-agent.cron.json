@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "source": "brain_rpc",
+  "kind": "lanyard_agent",
+  "version": "v0.0.0-example-cron",
+  "contract": {
+    "runtime_layout": 1,
+    "relay": 1,
+    "brain_rpc": 1
+  },
+  "profiles": [
+    "admin",
+    "contributor"
+  ],
+  "brain_rpc_methods": [
+    "brain.ping",
+    "brain.health",
+    "brain.capabilities",
+    "vault.list",
+    "vault.stat",
+    "vault.read",
+    "settings.snapshot",
+    "settings.patch",
+    "projects.list",
+    "cron.list",
+    "cron.patch"
+  ],
+  "features": {
+    "chat": true,
+    "health": true,
+    "capabilities_discovery": true,
+    "vault_read": true,
+    "vault_write": false,
+    "settings_snapshot": true,
+    "settings_patch": true,
+    "projects_list": true,
+    "projects_create": false,
+    "models": false,
+    "cron": true,
+    "history_read": false,
+    "heads_read": false
+  },
+  "ui_affordances": {
+    "chat_panel": "supported",
+    "vault_browser": "supported",
+    "vault_editor": "unsupported",
+    "settings_page": "supported",
+    "settings_editor": "supported",
+    "project_picker": "supported",
+    "project_create": "unsupported",
+    "model_selector": "unsupported",
+    "cron_manager": "supported",
+    "host_health": "supported"
+  },
+  "limits": {
+    "vault_read_default_max_bytes": 1048576,
+    "vault_read_hard_max_bytes": 4194304,
+    "vault_list_max_entries": 500
+  },
+  "notes": "lp-uxy.3 / lp-jzl.3 aspirational pin when LA advertises dedicated cron.list/cron.patch over $BACKEND_HOME/cron/jobs.json. features.cron=true unlocks Portal full job create/update via settings.patch ops cron.create/cron.update (and/or dedicated cron.patch). Until those methods are live, keep capabilities.lanyard-agent.json (cron:false). Portal may still list/toggle when settings.snapshot returns crons[] and settings.patch supports cron.set_enabled without advertising create."
+}
