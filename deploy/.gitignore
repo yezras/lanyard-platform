@@ -1,0 +1,77 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Live tenant values and secrets — never commit
+**/terraform.tfvars
+!**/*.tfvars.example
+**/*.auto.tfvars
+secrets/
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Backend configs with real bucket names (use backend.tf.example)
+**/backend.tf
+
+# Operator-held live compatibility pins (example + documented real-release pins stay in git)
+compatibility/pins.yaml
+compatibility/pins.local.yaml
+compatibility/pins.private.yaml
+compatibility/*-live.yaml
+!compatibility/pins.example.yaml
+!compatibility/pins.real-releases.yaml
+!compatibility/schema.json
+!compatibility/README.md
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# Local env and operator scratch
+.env
+.env.*
+!.env.example
+*.log
+tmp/
+.cache/
+
+# Customer vault / seed content accidentally staged
+**/Clients/
+# Exception: synthetic mocklab demo tree (cbd-ukg.8) — fictional Acme_Demo only
+!artifacts/demo-vault/
+!artifacts/demo-vault/**/
+!artifacts/demo-vault/**/*
+**/.seed/
+evals.db
+*.db-journal
+
+# Packaged artifacts (store in artifact registry, not git)
+artifacts/**/*.tar.gz
+artifacts/**/*.tgz
+artifacts/**/*.zip
+!artifacts/README.md
+!artifacts/demo-vault/
+!artifacts/demo-vault/**/
+!artifacts/demo-vault/**/*
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+.beads/proxieddb/
