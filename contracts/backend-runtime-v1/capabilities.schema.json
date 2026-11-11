@@ -1,0 +1,719 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/backend-runtime-v1/capabilities.schema.json",
+  "title": "Backend capability descriptor (backend-runtime-v1)",
+  "description": "Expanded backend runtime capability model for Portal feature gating. Describes what a backend host can do (methods, feature flags, UI affordances) — not what a session subject is allowed to do (see profiles.schema.json) and not connector/platform relay capabilities. Live discovery is via Brain RPC method brain.capabilities; the artifact manifest capabilities object is the install-time static claim of the same model.",
+  "type": "object",
+  "additionalProperties": true,
+  "$comment": "Top-level is a catalog document. Validate live/static descriptors against #/$defs/capabilityDescriptor. Validate discovery frames against #/$defs/params_brain_capabilities and #/$defs/result_brain_capabilities (embedded in brain_rpc_request / brain_rpc_result envelopes from brain-rpc.schema.json).",
+  "$defs": {
+    "contractMajors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_layout",
+        "relay",
+        "brain_rpc"
+      ],
+      "description": "Contract majors the descriptor claims. Align with artifact-manifest.schema.json contract and compatibility pins.",
+      "properties": {
+        "runtime_layout": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "relay": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "brain_rpc": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "backendKind": {
+      "type": "string",
+      "enum": [
+        "hermes_upstream",
+        "hermes_lanyard",
+        "lanyard_agent"
+      ],
+      "description": "Backend product family when known."
+    },
+    "rpcMethodName": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$",
+      "description": "Dotted Brain RPC method name (e.g. vault.read, brain.capabilities)."
+    },
+    "profileName": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Named profile seed available on this host (admin, contributor, …)."
+    },
+    "featureFlagName": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Snake_case feature flag. v1 catalog is under x-lanyard-feature-catalog; hosts may advertise additional flags but Portal must only gate on catalogued names."
+    },
+    "uiAffordanceName": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Snake_case Portal UI affordance id. Catalog under x-lanyard-ui-affordance-catalog."
+    },
+    "uiAffordanceState": {
+      "type": "string",
+      "enum": [
+        "supported",
+        "unsupported",
+        "degraded"
+      ],
+      "description": "Portal rendering state for an affordance. supported = enable controls; unsupported = hide/disable with expected empty state; degraded = show with limited function and operator-safe notice."
+    },
+    "featureFlags": {
+      "type": "object",
+      "description": "Boolean feature claims. Keys should prefer the v1 feature catalog. Unknown keys are allowed for forward-compat; Portal ignores names outside its allow-list.",
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "properties": {
+        "chat": {
+          "type": "boolean",
+          "description": "Relay chat sessions available on this host."
+        },
+        "vault_read": {
+          "type": "boolean",
+          "description": "Vault list/stat/read path is implemented."
+        },
+        "vault_write": {
+          "type": "boolean",
+          "description": "Vault write path is implemented (expansion). Must be true only when vault.write is advertised on brain_rpc_methods and implements the typed params/result (lp-5q6.18). Never set true for placeholder/unimplemented hosts."
+        },
+        "settings_snapshot": {
+          "type": "boolean",
+          "description": "settings.snapshot is implemented."
+        },
+        "settings_patch": {
+          "type": "boolean",
+          "description": "settings.patch is implemented (expansion)."
+        },
+        "projects_list": {
+          "type": "boolean",
+          "description": "projects.list is implemented."
+        },
+        "projects_create": {
+          "type": "boolean",
+          "description": "projects.create is implemented (expansion)."
+        },
+        "projects_delete": {
+          "type": "boolean",
+          "description": "projects.delete soft-archive is implemented (expansion). Archive-only: does not purge workspace/vault disk."
+        },
+        "models": {
+          "type": "boolean",
+          "description": "Model list/select surface is implemented (models.list / models.set_active)."
+        },
+        "cron": {
+          "type": "boolean",
+          "description": "Cron list/patch surface is implemented."
+        },
+        "health": {
+          "type": "boolean",
+          "description": "brain.health structured readiness is implemented."
+        },
+        "capabilities_discovery": {
+          "type": "boolean",
+          "description": "brain.capabilities live discovery is implemented on this host."
+        },
+        "history_read": {
+          "type": "boolean",
+          "description": "history.list is implemented (expansion, lp-ye4.7). Must be true only when history.list is advertised on brain_rpc_methods."
+        },
+        "heads_read": {
+          "type": "boolean",
+          "description": "heads.artifact / heads.workspace are implemented (expansion, lp-ye4.7). Must be true only when those methods are listed on brain_rpc_methods."
+        }
+      }
+    },
+    "uiAffordances": {
+      "type": "object",
+      "description": "Portal UI affordance map. Prefer explicit states for every catalogued affordance so the BFF can render without guessing from method lists.",
+      "additionalProperties": {
+        "$ref": "#/$defs/uiAffordanceState"
+      },
+      "properties": {
+        "chat_panel": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "vault_browser": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "vault_editor": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "settings_page": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "settings_editor": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "project_picker": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "project_create": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "model_selector": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "cron_manager": {
+          "$ref": "#/$defs/uiAffordanceState"
+        },
+        "host_health": {
+          "$ref": "#/$defs/uiAffordanceState"
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional operational limits the host wants Portal to respect (may mirror Brain RPC hard caps).",
+      "properties": {
+        "vault_read_default_max_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "vault_read_hard_max_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "vault_list_max_entries": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "descriptorSource": {
+      "type": "string",
+      "enum": [
+        "brain_rpc",
+        "artifact_manifest",
+        "combined"
+      ],
+      "description": "How this descriptor instance was produced. brain_rpc = live brain.capabilities result; artifact_manifest = static pin/manifest claim; combined = BFF merge of both."
+    },
+    "capabilityDescriptor": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "schema_version",
+        "brain_rpc_methods",
+        "features"
+      ],
+      "description": "Normalized backend capability claim used by Portal BFF / web state (BackendCapabilitySet).",
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1,
+          "description": "Descriptor schema major. Bump only with breaking changes to this document shape."
+        },
+        "source": {
+          "$ref": "#/$defs/descriptorSource"
+        },
+        "kind": {
+          "$ref": "#/$defs/backendKind"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Backend release version when known (matches artifact manifest version)."
+        },
+        "contract": {
+          "$ref": "#/$defs/contractMajors"
+        },
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/profileName"
+          },
+          "description": "Named profile seeds available on this host (v1: admin, contributor)."
+        },
+        "brain_rpc_methods": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/rpcMethodName"
+          },
+          "description": "Brain RPC methods this host implements right now. Required v1 methods should always appear when contract.brain_rpc is 1 and the host is healthy."
+        },
+        "features": {
+          "$ref": "#/$defs/featureFlags"
+        },
+        "ui_affordances": {
+          "$ref": "#/$defs/uiAffordances",
+          "description": "Explicit Portal UI states. When omitted, Portal may derive from features + brain_rpc_methods using x-lanyard-ui-affordance-catalog derivation rules — prefer explicit values from live discovery."
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional operator-safe note (e.g. partial conformance). Never include secrets."
+        }
+      }
+    },
+    "params_brain_capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Params for Brain RPC method brain.capabilities. Empty object is valid; future filters may be added additively.",
+      "properties": {
+        "include_limits": {
+          "type": "boolean",
+          "description": "When true, host should include operational limits if known. Default true when omitted."
+        },
+        "include_ui_affordances": {
+          "type": "boolean",
+          "description": "When true, host should materialize ui_affordances explicitly. Default true when omitted."
+        }
+      }
+    },
+    "result_brain_capabilities": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/capabilityDescriptor"
+        }
+      ],
+      "description": "Success result for brain.capabilities. Must set source to brain_rpc. Must include ui_affordances when the request asked for them (default true)."
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Present when this file is treated as a sample descriptor; catalog metadata lives in x-lanyard-* extensions."
+    }
+  },
+  "x-lanyard-contract-version": 1,
+  "x-lanyard-separation": {
+    "description": "Three capability layers must not be conflated.",
+    "backend_runtime_capabilities": {
+      "schema": "contracts/backend-runtime-v1/capabilities.schema.json",
+      "meaning": "What the selected backend host can do (methods, features, UI affordances).",
+      "consumers": [
+        "Portal BFF",
+        "Portal web",
+        "deploy pin checks",
+        "conformance"
+      ]
+    },
+    "profile_capabilities": {
+      "schema": "contracts/backend-runtime-v1/profiles.schema.json",
+      "meaning": "What a named backend profile grants a subject (vault_read, vault_full, chat, admin-only ops tokens).",
+      "consumers": [
+        "Brain RPC host authorization",
+        "path ACL"
+      ]
+    },
+    "connector_platform_capabilities": {
+      "schema": "relay / connector descriptors (outside this contract)",
+      "meaning": "Channel and connector features (messaging transports, tool bridges). Not backend host ops.",
+      "consumers": [
+        "relay",
+        "client-core connector paths"
+      ]
+    },
+    "artifact_manifest_projection": {
+      "schema": "contracts/backend-runtime-v1/artifact-manifest.schema.json#/properties/capabilities",
+      "meaning": "Install-time static claim: profiles, brain_rpc_methods, optional features. Subset / projection of this descriptor model."
+    }
+  },
+  "x-lanyard-discovery": {
+    "selected_path": "brain_rpc",
+    "method": "brain.capabilities",
+    "status": "recommended_for_portal_gating",
+    "rationale": [
+      "Architecture evaluation: existing relay capability descriptors describe connector behavior, not backend runtime capabilities. Overloading relay hello would conflate layers.",
+      "Portal already routes host ops through Brain RPC (settings, vault, projects, health). Capability discovery belongs on the same authenticated egress path.",
+      "Live claims can reflect config and partial enablement after connect; artifact pins alone cannot.",
+      "Re-queryable: BFF can refresh after reconnect or version upgrade without re-running deploy."
+    ],
+    "rejected_path": {
+      "name": "relay_hello",
+      "reason": "Reserved for connector/relay protocol negotiation. Backend ops capability advertising must not depend on relay hello payload shape."
+    },
+    "static_companion": {
+      "name": "artifact_manifest.capabilities",
+      "role": "Install-time / pin-time claim used by deploy and offline checks. Not a substitute for live Portal gating when the host is online.",
+      "merge_rule": "When both exist, live brain.capabilities wins for UI gating; manifest remains the deploy pin authority for required methods at install."
+    },
+    "fallback_when_method_missing": [
+      "If brain.capabilities returns method_not_found, Portal BFF builds a descriptor from the compatibility pin / artifact manifest capabilities object (source=artifact_manifest).",
+      "Derive ui_affordances via x-lanyard-ui-affordance-catalog.derivation.",
+      "Treat expansion features as unsupported unless the manifest features map marks them true AND methods are listed."
+    ],
+    "auth": "Same fail-closed L0–L3 minimum as brain.health; no vault path ACL. Any authenticated backend profile may read capabilities (not admin-only).",
+    "wire": {
+      "request_type": "brain_rpc_request",
+      "result_type": "brain_rpc_result",
+      "params": "#/$defs/params_brain_capabilities",
+      "result": "#/$defs/result_brain_capabilities",
+      "envelope": "contracts/backend-runtime-v1/brain-rpc.schema.json"
+    },
+    "brain_rpc_catalog_status": "optional_expansion_until_implemented — not required for pure Brain RPC v1 method-set conformance (lp-k7g.6.5 required seven methods). Portal phase-4 capability modeling (lp-k7g.8.5) should prefer live discovery and fall back to manifest."
+  },
+  "x-lanyard-feature-catalog": {
+    "description": "v1 feature flags used for Portal gating and manifest capabilities.features. Each flag maps to Brain RPC methods and one or more UI affordances.",
+    "features": {
+      "chat": {
+        "methods": [],
+        "transport": "relay_chat",
+        "ui_affordances": [
+          "chat_panel"
+        ],
+        "notes": "Chat is relay-session based, not a Brain RPC method. Still a backend runtime capability."
+      },
+      "health": {
+        "methods": [
+          "brain.health"
+        ],
+        "ui_affordances": [
+          "host_health"
+        ],
+        "required_v1": true
+      },
+      "capabilities_discovery": {
+        "methods": [
+          "brain.capabilities"
+        ],
+        "ui_affordances": [],
+        "required_v1": false,
+        "notes": "Meta-capability: host can serve this descriptor live."
+      },
+      "vault_read": {
+        "methods": [
+          "vault.list",
+          "vault.stat",
+          "vault.read"
+        ],
+        "ui_affordances": [
+          "vault_browser"
+        ],
+        "required_v1": true,
+        "profile_caps_any_of": [
+          "vault_read",
+          "vault_full"
+        ]
+      },
+      "vault_write": {
+        "methods": [
+          "vault.write"
+        ],
+        "ui_affordances": [
+          "vault_editor"
+        ],
+        "required_v1": false,
+        "profile_caps_any_of": [
+          "vault_write",
+          "vault_full"
+        ],
+        "notes": "Map vault_write → vault_editor only when vault.write is implemented and listed in brain_rpc_methods. features.vault_write true with method absent is dishonest — Portal derivation treats missing method as unsupported (lp-5q6.18)."
+      },
+      "settings_snapshot": {
+        "methods": [
+          "settings.snapshot"
+        ],
+        "ui_affordances": [
+          "settings_page"
+        ],
+        "required_v1": true
+      },
+      "settings_patch": {
+        "methods": [
+          "settings.patch"
+        ],
+        "ui_affordances": [
+          "settings_editor"
+        ],
+        "required_v1": false
+      },
+      "projects_list": {
+        "methods": [
+          "projects.list"
+        ],
+        "ui_affordances": [
+          "project_picker"
+        ],
+        "required_v1": true
+      },
+      "projects_create": {
+        "methods": [
+          "projects.create"
+        ],
+        "ui_affordances": [
+          "project_create"
+        ],
+        "required_v1": false
+      },
+      "projects_delete": {
+        "methods": [
+          "projects.delete"
+        ],
+        "ui_affordances": [
+          "project_picker"
+        ],
+        "required_v1": false,
+        "notes": "Soft-archive only (lp-uxy.5). Result {id, archived:true}. Does not rmtree workspace. Portal confirm must state files stay on disk."
+      },
+      "models": {
+        "methods": [
+          "models.list",
+          "models.set_active"
+        ],
+        "ui_affordances": [
+          "model_selector"
+        ],
+        "required_v1": false
+      },
+      "cron": {
+        "methods": [
+          "cron.list",
+          "cron.patch"
+        ],
+        "ui_affordances": [
+          "cron_manager"
+        ],
+        "required_v1": false
+      },
+      "history_read": {
+        "methods": [
+          "history.list"
+        ],
+        "ui_affordances": [],
+        "required_v1": false,
+        "profile_caps_any_of": [
+          "vault_read",
+          "vault_full"
+        ],
+        "notes": "lp-ye4.7. Path ACL still enforced per subject path_prefixes. Do not advertise when host has no ledger history store."
+      },
+      "heads_read": {
+        "methods": [
+          "heads.artifact",
+          "heads.workspace"
+        ],
+        "ui_affordances": [],
+        "required_v1": false,
+        "profile_caps_any_of": [
+          "vault_read",
+          "vault_full"
+        ],
+        "notes": "lp-ye4.7. Current-head materialization for multiplayer currentness. heads.artifact enforces path ACL; heads.workspace is workspace-scoped."
+      }
+    }
+  },
+  "x-lanyard-ui-affordance-catalog": {
+    "description": "Portal UI surfaces gated by backend capabilities. Unsupported must render expected empty/disabled states (phase 4 verification) instead of crashing or calling missing methods.",
+    "affordances": {
+      "chat_panel": {
+        "portal_surface": "Main chat / agent conversation UI",
+        "requires_features_all_of": [
+          "chat"
+        ],
+        "requires_methods_all_of": [],
+        "unsupported_ui": "Show chat unavailable empty state; disable send; do not open relay chat session for host ops assumptions"
+      },
+      "vault_browser": {
+        "portal_surface": "Vault file tree, preview, download",
+        "requires_features_all_of": [
+          "vault_read"
+        ],
+        "requires_methods_all_of": [
+          "vault.list",
+          "vault.stat",
+          "vault.read"
+        ],
+        "unsupported_ui": "Hide vault nav entry or show Vault unavailable; never invoke vault.* RPC"
+      },
+      "vault_editor": {
+        "portal_surface": "Create/edit/save vault files (typed vault.write expansion)",
+        "requires_features_all_of": [
+          "vault_write"
+        ],
+        "requires_methods_all_of": [
+          "vault.write"
+        ],
+        "unsupported_ui": "Read-only vault: hide save/create controls; optional tooltip that host does not support vault write",
+        "notes": "Both feature vault_write AND method vault.write are required. Do not enable vault_editor when only a placeholder or future intent exists (lp-5q6.18)."
+      },
+      "settings_page": {
+        "portal_surface": "Settings snapshot view (skills, models, integrations, crons read-only)",
+        "requires_features_all_of": [
+          "settings_snapshot"
+        ],
+        "requires_methods_all_of": [
+          "settings.snapshot"
+        ],
+        "unsupported_ui": "Settings page shows Backend settings unavailable; no local Hermes-home fallback"
+      },
+      "settings_editor": {
+        "portal_surface": "Mutating settings controls (patch)",
+        "requires_features_all_of": [
+          "settings_patch"
+        ],
+        "requires_methods_all_of": [
+          "settings.patch"
+        ],
+        "unsupported_ui": "Show read-only settings; disable Save; do not call settings.patch"
+      },
+      "project_picker": {
+        "portal_surface": "Project list / switcher",
+        "requires_features_all_of": [
+          "projects_list"
+        ],
+        "requires_methods_all_of": [
+          "projects.list"
+        ],
+        "unsupported_ui": "Empty project list with Host projects unavailable; no filesystem scrape of Hermes projects"
+      },
+      "project_create": {
+        "portal_surface": "Create project action",
+        "requires_features_all_of": [
+          "projects_create"
+        ],
+        "requires_methods_all_of": [
+          "projects.create"
+        ],
+        "unsupported_ui": "Hide or disable Create project"
+      },
+      "model_selector": {
+        "portal_surface": "Model list and active model control in settings",
+        "requires_features_all_of": [
+          "models"
+        ],
+        "requires_methods_any_of": [
+          "models.list",
+          "models.set_active"
+        ],
+        "unsupported_ui": "Hide model selector section or show Models not supported by this backend"
+      },
+      "cron_manager": {
+        "portal_surface": "Cron job list and edit UI",
+        "requires_features_all_of": [
+          "cron"
+        ],
+        "requires_methods_any_of": [
+          "cron.list",
+          "cron.patch"
+        ],
+        "unsupported_ui": "Hide cron section or show Cron not supported by this backend"
+      },
+      "host_health": {
+        "portal_surface": "Host readiness / pilot health indicator",
+        "requires_features_all_of": [
+          "health"
+        ],
+        "requires_methods_all_of": [
+          "brain.health"
+        ],
+        "unsupported_ui": "Show health unknown; degrade pilot gates rather than assume ok"
+      }
+    },
+    "derivation": {
+      "description": "When ui_affordances is omitted (static manifest fallback), compute each affordance state:",
+      "rules": [
+        "supported if every requires_features_all_of flag is true (missing flag = false) AND every requires_methods_all_of is listed in brain_rpc_methods AND (if requires_methods_any_of is non-empty) at least one of those methods is listed.",
+        "unsupported otherwise.",
+        "degraded is host-asserted only (e.g. brain.health status degraded while method exists); Portal must not invent degraded from method lists alone."
+      ]
+    }
+  },
+  "x-lanyard-unsupported-error-states": {
+    "description": "Expected outcomes when a capability is absent. UI layer must fail soft; RPC layer returns stable error codes.",
+    "layers": {
+      "portal_ui": {
+        "rule": "If ui_affordances.<name> is unsupported (or derived unsupported), do not mount mutating controls or issue the backing RPC. Render the affordance-specific empty/disabled copy from x-lanyard-ui-affordance-catalog.",
+        "http_bff": "BFF capability endpoint returns the descriptor; UI routes read it before calling host ops. Prefer 200 + unsupported state over 5xx."
+      },
+      "portal_bff_guard": {
+        "rule": "If a client still requests an unsupported host op, BFF may short-circuit without calling the host.",
+        "preferred_response": {
+          "http_status": 404,
+          "error_code": "method_not_found",
+          "message": "Backend capability not available",
+          "retryable": false
+        },
+        "alternate": {
+          "http_status": 501,
+          "notes": "Avoid 501 unless product standardizes on it; Brain RPC maps method_not_found → 404."
+        }
+      },
+      "brain_rpc_host": {
+        "unimplemented_method": {
+          "ok": false,
+          "error.code": "method_not_found",
+          "error.retryable": false,
+          "http_map": 404,
+          "when": "Method not in host handler table (expansion not implemented)."
+        },
+        "method_exists_profile_denied": {
+          "ok": false,
+          "error.code": "forbidden",
+          "error.retryable": false,
+          "http_map": 403,
+          "when": "Method is implemented but profile capabilities / path ACL deny the subject. This is NOT an unsupported capability — do not conflate with method_not_found."
+        },
+        "method_exists_bad_args": {
+          "ok": false,
+          "error.code": "invalid_argument",
+          "http_map": 400
+        },
+        "host_down": {
+          "ok": false,
+          "error.code": "unavailable",
+          "error.retryable": true,
+          "http_map": 503,
+          "when": "Relay/host unreachable — distinct from unsupported capability."
+        }
+      }
+    },
+    "matrix": [
+      {
+        "situation": "Feature flag false / method not advertised",
+        "ui": "unsupported empty state",
+        "if_called_anyway": "method_not_found"
+      },
+      {
+        "situation": "Feature true, method advertised, profile lacks token",
+        "ui": "control visible for capable roles only; others forbidden",
+        "if_called_anyway": "forbidden"
+      },
+      {
+        "situation": "Feature true, path ACL denies vault path",
+        "ui": "browser hides or greys denied paths",
+        "if_called_anyway": "forbidden or not_found per path ACL policy"
+      },
+      {
+        "situation": "brain.capabilities itself missing",
+        "ui": "use manifest fallback descriptor; gate expansion UI as unsupported unless manifest says otherwise",
+        "if_called_anyway": "method_not_found then fallback"
+      }
+    ]
+  },
+  "x-lanyard-validation-entrypoints": {
+    "descriptor": "#/$defs/capabilityDescriptor",
+    "params_brain_capabilities": "#/$defs/params_brain_capabilities",
+    "result_brain_capabilities": "#/$defs/result_brain_capabilities"
+  },
+  "x-lanyard-baselines": {
+    "manifest_projection": "contracts/backend-runtime-v1/artifact-manifest.schema.json capabilities",
+    "profile_auth": "contracts/backend-runtime-v1/profiles.schema.json",
+    "brain_rpc": "contracts/backend-runtime-v1/brain-rpc.schema.json",
+    "portal_phase": "docs/plans/0001-platform-monorepo-migration/phase-4-portal-backend-abstraction.md (BackendCapabilitySet)"
+  }
+}
