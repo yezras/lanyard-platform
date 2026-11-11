@@ -1,0 +1,35 @@
+{
+  "name": "@lanyard/connectors",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Closed Portal connector enums, host command → action_class map, and pending connector use (lp-xhf4.1 / lp-xhf4.8).",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": : {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "generate": "node scripts/generate-catalog.mjs",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.2.6"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
