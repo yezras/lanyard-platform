@@ -1,0 +1,77 @@
+{
+  "bead_id": "lp-uxy.7",
+  "title": "Web search upgrade: richer results, Firecrawl / X / external providers",
+  "story": "web-search-results",
+  "story_url_path": "/?story=web-search-results",
+  "cost_gated": true,
+  "firecrawl_live": false,
+  "secrets_slots": [
+    "FIRECRAWL_API_KEY",
+    "X_BEARER_TOKEN",
+    "TAVILY_API_KEY",
+    "BRAVE_API_KEY"
+  ],
+  "tool_ids": [
+    "firecrawl_search",
+    "firecrawl_scrape",
+    "firecrawl_crawl",
+    "firecrawl_map",
+    "firecrawl_extract",
+    "x_search",
+    "web_search"
+  ],
+  "fixture_results": [
+    {
+      "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+      "title": "2026 FIFA World Cup",
+      "snippet": "The 2026 FIFA World Cup is the 23rd FIFA World Cup tournament, jointly hosted by Canada, Mexico, and the United States.",
+      "provider": "firecrawl"
+    },
+    {
+      "url": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026",
+      "title": "FIFA World Cup 2026",
+      "snippet": "Official FIFA hub for the 2026 tournament: schedule, venues, news.",
+      "provider": "firecrawl"
+    },
+    {
+      "url": "https://www.bbc.com/sport/football/world-cup",
+      "title": "World Cup — BBC Sport",
+      "snippet": "Latest World Cup news, results and analysis from BBC Sport.",
+      "provider": "web_search"
+    }
+  ],
+  "testids": [
+    "web-search-results-proof-story",
+    "web-search-tool-panel",
+    "web-search-answer-panel",
+    "web-search-results",
+    "web-search-results-item-1",
+    "web-citation-1"
+  ],
+  "unit_tests": [
+    "portal/packages/web/src/features/chat/webCitations.test.ts",
+    "portal/packages/web/src/features/chat/WebSearchResults.test.tsx",
+    "portal/packages/web/src/features/chat/WebSearchResultsProofStory.test.tsx",
+    "portal/packages/web/src/features/chat/ChatMessageContent.test.tsx",
+    "portal/packages/web/src/features/chat/chatToolCallMapper.test.ts",
+    "portal/packages/web/src/hooks/useChatEvents.test.ts"
+  ],
+  "docs": [
+    "docs/architecture/portal-web-search-firecrawl.md",
+    "docs/architecture/portal-chat-tool-events.md",
+    "portal/artifacts/hermes-lanyard-tool-citations-contract.md"
+  ],
+  "review_fix": {
+    "snippet_preserved_on_web_citations": true,
+    "metadata_search_results_plumbed": true,
+    "parse_edge_cases": [
+      "firecrawl_data_metadata_unwrap",
+      "wrapper_results_no_pollution",
+      "metadata_json_string",
+      "empty_metadata_arrays_fallthrough",
+      "source_url_not_provider_badge",
+      "path_alias_and_url_as_title"
+    ]
+  },
+  "notes": "RTL story test is the automated evidence. Browser screenshot optional for UI QA follow-up (needs_ui_qa=true). No live Firecrawl without key."
+}
