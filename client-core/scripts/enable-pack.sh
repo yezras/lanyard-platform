@@ -56,7 +56,7 @@ list_packs() {
         awk '
           /^summary:[[:space:]]*/ {
             sub(/^summary:[[:space:]]*/, "")
-            gsub(/^[\"'\'']|[\"'\'']$/, "")
+            gsub(/^["'\'']|["'\'']$/, "")
             print
             exit
           }
@@ -67,7 +67,7 @@ list_packs() {
           awk '
             /^when_to_enable:[[:space:]]*/ {
               sub(/^when_to_enable:[[:space:]]*/, "")
-              gsub(/^[\"'\'']|[\"'\'']$/, "")
+              gsub(/^["'\'']|["'\'']$/, "")
               print
               exit
             }
