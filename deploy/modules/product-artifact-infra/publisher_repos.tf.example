@@ -1,0 +1,85 @@
+# ---------------------------------------------------------------------------
+# EXAMPLE ONLY (lp-k7g.7.6) — target publisher_repos for product-artifact-infra
+#
+# Merge into the imported company-brain-deploy module at phase 6.
+# Design: docs/architecture/deploy-artifact-landing-zones.md
+#
+# OIDC rules (unchanged):
+#   - github_oidc_provider_arn must reference an *existing* provider
+#   - default subjects: repo:ORG/REPO:ref:refs/tags/* (never main/master heads)
+#   - S3: GetBucketLocation unconditioned; ListBucket prefix-conditioned;
+#     PutObject scoped to arn:…:bucket/<prefix>*
+# ---------------------------------------------------------------------------
+
+# Target default for variable "publisher_repos" (illustrative; not applied here).
+#
+# publisher_repos = {
+#   portal = {
+#     repository           = "Portal"
+#     subjects             = []
+#     s3_write_prefix_keys = ["portal_web"]            # UNCHANGED → portal-web/
+#     ecr_push_services    = ["web", "bff", "relay", "control-plane"]
+#   }
+#   client_core = {
+#     repository           = "client-core"
+#     subjects             = []
+#     s3_write_prefix_keys = ["client_core"]           # UNCHANGED → client-core/
+#     ecr_push_services    = []
+#   }
+#   hermes_lanyard = {
+#     repository           = "hermes-lanyard"
+#     subjects             = []
+#     # Dual-write during migration: backends/hermes-lanyard/ + legacy hermes/
+#     s3_write_prefix_keys = ["hermes_lanyard", "hermes"]
+#     ecr_push_services    = []
+#   }
+#   lanyard_agent = {
+#     repository           = "lanyard-agent"
+#     subjects             = []
+#     s3_write_prefix_keys = ["lanyard_agent"]         # backends/lanyard-agent/ only
+#     ecr_push_services    = []
+#   }
+# }
+
+locals {
+  # Effective default trust subjects (module constructs these when subjects = [])
+  publisher_trust_subjects_target = {
+    portal = [
+      "repo:LanyardBrain/Portal:ref:refs/tags/*",
+    ]
+    client_core = [
+      "repo:LanyardBrain/client-core:ref:refs/tags/*",
+    ]
+    hermes_lanyard = [
+      "repo:LanyardBrain/hermes-lanyard:ref:refs/tags/*",
+    ]
+    lanyard_agent = [
+      "repo:LanyardBrain/lanyard-agent:ref:refs/tags/*",
+    ]
+  }
+
+  # Prefix keys each role may write (must resolve via prefix_by_key)
+  publisher_s3_prefix_keys_target = {
+    portal         = ["portal_web"]
+    client_core    = ["client_core"]
+    hermes_lanyard = ["hermes_lanyard", "hermes"] # drop "hermes" after cutover
+    lanyard_agent  = ["lanyard_agent"]
+  }
+
+  # Allow-list for s3_write_prefix_keys validation (expand upstream list)
+  s3_write_prefix_keys_allowed = [
+    "hermes_lanyard",
+    "lanyard_agent",
+    "hermes_upstream",
+    "client_core",
+    "portal_web",
+    "hermes", # TEMPORARY legacy
+  ]
+}
+
+# Hermes-Lanyard compatibility:
+#   Existing environments may still use publisher key "hermes" and IAM role
+#   ${name_prefix}-gha-hermes. Accept either:
+#     (a) keep key "hermes" with repository = hermes-lanyard and dual prefixes, or
+#     (b) rename key to hermes_lanyard and update product workflow AWS_ROLE_ARN once.
+#   Default OIDC sub for Hermes-Lanyard MUST remain hermes-lanyard tags only.

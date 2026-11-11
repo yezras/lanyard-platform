@@ -1,0 +1,95 @@
+# OmniboxPolicy seed — admin (Mode A / bwrap_inrepo)
+# Deploy-owned declarative grants for run-under-omnibox (phase 2+).
+# No secrets. Aligns with scripts/hermes-profiles/admin.json and
+# scripts/tool-allowlists/admin.json.
+#
+# Install target (phase 3): /etc/company-brain/omnibox/admin.yaml
+
+schema_version: 1
+profile: admin
+backend: bwrap_inrepo
+description: >
+  Admin Omnibox cage for host-impacting tools (including shell_exec).
+  Full vault RW grant plus admin workspace; secrets and credential stores
+  never enter the box. Network default-deny until phase-6 egress render.
+
+# Hermes capability / tool-allowlist alignment (documentation for operators)
+aligns_with:
+  hermes_profile: scripts/hermes-profiles/admin.json
+  tool_allowlist: scripts/tool-allowlists/admin.json
+  capabilities:
+    - vault_full
+    - vault_read
+    - vault_write
+    - chat
+    - profile_manage
+    - system_ops
+    - shell_exec
+    - gateway_config
+    - beads_admin
+
+fs:
+  # RW binds applied by the wrapper. Portal path_prefixes may further
+  # narrow vault visibility when passed as --path-prefix.
+  grants:
+    - path: /opt/company-brain
+      mode: rw
+      note: Full vault root (admin vault_full); optional path_prefixes narrow at invoke
+    - path: /var/lib/company-brain/omnibox/workspaces/admin
+      mode: rw
+      note: Per-profile scratch workspace
+
+  # Paths that must never be bound into the sandbox (even if under a grant tree).
+  # Prefer tmpfs stubs for parent dirs that tools expect to exist.
+  never_grant:
+    - /home/hermes/.hermes/.env
+    - /home/hermes/.hermes/**/*.env
+    - /home/hermes/.ssh
+    - /home/hermes/.aws
+    - /root
+    - /root/.ssh
+    - /root/.aws
+    - /etc/company-brain/secrets
+    - /var/lib/company-brain/secrets
+    - /opt/hermes-lanyard/.env
+    # Instance metadata is blocked via network policy; listed for clarity
+    - /var/lib/cloud
+
+shell:
+  # Admin tool allowlist permits shell_exec; shell only sees granted trees.
+  expected: true
+  only_inside_grants: true
+
+network:
+  # Phases 0–2 baseline: full net unshare (default deny all).
+  # Phase 6 may replace with local egress proxy + allowlist render.
+  default: deny
+  unshare_net: true
+  # Always block when any network is shared (phase 6+):
+  block:
+    - 169.254.169.254/32   # IMDS
+    - 169.254.0.0/16       # link-local
+    - 10.0.0.0/8           # private
+    - 172.16.0.0/12        # private
+    - 192.168.0.0/16       # private
+    - 127.0.0.0/8          # loopback (except explicit local proxy if added later)
+    - ::1/128
+    - fc00::/7             # unique local
+  # Empty in git; phase-6 render writes runtime allowlist (models/relay/processors).
+  allowlist: []
+
+credentials:
+  # Real gateway/API secrets stay in EnvironmentFile outside the box.
+  inject_placeholders: true
+  never_pass_env_prefixes:
+    - GATEWAY_
+    - AWS_
+    - OPENAI_
+    - ANTHROPIC_
+    - HERMES_API_
+    - RELAY_
+
+notes: >
+  Host seed only. Wrapper (phase 2) builds bwrap argv from this file.
+  Do not bind HERMES_HOME secrets into the box. Contributor policy is
+  stricter on FS and shell expectation.
