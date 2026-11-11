@@ -1,0 +1,8 @@
+{
+  "markdown": "# Scanned invoice\n\nVendor: Acme Corp\nTotal: $42.00\n",
+  "format": "pdf",
+  "parser": "firecrawl_parse",
+  "chars": 54,
+  "truncated": false,
+  "sidecar_path": "/staging/uploads/_inbox/invoice-scan.parse.md"
+}

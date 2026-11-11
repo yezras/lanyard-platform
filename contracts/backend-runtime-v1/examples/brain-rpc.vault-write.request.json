@@ -1,0 +1,36 @@
+{
+  "type": "brain_rpc_request",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEVWRITE001",
+  "method": "vault.write",
+  "timeout_ms": 30000,
+  "auth": {
+    "tenant_id": "ten_example",
+    "instance_id": "inst_example",
+    "subject": {
+      "portal_user_id": "usr_example",
+      "backend_profile": "contributor",
+      "hermes_profile": "contributor",
+      "roles": ["contributor"],
+      "path_prefixes": ["/Projects/Legal"]
+    },
+    "session_id": "sess_example",
+    "issued_at": "2026-07-12T00:00:00.000Z",
+    "expires_at": "2026-07-12T00:05:00.000Z"
+  },
+  "params": {
+    "path": "/Projects/Legal/memo.md",
+    "mode": "replace_if_match",
+    "expected_revision": {
+      "token": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+      "kind": "content_hash",
+      "size_bytes": 48
+    },
+    "encoding": "utf-8",
+    "content": "# Memo\n\nUpdated vault content after human edit.\n",
+    "mime_type": "text/markdown",
+    "size_bytes": 48,
+    "idempotency_key": "oo-callback-sess_example-memo-v2"
+  },
+  "idempotency_key": "oo-callback-sess_example-memo-v2"
+}

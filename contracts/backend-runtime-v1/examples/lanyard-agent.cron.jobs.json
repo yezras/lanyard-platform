@@ -1,0 +1,61 @@
+{
+  "jobs": [
+    {
+      "id": "la-vault-index",
+      "name": "LA vault index refresh",
+      "enabled": true,
+      "state": "scheduled",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 3 * * *",
+        "display": "Daily at 3:00 AM"
+      },
+      "prompt": "Refresh vault search index for company-brain.",
+      "deliver": "local",
+      "created_at": "2026-08-01T12:00:00.000Z",
+      "next_run_at": "2026-08-05T03:00:00.000Z",
+      "last_run_at": "2026-08-04T03:00:11.000Z",
+      "last_status": "ok"
+    },
+    {
+      "id": "la-weekly-digest",
+      "name": "LA weekly digest",
+      "enabled": false,
+      "state": "paused",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1",
+        "display": "Weekly on Monday at 9:00 AM (America/New_York)",
+        "timezone": "America/New_York"
+      },
+      "prompt": "Summarize last week's vault changes for the team.",
+      "skills": ["post-meeting-triage"],
+      "deliver": "local",
+      "created_at": "2026-08-02T09:00:00.000Z",
+      "next_run_at": null,
+      "last_run_at": null,
+      "last_status": null,
+      "_comment": "lp-jzl.3 + lp-jzl.9.2: prefer schedule.timezone on write; optional skills[] are skill ids from settings.snapshot / vault inventory (agent loads from skills_roots at run time)."
+    },
+    {
+      "id": "la-manual-start",
+      "name": "LA manual start example",
+      "enabled": true,
+      "state": "running",
+      "schedule": {
+        "kind": "once",
+        "run_at": "2026-08-04T15:00:00.000Z",
+        "display": "One-shot (manual start)"
+      },
+      "prompt": "Example job currently running after cronjob(action=run).",
+      "deliver": "local",
+      "created_at": "2026-08-04T14:55:00.000Z",
+      "next_run_at": null,
+      "last_run_at": "2026-08-04T15:00:01.000Z",
+      "last_status": null,
+      "_comment": "lp-su0: running state for Settings Status indicator / start-job UI path"
+    }
+  ],
+  "updated_at": "2026-08-04T15:00:05.000Z",
+  "_comment": "lp-uxy.3 / lp-su0: product cron store under $BACKEND_HOME/cron/jobs.json for kind=lanyard_agent. Never under ~/.hermes. state=running is the start-job indicator surface."
+}

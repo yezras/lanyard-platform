@@ -1,0 +1,38 @@
+{
+  "type": "brain_rpc_request",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEVWRITE002",
+  "method": "vault.write",
+  "timeout_ms": 30000,
+  "auth": {
+    "tenant_id": "ten_example",
+    "instance_id": "inst_example",
+    "subject": {
+      "portal_user_id": "usr_example",
+      "backend_profile": "contributor",
+      "hermes_profile": "contributor",
+      "roles": [
+        "contributor"
+      ],
+      "path_prefixes": [
+        "/Projects/Legal"
+      ]
+    },
+    "session_id": "sess_office_example",
+    "issued_at": "2026-07-12T00:00:00.000Z",
+    "expires_at": "2026-07-12T00:15:00.000Z"
+  },
+  "params": {
+    "path": "/Projects/Legal/proposal.docx",
+    "mode": "replace_if_match",
+    "if_match": "etag:W/\"a1b2c3d4e5f6\"",
+    "content_ref": {
+      "kind": "bff_spool",
+      "id": "spool_oo_callback_01JEXAMPLE",
+      "content_sha256": "3166947fcedaacedd8f581c2d3ce26e6cab784618c72785e6d7f587d725f460a"
+    },
+    "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "size_bytes": 18432,
+    "idempotency_key": "oo-callback-sess_office_example-proposal-save-1"
+  }
+}
