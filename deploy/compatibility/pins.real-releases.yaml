@@ -1,0 +1,88 @@
+# Compatibility pins — MockLab/staging product agent is Lanyard Agent (Daytona).
+# Safe to commit: coordinates only (no tokens).
+#
+# PRODUCT PATH (2026-08): Lanyard Agent on Daytona for MockLab (same as local
+# monorepo main). Do not re-pin Hermes for mocklab bootstrap.
+#   LA pack: artifacts/daytona-pilot/la-main-pack/PIN.md
+#   S3 layout: s3://$BUCKET/backends/lanyard-agent/<version>/linux-x86_64/…
+#   Snapshot pin: deploy/daytona/agent-gateway/pins/staging-pilot.pins.yaml
+#
+# Schema v1 still requires a top-level `hermes` block — treat it as LEGACY residual
+# only until pins v2 makes backend.kind primary. client-core vault seed + Portal
+# web/image pins remain valid coordinates (G7-era digests until monorepo rebuild).
+#
+# - Download of private GH assets requires GITHUB_TOKEN/GH_TOKEN at bootstrap
+#   (env / SSM) — never commit tokens or deploy keys.
+# - Portal backend image digests are real local Docker image Ids; repositories use
+#   example.ecr placeholders until product-artifact-infra ECR push lands.
+#
+# Validate:
+#   bash scripts/validate-compatibility.sh deploy/compatibility/pins.real-releases.yaml
+#   bash scripts/validate-compatibility.sh deploy/compatibility/pins.example.yaml
+#   python3 scripts/validate-compatibility-pins.py
+#
+# Operator procedure: references/runbooks/pin-update.md
+# Artifact contract: artifacts/README.md
+# Release contract: references/product-artifact-release-contract.md
+
+schema_version: 1
+
+meta:
+  description: "Compatibility pins — product agent for mocklab/staging is Lanyard Agent; Hermes block is legacy residual only"
+  created_at: "2026-07-12"
+  notes: >
+    PRODUCT PATH (2026-08): Lanyard Agent on Daytona for MockLab (same as local
+    monorepo main). Pack pin: artifacts/daytona-pilot/la-main-pack/PIN.md
+    (version 0.0.0-main.9bcada6780d2 / sha 6acbc8aa…; lp-zuh.10.10 workflow+cron ENOSYS).
+    Do not re-pin Hermes for mocklab. Hermes coordinates below remain only for
+    dual-run residual / schema required field until pins v2 makes backend.kind
+    primary. client-core v0.1.0-g7c2 vault seed still valid. portal.web is
+    MockLab OO bake v0.1.9-mocklab-oo-zuh129-20260819 (lp-zuh.12.9 HTTPS CF DS URL).
+    portal.images remain G7-era local digests — rebuild BFF/CP/Relay from monorepo before
+    claiming current images on AWS. Repositories remain example.ecr placeholders
+    until ECR publish. Never store tokens in this file or git.
+
+portal:
+  web:
+    # MockLab OO bake (lp-zuh.12.9): VITE_ONLYOFFICE_EDITOR=true + HTTPS CF DS URL/allowlist.
+    # Live promote 2026-08-19 on app.withlanyard.com → https://d3sqcebajd6ueb.cloudfront.net
+    version: "v0.1.9-mocklab-oo-zuh129-20260819"
+    sha256: "c1a3d146a9d8e01a2dc14163071843c442ab0a5b3dbfc2bce798b2f4b5590e98"
+    # Operator ARTIFACT_BUCKET (staging product-artifact-infra). Never commit tokens.
+    url: "s3://$ARTIFACT_BUCKET/portal-web/v0.1.9-mocklab-oo-zuh129-20260819/portal-web.tar.gz"
+  images:
+    # Real local image Ids; repositories are placeholders until ECR push.
+    # Removed synthetic images.web — static SPA is portal.web above.
+    bff:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/bff"
+      digest: "sha256:f6e8e9adbafe4ad82bb61c90861e0d5ae75e7f72135ee86986ba0453898d9620"
+      tag: "v0.1.0-g7p"
+    relay:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/relay"
+      digest: "sha256:1b43ba48cf0529f6d9823ef6a8c6005dc0678dc36428cb0bcfcc26e4a975b771"
+      tag: "v0.1.0-g7p"
+    control-plane:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/control-plane"
+      digest: "sha256:703e2436fdea0f926e3a2a24c4cf7e1ff13061e553d6f9d3c0aecd64d4b580d6"
+      tag: "v0.1.0-g7p"
+
+# LEGACY residual only — schema still requires `hermes` until pins v2.
+# MockLab product agent is Lanyard Agent (Daytona snapshot), not this block.
+# Do not use these coordinates for mocklab bootstrap.
+hermes:
+  version: "v0.1.0-g7h3-LEGACY-NOT-MOCKLAB"
+  arch: linux-x86_64
+  sha256: "a372580396e170436c22e44a61fbcdf8d2c7cf4f5d328694bb5afdf279904db9"
+  url: "https://github.com/LanyardBrain/hermes-lanyard/releases/download/v0.1.0-g7h3/hermes-v0.1.0-g7h3.tar.gz"
+  # Prefer LA: artifacts/daytona-pilot/la-main-pack/PIN.md
+  # s3://$BUCKET/backends/lanyard-agent/<version>/linux-x86_64/…
+
+client_core:
+  # Arch-neutral vault seed tarball (no linux-x86_64 path segment).
+  version: "v0.1.0-g7c2"
+  sha256: "ef21c313525afdca9902c40814293bbe924f428c219d93cf80398941c1f181e1"
+  url: "https://github.com/LanyardBrain/client-core/releases/download/v0.1.0-g7c2/client-core-v0.1.0-g7c2.tar.gz"
+  # Future S3 shape: s3://$BUCKET/client-core/v0.1.0-g7c2/client-core-v0.1.0-g7c2.tar.gz
+
+relay_contract:
+  major: 1
