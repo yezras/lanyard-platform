@@ -1,0 +1,42 @@
+{
+  "bead_id": "lp-oop.32",
+  "result": "PASS",
+  "stamp": "20260817T162412Z",
+  "plan": "docs/plans/0015-short-stack/overview.md",
+  "phase": 8,
+  "live_tool_turn": "held",
+  "human_pin_decision": "held",
+  "live_snapshot": {
+    "unchanged": true,
+    "pin_file": "deploy/daytona/agent-gateway/pins/staging-pilot.pins.yaml",
+    "sha256": "64798c27484063f39519b6541b0d7f6e90be8ba7ae7bff6991ae18e964465778",
+    "daytona_default_snapshot": "f4d947f3-bd03-4f6c-b8a2-b2034872feba",
+    "lab_placeholder": "lab:tool-only",
+    "wrote_daytona_default_snapshot": false,
+    "wrote_mocklab_agent_snapshot_id": false
+  },
+  "lab_tool": {
+    "fake_toolbox": true,
+    "image_check": "skipped",
+    "agent_tree": "/opt/company-brain-backend/current/lanyard-agent",
+    "agent_tree_visible": false
+  },
+  "vitest": "pass",
+  "checks": {
+    "live.snapshot.unchanged": true,
+    "live.tool_turn": "held",
+    "human.pin_decision": "held",
+    "toolbox.no_agent_tree": true,
+    "toolbox.image_check": "skipped",
+    "create_env.no_provider_keys": true,
+    "same_user.same_sandbox": true,
+    "second_user.tenant_primary_fallback": true,
+    "tenant_a.cannot_exec_tenant_b": true,
+    "browser.no_harness_daytona_tokens": true,
+    "vault.tree.no_ensure_online": true,
+    "vitest.invariants": "pass",
+    "evidence.no_secrets": true
+  },
+  "log": "prove-invariants-20260817T162412Z.log",
+  "secrets": false
+}

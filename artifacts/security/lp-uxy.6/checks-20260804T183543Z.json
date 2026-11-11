@@ -1,0 +1,24 @@
+{
+  "checks": {
+    "docs.omnibox_hook_residual_honest": true,
+    "docs.sandbox_report_present": true,
+    "host.sandbox_enforced.la_tools_sandbox": true,
+    "omnibox.argv_builder_self_test": true,
+    "omnibox.hl_product_wrap_unit": true,
+    "omnibox.smoke_mode_a": true,
+    "path_escape.project_negative": true
+  },
+  "hl_omnibox_sha": "4596ecd5876edfc509e7bbbf970a2bec1be5a882",
+  "hl_sha": "72f6acac87e5bbf2bf0271f3ecc3128a3fd5462b",
+  "la_sha": "e0e2032533c9fce2ff7306831f74b4244b241d05",
+  "notes": [],
+  "provenance": {
+    "docs.omnibox_hook_residual_honest": "unit:omnibox-mode-a-hermes-hook.md",
+    "docs.sandbox_report_present": "unit:lp-uxy.6 report",
+    "host.sandbox_enforced.la_tools_sandbox": "unit:tools-sandbox.test.ts sha=e0e2032533c9fce2ff7306831f74b4244b241d05",
+    "omnibox.argv_builder_self_test": "unit:build-shell-exec-argv.py",
+    "omnibox.hl_product_wrap_unit": "unit:test_omnibox.py sha=72f6acac87e5bbf2bf0271f3ecc3128a3fd5462b wrap_file=4596ecd5876edfc509e7bbbf970a2bec1be5a882",
+    "omnibox.smoke_mode_a": "unit:smoke-omnibox.sh",
+    "path_escape.project_negative": "unit:test-project-path-escape.py"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "bead_id": "lp-c76.2",
+  "goal": "Re-verify activity_plane suite green on main after #203 (lp-4h6.2 humanized labels)",
+  "served_commit": "19f4a1bf281e4a189a2085545e1b250947d91df6",
+  "served_ref": "origin/main",
+  "base_url": "http://127.0.0.1:3021",
+  "command": "pytest -v test_activity_plane.py",
+  "cwd": "portal/packages/web/ui-testing",
+  "result": "6 passed in 5.70s",
+  "tests": [
+    "test_phase0_1_soft_open_loads_document_content[chromium]",
+    "test_phase2_tool_rows_render[chromium]",
+    "test_phase3_4_activity_pane_shell[chromium]",
+    "test_phase5_subagent_chip_opens_activity_pane[chromium]",
+    "test_phase6_workflow_stages_render[chromium]",
+    "test_phase_all_happy_path_composite[chromium]"
+  ],
+  "raw_tool_name_assertions": {
+    "positive_raw_ids": false,
+    "humanized_labels_asserted": ["Reading documents", "Searching files", "Running a command"],
+    "raw_ids_asserted_absent": ["read_file", "vault_search", "bash"]
+  },
+  "screenshots": [
+    "phase0-1-soft-open-content.png",
+    "phase2-tool-rows.png",
+    "phase3-4-activity-pane-shell.png",
+    "phase5-subagent-chip-activity.png",
+    "phase6-workflow-stages.png",
+    "phase-all-composite.png",
+    "phase-all-activity-exclusive.png"
+  ],
+  "verified_at": "2026-07-31T00:43:56Z",
+  "pr_fix_shipped": "#203 (19f4a1b)"
+}

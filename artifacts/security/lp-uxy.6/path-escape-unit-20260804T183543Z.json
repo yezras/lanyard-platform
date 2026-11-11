@@ -1,0 +1,28 @@
+PASS: project .. sibling (PROJECT_PATH_ESCAPE)
+PASS: project absolute vault sibling (PROJECT_PATH_ESCAPE)
+PASS: vault absolute outside (VAULT_PATH_ESCAPE)
+PASS: vault .. beyond root (VAULT_PATH_ESCAPE)
+PASS: vault prefix trap vault-evil (VAULT_PATH_ESCAPE)
+PASS: etc passwd absolute (VAULT_PATH_ESCAPE)
+PASS: in-tree relative -> /tmp/lp-uxy6-path-acl-y4km138e/vault/proj/in.txt
+PASS: project root . -> /tmp/lp-uxy6-path-acl-y4km138e/vault/proj
+PASS: vault-only sibling -> /tmp/lp-uxy6-path-acl-y4km138e/vault/sib.txt
+{
+  "bead_id": "lp-uxy.6",
+  "failure_count": 0,
+  "failures": [],
+  "negative_cases": [
+    "project .. sibling",
+    "project absolute vault sibling",
+    "vault absolute outside",
+    "vault .. beyond root",
+    "vault prefix trap vault-evil",
+    "etc passwd absolute"
+  ],
+  "pass": true,
+  "residual": {
+    "note": "File-tool lexical confinement only. LA bash can still cat absolute paths outside project/vault (live residual documented in docs/security/lp-uxy.6-agent-sandbox-path-acl-omnibox.md).",
+    "shell_argv_path_acl": false
+  },
+  "suite": "test-project-path-escape"
+}
