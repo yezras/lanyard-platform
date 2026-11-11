@@ -1,0 +1,42 @@
+# RECALL.md - <ClientName>
+
+> Semantic recall playbook only. Truth for stage, contacts, and next steps lives in `AGENTS.md` and the CRM database.
+
+## Wing
+
+`<client-slug>`
+
+## Ingest Paths
+
+- `Clients/<Bucket>/<ClientName>/`
+- `Clients/<Bucket>/<ClientName>/notes/`
+- `Clients/<Bucket>/<ClientName>/Materials/` when used
+
+## On Every Touchpoint
+
+- `<ClientName> commitments next steps`
+- `<ClientName> contacts preferences`
+- `<ClientName> open questions risks`
+
+## By Intent
+
+### Email Draft
+
+- `<ClientName> tone relationship next step`
+
+### Proposal Or Scope
+
+- `<ClientName> requirements pain points workflow`
+
+### Technical Spec
+
+- `<ClientName> systems integrations constraints`
+
+## Projects On Disk
+
+- `Projects/<ProjectName>/` - `<search query>`
+
+## Cross-Reference
+
+- Search methodology wing: `agent layer knowledge base company brain`
+

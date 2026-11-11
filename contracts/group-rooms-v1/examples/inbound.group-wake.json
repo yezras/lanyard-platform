@@ -1,0 +1,27 @@
+{
+  "type": "inbound",
+  "event": {
+    "text": "Please review the auth change.",
+    "message_type": "text",
+    "message_id": "msg-user-1",
+    "source": {
+      "platform": "lanyard_web",
+      "chat_id": "room-skip-lev-bana",
+      "chat_type": "dm",
+      "chat_name": "Review room",
+      "user_id": "usr_alice",
+      "user_name": "Alice",
+      "thread_id": null,
+      "chat_topic": null,
+      "profile": "default"
+    },
+    "metadata": {
+      "target_persona_ids": ["skip"],
+      "target_persona_id": "skip",
+      "lead_persona_id": "skip",
+      "wake_reason": "orchestrator",
+      "mentioned_persona_ids": [],
+      "mentioned_user_ids": []
+    }
+  }
+}

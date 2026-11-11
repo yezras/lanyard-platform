@@ -1,0 +1,35 @@
+# AGENTS.md - <ClientName>
+
+## Profile
+
+- Client name: `<ClientName>`
+- Bucket: `<Active|Discovery|Prospect|Graveyard>`
+- Business type: `<BusinessType>`
+- Pipeline stage: `<Stage>`
+- CRM source: `Clients/clients_crm.db`
+
+## Contacts
+
+| Name | Role | Email | Phone | Notes |
+|------|------|-------|-------|-------|
+| `<ContactName>` | `<Role>` | `<Email>` | `<Phone>` | `<Notes>` |
+
+## Current State
+
+- Last communication: `<YYYY-MM-DD or unknown>`
+- Next step: `<NextStep>`
+- Brief context: `<Summary>`
+
+## File Map
+
+- Notes: `notes/`
+- Materials: `Materials/`
+- Projects: `Projects/`
+- Recall playbook: `RECALL.md`
+
+## Agent Instructions
+
+- Query CRM before and after substantive client work.
+- Read `RECALL.md` before drafting or answering based on client context.
+- Keep this file aligned with CRM updates.
+

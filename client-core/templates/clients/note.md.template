@@ -1,0 +1,37 @@
+---
+title: <YYYY-MM-DD Note Title>
+type: client-note
+client: <ClientName>
+date: <YYYY-MM-DD>
+source: <meeting|email|call|research|other>
+contacts:
+  - <ContactName>
+outputs:
+  - crm-update
+  - next-step
+---
+
+# <YYYY-MM-DD Note Title>
+
+## Summary
+
+Write the brief factual summary.
+
+## Details
+
+Write the durable notes.
+
+## Decisions
+
+- <Decision>
+
+## Follow-Ups
+
+- <Owner>: <Action>
+
+## CRM Updates
+
+- Stage: `<Stage>`
+- Last communication: `<YYYY-MM-DD>`
+- Next step: `<NextStep>`
+

@@ -1,0 +1,10 @@
+# PROJECTS-INDEX.md - <ClientName>
+
+This file maps active project folders for `<ClientName>`.
+
+| Project | Path | Status | Recall Query |
+|---------|------|--------|--------------|
+| `<ProjectName>` | `Projects/<ProjectName>/` | `<Status>` | `<short natural-language query>` |
+
+Update this file whenever a project is created, archived, renamed, or moved.
+
