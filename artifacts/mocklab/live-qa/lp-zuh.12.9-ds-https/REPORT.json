@@ -1,0 +1,78 @@
+{
+  "bead": "lp-zuh.12.9",
+  "probed_at_utc": "2026-08-19T13:14:31Z",
+  "verdict": "HTTPS_GO",
+  "editor_go_claimed": false,
+  "playwright_deferred_to": "lp-zuh.13.2",
+  "cloudfront": {
+    "distribution_id": "E1OQ5SAD1WR60T",
+    "domain_name": "d3sqcebajd6ueb.cloudfront.net",
+    "origin": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+    "viewer": "HTTPS (CloudFront default cert)",
+    "origin_protocol": "http-only",
+    "cache_policy": "Managed-CachingDisabled",
+    "origin_request_policy": "Managed-AllViewer",
+    "bead": "lp-zuh.12.9"
+  },
+  "https_probe": {
+    "probed_at_utc": "2026-08-19T13:14:31Z",
+    "bead": "lp-zuh.12.9",
+    "ds_host": "d3sqcebajd6ueb.cloudfront.net",
+    "preferred_scheme": "https",
+    "http": {
+      "healthcheck_status": 301,
+      "api_js_status": 301,
+      "api_js_bytes": 167,
+      "api_js_content_type": "text/html"
+    },
+    "https": {
+      "healthcheck_status": 200,
+      "api_js_status": 200,
+      "api_js_bytes": 65363,
+      "api_js_content_type": "application/javascript",
+      "ok": true
+    },
+    "verdict": "HTTPS_GO",
+    "editor_go_claimed": false,
+    "editor_blocker": null,
+    "bff_allowlist_note": "BFF_OFFICE_DOCUMENT_SERVER_HOSTS is hostname-only (no scheme). On HTTPS cutover, compose injects <cf-domain|public-hostname>,<alb-dns>.",
+    "secrets": "none \u2014 probe does not read JWT/session values"
+  },
+  "alb_http_residual": {
+    "probed_at_utc": "2026-08-19T13:15:02Z",
+    "bead": "lp-zuh.12.9",
+    "ds_host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+    "preferred_scheme": "http",
+    "http": {
+      "healthcheck_status": 200,
+      "api_js_status": 200,
+      "api_js_bytes": 65363,
+      "api_js_content_type": "application/javascript"
+    },
+    "https": {
+      "healthcheck_status": 0,
+      "api_js_status": 0,
+      "api_js_bytes": 0,
+      "api_js_content_type": "",
+      "ok": false
+    },
+    "verdict": "HTTP_GO_HTTPS_BLOCKED",
+    "editor_go_claimed": false,
+    "editor_blocker": "https_required \u2014 SPA rejects non-loopback http Document Server origins",
+    "bff_allowlist_note": "BFF_OFFICE_DOCUMENT_SERVER_HOSTS is hostname-only (no scheme). On HTTPS cutover, compose injects <cf-domain|public-hostname>,<alb-dns>.",
+    "secrets": "none \u2014 probe does not read JWT/session values"
+  },
+  "bff_allowlist": [
+    {
+      "name": "BFF_OFFICE_DOCUMENT_SERVER_HOSTS",
+      "value": "d3sqcebajd6ueb.cloudfront.net,lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com"
+    }
+  ],
+  "spa_pin": {
+    "version": "v0.1.9-mocklab-oo-zuh129-20260819",
+    "sha256": "c1a3d146a9d8e01a2dc14163071843c442ab0a5b3dbfc2bce798b2f4b5590e98",
+    "VITE_ONLYOFFICE_DS_URL": "https://d3sqcebajd6ueb.cloudfront.net",
+    "invalidation_id": "IDO3VOPNAL7Z0L2D4ILXLH0P5U"
+  },
+  "secrets": "none"
+}
