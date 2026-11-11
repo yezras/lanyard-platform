@@ -1,0 +1,9 @@
+{
+  "bead_id": "lp-uxy.15.8",
+  "story": "web-search-results",
+  "cost_gated": true,
+  "firecrawl_live": false,
+  "result_card_count": 5,
+  "citation_rich": true,
+  "citation_opens_external": true
+}
