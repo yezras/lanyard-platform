@@ -36,7 +36,7 @@ No production tenant install in this phase.
   "invoke_template": "bwrap --die-with-parent --unshare-user --unshare-pid --unshare-net --proc /proc --dev /dev --ro-bind /usr /usr --ro-bind /bin /bin --ro-bind /lib /lib [--ro-bind /lib64 /lib64 if present] --ro-bind /etc/ld.so.cache /etc/ld.so.cache --tmpfs /tmp --tmpfs /home --dir /home/hermes --dir /home/hermes/.hermes --bind ${VAULT_GRANT} /opt/company-brain --bind ${WORKSPACE} /var/lib/company-brain/omnibox/workspaces/${PROFILE} --chdir ${WORKDIR} -- ${CMD...}",
   "known_gaps": [
     "Selective L7/domain egress allowlist is not native to bwrap; phase-0 uses --unshare-net (default-deny all net). Phase 6 must add deploy-owned egress proxy or equivalent when allowlisted model/relay/processor HTTPS is required inside the box.",
-    "Shared-kernel residual risk (bwrap \u2260 microVM); document in phase 7 threat model \u2014 not closed by this spike.",
+    "Shared-kernel residual risk (bwrap ≠ microVM); document in phase 7 threat model — not closed by this spike.",
     "No hermes Unix user on the lab host; isolation proven as unprivileged lab user (uid 1000). Staging (phase 9) must re-run as User=hermes on AL2023 AMI.",
     "Omnigent CLI not installed / not exercised end-to-end; rejected for Mode A MVP on packaging and product-boundary grounds (see Rationale).",
     "seccomp filter profile not applied in spike; optional hardening for phase 2/3 if AL2023 supports without breaking curl/openssl children.",
@@ -49,7 +49,7 @@ No production tenant install in this phase.
 |-------|--------|
 | **tool** | `bwrap_inrepo` |
 | **version** | bubblewrap **0.9.0** (lab evidence); host pin via distro package in `ensure-omnibox` (phase 3) |
-| **invoke_template** | See JSON above; phase-2 wrapper wraps this as `run-under-omnibox --profile \u2026 -- cmd\u2026` |
+| **invoke_template** | See JSON above; phase-2 wrapper wraps this as `run-under-omnibox --profile … -- cmd…` |
 | **known_gaps** | Selective egress, shared kernel, hermes-user staging retest, no Omnigent runtime proof, seccomp optional, credential inject deferred |
 
 **Mode B:** Not explored as a deliverable. Omnigent server / session host / multi-device UI remain out of scope.
@@ -60,9 +60,9 @@ No production tenant install in this phase.
 
 | Criterion | `omnigent_cli` | `bwrap_inrepo` (chosen) |
 |-----------|----------------|-------------------------|
-| Mode A fit (wrap tool children only) | Omnibox lives inside Omnigent harness/session stack (`omnigent.inner.*`, `sandbox.bwrap`); not a thin standalone `omnibox exec -- cmd` contract for Hermes gateway | Direct: one shell wrapper owns argv \u2192 bwrap |
+| Mode A fit (wrap tool children only) | Omnibox lives inside Omnigent harness/session stack (`omnigent.inner.*`, `sandbox.bwrap`); not a thin standalone `omnibox exec -- cmd` contract for Hermes gateway | Direct: one shell wrapper owns argv → bwrap |
 | Deploy ownership | Pulls alpha product (PyPI `omnigent` 0.5.1, Apache-2.0) with large dep surface (server, UI SDKs, many harness extras) | Company-brain-deploy owns policy YAML + `run-under-omnibox`; dependency is distro `bubblewrap` only |
-| Mode B coupling risk | Same binary family as Omnigent server / host sessions \u2014 easy to drift into second control plane | No Omnigent process; gateway stays Hermes |
+| Mode B coupling risk | Same binary family as Omnigent server / host sessions — easy to drift into second control plane | No Omnigent process; gateway stays Hermes |
 | Lab availability | **Not installed** on spike host; install script pulls full stack | **Installed:** `/usr/bin/bwrap` bubblewrap 0.9.0 |
 | Isolation properties needed for MVP | FS grants + egress + credential proxy exist in Omnigent but require adopting their agent/os_env model | FS deny + net deny + granted RW **proven** on lab (table below); selective egress deferred to phase 6 (already planned) |
 | Laziness / subtract | Preferred only if stable thin CLI existed; package is meta-harness, not library-only Omnibox | Matches plan principles: wrap tools, do not replace gateway |
@@ -78,10 +78,10 @@ No production tenant install in this phase.
 | Host | Linux `spark-0a00` 6.17.0-1018-nvidia aarch64 (Ubuntu) |
 | Date | 2026-07-15 |
 | User | `operator` (uid 1000); **no** `hermes` user on this host |
-| bubblewrap | `/usr/bin/bwrap` \u2014 `bubblewrap 0.9.0` (`bubblewrap 0.9.0-1ubuntu0.1 arm64`) |
-| User namespaces | `kernel.unprivileged_userns_clone = 1`; `bwrap --unshare-user \u2026 /bin/true` \u2192 OK |
+| bubblewrap | `/usr/bin/bwrap` — `bubblewrap 0.9.0` (`bubblewrap 0.9.0-1ubuntu0.1 arm64`) |
+| User namespaces | `kernel.unprivileged_userns_clone = 1`; `bwrap --unshare-user … /bin/true` → OK |
 | Omnigent | `omnigent` / `omnibox` **not on PATH**; not installed under `/opt` or operator home |
-| Omnigent packaging (static) | PyPI `omnigent==0.5.1` (alpha); console scripts `omnigent` / `omni`; Omnibox implemented as in-process bwrap backends (`omnigent/inner/bwrap_sandbox.py`, `omnigent/sandbox/bwrap.py`) \u2014 inspected from wheel metadata only, **not executed** |
+| Omnigent packaging (static) | PyPI `omnigent==0.5.1` (alpha); console scripts `omnigent` / `omni`; Omnibox implemented as in-process bwrap backends (`omnigent/inner/bwrap_sandbox.py`, `omnigent/sandbox/bwrap.py`) — inspected from wheel metadata only, **not executed** |
 | Hermes | Local operator CLI at `~/.local/bin/hermes` (not Company Brain gateway under test) |
 
 Honesty: full Omnigent Omnibox CLI was **not** exercised. Decision uses (a) proven bwrap isolation, (b) static package/architecture review rejecting Omnigent as Mode A MVP backend.
@@ -92,10 +92,10 @@ Honesty: full Omnigent Omnibox CLI was **not** exercised. Decision uses (a) prov
 
 | # | Check | Expected | Result | Evidence |
 |---|--------|----------|--------|----------|
-| 1 | Denied read of secrets path inside sandbox | non-zero; no secret content | **PASS** | `cat` of unbound host secret path \u2192 `No such file or directory` (rc=1). Simulated never_grant: empty `/home/hermes/.hermes` (tmpfs) \u2192 `cat /home/hermes/.hermes/.env` fails; host file still contains `SECRET=should-not-leak` outside box |
-| 2 | Denied curl / network to non-allowlisted host | curl fails | **PASS** | With `--unshare-net`: `curl https://example.com` \u2192 `Could not resolve host` (rc=6); `curl http://1.1.1.1` \u2192 `Network is unreachable` (rc=7) |
+| 1 | Denied read of secrets path inside sandbox | non-zero; no secret content | **PASS** | `cat` of unbound host secret path → `No such file or directory` (rc=1). Simulated never_grant: empty `/home/hermes/.hermes` (tmpfs) → `cat /home/hermes/.hermes/.env` fails; host file still contains `SECRET=should-not-leak` outside box |
+| 2 | Denied curl / network to non-allowlisted host | curl fails | **PASS** | With `--unshare-net`: `curl https://example.com` → `Could not resolve host` (rc=6); `curl http://1.1.1.1` → `Network is unreachable` (rc=7) |
 | 3 | Allowed write under granted path | write visible on host grant | **PASS** | Wrote `spike-ok` under bound workspace and `ok` under bound vault-like path; host files updated |
-| 4 | Recorded invoke line for wrapper design | documented template | **PASS** | See Decision record `invoke_template` and \u00a7 Wrapper design input |
+| 4 | Recorded invoke line for wrapper design | documented template | **PASS** | See Decision record `invoke_template` and § Wrapper design input |
 | 5 | Omnigent CLI isolation suite | N/A if absent | **SKIP (documented)** | Binary not installed; not a Mode A deliverable to install server stack |
 | 6 | Mode B / Omnigent server | not delivered | **PASS (out of scope)** | No server units, no session host, no Omnigent UI wiring |
 
@@ -155,7 +155,7 @@ Backend (locked): build bwrap argv from `/etc/company-brain/omnibox/{profile}.ya
 - `/home/hermes/.hermes/.env`
 - `/home/hermes/.ssh`
 - `/root`
-- AWS/credential stores (e.g. `~/.aws`, instance role is not a path \u2014 block IMDS via net policy)
+- AWS/credential stores (e.g. `~/.aws`, instance role is not a path — block IMDS via net policy)
 - Do **not** bind the gateway service home secrets into the box; prefer tmpfs stub dirs if paths must exist
 
 ### Minimal grants
@@ -169,7 +169,7 @@ Backend (locked): build bwrap argv from `/etc/company-brain/omnibox/{profile}.ya
 
 | Phase | Behavior |
 |-------|----------|
-| 0\u20132 baseline | `--unshare-net` \u2192 no egress (proves deny) |
+| 0–2 baseline | `--unshare-net` → no egress (proves deny) |
 | 6+ | Drop full net unshare **or** share net only to a local egress proxy; allowlist model + relay + approved processors; block `169.254.169.254` and private ranges by default |
 
 ### Env scrub
@@ -186,7 +186,7 @@ Phase 0 finding for later beads:
 
 - Deploy can ship `OMNIBOX_WRAPPER=/usr/local/sbin/run-under-omnibox` and `OMNIBOX_ENABLED=0|1` without product changes.
 - Phase 5 may need a small hermes-lanyard hook if the gateway cannot wrap `shell_exec` via env alone.
-- Do **not** bwrap the long-lived `hermes-gateway` systemd process \u2014 only tool children.
+- Do **not** bwrap the long-lived `hermes-gateway` systemd process — only tool children.
 
 ---
 
