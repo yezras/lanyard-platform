@@ -321,7 +321,7 @@ def main() -> int:
                 if PROMPT_MARKER in body or "Do not use any tools" in body:
                     saw_user = True
                 fail_m = re.search(
-                    r"(Hermes request failed|Send failed \\(\d+\\)|wake_|ENSURE_ONLINE)",
+                    r"(Hermes request failed|Send failed \(\d+\)|wake_|ENSURE_ONLINE)",
                     body,
                     re.I,
                 )
@@ -363,8 +363,8 @@ def main() -> int:
                     p_reply,
                 )
             echo_ok = bool(
-                re.search(r"echo:\\s+", final_asst, re.I)
-                or re.search(rf"pong[^\\n]*{re.escape(PROMPT_MARKER)}", final_asst, re.I)
+                re.search(r"echo:\s+", final_asst, re.I)
+                or re.search(rf"pong[^\n]*{re.escape(PROMPT_MARKER)}", final_asst, re.I)
             )
             record("echo-or-pong", echo_ok, f"excerpt={final_asst[:180]!r}")
             record(
