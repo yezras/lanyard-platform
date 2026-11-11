@@ -1,0 +1,50 @@
+# Documentation-only example inputs for modules/customer-account-access (Track B).
+# Copy to a *private* terraform.tfvars in the customer account root — never commit live
+# ExternalIds, Lanyard account numbers as production claims, or customer secrets.
+#
+# This module is NOT auto-applied from git. Status: infra_ready / contract.
+#
+# Apply location: *customer* AWS account (customer credentials / SSO).
+# Lanyard never stores long-lived keys for this path — only AssumeRole + ExternalId.
+
+project_name = "acme-brain"
+tenant_slug  = "acme"
+
+# Lanyard platform principal(s) allowed to assume this role.
+# Use your real Lanyard deployer role ARN in private tfvars — the zeros below are placeholders only.
+lanyard_principal_arns = [
+  "arn:aws:iam::000000000000:role/lanyard-platform-deployer",
+]
+
+# High-entropy ExternalId shared out-of-band with Lanyard (min 16 chars).
+# NEVER commit the production value. Generate e.g.: openssl rand -base64 32
+# The string below is documentation-shaped only — replace before any real apply.
+external_id = "offline-doc-only-x7k9m2p4q8w1"
+
+# Lanyard-side secret *name* (not value) where operators store ExternalId:
+# external_id_parameter_name = "/lanyard/track-b/acme/deploy-external-id"
+
+max_session_duration_seconds = 3600
+enable_session_tags          = true
+require_mfa                  = false # set true when Lanyard principals use MFA-bound sessions
+# allowed_regions            = ["us-east-1"]
+
+create_permissions_boundary = true
+enable_deploy_permissions   = true
+enable_cross_tenant_denies  = true
+
+# Optional: platform product-artifact bucket (cross-account GetObject) or customer mirror.
+# Empty = HTTPS artifact pins only (GitHub releases, etc.).
+# artifact_s3_bucket_arns = [
+#   "arn:aws:s3:::lanyard-product-artifacts-example",
+# ]
+
+# secret_path_prefix = "/company-brain/acme-brain"
+# iam_path_prefix    = "/company-brain/"
+
+# Required honesty gate
+acknowledge_not_auto_applied = true
+
+extra_tags = {
+  Owner = "customer-security"
+}
