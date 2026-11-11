@@ -1,0 +1,103 @@
+# Docker mocklab topology for Portal + Lanyard Agent joint GO (lp-rt5.8).
+#
+# Portal services are built from the monorepo portal/ tree.
+# Lanyard Agent is external (host process or published image pin) — see README.
+#
+#   docker compose -f deploy/dev/mocklab-agent-parity/docker-compose.yml up -d
+#   bash deploy/scripts/prove-mocklab-agent-parity.sh
+#
+# Optional Document Server (Edit only):
+#   docker compose -f deploy/dev/mocklab-agent-parity/docker-compose.yml --profile ds up -d
+#
+# Secrets: use a private .env (from .env.example). Never commit real credentials.
+
+name: mocklab-agent-parity
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-portal}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-portal}
+      POSTGRES_DB: ${POSTGRES_DB:-portal_cp}
+    volumes:
+      - mocklab-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-portal} -d ${POSTGRES_DB:-portal_cp}"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+  control-plane:
+    image: ${CP_IMAGE:-lanyard/control-plane:local}
+    build:
+      context: ../../../portal
+      dockerfile: packages/control-plane/Dockerfile
+    ports:
+      - "127.0.0.1:3100:3100"
+    environment:
+      CONTROL_PLANE_PORT: "3100"
+      CONTROL_PLANE_SERVICE_TOKEN: ${CONTROL_PLANE_SERVICE_TOKEN:-placeholder-control-plane-service-token}
+      CONTROL_PLANE_DATABASE_URL: postgres://${POSTGRES_USER:-portal}:${POSTGRES_PASSWORD:-portal}@postgres:5432/${POSTGRES_DB:-portal_cp}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  relay:
+    image: ${RELAY_IMAGE:-lanyard/relay:local}
+    build:
+      context: ../../../portal
+      dockerfile: packages/relay/Dockerfile
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: "8787"
+      RELAY_PORT: "8787"
+      RELAY_HOST: "0.0.0.0"
+      RELAY_INTERNAL_TOKEN: ${RELAY_INTERNAL_TOKEN:-placeholder-relay-internal-token}
+      RELAY_DEV_SECRETS: ${RELAY_DEV_SECRETS:-[]}
+
+  bff:
+    image: ${BFF_IMAGE:-lanyard/bff:local}
+    build:
+      context: ../../../portal
+      dockerfile: packages/bff/Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      BFF_PORT: "4000"
+      CONTROL_PLANE_URL: http://control-plane:3100
+      CONTROL_PLANE_SERVICE_TOKEN: ${CONTROL_PLANE_SERVICE_TOKEN:-placeholder-control-plane-service-token}
+      RELAY_URL: http://relay:8787
+      RELAY_INTERNAL_TOKEN: ${RELAY_INTERNAL_TOKEN:-placeholder-relay-internal-token}
+      BRAIN_RPC_ENABLED: ${BRAIN_RPC_ENABLED:-1}
+      DEV_TENANT_SLUG: ${DEV_TENANT_SLUG:-demo}
+      # Optional: bind host vault for Office samples
+      VAULT_ROOT: ${VAULT_ROOT:-}
+      # Optional L10 chat corpus (lp-gkh.9) — durable FS layout; tenant still needs chat_corpus_enabled
+      CHAT_CORPUS_BUCKET: ${CHAT_CORPUS_BUCKET:-}
+      CHAT_CORPUS_FS_ROOT: ${CHAT_CORPUS_FS_ROOT:-}
+      CONTROL_PLANE_INTERNAL_TOKEN: ${CONTROL_PLANE_INTERNAL_TOKEN:-${INTERNAL_OPS_TOKEN:-}}
+    depends_on:
+      - control-plane
+      - relay
+
+  # Optional OnlyOffice Document Server (Edit path only; preview does not require it).
+  documentserver:
+    profiles: ["ds"]
+    image: onlyoffice/documentserver:latest
+    container_name: mocklab-agent-parity-ds
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      JWT_ENABLED: "false"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/healthcheck || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  mocklab-pg-data:
