@@ -1,0 +1,88 @@
+# Example compatibility pins (schema_version 2).
+# Placeholder-safe for git. Replace in private overlays before real deploys.
+#
+# Design: compatibility/README.md
+# Schema: compatibility/schema.json
+# v1 hermes.* → v2 backend.* translation: compatibility/translation-v1-to-v2.md
+# Backend kinds / contract majors: contracts/backend-runtime-v1/
+#
+# schema_version 2 changes vs company-brain-deploy v1:
+#   - top-level hermes.*  →  backend.{kind,version,sha256,url,contract}
+#   - relay_contract.major  →  backend.contract.relay
+#   - client_core remains a SEPARATE top-level block (not nested under backend)
+#   - portal block shape unchanged
+#
+# Validate (structural + policy, offline):
+#   bash scripts/validate.sh
+#   python3 scripts/validate-compatibility-pins.py
+#   python3 scripts/validate-compatibility-pins.py path/to/operator-pins.yaml
+
+schema_version: 2
+
+# Selected backend product artifact (replaces v1 hermes block).
+# kind must match manifest/backend.json and backend-runtime-v1.
+# arch: set intentionally (default product = linux-x86_64 for mocklab / t3.*).
+#   linux-x86_64  — default; matches pack/publish TARGET_ARCH and typical EC2
+#   linux-aarch64 — only when an arm runtime was published (optional matrix)
+# URL must include the arch segment once labeled objects exist (lp-2md / hermes
+# release-lanyard-artifact). Do not silently pin unlabeled hermes/<ver>/… paths.
+# Product workflow may print hermes.target_arch / hermes.arch (= backend.arch).
+backend:
+  kind: hermes_lanyard
+  version: "v0.0.0-example"
+  arch: linux-x86_64
+  sha256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  # Preferred long-term (kind-neutral under backends/ + arch label):
+  url: "s3://example-artifacts-bucket/backends/hermes-lanyard/v0.0.0-example/linux-x86_64/backend.tar.gz"
+  # Hermes product S3 layout (current publish; same arch label):
+  #   s3://$BUCKET/hermes/v0.0.0-example/linux-x86_64/hermes-v0.0.0-example.tar.gz
+  # DEPRECATED unlabeled (do not use for new pins once labeled objects exist):
+  #   s3://$BUCKET/hermes/v0.0.0-example/hermes-v0.0.0-example.tar.gz
+  # Optional: base64 raw Ed25519 signature over the tarball bytes
+  # signature_b64: "REPLACE_WITH_RELEASE_SIGNATURE_B64"
+  contract:
+    runtime_layout: 1
+    relay: 1
+    brain_rpc: 1
+
+# Client-core seed tarball — always separate from backend.
+# Arch-neutral content seed (no TARGET_ARCH path segment) unless native deps appear.
+# Install target: vault root. Independent of backend.kind / backend.arch swaps.
+# URL shape (company-brain-deploy + pack-release.sh):
+#   s3://$BUCKET/client-core/<version>/client-core-<version>.tar.gz
+# Alternate object name under the same version prefix (also accepted):
+#   s3://$BUCKET/client-core/<version>/client-core.tar.gz
+# Emit real version/sha256/url offline:
+#   bash client-core/scripts/pack-release.sh --dry-run vX.Y.Z
+client_core:
+  version: "v0.0.0-example"
+  sha256: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  url: "s3://example-artifacts-bucket/client-core/v0.0.0-example/client-core.tar.gz"
+  # signature_b64: "REPLACE_WITH_RELEASE_SIGNATURE_B64"
+
+portal:
+  # Optional static SPA pin (preferred over a web runtime container).
+  web:
+    version: "v0.0.0-example"
+    sha256: "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    url: "s3://example-artifacts-bucket/portal-web/v0.0.0-example/portal-web.tar.gz"
+  images:
+    bff:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform/portal/bff"
+      digest: "sha256:0000000000000000000000000000000000000000000000000000000000000002"
+      tag: "v0.0.0-example"
+    relay:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform/portal/relay"
+      digest: "sha256:0000000000000000000000000000000000000000000000000000000000000003"
+      tag: "v0.0.0-example"
+    control-plane:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform/portal/control-plane"
+      digest: "sha256:0000000000000000000000000000000000000000000000000000000000000004"
+      tag: "v0.0.0-example"
+
+# Optional publisher attestation (SHA-256 remains required). Lab may omit.
+# artifact_attestation:
+#   alg: ed25519
+#   signing_pubkey_b64: "REPLACE_WITH_BASE64_OF_PEM_PUBLIC_KEY"
+#   signing_identity: "lanyard-release-ed25519-example"
+#   require: true

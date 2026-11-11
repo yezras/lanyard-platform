@@ -1,0 +1,92 @@
+# Staging candidate pins — Hermes-Lanyard via schema_version 2 (generic backend.*).
+# Bead: lp-k7g.12.5 (cutover: stage deploy with Hermes-Lanyard backend pins)
+#
+# Coordinates are the first private product releases (safe to commit: no tokens).
+# Translated from deploy/compatibility/pins.real-releases.yaml (v1 hermes.*)
+# using compatibility/translation-v1-to-v2.md.
+#
+# Prefer S3 landing zones when platform-account publish exists (arch-labeled;
+# default product arch = linux-x86_64 for mocklab / x86_64 EC2):
+#   s3://$BUCKET/backends/hermes-lanyard/<version>/linux-x86_64/backend.tar.gz
+# Hermes product publish path (same arch segment):
+#   s3://$BUCKET/hermes/<version>/linux-x86_64/hermes-<version>.tar.gz
+# Optional arm hosts only (when published): …/linux-aarch64/…
+# Unlabeled hermes/<version>/hermes-<version>.* is DEPRECATED — do not pin
+# new tenants against it once labeled objects exist.
+# Private GitHub HTTPS still requires GITHUB_TOKEN/GH_TOKEN at download time
+# (env / SSM only — never commit tokens).
+#
+# Validate offline:
+#   python3 scripts/validate-compatibility-pins.py \
+#     compatibility/pins.hermes-lanyard-staging.example.yaml
+#
+# Operator procedure:
+#   docs/runbooks/staging-hermes-lanyard-backend-pins.md
+# Rollback capture template:
+#   deploy/examples/staging-hermes-lanyard/rollback-pin-capture.template.sh
+#
+# Honesty: this file is a pin *shape + published coordinates* for staging prep.
+# It does NOT prove live EC2 install or Portal E2E on staging.
+
+schema_version: 2
+
+meta:
+  description: >
+    Hermes-Lanyard staging cutover pins (generic BACKEND_* path). Coordinates
+    from private product releases; Portal image repositories remain ECR
+    placeholders until product-artifact-infra publish lands.
+  created_at: "2026-07-20"
+  notes: >
+    backend.kind=hermes_lanyard, backend.arch=linux-x86_64 (default product).
+    client_core is arch-neutral and portal stays separate top-level blocks.
+    Use with tenant backend_artifact_* / backend_artifact_arch tfvars
+    (not hermes_artifact_* alone). Live staging still requires AWS account
+    access, secrets, and human apply approval — see cutover evidence doc.
+
+backend:
+  kind: hermes_lanyard
+  version: "v0.1.0-g7h3"
+  # Default product arch for mocklab / x86_64 EC2 (t3.medium, etc.).
+  # Product pack/publish TARGET_ARCH; maps to backend_artifact_arch /
+  # hermes.target_arch. Set intentionally — arm hosts need linux-aarch64 object.
+  arch: linux-x86_64
+  sha256: "a372580396e170436c22e44a61fbcdf8d2c7cf4f5d328694bb5afdf279904db9"
+  # Private GitHub release asset (browser URL). Bootstrap resolves via API + token.
+  # After arch-labeled S3 publish (lp-2md.2), prefer:
+  #   s3://$BUCKET/backends/hermes-lanyard/v0.1.0-g7h3/linux-x86_64/backend.tar.gz
+  #   s3://$BUCKET/hermes/v0.1.0-g7h3/linux-x86_64/hermes-v0.1.0-g7h3.tar.gz
+  # DEPRECATED unlabeled (do not use once labeled objects exist):
+  #   s3://$BUCKET/hermes/v0.1.0-g7h3/hermes-v0.1.0-g7h3.tar.gz
+  url: "https://github.com/LanyardBrain/hermes-lanyard/releases/download/v0.1.0-g7h3/hermes-v0.1.0-g7h3.tar.gz"
+  contract:
+    runtime_layout: 1
+    relay: 1
+    brain_rpc: 1
+
+client_core:
+  # Arch-neutral vault seed tarball (no linux-x86_64 path segment).
+  version: "v0.1.0-g7c2"
+  sha256: "ef21c313525afdca9902c40814293bbe924f428c219d93cf80398941c1f181e1"
+  url: "https://github.com/LanyardBrain/client-core/releases/download/v0.1.0-g7c2/client-core-v0.1.0-g7c2.tar.gz"
+  # Future S3: s3://$BUCKET/client-core/v0.1.0-g7c2/client-core-v0.1.0-g7c2.tar.gz
+
+portal:
+  web:
+    version: "v0.1.0-g7p"
+    sha256: "b1d00dafc01c1e7b1de5d0ace59f44b1697de8e90eefd290829b4f9d45d8dff1"
+    url: "https://github.com/LanyardBrain/Portal/releases/download/v0.1.0-g7p/portal-web-v0.1.0-g7p.tar.gz"
+  images:
+    # Local Docker image Ids from product build (not ECR RepoDigests). Repositories
+    # are placeholders until ECR publish; re-pin after push.
+    bff:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/bff"
+      digest: "sha256:f6e8e9adbafe4ad82bb61c90861e0d5ae75e7f72135ee86986ba0453898d9620"
+      tag: "v0.1.0-g7p"
+    relay:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/relay"
+      digest: "sha256:1b43ba48cf0529f6d9823ef6a8c6005dc0678dc36428cb0bcfcc26e4a975b771"
+      tag: "v0.1.0-g7p"
+    control-plane:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/control-plane"
+      digest: "sha256:703e2436fdea0f926e3a2a24c4cf7e1ff13061e553d6f9d3c0aecd64d4b580d6"
+      tag: "v0.1.0-g7p"
