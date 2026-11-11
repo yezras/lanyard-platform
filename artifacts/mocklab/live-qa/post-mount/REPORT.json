@@ -1,0 +1,27 @@
+{
+  "bead": "lp-zuh.9.6",
+  "when": "20260814T170823Z",
+  "sandbox_id": "32d6e20f-3c8e-4141-b20e-a11c514f5ba2",
+  "snapshot": "lanyard-la-main-508b0b736ad5-mounts3-zuh94-20260814",
+  "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1",
+  "checks": {
+    "mount_ok": true,
+    "writable": true,
+    "seed_agents": true,
+    "seed_welcome": true,
+    "vault_write_ok": true,
+    "vault_write_path": "/mnt/vault/Projects/Workspace/notes/lp-zuh96-gpu-note-20260814T170823Z.md",
+    "workflow_mkdir_ok": true,
+    "cron_state_ok": true,
+    "config_vault_root": true,
+    "config_state_dir_vault": true,
+    "hybrid_residual": false,
+    "eacces_none": true,
+    "s3_note_durable": true,
+    "s3_workflow_state_durable": true,
+    "s3_cron_probe_durable": true
+  },
+  "verdict": "PASS",
+  "method": "daytona_toolbox_guest_exec + aws_s3",
+  "ui_residual": "Playwright harness not available in implementer env; Vault UI browser proof deferred (needs_ui_qa)"
+}

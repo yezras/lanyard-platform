@@ -1,0 +1,10 @@
+{
+  "distribution_id": "E1OQ5SAD1WR60T",
+  "domain_name": "d3sqcebajd6ueb.cloudfront.net",
+  "origin": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+  "viewer": "HTTPS (CloudFront default cert)",
+  "origin_protocol": "http-only",
+  "cache_policy": "Managed-CachingDisabled",
+  "origin_request_policy": "Managed-AllViewer",
+  "bead": "lp-zuh.12.9"
+}
