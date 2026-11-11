@@ -1,0 +1,22 @@
+{
+  "story": {
+    "ok": true,
+    "friendly": "Parsing a document",
+    "rows": 5
+  },
+  "live": {
+    "context": {
+      "status": 200,
+      "brain_rpc": true,
+      "kind": "lanyard_agent"
+    },
+    "attach_ok": true,
+    "final_preview": "NO_PARSE_DOCUMENT_TOOL\n10:38 AM\n\u00b7\ngrok-4.5",
+    "saw_parsing_label": false,
+    "saw_parse_id": true,
+    "saw_no_tool": true,
+    "marker_in_assistant": false,
+    "tool_rows": 0,
+    "body_tail": " scheduled cron job named 'shipqa-nl-cr\u2026\nCreate a scheduled cron job named 'shipqa-nl-cr\u2026\nCreate a scheduled cron job named 'shipqa-nl-cr\u2026\nShip QA nested tools: please spawn two concurre\u2026\nhi\ndemo\nNo chats yet\nlegal_work\nNo chats yet\nQaBugWd24645\nNo chats yet\nFixWd25140\nNo chats yet\nk\nNo chats yet\ndmeo\nNo chats yet\nGeneral\nNew chat\nPlease use the parse_document (or extract_document_text) tool on the attached office/text file if available, convert it to Markdown, and quote the unique marker LANYARD_SHIPQA_PARSE_DOC_MARKER in your answer. If parse_document is not available, say exactly: NO_PARSE_DOCUMENT_TOOL. Keep under 120 words. shipqa-parse-doc-lp-uxy.15.10\n10:38 AM\n\u00b7\ngrok-4.5\nNO_PARSE_DOCUMENT_TOOL\n10:38 AM\n\u00b7\ngrok-4.5\nScroll to bottom\nScoped to Clients\nHello, dev.\nClients\nAuto \u00b7 Moderate"
+  }
+}
