@@ -1,0 +1,85 @@
+{
+  "bead": "lp-zuh.12.2",
+  "title": "DS HTTPS + browser-reachable Document Server for MockLab",
+  "verdict": "HTTP_GO_HTTPS_BLOCKED",
+  "editor_go_claimed": false,
+  "needs_ui_qa": true,
+  "needs_human_for_operator_apply": true,
+  "acceptance": {
+    "1_https_or_documented_exception": {
+      "met": true,
+      "how": "HTTPS blocked; lab-documented exception + enable options in runbook \\u00a76 and RESULT.md"
+    },
+    "2_health_and_api_js_200": {
+      "met_partial": true,
+      "http_origin": true,
+      "https_origin": false,
+      "detail": {
+        "probed_at_utc": "2026-08-18T01:44:58Z",
+        "bead": "lp-zuh.12.2",
+        "ds_host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+        "preferred_scheme": "http",
+        "http": {
+          "healthcheck_status": 200,
+          "api_js_status": 200,
+          "api_js_bytes": 65363,
+          "api_js_content_type": "application/javascript"
+        },
+        "https": {
+          "healthcheck_status": 0,
+          "api_js_status": 0,
+          "api_js_bytes": 0,
+          "api_js_content_type": "",
+          "ok": false
+        },
+        "verdict": "HTTP_GO_HTTPS_BLOCKED",
+        "editor_go_claimed": false,
+        "editor_blocker": "https_required \\u2014 SPA rejects non-loopback http Document Server origins",
+        "bff_allowlist_note": "BFF_OFFICE_DOCUMENT_SERVER_HOSTS is hostname-only (no scheme). On HTTPS cutover with document_server_public_hostname, compose injects <public-hostname>,<alb-dns>.",
+        "secrets": "none \\u2014 probe does not read JWT/session values"
+      }
+    },
+    "3_bff_allowlist_updated": {
+      "met": true,
+      "live_host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+      "compose": "dual <public-hostname>,<alb-dns> when document_server_public_hostname set; dns-tls SAN includes Docs hostname"
+    },
+    "4_evidence": {
+      "met": true,
+      "paths": [
+        "artifacts/mocklab/live-qa/lp-zuh.12.2-ds-https/RESULT.md",
+        "artifacts/mocklab/live-qa/lp-zuh.12.2-ds-https/logs/curl-probe.json",
+        "deploy/references/runbooks/staging-document-server.md \\u00a76"
+      ]
+    }
+  },
+  "options_when_https_blocked": [
+    "A_alb_acm_custom_hostname",
+    "B_cloudfront_https_to_http_alb",
+    "C_lab_tunnel_loopback_only_not_mocklab_go"
+  ],
+  "probe": {
+    "probed_at_utc": "2026-08-18T01:44:58Z",
+    "bead": "lp-zuh.12.2",
+    "ds_host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+    "preferred_scheme": "http",
+    "http": {
+      "healthcheck_status": 200,
+      "api_js_status": 200,
+      "api_js_bytes": 65363,
+      "api_js_content_type": "application/javascript"
+    },
+    "https": {
+      "healthcheck_status": 0,
+      "api_js_status": 0,
+      "api_js_bytes": 0,
+      "api_js_content_type": "",
+      "ok": false
+    },
+    "verdict": "HTTP_GO_HTTPS_BLOCKED",
+    "editor_go_claimed": false,
+    "editor_blocker": "https_required \\u2014 SPA rejects non-loopback http Document Server origins",
+    "bff_allowlist_note": "BFF_OFFICE_DOCUMENT_SERVER_HOSTS is hostname-only (no scheme). On HTTPS cutover with document_server_public_hostname, compose injects <public-hostname>,<alb-dns>.",
+    "secrets": "none \\u2014 probe does not read JWT/session values"
+  }
+}
