@@ -1,0 +1,72 @@
+# Lanyard ops deployment working tree — do not commit live values.
+#
+# modules/tier3-dedicated-relay is **infra_ready** deployable Terraform
+# (public ALB + private Fargate via portal-relay-service composition).
+# NOT auto-applied from git examples. NOT production-certified until
+# operator staging apply + G2 credential lifecycle evidence.
+
+tenant_slug  = "compliance-co"
+environment  = "staging" # prod → relay-<slug>.withlanyard.com; staging → relay-<slug>.staging.withlanyard.com
+# name_prefix = "tier3-compliance-co"  # optional; default tier3-<tenant_slug>
+
+# Network (placeholder shape only — replace in private operator tfvars)
+vpc_id = "vpc-00000000000000000"
+public_subnet_ids = [
+  "subnet-00000000000000001",
+  "subnet-00000000000000002",
+]
+private_subnet_ids = [
+  "subnet-00000000000000003",
+  "subnet-00000000000000004",
+]
+assign_public_ip = false
+
+# Image pin (portal.images.relay) — repository@digest authority
+image_repository = "000000000000.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/relay"
+image_digest     = "sha256:0000000000000000000000000000000000000000000000000000000000000003"
+image_tag_hint   = "v0.0.0-example"
+
+container_port     = 8080
+health_check_path  = "/health"
+desired_count      = 1
+stickiness_enabled = true
+create_ecs_cluster = true
+enable_https       = false
+# acm_certificate_arn = "arn:aws:acm:us-east-1:000000000000:certificate/00000000-0000-0000-0000-000000000000"
+# acknowledge_g6_scale_beyond_one = false  # required true only if desired_count > 1
+
+# Optional per-tenant DNS alias → ALB (or use modules/portal-dns-tls externally)
+# create_dns_record = true
+# route53_zone_id   = "Z00000000000000000000"
+
+# Optional WAFv2 association (pre-existing Web ACL only)
+# web_acl_arn = "arn:aws:wafv2:us-east-1:000000000000:regional/webacl/example/00000000-0000-0000-0000-000000000000"
+
+# Non-secret env only. Production-like environments reject known secret names.
+# RELAY_CLUSTER_MODE / RELAY_ADVERTISE_URL / RELAY_NODE_ID default to single-node
+# dedicated identity; override only when needed.
+# environment_variables = {
+#   NODE_ENV = "production"
+# }
+
+# Generic SM/SSM injection (ARNs only — never secret values).
+# secrets = {
+#   RELAY_INTERNAL_TOKEN = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/relay-internal-token"
+#   }
+#   REDIS_URL = {
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/redis-url-XyZ123:REDIS_URL::"
+#   }
+# }
+
+# Optional when SOW specifies a custom relay hostname:
+# relay_hostname_override = "relay-compliance.example.com"
+# relay_host_suffix       = "withlanyard.com"
+
+# Required honesty gates
+acknowledge_not_auto_applied = true
+# claim_production_ready     = false  # must remain false (validation rejects true)
+
+tags = {
+  Owner = "platform"
+}

@@ -1,0 +1,89 @@
+# Optional dual-alias provider pattern for roots that need *both*:
+#   - Lanyard platform credentials (default provider)
+#   - Tenant / customer data-plane (aliased provider)
+#
+# The stock templates/tenant/versions.tf already supports optional assume_role on
+# the *default* provider via deploy_role_arn — preferred for pure data-plane
+# working trees (copy of this directory only).
+#
+# Use this file only when you intentionally compose platform + tenant modules
+# in one root. Copy selected blocks into versions.tf / providers.tf and pass
+#   providers = { aws = aws.tenant }
+# (or aws.customer) on every data-plane module.
+#
+# Placeholders only — never commit live account IDs, ExternalIds, or access keys.
+# Track A outputs: modules/account-factory
+# Track B outputs: modules/customer-account-access
+#
+# ---------------------------------------------------------------------------
+# Track A — Lanyard-hosted tenant account
+# ---------------------------------------------------------------------------
+#
+# variable "tenant_deploy_role_arn" {
+#   type        = string
+#   description = "From module.account_factory.deploy_role_arn"
+# }
+#
+# # Optional when factory role trust requires ExternalId:
+# # variable "tenant_deploy_external_id" {
+# #   type      = string
+# #   sensitive = true
+# # }
+#
+# provider "aws" {
+#   alias  = "tenant"
+#   region = var.region
+#
+#   assume_role {
+#     role_arn     = var.tenant_deploy_role_arn
+#     session_name = "lanyard-account-factory-${var.tenant_slug}"
+#     # external_id = var.tenant_deploy_external_id
+#   }
+# }
+#
+# module "company_brain" {
+#   source = "../../modules/company-brain-ec2"
+#   providers = { aws = aws.tenant }
+#   # dedicated_kms_key_arn = <account-factory kms_key_arn>
+#   # ...
+# }
+#
+# ---------------------------------------------------------------------------
+# Track B — customer account
+# ---------------------------------------------------------------------------
+#
+# variable "customer_deploy_role_arn" {
+#   type        = string
+#   description = "From module.customer_account_access.role_arn"
+# }
+#
+# variable "customer_deploy_external_id" {
+#   type        = string
+#   sensitive   = true
+#   description = "From Lanyard secret at external_id_parameter_name — never git."
+# }
+#
+# provider "aws" {
+#   alias  = "customer"
+#   region = var.region
+#
+#   assume_role {
+#     role_arn     = var.customer_deploy_role_arn
+#     external_id  = var.customer_deploy_external_id
+#     session_name = "lanyard-track-b-${var.tenant_slug}"
+#     tags = {
+#       Project    = var.project_name
+#       TenantSlug = var.tenant_slug
+#     }
+#     transitive_tag_keys = ["Project", "TenantSlug"]
+#   }
+# }
+#
+# module "company_brain" {
+#   source = "../../modules/company-brain-ec2"
+#   providers = { aws = aws.customer }
+#   # ...
+# }
+#
+# Default provider "aws" (no assume) remains for Lanyard platform-only resources
+# when co-located — never point customer remote state at the platform backend.
