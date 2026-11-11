@@ -1,0 +1,176 @@
+{
+  "marker": "lp-zuh.10.8-gate-20260814T173227Z",
+  "when": "2026-08-14T17:32:27Z",
+  "events": [
+    "click_fail button:has-text('Chat'): Locator.click: Timeout 3000ms exceeded.\nCall log:\n  - waiting for locator(\"button:has-text('Chat')\").first\n    - locator resolved to <button disabled type=\"button\" data-size=\"md\" aria-disabled=\"true\" class=\"astryx-side-nav-item md x78zum5 x6s0dn4 x1txdalj xh8yej3 xt970qd xh6dtrn xc342km xng3xce xjbqb8w x1hl2dhg xjb2p0i xcr08ib x1sodnla x1kq96og x1yc453h x9f619 xe9uy6x xyxi2l3 x1ueg155 xf314gf xnbbluu x1h6gzvc x47corl\">\u2026</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    5 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 500ms\n",
+    "clicked a:has-text('New')",
+    "composer div[contenteditable='true']",
+    "send button[aria-label*='Send' i]"
+  ],
+  "checks": {
+    "marker_in_ui": true,
+    "web_search_in_ui": true,
+    "fetch_failed_in_ui": false,
+    "vault_ls_in_ui": true,
+    "h100_in_ui": true,
+    "tool_progress_in_ui": true
+  },
+  "body_after": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nWorkspace\nNo chats yet\nGeneral\nlp-zuh.10.1 UI QA 2026-08-14T16:54:58Z\nMARKER lp-zuh.10.1-ui-qa Quick web_search check\u2026\nDrift\nMARKER lp-zuh.10.8-gate-20260814T173227ZUse too\u2026\nlp-zuh.10.1 residual 2026-08-14T16:47:03Z\nAug 14\nlp-zuh.7-gpu-tool-web-search liquid-cooling 2026-08-14T16:43:52Z\nAug 14\nEmber\nAug 14\nEmber\nAug 14\nOrbit\nAug 14\nOrbit\nAug 14\nNimbus\nAug 14\nPulse\nAug 14\nAtlas\nAug 14\nNimbus\nAug 14\nNimbus\nAug 14\nNimbus\nAug 14\nNimbus\nAug 14\nNimbus\nAug 14\nlp-zuh.7.2 probe\nAug 14\nCipher\nAug 14\nDrift\nAug 14\nOrbit\nAug 14\nOrbit\nAug 14\nOrbit\nAug 14\nOrbit\nAug 13\nScheduled Tasks\nGPU capacity brief lp-zuh.7-gpu-cron-capacity 20260814031243\nAug 14\nGPU capacity brief lp-zuh.7-gpu-cron-capacity 20260814031738\nAug 14\nDrift\nMARKER lp-zuh.10.8-gate-20260814T173227ZUse tools. (1) bash: run `pwd; ls /mnt/vault | head -8` (2) web_search once for 'NVIDIA H100 rack power kW 2024'. Keep under 180 words. Repeat marker once. No clarifying questions.\n1:32 PM\n\u00b7\nlaguna-s-2.1\nScroll to bottom\nHello, agent-dev.\nNo project\nAuto \u00b7 Moderate",
+  "api_hits": [
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/auth/me",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/agent/projects",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/3aa9a1fb-cdd0-4d55-ac48-b22fa25f4db0/events",
+      "status": 200,
+      "ct": "text/event-stream"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/context",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/3aa9a1fb-cdd0-4d55-ac48-b22fa25f4db0/history",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/context",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/context",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/vault/tree",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/settings/snapshot",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/events",
+      "status": 200,
+      "ct": "text/event-stream"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/history",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/vault/tree",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/auth/csrf",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/messages",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/assign-system-prompt",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/assign-name",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/settings/snapshot",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/vault/tree",
+      "status": 200,
+      "ct": "application/json"
+    }
+  ],
+  "chatish_hits": [
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/3aa9a1fb-cdd0-4d55-ac48-b22fa25f4db0/events",
+      "status": 200,
+      "ct": "text/event-stream"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/3aa9a1fb-cdd0-4d55-ac48-b22fa25f4db0/history",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/events",
+      "status": 200,
+      "ct": "text/event-stream"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/history",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/messages",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/assign-system-prompt",
+      "status": 200,
+      "ct": "application/json"
+    },
+    {
+      "url": "https://app.withlanyard.com/mocklab/api/chat/threads/42db55a5-c511-470f-a0f3-f6d3ed011d18/assign-name",
+      "status": 200,
+      "ct": "application/json"
+    }
+  ],
+  "reprobe": {
+    "/api/settings/snapshot": {
+      "status": 200,
+      "ct": "application/json"
+    },
+    "/api/agent/projects": {
+      "status": 200,
+      "ct": "application/json"
+    },
+    "/api/context": {
+      "status": 200,
+      "ct": "application/json"
+    }
+  },
+  "reprobe_crons": [],
+  "reprobe_workflows": [],
+  "reprobe_mcp": [],
+  "reprobe_skills_n": 2
+}
