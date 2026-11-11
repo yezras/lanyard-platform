@@ -216,3 +216,45 @@ type FailureBanner = {
   title: string;
   description?: string;
 };
+
+/**
+ * Per-thread side-pane snapshot (lp-vnz.2).
+ * Restored when the user switches back to that thread; cleared on explicit
+ * user close of the visible surface (with no stacking restore left).
+ */
+export type ThreadSidePaneSnapshot = {
+  mode: Exclude<ActivityPaneMode, "closed">;
+  focus: ActivityPaneFocus;
+  /** Document ref when document mode is open or retained under activity. */
+  documentRef: VaultArtifactRef | null;
+};
+
+/** Capture live side-pane + artifact panel into a thread-local snapshot. */
+export function captureThreadSidePaneSnapshot(
+  sidePane: ActivityPaneState,
+  panel: ArtifactPanelState,
+): ThreadSidePaneSnapshot | null {
+  const documentRef =
+    panel.status !== "closed" && panel.ref != null ? panel.ref : null;
+  if (sidePane.mode === "closed") {
+    // Stacking edge: document still held but mode closed → treat as document.
+    if (documentRef) {
+      return {
+        mode: "document",
+        focus: sidePane.focus,
+        documentRef,
+      };
+    }
+    return null;
+  }
+  return {
+    mode: sidePane.mode,
+    focus: sidePane.focus,
+    documentRef,
+  };
+}
+
+/** Local-part of email for composer greeting (dev@demo.local → dev). */
+export function displayNameFromEmail(email: string): string {
+  return email.split("@")[0] || email;
+}
