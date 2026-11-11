@@ -1,0 +1,13 @@
+# Copy to backend.tf in a private operator working tree (backend.tf is gitignored).
+# Replace placeholders — do not invent real account or production bucket names in docs.
+# This environment is not apply-ready until backend + unique bucket names + real digests are set.
+#
+# terraform {
+#   backend "s3" {
+#     bucket         = "lanyard-tfstate-REPLACE"
+#     key            = "platform/staging/compose/terraform.tfstate"
+#     region         = "us-east-1"
+#     dynamodb_table = "lanyard-tf-locks"
+#     encrypt        = true
+#   }
+# }

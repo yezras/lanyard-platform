@@ -1,0 +1,17 @@
+# Documentation-only example — do not apply with 000000000000 as if it were live.
+# Copy to an untracked tfvars. Never commit live account IDs or secret values.
+# Does NOT terraform apply from lp-oop.38.20.
+
+name_prefix  = "lanyard-platform-staging"
+environment  = "staging"
+aws_region   = "us-east-1"
+aws_account_id = "000000000000"
+
+# role_name = "lanyard-platform-staging-harness-exec"
+
+acknowledge_not_auto_applied = true
+
+# extra_secret_names = []
+# extra_secret_arns  = [
+#   "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/portal/harness-litellm-*",
+# ]
