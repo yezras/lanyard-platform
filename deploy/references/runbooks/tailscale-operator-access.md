@@ -193,13 +193,13 @@ Document which control the tailnet uses in the tenant change ticket. Do not trea
 ## 6. Relationship to SSM and SSH
 
 ```text
-                    ┌────────────────────────┐
+                    ┌─────────────────────────┐
  Operator           │  Preference order       │
-                    ├────────────────────────┤
+                    ├─────────────────────────┤
                     │ 1. SSM Session Manager  │  ← primary break-glass
                     │ 2. Tailscale (optional) │  ← secondary mesh
                     │ 3. SSH /32 (exception)  │  ← MFA time-boxed only
-                    └────────────────────────┘
+                    └─────────────────────────┘
 ```
 
 - Enabling Tailscale **does not** open security-group SSH.  
