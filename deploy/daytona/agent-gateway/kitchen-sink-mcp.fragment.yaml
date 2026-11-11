@@ -1,0 +1,41 @@
+# Kitchen-sink MCP fragment for MockLab (lp-zuh.10.6 / lp-zuh.14.3 / lp-vw3).
+#
+# Merge into $BACKEND_HOME/config.yaml only when the pinned Lanyard Agent:
+#   1. Accepts top-level `mcp_servers` in packages/config configSchema (strict Zod)
+#   2. Starts stdio MCP clients and registerHidden() tools into the catalog
+#   3. settings.snapshot collectMcpServers surfaces name/transport/enabled
+#
+# LA product surface: lp-zuh.14.3 / LanyardBrain/lanyard-agent#239.
+# Default kitchen-sink seed still omits this block (safe for older pins).
+# Operators / MockLab wake: LANYARD_ENTRY_SEED_MCP=1 after MCP-capable pin.
+#
+# Lab-only: no secrets, no OAuth, no third-party tokens. Binary is prebaked at
+# /opt/lanyard/lab-mcp/lab_echo_server.py (python3 already in agent-gateway image).
+#
+# Expected settings.snapshot after LA lands:
+#   mcp_servers: [{ "name": "lab_echo", "transport": "stdio", "enabled": true }]
+#
+# Short-stack (lp-oop.38.17): this command/args runs on the Fargate harness
+# (McpStdioClient), not Daytona toolbox process/execute. The harness image
+# ships the same /opt/lanyard/lab-mcp/lab_echo_server.py path. Do not put
+# MCP tokens in this fragment or in guest create-env.
+#
+# Vault-required stdio (cwd /mnt/vault) is not this fragment. That is
+# lp-oop.38.19: harness merge-vault-fs-mcp.mjs + vault seed
+# mcp/vault_fs_server.py, bound to a Daytona process session.
+#
+# Live catalog SoT is harness BACKEND_HOME/config.yaml. Start wrapper
+# fill-missing-merges this block when the lab_echo binary is on the image.
+# BFF SETTINGS_SEED_LAB_MCP does not populate source=harness snapshots.
+#
+# Expected chat path: search_tool → use_tool (mcp__lab_echo__lab_echo) →
+# ChatToolCalls row with Finished/Error humanized label. Hidden MCP rows
+# stay off LiteLLM tools[].
+
+mcp_servers:
+  lab_echo:
+    transport: stdio
+    enabled: true
+    command: python3
+    args:
+      - /opt/lanyard/lab-mcp/lab_echo_server.py

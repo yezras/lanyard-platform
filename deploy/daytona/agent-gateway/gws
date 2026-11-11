@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# gws stub — reads GOOGLE_WORKSPACE_CLI_TOKEN first (lp-xhf4.7 / lp-xhf4.21)
+# Design: docs/architecture/portal-connectors.md §3/§5
+# Bucket A prebake (plan §4.3): gws reads GOOGLE_WORKSPACE_CLI_TOKEN, not ~/.config/gws as SoT.
+# This stub proves token wiring without calling Google. Real gws binary may
+# replace it when product ships; interface is identical for agent skills.
+
+set -euo pipefail
+
+token="${GOOGLE_WORKSPACE_CLI_TOKEN:-}"
+if [[ -z "${token}" ]]; then
+  # Also accept legacy GWS_ACCESS_TOKEN alias written by CP inject
+  token="${GWS_ACCESS_TOKEN:-}"
+fi
+
+# For proof, require token on any gmail/calendar/drive subcommand.
+# Help/version should work without token.
+case "${1:-}" in
+  --help|-h|help|version|--version)
+    echo "gws stub 0.1.0 (lp-xhf4.21) — GOOGLE_WORKSPACE_CLI_TOKEN required for gmail/calendar/drive"
+    echo "usage: gws gmail|calendar|drive ..."
+    exit 0
+    ;;
+esac
+
+if [[ -z "${token}" ]]; then
+  echo "gws: missing GOOGLE_WORKSPACE_CLI_TOKEN (Connect Google, then retry)" >&2
+  echo "hint: BFF chat-use injects GOOGLE_WORKSPACE_CLI_TOKEN onto the user sandbox on first use" >&2
+  exit 2
+fi
+
+# Minimal command map mirroring contracts/connectors-v1/catalog.json
+# Only enough to prove agent can run a GWS CLI command in chat after OAuth.
+argv=("$@")
+joined=" ${argv[*]} "
+# Normalize to argv tokens for classification (case-sensitive like catalog)
+action=""
+gate=""
+
+classify() {
+  local cmd="$1"
+  case "$cmd" in
+    *" gmail users drafts create"*|" gmail users drafts update"*)
+      action="gmail.draft"; gate="sticky" ;;
+    *" gmail users messages send"*|" gmail users drafts send"*|" gmail +send"*|" gmail +reply"*|" gmail +reply-all"*|" gmail +forward"*)
+      action="gmail.send"; gate="every_call" ;;
+    *" gmail "*)
+      action="gmail.read"; gate="sticky" ;;
+    *" calendar events insert"*|" calendar events update"*|" calendar events patch"*|" calendar events delete"*|" calendar events move"*|" calendar events import"*|" calendar events quickAdd"*|" calendar +insert"*)
+      action="calendar.write"; gate="every_call" ;;
+    *" calendar "*)
+      action="calendar.read"; gate="sticky" ;;
+    *" drive files create"*|" drive files update"*|" drive files copy"*|" drive files delete"*|" drive permissions create"*|" drive permissions update"*|" drive permissions delete"*|" drive +upload"*)
+      action="drive.write"; gate="every_call" ;;
+    *" drive "*)
+      action="drive.read"; gate="sticky" ;;
+    *) action="unknown"; gate="every_call" ;;
+  esac
+}
+
+classify "$joined"
+
+# Do not leak token value; show prefix only
+prefix="${token:0:6}..."
+echo "gws stub: ok action_class=${action} gate=${gate} token=${prefix} argv=${argv[*]}"
+# Simulate read-only output for triage/list cases
+if [[ "$action" == "gmail.read" ]] && [[ "$joined" == *" +triage"* ]]; then
+  echo '{"messages":[{"id":"msg_1","subject":"Hello from stub","from":"alice@example.com"}]}'
+elif [[ "$action" == "gmail.read" ]]; then
+  echo '{"messages":[]}'
+elif [[ "$action" == "calendar.read" ]]; then
+  echo '{"events":[]}'
+elif [[ "$action" == "drive.read" ]]; then
+  echo '{"files":[]}'
+elif [[ "$action" == "gmail.draft" ]]; then
+  echo '{"draft":{"id":"draft_stub_1"}}'
+fi
+exit 0
