@@ -1,0 +1,81 @@
+=== snapshot/id ===
+HOSTNAME=c5306e38-fe05-445d-9ec0-ba3b3f7d94fd
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+=== PATH command shim ===
+-rwxr-xr-x 1 brain brain 472 Aug 14 23:24 /opt/company-brain-backend/current/bin/command
+/usr/local/bin/mempalace
+=== binary ===
+/usr/local/bin/mempalace
+MemPalace 3.7.0
+=== config ===
+44:mempalace:
+45-  enabled: true
+46-  path: /mnt/vault/mempalace
+47-  wing: mocklab
+48-  write_policy:
+49-    mode: disabled
+50-# Portal NL create (cronjob tool) + Settings Crons — durable job store on vault.
+51-cron:
+52-  enabled: true
+53-  state_dir: /mnt/vault
+54-# Stable tools[] = builtins + search_tool + use_tool (hidden/MCP via search).
+=== vault path ===
+total 0
+drwxr-xr-x 2 brain brain 27 Aug 14 23:24 .
+drwxr-xr-x 1 brain brain 47 Aug 14 23:24 ..
+-rw-r--r-- 1 brain brain  0 Aug 14 23:24 .keep
+PATH_UNDER_VAULT_YES
+=== ready ===
+{"ok":true,"status":"ready","shuttingDown":false,"inFlightSessions":0,"activeSessionKeys":0,"channels":[{"channel":"portal","ok":true,"detail":"connected platform=lanyard_web"}],"cron":{"enabled":true,"tickerAlive":true},"mempalace":{"enabled":true,"ok":true,"detail":"MemPalace available: MemPalace 3.7.0 (/usr/local/bin/mempalace); path=/mnt/vault/mempalace; wing=mocklab","reason":"ok","binaryPath":"/usr/local/bin/mempalace","version":"MemPalace 3.7.0","path":"/mnt/vault/mempalace","wing":"mocklab"}}
+=== search empty palace ===
+SEARCH_EXIT=1
+
+  Palace dir at /mnt/vault/mempalace exists but has no chroma.sqlite3 yet.
+  Run: mempalace mine <dir>
+=======================================================
+  MemPalace Mine
+=======================================================
+  Wing:    mocklab
+  Rooms:   general
+  Files:   1
+  Palace:  /mnt/vault/mempalace
+  Device:  cpu
+-------------------------------------------------------
+
+/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:   0%|          | 0.00/79.3M [00:00<?, ?iB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  16%|█▌        | 12.4M/79.3M [00:00<00:00, 130MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  31%|███▏      | 24.8M/79.3M [00:00<00:00, 110MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  45%|████▍     | 35.5M/79.3M [00:00<00:00, 106MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  58%|█████▊    | 45.7M/79.3M [00:00<00:00, 103MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  70%|███████   | 55.6M/79.3M [00:00<00:00, 103MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  82%|████████▏ | 65.4M/79.3M [00:00<00:00, 102MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  95%|█████████▍| 75.1M/79.3M [00:00<00:00, 101MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz: 100%|██████████| 79.3M/79.3M [00:00<00:00, 104MiB/s]
+  + [   1/1] lp-zuh114-probe.md                                 +1
+
+=======================================================
+  Done.
+  Files processed: 1
+  Files skipped (already filed or other): 0
+  Drawers filed: 1
+
+  By room:
+    general              1 files
+
+  Next: mempalace search "what you're looking for"
+=======================================================
+
+SEARCH2_EXIT=0
+
+============================================================
+  Results for: "MockLab zero-waiver"
+============================================================
+
+  [1] mocklab / general
+      Source: lp-zuh114-probe.md
+      Match:  cosine_sim=0.524  bm25=0.986
+
+      # mocklab mempalace probe
+      
+      Lanyard MockLab vault note for lp-zuh.11.4 zero-waiver.
+
+  --------------------------------------------------------
+
+
+[0;93m2026-08-14 23:25:16.232780950 [W:onnxruntime:Default, device_discovery.cc:285 GetGpuDevices] Failed to detect devices under "/sys/class/drm/card0", device_discovery.cc:94 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+
+NO_BINARY_MISSING
