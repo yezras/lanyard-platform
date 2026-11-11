@@ -1,0 +1,318 @@
+{
+  "bead_id": "lp-zuh.11.7",
+  "when": "2026-08-17T14:42:40.789827+00:00",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "login": "agent-dev@mocklab.example.com",
+  "marker": "lp-zuh.11.7-uiqa-20260817T144240Z",
+  "checks": {
+    "shell_auth": {
+      "ok": true,
+      "detail": "agents=1 vault=1 tools=1 url=https://app.withlanyard.com/mocklab/",
+      "screenshot": "01-auth-home.png",
+      "soft": false
+    },
+    "agents_shell": {
+      "ok": true,
+      "detail": "url=https://app.withlanyard.com/mocklab/",
+      "screenshot": "02-agents-shell.png",
+      "soft": false
+    },
+    "auth_me": {
+      "ok": true,
+      "detail": "status=200 email=agent-dev@mocklab.example.com",
+      "screenshot": null,
+      "soft": false
+    },
+    "context_api": {
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "mempalace_signal": {
+          "enabled": null,
+          "ok": null,
+          "reason": null,
+          "path": null,
+          "binaryPath": null,
+          "version": null
+        },
+        "hit_count": 0
+      },
+      "screenshot": null,
+      "soft": false
+    },
+    "api_api_brain_health": {
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "ct": "text/html",
+        "mempalace": {
+          "enabled": null,
+          "ok": null,
+          "reason": null,
+          "path": null,
+          "binaryPath": null,
+          "version": null
+        },
+        "body_keys": [
+          "raw",
+          "spa"
+        ]
+      },
+      "screenshot": null,
+      "soft": true
+    },
+    "api_api_brain_ping": {
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "ct": "application/json",
+        "mempalace": {
+          "enabled": null,
+          "ok": null,
+          "reason": null,
+          "path": null,
+          "binaryPath": null,
+          "version": null
+        },
+        "body_keys": [
+          "ok",
+          "method",
+          "instance_id",
+          "request_id",
+          "result",
+          "meta"
+        ]
+      },
+      "screenshot": null,
+      "soft": true
+    },
+    "api_api_brain_ready": {
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "ct": "text/html",
+        "mempalace": {
+          "enabled": null,
+          "ok": null,
+          "reason": null,
+          "path": null,
+          "binaryPath": null,
+          "version": null
+        },
+        "body_keys": [
+          "raw",
+          "spa"
+        ]
+      },
+      "screenshot": null,
+      "soft": true
+    },
+    "api_api_agent_ready": {
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "ct": "text/html",
+        "mempalace": {
+          "enabled": null,
+          "ok": null,
+          "reason": null,
+          "path": null,
+          "binaryPath": null,
+          "version": null
+        },
+        "body_keys": [
+          "raw",
+          "spa"
+        ]
+      },
+      "screenshot": null,
+      "soft": true
+    },
+    "api_api_agent_health": {
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "ct": "text/html",
+        "mempalace": {
+          "enabled": null,
+          "ok": null,
+          "reason": null,
+          "path": null,
+          "binaryPath": null,
+          "version": null
+        },
+        "body_keys": [
+          "raw",
+          "spa"
+        ]
+      },
+      "screenshot": null,
+      "soft": true
+    },
+    "api_api_settings_snapshot": {
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "ct": "application/json",
+        "mempalace": {
+          "enabled": null,
+          "ok": null,
+          "reason": null,
+          "path": null,
+          "binaryPath": null,
+          "version": null
+        },
+        "body_keys": [
+          "exported_at",
+          "source",
+          "backend_home",
+          "hermes_home",
+          "skills",
+          "crons",
+          "mcp_servers",
+          "models",
+          "integrations",
+          "workflows"
+        ]
+      },
+      "screenshot": null,
+      "soft": true
+    },
+    "vault_tree_api": {
+      "ok": true,
+      "detail": "status=200 has_mempalace=True sample=['cron', 'output', '09b7330db248', '20260814T171330Z.md', '20260817T143742Z.md', 'jobs.json', 'jobs.json.bak-zuh96', 'jobs2.json', 'ticker_heartbeat', 'Knowledge', 'INDEX.md', 'lp-kng67-demo', 'mempalace', 'lp-zuh117-probe.md', 'Projects', 'Workspace', 'notes', 'lp-zuh108-gate-20260814T172911Z.md', 'lp-zuh112-zw-lp-zuh.11.2-zw-20260814T221949Z.md', 'lp-zuh112-zw-lp-zuh.11.2-zw-20260814T224604Z.md', 'lp-zuh112-zw-lp-zuh.11.2-zw-20260814T225759Z.md', 'lp-zuh96-gpu-note-20260814T170823Z.md', 'seed-note.md', 'AGENTS.md', 'welcome.md']",
+      "screenshot": null,
+      "soft": false
+    },
+    "vault_ui_mempalace": {
+      "ok": true,
+      "detail": "ui_text_has_mempalace=True snip='Skip to content\\nLanyard Portal\\nAgents\\nVault\\nTools\\nA\\nagent-dev@mocklab.example.com\\nSearch\\ncron\\nKnowledge\\nlp-kng67-demo\\nmempalace\\nProjects\\nskills\\nwf_201a8d6b422d6a9c\\nwf_3c7074c04166c77c\\nwf_4e8440b25d42613a\\nwf_56a547dbd'",
+      "screenshot": "03-vault-browser.png",
+      "soft": false
+    },
+    "vault_mempalace_expand": {
+      "ok": true,
+      "detail": "expanded=['mempalace']",
+      "screenshot": "04-vault-mempalace-or-tree.png",
+      "soft": false
+    },
+    "path_under_vault_ui": {
+      "ok": true,
+      "detail": "vault tree lists mempalace entry (expected /mnt/vault/mempalace on guest)",
+      "screenshot": null,
+      "soft": false
+    },
+    "tools_shell": {
+      "ok": true,
+      "detail": "url=https://app.withlanyard.com/mocklab/",
+      "screenshot": "05-tools-overview.png",
+      "soft": true
+    },
+    "thread_create": {
+      "ok": true,
+      "detail": "status=201 id=e0e93b0d-719d-40fb-b2aa-ad969ac1a539",
+      "screenshot": null,
+      "soft": false
+    },
+    "thread_ready": {
+      "ok": true,
+      "detail": "thread=e0e93b0d-719d-40fb-b2aa-ad969ac1a539",
+      "screenshot": "06-thread-ready.png",
+      "soft": false
+    },
+    "prompt_send": {
+      "ok": true,
+      "detail": "status=200 preview={'ok': True, 'thread_id': 'e0e93b0d-719d-40fb-b2aa-ad969ac1a539'}",
+      "screenshot": null,
+      "soft": false
+    },
+    "prompt_sent_ui": {
+      "ok": true,
+      "detail": "message posted",
+      "screenshot": "07-prompt-sent.png",
+      "soft": false
+    },
+    "mempalace_no_binary_missing": {
+      "ok": true,
+      "detail": "binary_missing=False mp_ok=0 mp_err=1 tools=[{'name': 'memory_read', 'status': 'running', 'preview': 'MockLab zero-waiver'}, {'name': 'memory_read', 'status': 'error', 'preview': 'Error in memory_read'}, {'name': 'mempalace', 'status': '', 'preview': 'I attempted to search project memory for \"MockLab zero-waiver\" using the `memory_read` tool (the closest available MemPalace search tool to the requested `mempalace_search`).\\n\\n**Tool error string:** `'}]",
+      "screenshot": "08-after-mempalace-turn.png",
+      "soft": false
+    },
+    "mempalace_search_empty_or_hits": {
+      "ok": false,
+      "detail": "mp_ok=0 mention=True empty_or_hits=True final=I attempted to search project memory for \"MockLab zero-waiver\" using the `memory_read` tool (the closest available MemPalace search tool to the requested `mempalace_search`).\n\n**Tool error string:** `Palace dir at /mnt/vault/mempalace exists but has no chroma.sqlite3 yet. Run: me",
+      "screenshot": "08-after-mempalace-turn.png",
+      "soft": true
+    },
+    "chat_ui_nonblank": {
+      "ok": true,
+      "detail": "body_len=1637 snip='Skip to content\\nLanyard Portal\\nAgents\\nVault\\nTools\\nA\\nagent-dev@mocklab.example.com\\nWorkspace\\nNo chats yet\\nGeneral\\nlp-zuh.11.7 mempalace UIQA lp-zuh.11.7-uiqa-20260817T144240Z\\nI '",
+      "screenshot": "08-after-mempalace-turn.png",
+      "soft": false
+    },
+    "final_vault": {
+      "ok": true,
+      "detail": "composite",
+      "screenshot": "09-final-vault.png",
+      "soft": true
+    }
+  },
+  "screenshots": [
+    "01-auth-home.png",
+    "02-agents-shell.png",
+    "03-vault-browser.png",
+    "04-vault-mempalace-or-tree.png",
+    "05-tools-overview.png",
+    "06-thread-ready.png",
+    "07-prompt-sent.png",
+    "08-after-mempalace-turn.png",
+    "09-final-vault.png"
+  ],
+  "errors": [],
+  "notes": [],
+  "passed": true,
+  "skipped": false,
+  "thread_id": "e0e93b0d-719d-40fb-b2aa-ad969ac1a539",
+  "analysis": {
+    "tool_events": [
+      {
+        "name": "memory_read",
+        "status": "running",
+        "preview": "MockLab zero-waiver"
+      },
+      {
+        "name": "memory_read",
+        "status": "error",
+        "preview": "Error in memory_read"
+      },
+      {
+        "name": "mempalace",
+        "status": "",
+        "preview": "I attempted to search project memory for \"MockLab zero-waiver\" using the `memory_read` tool (the closest available MemPalace search tool to the requested `mempalace_search`).\n\n**Tool error string:** `"
+      }
+    ],
+    "mp_ok": 0,
+    "mp_err": 1,
+    "mp_running": 1,
+    "binary_missing": false,
+    "has_mempalace_mention": true,
+    "empty_or_hits_signal": true,
+    "final_preview": "I attempted to search project memory for \"MockLab zero-waiver\" using the `memory_read` tool (the closest available MemPalace search tool to the requested `mempalace_search`).\n\n**Tool error string:** `Palace dir at /mnt/vault/mempalace exists but has no chroma.sqlite3 yet. Run: mempalace mine <dir>`\n\n**Hits count:** Empty (no results returned due to the tool error)\n\nMARKER lp-zuh.11.7-uiqa-20260817T144240Z",
+    "event_count": 4,
+    "marker_in_final": true
+  },
+  "history_status": 200,
+  "verdict": "PASS_SOFT_VAULT_NO_BINARY_MISSING",
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/01-auth-home.png",
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/02-agents-shell.png",
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/03-vault-browser.png",
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/04-vault-mempalace-or-tree.png",
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/05-tools-overview.png",
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/06-thread-ready.png",
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/07-prompt-sent.png",
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/08-after-mempalace-turn.png",
+    "/tmp/lp-bead-lp-zuh.11.7/artifacts/ui/lp-zuh.11.7/09-final-vault.png"
+  ],
+  "finished_at": "2026-08-17T14:43:19.735137+00:00"
+}
