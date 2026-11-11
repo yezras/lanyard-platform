@@ -1,0 +1,28 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEHEALTH01",
+  "ok": true,
+  "result": {
+    "status": "ok",
+    "checks": {
+      "vault_root_readable": true,
+      "hermes_home_present": true,
+      "backend_home_present": true,
+      "profiles_present": true,
+      "projects_db_present": true
+    },
+    "versions": {
+      "brain_rpc": 1,
+      "hermes_artifact": "v0.0.0-example",
+      "backend_artifact": "v0.0.0-example",
+      "client_core_seed": "v0.0.0-example"
+    },
+    "profile": "admin"
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 8,
+    "host_time": "2026-07-12T00:00:00.100Z"
+  }
+}

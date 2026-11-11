@@ -1,0 +1,20 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEERR00001",
+  "ok": false,
+  "result": null,
+  "error": {
+    "code": "forbidden",
+    "message": "path not allowed for profile",
+    "retryable": false,
+    "details": {
+      "path": "/Secrets"
+    }
+  },
+  "meta": {
+    "duration_ms": 3,
+    "hermes_profile": "contributor",
+    "host_time": "2026-07-12T00:00:00.050Z"
+  }
+}

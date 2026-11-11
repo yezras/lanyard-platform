@@ -1,0 +1,35 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEVLIST001",
+  "ok": true,
+  "result": {
+    "path": "/Projects/Legal",
+    "entries": [
+      {
+        "name": "memo.md",
+        "path": "/Projects/Legal/memo.md",
+        "kind": "file",
+        "mime_type": "text/markdown",
+        "size_bytes": 1024,
+        "mtime": "2026-07-12T00:00:00.000Z"
+      },
+      {
+        "name": "exhibits",
+        "path": "/Projects/Legal/exhibits",
+        "kind": "directory",
+        "mime_type": null,
+        "size_bytes": null,
+        "mtime": "2026-07-11T00:00:00.000Z"
+      }
+    ],
+    "next_cursor": null,
+    "truncated": false
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 12,
+    "hermes_profile": "contributor",
+    "host_time": "2026-07-12T00:00:00.100Z"
+  }
+}

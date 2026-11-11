@@ -1,0 +1,9 @@
+{
+  "markdown": "",
+  "format": "pdf",
+  "parser": "anydoc",
+  "chars": 0,
+  "truncated": false,
+  "error_code": "unsupported_scanned",
+  "error_message": "Scanned PDF requires OCR; set force_ocr (or enable auto_ocr) with FIRECRAWL_API_KEY + allow_ocr on the host, or use offline focr"
+}

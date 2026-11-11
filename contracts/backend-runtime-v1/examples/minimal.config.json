@@ -1,0 +1,15 @@
+{
+  "model": {
+    "default": "openrouter/auto",
+    "provider": "auto"
+  },
+  "providers": {},
+  "skills": {
+    "creation_nudge_interval": 0,
+    "external_dirs": []
+  },
+  "cron": {
+    "provider": "",
+    "wrap_response": true
+  }
+}
