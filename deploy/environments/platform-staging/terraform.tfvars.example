@@ -1,0 +1,217 @@
+# Copy to terraform.tfvars (gitignored). Do not commit live values, digests, or account IDs.
+# This root validates with defaults; it is NOT apply-ready until placeholders are replaced.
+# Status: infra_ready compose — not production-applied / not G8 certified.
+
+region      = "us-east-1"
+name_prefix = "lanyard-platform-staging"
+
+# --- Product artifacts ---
+# Must be globally unique before apply — change REPLACE to an operator-chosen suffix
+artifact_bucket_name = "lanyard-product-artifacts-staging-REPLACE"
+
+s3_force_destroy                      = false
+s3_object_lock_default_retention_mode = "GOVERNANCE"
+s3_object_lock_default_retention_days = 90
+s3_noncurrent_version_expiration_days = 90
+s3_sse_algorithm                      = "AES256"
+ecr_image_count_limit                 = 50
+
+# OIDC publishers: leave false until an *existing* IAM OIDC provider is ready.
+enable_oidc_publishers = false
+# github_oidc_provider_arn = "arn:aws:iam::ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+github_org = "LanyardBrain"
+
+# --- Layer toggles (compose all central layers; valkey optional) ---
+enable_platform_vpc          = true
+enable_control_plane_rds     = true # keep true — product expects Postgres (CONTROL_PLANE_DATABASE_URL)
+# Valkey: leave false for pilot until G5/G6. If enabled, defaults are single-node cost path (block below).
+enable_portal_valkey         = false
+enable_portal_bff            = true
+enable_portal_relay          = true
+enable_portal_control_plane  = true
+enable_portal_static_edge    = true
+auto_wire_security_groups    = true
+
+# Staging Document Server (staging-platform-shared-ds, lp-5q6.34) — default off.
+# Enable only after lab round-trip evidence and operator accept of shared staging residual.
+# Free-track Community image only; production DS remains blocked (license + security).
+# JWT is created in Secrets Manager (never git). Rollback: set false or desired_count=0;
+# keep onlyoffice_editor flag off so chat previews keep working.
+enable_staging_document_server        = false
+# acknowledge_staging_shared_residual = true   # required true when enabling DS
+# document_server_image_digest        = "sha256:…"  # private pin — never commit live digests
+# document_server_desired_count       = 1           # set 0 to pause Office without destroy
+# document_server_public_hostname     = "docs.staging.example.com"
+# bff_office_public_base_url          = "https://bff.staging.example.com"  # DS→BFF download/callback
+# inject_office_jwt_into_bff          = true
+# inject_office_env_into_bff          = true
+#
+# MockLab HTTPS Document Server (lp-zuh.12.2 / lp-zuh.12.9) — SPA rejects non-loopback http (https_required).
+#
+# Option A (preferred when Route53 + regional ACM available): custom hostname + Docs ALB :443.
+# document_server_enable_https          = true
+# document_server_acm_certificate_arn   = null  # or dedicated ACM ARN; else reuse portal-dns-tls regional
+# document_server_public_hostname       = "docs.staging.example.com"
+# enable_portal_dns_tls                 = true   # puts document_server_public_hostname on regional SAN
+# dns_create_alias_records              = true   # Route53 A-alias Docs hostname → Docs ALB
+#
+# Option B (lp-zuh.12.9 — live MockLab path when Squarespace DNS / no docs.* ACM):
+# CloudFront HTTPS viewer → HTTP Docs ALB (default *.cloudfront.net cert; no custom hostname required).
+# document_server_enable_cloudfront_https = true
+# After apply / import, BFF_OFFICE_DOCUMENT_SERVER_HOSTS auto-injects:
+#   <cf-domain>,<docs-alb-dns>   (+ public hostname when set)
+# Live staging CF (2026-08-19): d3sqcebajd6ueb.cloudfront.net (E1OQ5SAD1WR60T) — import into TF state:
+#   terraform import 'module.staging_document_server[0].aws_cloudfront_distribution.docs[0]' E1OQ5SAD1WR60T
+# Verify (no secrets):
+#   bash deploy/scripts/probe-staging-document-server-https.sh --host d3sqcebajd6ueb.cloudfront.net --scheme https
+#   curl -sf https://<docs-https-host>/healthcheck
+#   curl -sf https://<docs-https-host>/web-apps/apps/api/documents/api.js | head -c 200
+# Evidence: artifacts/mocklab/live-qa/lp-zuh.12.9-ds-https/
+#
+# MockLab / dogfood OnlyOffice lab writeback (lp-zuh.10.3) — NOT production customer claim:
+# bff_environment_variables = {
+#   BFF_OFFICE_VAULT_EDIT = "true"
+# }
+# SPA rebuild (pack-web / pack-web-mocklab-oo.sh) must also set:
+#   VITE_ONLYOFFICE_EDITOR=true
+#   VITE_ONLYOFFICE_DS_URL=https://<docs-https-host>   # CF domain or custom docs host
+#   VITE_ONLYOFFICE_DS_ALLOWED_ORIGINS=https://<docs-https-host>,https://app.withlanyard.com
+# Edge CSP (HTTPS DS origins only — module validation rejects http://):
+# onlyoffice_document_server_origins = ["https://d3sqcebajd6ueb.cloudfront.net"]
+# Recipe: portal/scripts/pack-web-mocklab-oo.env.example (lp-zuh.12.1 / lp-zuh.12.9)
+# See docs/plans/0008-daytona-agent-sandboxes/onlyoffice-mocklab-go-path.md
+
+# --- Platform VPC (lab RFC1918 shapes only) ---
+vpc_cidr = "10.0.0.0/16"
+availability_zones = [
+  "us-east-1a",
+  "us-east-1b",
+]
+public_subnet_cidrs  = ["10.0.0.0/24", "10.0.1.0/24"]
+private_subnet_cidrs = ["10.0.10.0/24", "10.0.11.0/24"]
+enable_nat_gateway   = true
+single_nat_gateway   = true
+
+# --- Control-plane RDS (pilot defaults; compose variables.tf match) ---
+# CP Postgres holds tenants/users/instance registry only — not chat transcripts.
+# Defaults: Single-AZ small, 20 GiB. Do not set enable_control_plane_rds = false.
+rds_instance_class    = "db.t4g.small"
+rds_allocated_storage = 20
+rds_multi_az          = false
+# HA re-enable (prod-like staging):
+# rds_instance_class    = "db.t4g.medium"
+# rds_allocated_storage = 50
+# rds_multi_az          = true
+
+# --- Portal Valkey (default off; enable-path = staging cost path) ---
+# Leave enable_portal_valkey=false until G5/G6. Module HA defaults stay production-
+# credible; compose defaults match modules/portal-valkey README "Staging cost path".
+# When enable_portal_valkey=true without overrides:
+# valkey_num_cache_clusters           = 1
+# valkey_multi_az_enabled             = false
+# valkey_automatic_failover_enabled   = false
+# HA re-enable (if shared state needs failover):
+# valkey_num_cache_clusters           = 2
+# valkey_multi_az_enabled             = true
+# valkey_automatic_failover_enabled   = true
+
+# --- Image digest pins (placeholders for validate only) ---
+# Repositories default to product-artifact ECR URLs (no copy/paste).
+# Digests map to compatibility portal.images.*.digest — never tag-only / :latest.
+# Before apply: set digests from a *private* pin file (never commit live digests).
+# bff_image_digest               = "sha256:…"
+# relay_image_digest             = "sha256:…"
+# control_plane_image_digest     = "sha256:…"
+# Optional repository overrides (defaults = module.product_artifacts.ecr_repository_urls):
+# bff_image_repository           = null
+# relay_image_repository         = null
+# control_plane_image_repository = null
+
+# Private CONTROL_PLANE_URL (internal ALB DNS) is auto-injected into BFF/relay env.
+# inject_control_plane_url_into_bff   = true
+# inject_control_plane_url_into_relay = true
+
+# --- OIDC + runtime secrets (optional; ARNs only — never secret values) ---
+# Platform environment label is "staging" — modules reject known secret names in plain env
+# (and always reject OIDC client secrets in plain env). Prefer secrets maps below.
+# See references/runbooks/staging-secrets-checklist.md § OIDC / path-first callbacks.
+#
+# bff_environment_variables = {
+#   NODE_ENV         = "production"
+#   GOOGLE_CLIENT_ID = "REPLACE.apps.googleusercontent.com" # public id only
+# }
+# bff_secrets = {
+#   GOOGLE_CLIENT_SECRET = {
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/google-client-secret-AbCdEf"
+#   }
+#   SESSION_SECRET = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/session-secret"
+#   }
+#   CONTROL_PLANE_SERVICE_TOKEN = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/service-token"
+#   }
+# }
+# IAM-only (not injected into BFF). Live residual lp-oop.38.20: while the harness
+# task reuses lanyard-platform-staging-bff-exec, private tfvars MUST list these
+# so IAM reconcile keeps GetSecretValue. Prefer modules/harness-exec-iam, then empty.
+# Do not terraform apply from that bead.
+# bff_execution_extra_secret_arns = [
+#   "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/portal/harness-litellm-*",
+#   "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/portal/daytona-*",
+# ]
+# control_plane_environment_variables = {
+#   NODE_ENV                = "production"
+#   CONTROL_PLANE_AUTH_MODE = "production"
+#   GOOGLE_CLIENT_ID        = "REPLACE.apps.googleusercontent.com"
+#   # Non-secret create-time egress catalog (or inject via SM JSON keys as today).
+#   # Include LA web_search SERP hosts when MockLab/kitchen-sink needs search
+#   # (lp-zuh.10.1 / production-network-allowlist.md §6). Example fragment:
+#   # DAYTONA_DOMAIN_ALLOWLIST = "relay.withlanyard.com,api.openai.com,api.x.ai,html.duckduckgo.com,duckduckgo.com,api.tavily.com,api.search.brave.com,api.firecrawl.dev,s3.amazonaws.com,s3.us-east-1.amazonaws.com,*.s3.us-east-1.amazonaws.com"
+# }
+# control_plane_secrets = {
+#   GOOGLE_CLIENT_SECRET = {
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/google-client-secret-AbCdEf"
+#   }
+#   CONTROL_PLANE_SERVICE_TOKEN = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/service-token"
+#   }
+#   INTERNAL_OPS_TOKEN = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/internal-ops-token"
+#   }
+# }
+# Google Authorized redirect URI shapes (path-first):
+#   https://app.withlanyard.com/<tenant_slug>/api/auth/google/callback
+#   https://<portal_web_hostname>/<tenant_slug>/api/auth/google/callback  (staging)
+# Live OIDC login proof is NOT claimed ready from these examples alone (G1.4 open).
+
+# --- Static edge (private S3 + CloudFront OAC) ---
+static_origin_bucket_name = "lanyard-portal-staging-web-origin-REPLACE"
+# BFF origin is auto-wired from module.portal_bff.alb_dns_name when enable_portal_bff=true
+# static_web_artifact_url / version / sha256 from private G7 pins after publish
+
+# --- Two-phase SG overrides (optional) ---
+# Leave empty to auto-wire sibling task SGs via external ingress rules
+# (CP ALB from BFF/relay, RDS from CP tasks, Valkey from BFF/relay) — no broad private CIDRs.
+# For two-phase apply: set auto_wire_security_groups=false and pass known SGs:
+# rds_allowed_security_group_ids                   = ["sg-…"]
+# control_plane_allowed_ingress_security_group_ids = ["sg-…"]
+# valkey_allowed_security_group_ids                = ["sg-…"]
+
+tags = {
+  CostCenter = "platform"
+}
+
+# Optional DNS/TLS (default off — set true only with real hostnames + zone in private tfvars):
+# enable_portal_dns_tls = false
+# portal_web_hostname   = "app.example.com"
+# bff_hostname          = "api.example.com"
+# relay_hostname        = "relay.example.com"
+# dns_route53_zone_id   = "Z00000000000000000000"
+
+# Optional WAF baseline (default off — set true in private tfvars to attach managed rules to public edges):
+# enable_portal_waf = false
+# waf_enable_common_rule_set  = true
+# waf_enable_known_bad_inputs = true
+# waf_enable_rate_based_rule  = true
+# waf_rate_limit              = 2000
+# # First enable: waf_managed_rule_override_action = "count" then flip to "none"
