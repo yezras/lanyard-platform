@@ -1,0 +1,48 @@
+# Documentation-only example inputs for modules/portal-dns-tls.
+# Copy to a *private* terraform.tfvars (never commit live account IDs, zone IDs you do not own, or secrets).
+# This module is NOT auto-applied from git examples. Status: infra_ready, not production certified.
+#
+# Prerequisites:
+#   - Public Route53 hosted zone you control (preferred: pass route53_zone_id; do not create duplicates)
+#   - Hostnames as bare FQDNs (no https://, http://, wss://, ws://)
+#   - Dual AWS provider: default region + alias us_east_1 for CloudFront ACM
+#   - Optional: CloudFront domain + ALB DNS after compute apply (aliases can wait for a second pass)
+
+name_prefix = "lanyard-portal-staging"
+environment = "staging"
+
+# Public hostnames (examples only — replace in private tfvars with domains you own)
+portal_web_hostname      = "app.example.com"
+bff_hostname             = "api.example.com"
+relay_hostname           = "relay.example.com"
+# Optional Docs ALB HTTPS SAN (lp-zuh.12.2). Alias record is created by platform-staging.
+# document_server_hostname = "docs.staging.example.com"
+
+# Prefer existing zone (do not invent production zone IDs in git):
+create_route53_zone = false
+# route53_zone_id   = "ZXXXXXXXXXXXXXXX"
+route53_zone_name   = "example.com"
+create_dns_records  = true
+
+# To create a zone once (only if none exists for this apex):
+# create_route53_zone = true
+# route53_zone_name   = "example.com"
+
+# Existing certs (skip create to avoid duplicates). CloudFront cert MUST be us-east-1:
+# existing_cloudfront_certificate_arn = "arn:aws:acm:us-east-1:000000000000:certificate/00000000-0000-0000-0000-000000000000"
+# existing_regional_certificate_arn   = "arn:aws:acm:us-east-1:000000000000:certificate/00000000-0000-0000-0000-000000000001"
+
+# Alias targets — leave empty for cert-only first apply; fill after CloudFront/ALBs exist:
+cloudfront_domain_name    = ""
+cloudfront_hosted_zone_id = ""
+bff_alb_dns_name          = ""
+bff_alb_zone_id           = ""
+relay_alb_dns_name        = ""
+relay_alb_zone_id         = ""
+
+# Required honesty gate
+acknowledge_not_auto_applied = true
+
+tags = {
+  Owner = "platform"
+}

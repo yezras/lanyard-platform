@@ -1,0 +1,52 @@
+# ---------------------------------------------------------------------------
+# EXAMPLE ONLY (lp-k7g.7.6) — target artifact_prefixes for product-artifact-infra
+#
+# Merge into the imported company-brain-deploy module at phase 6. This file is
+# not wired to a provider and must not be applied as a root module.
+#
+# Design: docs/architecture/deploy-artifact-landing-zones.md
+# ---------------------------------------------------------------------------
+
+# Target variable shape (replaces hermes-only default in upstream module).
+#
+# variable "artifact_prefixes" {
+#   type = object({
+#     hermes_lanyard  = optional(string, "backends/hermes-lanyard/")
+#     lanyard_agent   = optional(string, "backends/lanyard-agent/")
+#     hermes_upstream = optional(string, "backends/hermes-upstream/")
+#     client_core     = optional(string, "client-core/")   # UNCHANGED
+#     portal_web      = optional(string, "portal-web/")    # UNCHANGED
+#     hermes          = optional(string, "hermes/")        # TEMPORARY legacy
+#   })
+#   default = {}
+# }
+
+locals {
+  # kind enum (pins / manifest) → S3 kind slug (hyphenated)
+  backend_kind_slug = {
+    hermes_lanyard  = "hermes-lanyard"
+    lanyard_agent   = "lanyard-agent"
+    hermes_upstream = "hermes-upstream"
+  }
+
+  # Normalized trailing-slash prefixes (illustrative defaults)
+  artifact_prefixes_target = {
+    hermes_lanyard  = "backends/hermes-lanyard/"
+    lanyard_agent   = "backends/lanyard-agent/"
+    hermes_upstream = "backends/hermes-upstream/"
+    client_core     = "client-core/"
+    portal_web      = "portal-web/"
+    hermes          = "hermes/" # TEMPORARY dual-write for Hermes-Lanyard
+  }
+
+  # Map publisher s3_write_prefix_keys → prefix strings
+  prefix_by_key_target = local.artifact_prefixes_target
+
+  # Canonical backend object key template (operators substitute KIND_SLUG / VERSION / FILENAME)
+  backend_object_key_template = "backends/<KIND_SLUG>/<VERSION>/<FILENAME>"
+}
+
+# Invariants encoded for offline smoke / human review:
+#   - backends/* only for backend families
+#   - client-core/ and portal-web/ are top-level (not under backends/)
+#   - hermes/ is legacy-only
