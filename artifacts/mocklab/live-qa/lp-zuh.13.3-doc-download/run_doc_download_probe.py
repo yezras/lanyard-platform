@@ -495,6 +495,7 @@ def deep_editor_state(page) -> dict[str, Any]:
     )
 
 
+
 def playwright_frame_signals(page) -> dict[str, Any]:
     """Use Playwright Frame API (works cross-origin) for Download failed + body cues."""
     download_fail = False
@@ -509,10 +510,12 @@ def playwright_frame_signals(page) -> dict[str, Any]:
         excerpt = ""
         fail = False
         try:
+            # inner_text can work cross-origin via CDP in Playwright
             excerpt = (fr.locator("body").inner_text(timeout=1500) or "")[:500]
             fail = bool(DOWNLOAD_FAIL_RE.search(excerpt))
         except Exception:
             try:
+                # Fallback: count visible dialog-ish text nodes
                 if fr.get_by_text(re.compile(r"Download failed", re.I)).count():
                     fail = True
                     excerpt = "Download failed (locator)"
@@ -520,6 +523,7 @@ def playwright_frame_signals(page) -> dict[str, Any]:
                 pass
         if fail:
             download_fail = True
+        # Heuristics for painted editor beyond chrome
         try:
             if fr.locator("canvas").count() > 0:
                 canvas_hint = True
@@ -579,7 +583,7 @@ def mint_probe(page, docx: str) -> dict[str, Any]:
           if (docUrl) {
             try {
               const u = new URL(docUrl, location.origin);
-              doc_url_safe = u.origin + u.pathname;
+              doc_url_safe = u.origin + u.pathname; // strip token
             } catch (_) {
               doc_url_safe = '<parse-error>';
             }
@@ -933,6 +937,7 @@ def main() -> int:
                 p_iframe = shot(page, "04-docsapi-iframe.png")
                 report["screenshots"].append(f"screenshots/{p_iframe.name}")
 
+                # Settle: wait for canvas / absence of Download failed
                 settle_deadline = time.time() + settle_s
                 best = dict(mount_ui)
                 while time.time() < settle_deadline:
@@ -951,9 +956,11 @@ def main() -> int:
                 report["ui_final"] = best
                 p_settle = shot(page, "05-doc-settle.png")
                 report["screenshots"].append(f"screenshots/{p_settle.name}")
+                # Extra body-focused shot after settle
                 time.sleep(1.0)
                 final2 = deep_editor_state(page)
                 final2["page_frames"] = len(page.frames)
+                # Cross-origin-accurate dialog/body signals via Playwright Frame API
                 frsig = playwright_frame_signals(page)
                 final2.update({
                     "download_fail_dialog": frsig.get("download_fail_dialog"),
@@ -989,6 +996,7 @@ def main() -> int:
     iframe_ok = int(ui.get("iframe_count") or 0) >= 1
     host_ok = bool(ui.get("editor_host"))
     no_download_fail = not bool(ui.get("download_fail_dialog"))
+    # Also scan body excerpt / frames as belt-and-suspenders
     if DOWNLOAD_FAIL_RE.search(str(ui.get("body_excerpt") or "")):
         no_download_fail = False
     for fr in ui.get("frames") or []:
@@ -999,6 +1007,7 @@ def main() -> int:
     for fr in ui.get("frame_texts") or []:
         if fr.get("download_fail") or DOWNLOAD_FAIL_RE.search(str(fr.get("excerpt") or "")):
             no_download_fail = False
+    # Prefer Frame API signal if present on report
     frsig = report.get("frame_signals") or {}
     if "download_fail_dialog" in frsig:
         no_download_fail = not bool(frsig.get("download_fail_dialog"))
@@ -1008,6 +1017,7 @@ def main() -> int:
             int(ui.get("canvas_nonzero") or 0) > 0
             or int(ui.get("canvas_count") or 0) > 0
         )
+    # Strong browser-side signal after CF proto fix: https cache/files 200 with no dialog
     https_cache_ok = any(200 <= int(x.get("status") or 0) < 300 for x in (report.get("cache_files_https") or []))
     if (
         not body_visible
@@ -1016,6 +1026,7 @@ def main() -> int:
         and https_cache_ok
         and not (report.get("console_mixed") or [])
     ):
+        # Still require Frame API to confirm dialog absent; treat toolbar+https cache as insufficient alone
         pass
     no_mixed_http = len(report.get("cache_files_http") or []) == 0 and not any(
         "http://d3sqcebajd6ueb" in (c.get("text") or "")
@@ -1024,6 +1035,7 @@ def main() -> int:
     cf_ok = (report.get("cloudfront") or {}).get("x_forwarded_proto") == "https"
     office_ok = bool((report.get("office_open") or {}).get("ok"))
 
+    # BFF content fetch by DS is strong evidence of download path; optional soft signal
     bff_fetches = report.get("bff_content_fetches") or []
     bff_ok = any(200 <= int(x.get("status") or 0) < 300 for x in bff_fetches)
 
