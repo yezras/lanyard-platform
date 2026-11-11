@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.local/schemas/backend-install-provenance-v1.json",
+  "title": "BackendInstallProvenance",
+  "description": "Host-side install provenance written by deploy bootstrap under versions/<version>/.seed/provenance.json (lp-k7g.7.4). Records the selected backend artifact and contract majors so operators and upgrade tooling can verify what is installed without re-reading Terraform state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "version",
+    "url",
+    "sha256",
+    "contract",
+    "installed_at",
+    "install_root",
+    "install_path"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Provenance document schema major. Bump only on breaking field changes."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["hermes_upstream", "hermes_lanyard", "lanyard_agent"],
+      "description": "Backend product family (CompatibilityPinsV2 backend.kind / BACKEND_ARTIFACT_KIND)."
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Immutable release version label; equals the directory name under versions/."
+    },
+    "url": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Artifact object URL used for download (s3:// or https://)."
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Lowercase hex SHA-256 of the archive bytes as installed."
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_layout", "relay", "brain_rpc"],
+      "properties": {
+        "runtime_layout": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "backend-runtime-v1 filesystem layout major (BACKEND_CONTRACT_RUNTIME_LAYOUT)."
+        },
+        "relay": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Gateway relay contract major (BACKEND_CONTRACT_RELAY / legacy RELAY_CONTRACT_MAJOR)."
+        },
+        "brain_rpc": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Brain RPC contract major (BACKEND_CONTRACT_BRAIN_RPC)."
+        }
+      }
+    },
+    "installed_at": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ISO-8601 UTC timestamp when this version directory was last written by bootstrap."
+    },
+    "install_root": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Absolute BACKEND_INSTALL_ROOT (e.g. /opt/company-brain-backend)."
+    },
+    "install_path": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Absolute path to this version directory (install_root/versions/<version>)."
+    },
+    "layout": {
+      "type": "string",
+      "enum": ["versioned", "flat"],
+      "description": "Install layout mode used by bootstrap."
+    },
+    "current_symlink": {
+      "type": "string",
+      "description": "Absolute path of the current symlink when layout is versioned."
+    },
+    "attestation_status": {
+      "type": "string",
+      "enum": ["verified", "skipped"],
+      "description": "Optional Ed25519 attestation result for the archive (failed installs must not write this file)."
+    },
+    "attestation_alg": {
+      "type": "string",
+      "description": "Signature algorithm when attestation ran (e.g. ed25519)."
+    },
+    "signing_pubkey_sha256": {
+      "type": "string",
+      "description": "SHA-256 fingerprint of the signing public key DER when attestation verified."
+    },
+    "signing_identity": {
+      "type": "string",
+      "description": "Optional operator label for the signing key (ARTIFACT_SIGNING_IDENTITY)."
+    },
+    "entrypoint": {
+      "type": "string",
+      "description": "Archive-relative gateway entrypoint if known (e.g. bin/company-brain-backend)."
+    },
+    "bootstrap": {
+      "type": "string",
+      "const": "artifact",
+      "description": "Install channel marker; parity with client-core seed provenance."
+    }
+  }
+}
