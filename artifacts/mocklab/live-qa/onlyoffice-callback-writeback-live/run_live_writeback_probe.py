@@ -98,7 +98,7 @@ def _looks_spa(raw: bytes, content_type: str | None) -> bool:
     if b"<!doctype html" in head or head.startswith(b"<html"):
         return True
     if content_type and "text/html" in content_type.lower():
-        if b'<div id=\"app\"' in raw[:500] or b"Lanyard Portal" in raw[:500]:
+        if b'<div id="app"' in raw[:500] or b"Lanyard Portal" in raw[:500]:
             return True
     return False
 
