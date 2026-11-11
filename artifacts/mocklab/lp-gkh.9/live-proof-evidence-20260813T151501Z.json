@@ -1,0 +1,73 @@
+{
+  "bead_id": "lp-gkh.9",
+  "title": "0011.9 Live proof: MockLab chat produces corpus objects with full I/O",
+  "timestamp_utc": "2026-08-13T15:15:01.978Z",
+  "stamp": "20260813T151501Z",
+  "environment": "mocklab_inprocess_fs_corpus",
+  "topology": {
+    "name": "inprocess_mocklab_cp_relay_bff_mock_gateway",
+    "tenant_slug": "mocklab",
+    "corpus_backend": "FsCorpusObjectStore",
+    "corpus_bucket": "lanyard-chat-corpus-lab",
+    "note": "Durable FS store uses the same key layout as S3; AWS corpus bucket apply is follow-on ops (lp-gkh.3 module ready, not required for lab proof)."
+  },
+  "enablement": {
+    "chat_corpus_enabled": true,
+    "chat_corpus_retention_days": 90,
+    "fail_closed_default": true
+  },
+  "checks": {
+    "enablement.chat_corpus_enabled": true,
+    "chat.user_message_accepted": true,
+    "corpus.object_exists": true,
+    "corpus.user_content_present": true,
+    "corpus.assistant_content_present": true,
+    "corpus.key_layout_v1": true,
+    "bff_restart.object_still_present": true,
+    "bff_restart.body_unchanged": true
+  },
+  "object_key": "tenants/7f1c4aaa-88f1-4498-a121-c1efd2e1e079/chat-corpus/v1/year=2026/month=08/day=13/thread=447fa686-988e-435c-958b-0eb0244a1263/turn=bb8f3c85-4e98-429b-b97f-9abe3fb736a8.json",
+  "record_shape_redacted": {
+    "schema_version": 1,
+    "record_type": "chat_turn",
+    "tenant_id": "7f1c4aaa-88f1-4498-a121-c1efd2e1e079",
+    "user_id": "1a3b4e47-8868-4b95-af1a-e96d2cec9e9e",
+    "instance_id": "291207e2-840f-4a12-985d-6e862f5030c5",
+    "thread_id": "447fa686-988e-435c-958b-0eb0244a1263",
+    "turn_id": "bb8f3c85-4e98-429b-b97f-9abe3fb736a8",
+    "created_at": "2026-08-13T15:15:01.926Z",
+    "model": {
+      "provider": "poolside",
+      "name": "laguna-s-2.1"
+    },
+    "input": {
+      "role": "user",
+      "content_redacted": true,
+      "content_length": 39,
+      "content_sha256_present": true,
+      "content_probe_match": true
+    },
+    "output": {
+      "role": "assistant",
+      "content_redacted": true,
+      "content_length": 44,
+      "content_sha256_present": true,
+      "content_probe_match": true,
+      "finish_reason": "stop"
+    },
+    "tool_events_count": 0,
+    "meta": {
+      "client": "portal_web",
+      "request_id_present": false
+    }
+  },
+  "bff_restart": {
+    "simulated": true,
+    "method": "New ChatThreadStore + SessionStore + FsCorpusObjectStore + S3CorpusWriter sharing the same CHAT_CORPUS_FS_ROOT; object read after restart",
+    "object_present": true,
+    "body_byte_equal": true
+  },
+  "result": "PASS",
+  "needs_ui_qa": true,
+  "ui_qa_note": "Browser chat on hosted mocklab remains optional UIQA when CHAT_CORPUS_FS_ROOT (or S3) is wired on the live BFF; this bead proves capture+durability on the chat path with mocklab tenant enablement."
+}
