@@ -1,0 +1,31 @@
+{
+  "profile": "contributor",
+  "schema_version": 1,
+  "description": "Agent tool allowlist for contributor Hermes profile — authoring only, no ops elevation",
+  "aligns_with_capabilities": [
+    "vault_read",
+    "vault_write",
+    "chat"
+  ],
+  "tools": {
+    "allow": [
+      "chat",
+      "vault_read",
+      "vault_write",
+      "vault_search"
+    ],
+    "deny": [
+      "shell_exec",
+      "system_ops",
+      "profile_manage",
+      "gateway_config",
+      "beads_admin",
+      "vault_delete",
+      "model_config"
+    ]
+  },
+  "path_prefixes": [],
+  "notes": "Deny list must include all admin-only tools. Empty path_prefixes means portal role path_prefixes bind later. See references/runbooks/host-runtime-hardening.md.",
+  "enforced_by": "company-brain-runtime-hardening",
+  "seed_path": "/etc/company-brain/tool-allowlists/contributor.json"
+}

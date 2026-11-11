@@ -1,0 +1,26 @@
+{
+  "_comment": "Example shape for AFT / Control Tower account request. Not applied by Terraform. Replace placeholders in private ops only.",
+  "tenant_slug": "acme",
+  "project_name": "acme-brain",
+  "environment_class": "production-client",
+  "account_name": "lanyard-acme-prod",
+  "account_email": "aws+acme-prod@example.com",
+  "target_ou_path": "Root/Lanyard/clients/production-clients",
+  "sso_permission_set_names": [
+    "CompanyBrainDeploy",
+    "CompanyBrainBreakGlass"
+  ],
+  "hosting_track": "lanyard_hosted",
+  "isolation_mode": "account",
+  "post_vend": {
+    "module": "modules/account-factory",
+    "create_account_baseline": true,
+    "consume_outputs": [
+      "account_id",
+      "deploy_role_arn",
+      "kms_key_arn",
+      "state_backend_config_template",
+      "log_group_name"
+    ]
+  }
+}
