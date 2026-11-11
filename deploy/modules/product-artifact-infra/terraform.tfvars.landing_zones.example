@@ -1,0 +1,62 @@
+# ---------------------------------------------------------------------------
+# product-artifact-infra — landing zone inputs example (lp-k7g.7.6)
+#
+# Placeholder-safe for git. Use with the imported module at phase 6; do not
+# invent live account IDs, bucket names you need secret, or OIDC ARNs in git.
+#
+# Design: docs/architecture/deploy-artifact-landing-zones.md
+# ---------------------------------------------------------------------------
+
+name_prefix          = "lanyard-platform-staging"
+environment          = "staging"
+artifact_bucket_name = "lanyard-product-artifacts-staging-REPLACE"
+
+# Target multi-backend prefixes (client-core + portal-web UNCHANGED).
+artifact_prefixes = {
+  hermes_lanyard  = "backends/hermes-lanyard/"
+  lanyard_agent   = "backends/lanyard-agent/"
+  hermes_upstream = "backends/hermes-upstream/"
+  client_core     = "client-core/"
+  portal_web      = "portal-web/"
+  hermes          = "hermes/" # TEMPORARY dual-write for Hermes-Lanyard
+}
+
+portal_services = ["web", "bff", "relay", "control-plane"]
+
+# OIDC publishers off until an existing provider ARN is supplied.
+enable_oidc_publishers = false
+# github_oidc_provider_arn = "arn:aws:iam::ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+# enable_oidc_publishers  = true
+
+# Target publisher map (when enable_oidc_publishers = true):
+# publisher_repos = {
+#   portal = {
+#     repository           = "Portal"
+#     s3_write_prefix_keys = ["portal_web"]
+#     ecr_push_services    = ["web", "bff", "relay", "control-plane"]
+#   }
+#   client_core = {
+#     repository           = "client-core"
+#     s3_write_prefix_keys = ["client_core"]
+#     ecr_push_services    = []
+#   }
+#   hermes_lanyard = {
+#     repository           = "hermes-lanyard"
+#     s3_write_prefix_keys = ["hermes_lanyard", "hermes"]
+#     ecr_push_services    = []
+#   }
+#   lanyard_agent = {
+#     repository           = "lanyard-agent"
+#     s3_write_prefix_keys = ["lanyard_agent"]
+#     ecr_push_services    = []
+#   }
+# }
+
+# Illustrative pin URLs after publish (operators fill real SHA-256).
+# Default product arch = linux-x86_64 (backend.arch / backend_artifact_arch).
+#   s3://…/backends/hermes-lanyard/v0.1.0-g7h2/linux-x86_64/backend.tar.gz
+#   s3://…/hermes/v0.1.0-g7h2/linux-x86_64/hermes-v0.1.0-g7h2.tar.gz
+#   s3://…/backends/lanyard-agent/v0.1.0/linux-x86_64/backend.tar.gz
+#   s3://…/client-core/v0.1.0-g7c2/client-core.tar.gz   # arch-neutral seed
+#   s3://…/portal-web/v0.1.0-g7p/portal-web.tar.gz
+# DEPRECATED unlabeled: s3://…/hermes/v0.1.0-g7h2/hermes-v0.1.0-g7h2.tar.gz

@@ -1,0 +1,61 @@
+# Copy to terraform.tfvars in a private deployment working tree (never commit live secrets).
+#
+# Obtain relay_instance_id + one-time secret from Lanyard control plane:
+#   POST /tenants/:tenant_id/instances/provision
+# Response (one-time): { "instance_id": "...", "secret": "..." }
+#
+# PRODUCTION (default): put the secret in SSM SecureString OUTSIDE Terraform, then
+# reference only the parameter name here. Do not set relay_instance_secret.
+# See references/runbooks/relay-secret-lifecycle.md
+#
+# relay_wss_url is assigned by Lanyard ops:
+#   Tier 1/2 → global relay pool
+#   Tier 3   → dedicated relay host (modules/tier3-dedicated-relay)
+
+tenant_slug       = "acme-demo"
+deployment_mode   = "production"
+relay_wss_url     = "wss://relay.withlanyard.com"
+relay_instance_id = "REPLACE_INSTANCE_ID"
+
+# Production secret path — SSM SecureString created outside Terraform:
+#   aws ssm put-parameter \
+#     --name /company-brain/acme-demo/gateway-relay-secret \
+#     --type SecureString \
+#     --value '<secret from provision; once>' \
+#     --overwrite
+relay_secret_source             = "ssm"
+relay_secret_ssm_parameter_name = "/company-brain/acme-demo/gateway-relay-secret"
+# Optional tight IAM ARN (recommended once known):
+# relay_secret_ssm_parameter_arn = "arn:aws:ssm:us-east-1:111122223333:parameter/company-brain/acme-demo/gateway-relay-secret"
+
+# Leave empty in production (module rejects a set value when deployment_mode=production).
+# relay_instance_secret = ""
+
+# Alternative production path — Secrets Manager:
+# relay_secret_source                    = "secretsmanager"
+# relay_secret_secretsmanager_secret_arn = "arn:aws:secretsmanager:us-east-1:111122223333:secret:company-brain/acme-demo/gateway-relay-XXXX"
+
+relay_platform = "lanyard_web"
+hermes_home    = "/home/ec2-user/.hermes"
+
+# Default false. If true in production, renders NON-SECRET fragment + SSM/SM reference only.
+write_hermes_env_file  = false
+hermes_env_output_path = ""
+
+# --- Lab only (never for real tenants) ---
+# deployment_mode         = "lab"
+# relay_secret_source     = "inline"
+# relay_instance_secret   = "REPLACE_SECRET_ONCE_FROM_PROVISION"
+# write_hermes_env_file   = true   # may embed secret — lab only
+
+# Default portal roles — admin / contributor
+hermes_profile_hints = {
+  admin = {
+    description = "Full vault and ops capabilities for tenant administrators"
+    workdir     = ""
+  }
+  contributor = {
+    description = "Day-to-day authoring within allowed path prefixes"
+    workdir     = ""
+  }
+}
