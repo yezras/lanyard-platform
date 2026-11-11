@@ -1,0 +1,25 @@
+{
+  "type": "brain_rpc_request",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEPING0001",
+  "method": "brain.ping",
+  "timeout_ms": 10000,
+  "auth": {
+    "tenant_id": "ten_example",
+    "instance_id": "inst_example",
+    "subject": {
+      "portal_user_id": "usr_example",
+      "backend_profile": "contributor",
+      "hermes_profile": "contributor",
+      "roles": ["contributor"],
+      "path_prefixes": ["/Projects/Legal"]
+    },
+    "session_id": "sess_example",
+    "issued_at": "2026-07-12T00:00:00.000Z",
+    "expires_at": "2026-07-12T00:05:00.000Z"
+  },
+  "params": {
+    "echo": "hello"
+  },
+  "idempotency_key": null
+}

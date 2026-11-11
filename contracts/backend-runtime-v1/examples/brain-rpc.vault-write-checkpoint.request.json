@@ -1,0 +1,33 @@
+{
+  "type": "brain_rpc_request",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEVWRITECHK001",
+  "method": "vault.write",
+  "timeout_ms": 30000,
+  "auth": {
+    "tenant_id": "ten_example",
+    "instance_id": "inst_example",
+    "subject": {
+      "portal_user_id": "usr_agent",
+      "backend_profile": "contributor",
+      "hermes_profile": "contributor",
+      "roles": ["contributor"],
+      "path_prefixes": ["/Projects/Acme"]
+    },
+    "session_id": "sess_agent_example",
+    "issued_at": "2026-07-12T00:00:00.000Z",
+    "expires_at": "2026-07-12T00:05:00.000Z"
+  },
+  "params": {
+    "path": "/Projects/Acme/.lanyard/checkpoints/proposal.docx/run-42.docx",
+    "mode": "write_checkpoint",
+    "source_path": "/Projects/Acme/proposal.docx",
+    "encoding": "base64",
+    "content": "UEsDBBQAAAAIAAAAIQAAAAAAAAAAAAAAAAAJAAAAW0NvbnRlbnRfVHlwZXNdLnhtbFBLAQIUABQAAAAC",
+    "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "size_bytes": 64,
+    "idempotency_key": "agent-write-checkpoint-run-42",
+    "create_parents": true
+  },
+  "idempotency_key": "agent-write-checkpoint-run-42"
+}

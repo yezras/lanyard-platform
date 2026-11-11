@@ -1,0 +1,34 @@
+{
+  "type": "brain_rpc_request",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLERCHUNK001",
+  "method": "vault.read_chunk",
+  "timeout_ms": 15000,
+  "auth": {
+    "tenant_id": "tenant_example",
+    "instance_id": "instance_example",
+    "session_id": "sess_example",
+    "issued_at": "2026-07-12T00:00:00.000Z",
+    "expires_at": "2026-07-12T01:00:00.000Z",
+    "subject": {
+      "portal_user_id": "user_example",
+      "backend_profile": "contributor",
+      "roles": [
+        "contributor"
+      ],
+      "path_prefixes": [
+        "/Projects/Legal"
+      ]
+    }
+  },
+  "params": {
+    "path": "/Projects/Legal/proposal.docx",
+    "offset": 0,
+    "max_bytes": 262144,
+    "expected_revision": {
+      "token": "sha256:4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "kind": "content_hash",
+      "size_bytes": 184320
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLESETTINGS1",
+  "ok": true,
+  "result": {
+    "exported_at": "2026-07-12T00:00:00.000Z",
+    "hermes_home": "/home/hermes/.hermes",
+    "backend_home": "/home/hermes/.hermes",
+    "source": "hermes",
+    "skills": [
+      {
+        "id": "summarize",
+        "name": "summarize",
+        "enabled": true,
+        "path": "skills/summarize",
+        "source": "hermes"
+      }
+    ],
+    "crons": [
+      {
+        "id": "nightly-digest",
+        "name": "Nightly digest",
+        "schedule": "0 6 * * *",
+        "enabled": true
+      }
+    ],
+    "mcp_servers": [
+      {
+        "name": "filesystem",
+        "transport": "stdio",
+        "enabled": true
+      }
+    ],
+    "models": [
+      {
+        "provider": "openai",
+        "model": "gpt-4.1",
+        "is_active": true,
+        "connected": true
+      }
+    ],
+    "integrations": [
+      {
+        "id": "telegram",
+        "name": "telegram",
+        "type": "messaging"
+      }
+    ]
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 42,
+    "host_time": "2026-07-12T00:00:00.200Z"
+  }
+}
