@@ -1,0 +1,573 @@
+{
+  "bead": "lp-zuh.10.8",
+  "when": "2026-08-14T17:31:02Z",
+  "base": "https://app.withlanyard.com/mocklab",
+  "marker": "lp-zuh.10.8-gate-20260814T173102Z",
+  "checks": {
+    "auth_session": true,
+    "api_context_status": 200,
+    "vault_edit": false,
+    "context_is_json": true,
+    "vault_tree_status": 200,
+    "vault_tree_spa": false,
+    "vault_tree_count": 11,
+    "vault_tree_nonempty": true,
+    "projects_count": 1,
+    "mcp_servers_count": 0,
+    "office_mint_status": 200,
+    "office_mint_spa": true,
+    "office_mint_json": false,
+    "ui_tools": true,
+    "ui_workflows": true,
+    "ui_scheduled": true,
+    "ui_vault": true
+  },
+  "notes": [
+    "home_url=https://app.withlanyard.com/mocklab/",
+    "title=Lanyard Portal"
+  ],
+  "context_sanitized": {
+    "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1",
+    "tenant_slug": "mocklab",
+    "display_name": "MockLab",
+    "host": "mocklab.withlanyard.com",
+    "hermes_profile": "admin",
+    "allowed_path_prefixes": [
+      "/"
+    ],
+    "role_names": [
+      "admin"
+    ],
+    "brain_rpc_enabled": true,
+    "backend_capabilities": {
+      "schema_version": 1,
+      "source": "brain_rpc",
+      "kind": "lanyard_agent",
+      "version": "0.0.0",
+      "contract": {
+        "runtime_layout": 1,
+        "relay": 1,
+        "brain_rpc": 1
+      },
+      "profiles": [
+        "admin",
+        "contributor"
+      ],
+      "brain_rpc_methods": [
+        "brain.capabilities",
+        "brain.ping",
+        "cron.list",
+        "cron.patch",
+        "projects.create",
+        "projects.delete",
+        "projects.list",
+        "settings.patch",
+        "settings.snapshot",
+        "vault.list",
+        "vault.read",
+        "vault.stat"
+      ],
+      "features": {
+        "chat": true,
+        "health": false,
+        "capabilities_discovery": true,
+        "vault_read": true,
+        "vault_write": false,
+        "settings_snapshot": true,
+        "settings_patch": true,
+        "projects_list": true,
+        "projects_create": true,
+        "models": false,
+        "cron": true,
+        "history_read": false,
+        "heads_read": false
+      },
+      "ui_affordances": {
+        "chat_panel": "supported",
+        "vault_browser": "supported",
+        "vault_editor": "unsupported",
+        "settings_page": "supported",
+        "settings_editor": "supported",
+        "project_picker": "supported",
+        "project_create": "supported",
+        "model_selector": "unsupported",
+        "cron_manager": "supported",
+        "host_health": "unsupported"
+      },
+      "limits": {
+        "vault_read_default_max_bytes": 1048576,
+        "vault_read_hard_max_bytes": 4194304,
+        "vault_list_max_entries": 500
+      },
+      "notes": "Lanyard Agent live brain.capabilities (lac-yt3.5 / lac-6h6). Methods match the host handler registry. Skills inventory: settings.snapshot include=skills (non-stub filesystem walk). Agents/workflows not advertised for Portal composer until list surfaces ship. Not yet implemented: brain.health, models.*."
+    },
+    "ui": {
+      "affordances": {
+        "chat_panel": "supported",
+        "vault_browser": "supported",
+        "vault_editor": "unsupported",
+        "settings_page": "supported",
+        "settings_editor": "supported",
+        "project_picker": "supported",
+        "project_create": "supported",
+        "model_selector": "unsupported",
+        "cron_manager": "supported",
+        "host_health": "unsupported"
+      },
+      "can": {
+        "chat": true,
+        "vault_browse": true,
+        "vault_edit": false,
+        "settings_view": true,
+        "settings_edit": true,
+        "project_list": true,
+        "project_create": true,
+        "model_select": false,
+        "cron_manage": true,
+        "host_health": false
+      },
+      "degraded": [],
+      "unsupported": [
+        "vault_editor",
+        "model_selector",
+        "host_health"
+      ]
+    },
+    "capabilities_source": "brain_rpc",
+    "capabilities_degraded": true,
+    "capabilities_notes": "Lanyard Agent live brain.capabilities (lac-yt3.5 / lac-6h6). Methods match the host handler registry. Skills inventory: settings.snapshot include=skills (non-stub filesystem walk). Agents/workflows not advertised for Portal composer until list surfaces ship. Not yet implemented: brain.health, models.*."
+  },
+  "vault_tree_sanitized": {
+    "roots": [
+      {
+        "name": "cron",
+        "path": "/cron",
+        "kind": "directory",
+        "children": [
+          {
+            "name": "output",
+            "path": "/cron/output",
+            "kind": "directory",
+            "children": [
+              {
+                "name": "09b7330db248",
+                "path": "/cron/output/09b7330db248",
+                "kind": "directory",
+                "children": [
+                  {
+                    "name": "20260814T171330Z.md",
+                    "path": "/cron/output/09b7330db248/20260814T171330Z.md",
+                    "kind": "file",
+                    "mime_type": "text/markdown"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "jobs.json",
+            "path": "/cron/jobs.json",
+            "kind": "file",
+            "mime_type": "application/json"
+          },
+          {
+            "name": "jobs.json.bak-zuh96",
+            "path": "/cron/jobs.json.bak-zuh96",
+            "kind": "file"
+          },
+          {
+            "name": "jobs2.json",
+            "path": "/cron/jobs2.json",
+            "kind": "file",
+            "mime_type": "application/json"
+          },
+          {
+            "name": "ticker_heartbeat",
+            "path": "/cron/ticker_heartbeat",
+            "kind": "file"
+          }
+        ]
+      },
+      {
+        "name": "Knowledge",
+        "path": "/Knowledge",
+        "kind": "directory",
+        "children": [
+          {
+            "name": "INDEX.md",
+            "path": "/Knowledge/INDEX.md",
+            "kind": "file",
+            "mime_type": "text/markdown"
+          }
+        ]
+      },
+      {
+        "name": "lp-kng67-demo",
+        "path": "/lp-kng67-demo",
+        "kind": "directory"
+      },
+      {
+        "name": "mempalace",
+        "path": "/mempalace",
+        "kind": "directory"
+      },
+      {
+        "name": "Projects",
+        "path": "/Projects",
+        "kind": "directory",
+        "children": [
+          {
+            "name": "Workspace",
+            "path": "/Projects/Workspace",
+            "kind": "directory",
+            "children": [
+              {
+                "name": "notes",
+                "path": "/Projects/Workspace/notes",
+                "kind": "directory",
+                "children": [
+                  {
+                    "name": "lp-zuh108-gate-20260814T172911Z.md",
+                    "path": "/Projects/Workspace/notes/lp-zuh108-gate-20260814T172911Z.md",
+                    "kind": "file",
+                    "mime_type": "text/markdown"
+                  },
+                  {
+                    "name": "lp-zuh96-gpu-note-20260814T170823Z.md",
+                    "path": "/Projects/Workspace/notes/lp-zuh96-gpu-note-20260814T170823Z.md",
+                    "kind": "file",
+                    "mime_type": "text/markdown"
+                  },
+                  {
+                    "name": "seed-note.md",
+                    "path": "/Projects/Workspace/notes/seed-note.md",
+                    "kind": "file",
+                    "mime_type": "text/markdown"
+                  }
+                ]
+              },
+              {
+                "name": "AGENTS.md",
+                "path": "/Projects/Workspace/AGENTS.md",
+                "kind": "file",
+                "mime_type": "text/markdown"
+              },
+              {
+                "name": "welcome.md",
+                "path": "/Projects/Workspace/welcome.md",
+                "kind": "file",
+                "mime_type": "text/markdown"
+              }
+            ]
+          },
+          {
+            "name": "hello-pilot.txt",
+            "path": "/Projects/hello-pilot.txt",
+            "kind": "file",
+            "mime_type": "text/plain"
+          },
+          {
+            "name": "INDEX.md",
+            "path": "/Projects/INDEX.md",
+            "kind": "file",
+            "mime_type": "text/markdown"
+          }
+        ]
+      },
+      {
+        "name": "skills",
+        "path": "/skills",
+        "kind": "directory",
+        "children": [
+          {
+            "name": "mocklab-research",
+            "path": "/skills/mocklab-research",
+            "kind": "directory",
+            "children": [
+              {
+                "name": "SKILL.md",
+                "path": "/skills/mocklab-research/SKILL.md",
+                "kind": "file",
+                "mime_type": "text/markdown"
+              }
+            ]
+          },
+          {
+            "name": "note-taking",
+            "path": "/skills/note-taking",
+            "kind": "directory",
+            "children": [
+              {
+                "name": "obsidian",
+                "path": "/skills/note-taking/obsidian",
+                "kind": "directory",
+                "children": [
+                  {
+                    "name": "SKILL.md",
+                    "path": "/skills/note-taking/obsidian/SKILL.md",
+                    "kind": "file",
+                    "mime_type": "text/markdown"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "pilot-fixture.md",
+            "path": "/skills/pilot-fixture.md",
+            "kind": "file",
+            "mime_type": "text/markdown"
+          },
+          {
+            "name": "README.md",
+            "path": "/skills/README.md",
+            "kind": "file",
+            "mime_type": "text/markdown"
+          }
+        ]
+      },
+      {
+        "name": "workflows",
+        "path": "/workflows",
+        "kind": "directory",
+        "children": [
+          {
+            "name": "lp-zuh108-gate-20260814T172911Z",
+            "path": "/workflows/lp-zuh108-gate-20260814T172911Z",
+            "kind": "directory",
+            "children": [
+              {
+                "name": "state",
+                "path": "/workflows/lp-zuh108-gate-20260814T172911Z/state",
+                "kind": "directory",
+                "children": [
+                  {
+                    "name": "probe.txt",
+                    "path": "/workflows/lp-zuh108-gate-20260814T172911Z/state/probe.txt",
+                    "kind": "file",
+                    "mime_type": "text/plain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "lp-zuh94-dir",
+            "path": "/workflows/lp-zuh94-dir",
+            "kind": "directory",
+            "children": [
+              {
+                "name": "nested.txt",
+                "path": "/workflows/lp-zuh94-dir/nested.txt",
+                "kind": "file",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "name": "lp-zuh96-run-20260814T170823Z",
+            "path": "/workflows/lp-zuh96-run-20260814T170823Z",
+            "kind": "directory",
+            "children": [
+              {
+                "name": "state",
+                "path": "/workflows/lp-zuh96-run-20260814T170823Z/state",
+                "kind": "directory",
+                "children": [
+                  {
+                    "name": "probe.txt",
+                    "path": "/workflows/lp-zuh96-run-20260814T170823Z/state/probe.txt",
+                    "kind": "file",
+                    "mime_type": "text/plain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "README.md",
+            "path": "/workflows/README.md",
+            "kind": "file",
+            "mime_type": "text/markdown"
+          }
+        ]
+      },
+      {
+        "name": "AGENTS.md",
+        "path": "/AGENTS.md",
+        "kind": "file",
+        "mime_type": "text/markdown"
+      },
+      {
+        "name": "INDEX.md",
+        "path": "/INDEX.md",
+        "kind": "file",
+        "mime_type": "text/markdown"
+      },
+      {
+        "name": "index.yaml",
+        "path": "/index.yaml",
+        "kind": "file",
+        "mime_type": "application/yaml"
+      },
+      {
+        "name": "README.md",
+        "path": "/README.md",
+        "kind": "file",
+        "mime_type": "text/markdown"
+      }
+    ],
+    "source": "brain_rpc",
+    "truncated": false
+  },
+  "projects_tries": [
+    {
+      "path": "/api/agent/projects",
+      "status": 200,
+      "ct": "application/json"
+    }
+  ],
+  "projects_path": "/api/agent/projects",
+  "projects_sanitized": {
+    "projects": [
+      {
+        "id": "p_b315f446",
+        "name": "Workspace",
+        "slug": "workspace",
+        "primary_path": "/var/lib/company-brain-backend/workspace",
+        "folders": [
+          {
+            "path": "/var/lib/company-brain-backend/workspace",
+            "label": null,
+            "is_primary": true
+          }
+        ]
+      }
+    ],
+    "source": "projects_db"
+  },
+  "settings_tries": [
+    {
+      "path": "/api/agent/settings/snapshot",
+      "status": 200,
+      "ct": "text/html"
+    },
+    {
+      "path": "/api/settings/snapshot",
+      "status": 200,
+      "ct": "application/json"
+    }
+  ],
+  "settings_path": "/api/settings/snapshot",
+  "settings_sanitized": {
+    "exported_at": "2026-08-14T17:31:13.049Z",
+    "source": "lanyard_agent",
+    "backend_home": "/var/lib/company-brain-backend",
+    "hermes_home": "/var/lib/company-brain-backend",
+    "skills": [
+      {
+        "id": "mocklab-research",
+        "name": "mocklab-research",
+        "enabled": true,
+        "path": "/mnt/vault/skills/mocklab-research",
+        "source": "lanyard_agent",
+        "description": ">"
+      },
+      {
+        "id": "obsidian",
+        "name": "obsidian",
+        "enabled": true,
+        "path": "/mnt/vault/skills/note-taking/obsidian",
+        "source": "lanyard_agent",
+        "description": "Read, search, create, and edit notes in the company vault (Obsidian-style markdown)."
+      }
+    ],
+    "crons": [],
+    "mcp_servers": [],
+    "models": [
+      {
+        "provider": "poolside",
+        "model": "laguna-s-2.1",
+        "is_active": true,
+        "connected": true
+      },
+      {
+        "provider": "litellm",
+        "model": "poolside/laguna-xs-2.1",
+        "is_active": false,
+        "connected": true
+      },
+      {
+        "provider": "litellm",
+        "model": "poolside/laguna-s-2.1",
+        "is_active": false,
+        "connected": true
+      }
+    ],
+    "integrations": [
+      {
+        "id": "portal",
+        "name": "portal",
+        "type": "messaging"
+      }
+    ],
+    "workflows": []
+  },
+  "office_mint_head": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>Lanyard Portal</title>\n    <script type=\"module\" crossorigin ",
+  "thread_create_tries": [
+    {
+      "path": "/api/chat/threads",
+      "status": 200,
+      "ct": "text/html"
+    },
+    {
+      "path": "/api/threads",
+      "status": 200,
+      "ct": "text/html"
+    },
+    {
+      "path": "/api/agent/threads",
+      "status": 200,
+      "ct": "text/html"
+    }
+  ],
+  "cron_api_tries": [
+    {
+      "path": "/api/agent/cron/jobs",
+      "status": 200,
+      "ct": "text/html"
+    },
+    {
+      "path": "/api/cron/jobs",
+      "status": 200,
+      "ct": "text/html"
+    },
+    {
+      "path": "/api/agent/scheduled-tasks",
+      "status": 200,
+      "ct": "text/html"
+    },
+    {
+      "path": "/api/scheduled-tasks",
+      "status": 200,
+      "ct": "text/html"
+    }
+  ],
+  "workflow_api_tries": [
+    {
+      "path": "/api/agent/workflows",
+      "status": 200,
+      "ct": "text/html"
+    },
+    {
+      "path": "/api/workflows",
+      "status": 200,
+      "ct": "text/html"
+    },
+    {
+      "path": "/api/agent/workflow/definitions",
+      "status": 200,
+      "ct": "text/html"
+    }
+  ]
+}
