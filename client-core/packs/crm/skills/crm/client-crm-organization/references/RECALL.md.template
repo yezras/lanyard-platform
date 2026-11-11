@@ -1,0 +1,41 @@
+# RECALL — {{ClientName}}
+
+**Wing:** `{{client_slug}}`  
+**Ingest:** Mine `Clients/{{Bucket}}/{{ClientName}}/` (includes `notes/`, `Materials/` if present)
+
+> MemPalace playbook only. Truth for stage/contacts: `AGENTS.md` + `clients_crm.db`.
+
+## On every client touchpoint
+
+Run these before answering substantive questions:
+
+1. `{{ClientName}} next steps commitments open actions`
+2. `{{primary_contact_name}} {{ClientName}} recent decisions`
+3. `{{ClientName}} meeting follow-ups`
+
+## Draft email / outbound
+
+- `{{ClientName}} open questions pending replies`
+- `{{ClientName}} tone preferences communication` (if documented in notes)
+
+## Workshop / discovery / technical
+
+- `{{ClientName}} AI agent knowledge base requirements`
+- `{{ClientName}} integration security hosting`
+
+## Projects on disk
+
+- `{{ClientName}} projects scope status deliverables`
+- See `./PROJECTS-INDEX.md` (auto-refreshed before Sunday re-mine)
+
+## Cross-reference (Lanyard offerings)
+
+When positioning product or Agent Layer:
+
+- Search wing `lanyard-company`: `knowledge base agent layer compounding context files`
+- Search wing `lanyard-company`: `workshop curriculum trust verify`
+
+## Maintenance
+
+- When **Next steps** in `AGENTS.md` change, update query phrases here.
+- After new files in `notes/`, run: `ob sync` then `mempalace mine` (see root `Lanyard/AGENTS.md`).
