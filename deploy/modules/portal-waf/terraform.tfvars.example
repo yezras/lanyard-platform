@@ -1,0 +1,36 @@
+# Documentation-only example inputs for modules/portal-waf.
+# Copy to a *private* terraform.tfvars (never commit live account IDs, ALB ARNs you do not own, or secrets).
+# This module is NOT auto-applied from git examples. Status: infra_ready, not production certified.
+#
+# Prerequisites:
+#   - Dual AWS provider: default region + alias us_east_1 for CLOUDFRONT-scope WebACL
+#   - Optional: public BFF/relay ALB ARNs after compute apply (associations can wait)
+#   - Never associate the internal control-plane ALB
+
+name_prefix = "lanyard-portal-staging"
+environment = "staging"
+
+enable_cloudfront_web_acl = true
+enable_regional_web_acl   = true
+
+# AWS Managed Rules baseline
+enable_common_rule_set  = true
+enable_known_bad_inputs = true
+enable_rate_based_rule  = true
+rate_limit              = 2000
+# managed_rule_override_action = "none"  # use "count" for observe-only first enable
+# default_action               = "allow"
+
+# Associate public ALBs only (leave empty for ACL-only first apply):
+associate_alb_arns = []
+# associate_alb_arns = [
+#   "arn:aws:elasticloadbalancing:us-east-1:000000000000:loadbalancer/app/bff/0000000000000000",
+#   "arn:aws:elasticloadbalancing:us-east-1:000000000000:loadbalancer/app/relay/0000000000000000",
+# ]
+
+# Required honesty gate
+acknowledge_not_auto_applied = true
+
+tags = {
+  Owner = "platform"
+}
