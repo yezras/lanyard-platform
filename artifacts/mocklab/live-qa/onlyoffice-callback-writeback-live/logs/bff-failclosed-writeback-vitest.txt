@@ -1,0 +1,26 @@
+
+ RUN  v3.2.7 /tmp/lp-bead-lp-zuh.13.1/portal/packages/bff
+
+stdout | test/office-cp-s3-callback-writer.test.ts > office callback pipeline with cp_s3 writer (lp-zuh.12.7) > createApp uses cp_s3 writer when vaultPlane=cp_s3 (not Brain RPC)
+{"timestamp":"2026-08-19T11:51:36.443Z","level":"info","service":"bff","msg":"office callback","request_id":"659b9745-392e-490a-90d0-67dbe7a22f68","tenant_id":"bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb","office_session_id":"19QrxRXcU3Au3ZNYgS33b4OIjDMTAFn_9GZaqvfpRQI","route":"/api/office/callback","status":200,"latency_ms":3,"operator_class":"ok","outcome":"success","onlyoffice_status":2,"idempotent_replay":false,"event":"office_callback"}
+
+ ✓ test/office-cp-s3-callback-writer.test.ts (6 tests) 19ms
+stdout | test/office-editor-config.test.ts > POST /api/office/sessions > mints edit config for authorized user
+{"timestamp":"2026-08-19T11:51:36.455Z","level":"info","service":"bff","msg":"office config mint","request_id":"c11e95e2-2f36-449c-811b-ddf853e1e268","tenant_id":"tenant-a","office_session_id":"26jw7msjmZyvpbEO2-FGOEq1Tp88pjXdEp54FmrimPs","route":"/api/office/sessions","latency_ms":2,"operator_class":"ok","outcome":"success","file_type":"docx","mode":"edit","event":"office_config_mint"}
+
+stderr | test/office-editor-config.test.ts > POST /api/office/sessions > returns 403 when edit requested without vault_edit
+{"timestamp":"2026-08-19T11:51:36.461Z","level":"warn","service":"bff","msg":"office config mint failed","request_id":"c77990fd-a4f6-402d-ad12-44e20bc03022","tenant_id":"tenant-a","route":"/api/office/sessions","latency_ms":0,"error_code":"missing_write_capability","operator_class":"unknown","outcome":"denied","event":"office_config_mint"}
+
+stderr | test/office-editor-config.test.ts > POST /api/office/sessions > returns 400 for unsupported type
+{"timestamp":"2026-08-19T11:51:36.464Z","level":"warn","service":"bff","msg":"office config mint failed","request_id":"26e99593-6678-4f00-a4cc-4a50c028f5c1","tenant_id":"tenant-a","route":"/api/office/sessions","latency_ms":0,"error_code":"unsupported_file_type","operator_class":"unsupported_type","outcome":"error","event":"office_config_mint"}
+
+stderr | test/office-editor-config.test.ts > POST /api/office/sessions > returns 403 when path outside ACL
+{"timestamp":"2026-08-19T11:51:36.468Z","level":"warn","service":"bff","msg":"office config mint denied","request_id":"d0eba204-184f-458b-84f5-0e47a555d478","tenant_id":"tenant-a","route":"/api/office/sessions","latency_ms":0,"error_code":"acl_denied","operator_class":"unknown","outcome":"denied","event":"office_config_mint"}
+
+ ✓ test/office-editor-config.test.ts (25 tests) 43ms
+
+ Test Files  2 passed (2)
+      Tests  31 passed (31)
+   Start at  07:51:35
+   Duration  1.03s (transform 813ms, setup 0ms, collect 1.71s, tests 62ms, environment 0ms, prepare 66ms)
+
