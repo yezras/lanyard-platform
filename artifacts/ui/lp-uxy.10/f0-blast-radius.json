@@ -1,0 +1,166 @@
+{
+  "bead_id": "lp-uxy.10.1",
+  "parent_feature": "lp-uxy.10",
+  "epic": "lp-uxy",
+  "step": "F0",
+  "title": "parse_document how + blast radius",
+  "date": "2026-08-04",
+  "cost_gated": true,
+  "live_firecrawl_calls": false,
+  "sources_read": [
+    {
+      "id": "portal-chat-tool-events",
+      "path": "docs/architecture/portal-chat-tool-events.md",
+      "finding": "Structured tool_progress dual-emit + history tee ready; status aliases documented; parse_document not special-cased yet."
+    },
+    {
+      "id": "hermes-lanyard-tool-citations-contract",
+      "path": "portal/artifacts/hermes-lanyard-tool-citations-contract.md",
+      "finding": "Preferred metadata: portal_event, tool_name, tool_call_id, tool_status, tool_target, result."
+    },
+    {
+      "id": "staging-paths",
+      "path": "portal/packages/shared/src/staging/paths.ts",
+      "finding": "STAGING_UPLOADS_ROOT=/staging/uploads; RBAC via vault prefixes; buildStagingUploadPath for _inbox vs project."
+    },
+    {
+      "id": "staging-stamp",
+      "path": "portal/packages/bff/src/staging/service.ts",
+      "finding": "formatStagingReferences appends [staging uploads] bullet paths; message_type=document when paths present."
+    },
+    {
+      "id": "staging-fixture-provider",
+      "path": "portal/packages/bff/src/staging/fixture-provider.ts",
+      "finding": "Default monorepo provider is in-memory; production expected to transfer onto vault FS or sidecar — residual for agent byte read."
+    },
+    {
+      "id": "chat-tool-call-mapper",
+      "path": "portal/packages/web/src/features/chat/chatToolCallMapper.ts",
+      "finding": "humanToolActivityLabel has no parse_document entry; falls through to prettified 'Parse document'; CONTEXT_GATHERING_NAME_RE omits parse tools."
+    },
+    {
+      "id": "document-session-domain",
+      "path": "docs/architecture/portal-document-session-domain-model.md",
+      "finding": "Soft-open / citation preview is human pane — not model ingest."
+    },
+    {
+      "id": "focr-agents",
+      "path": "client-core/packs/focr/infra/focr/AGENTS.md",
+      "finding": "Offline OCR workers; .parse.md sidecar; not Hermes chat-turn default; Office not in focr wrapper."
+    },
+    {
+      "id": "focr-index",
+      "path": "client-core/packs/focr/infra/focr/INDEX.md",
+      "finding": "Digital PDF via pdftotext; scanned via focr ocr; escalate Office/handwriting elsewhere."
+    },
+    {
+      "id": "client-core-layout",
+      "path": "client-core/index.yaml",
+      "finding": "staging.uploads path reserved under vault seed."
+    },
+    {
+      "id": "pilot-pin",
+      "path": "compatibility/pins.hermes-lanyard-staging.example.yaml",
+      "finding": "hermes_lanyard v0.1.0-g7h3; vault separate from backend; no parse_document in monorepo pin docs."
+    },
+    {
+      "id": "staging-pin-runbook",
+      "path": "docs/runbooks/staging-hermes-lanyard-backend-pins.md",
+      "finding": "VAULT_ROOT=/opt/company-brain; BACKEND_HOME=/var/lib/company-brain-backend; live EC2 still human-gated."
+    },
+    {
+      "id": "path-acl-security",
+      "path": "docs/security/lp-uxy.6-agent-sandbox-path-acl-omnibox.md",
+      "finding": "File tools deny project/vault escape on LA; HL uses vault/profile prefixes; shell residuals separate."
+    },
+    {
+      "id": "anydoc-upstream",
+      "url": "https://github.com/firecrawl/anydoc",
+      "finding": "MIT; to_markdown / to_markdown_bytes; content-based format detection; scanned PDF unsupported locally; hosted Firecrawl Parse for OCR."
+    },
+    {
+      "id": "secrets-envelope",
+      "path": "contracts/backend-runtime-v1/secrets-envelope.schema.json",
+      "finding": "FIRECRAWL_API_KEY already recommended optional cost-gated slot (lp-uxy.7); reuse for Parse OCR, host-only."
+    }
+  ],
+  "product_defaults": {
+    "tool_id": "parse_document",
+    "alias_ok": "extract_document_text",
+    "primary_host": ["hermes_lanyard", "lanyard_agent"],
+    "local_library": {
+      "node": "@firecrawl/anydoc",
+      "python": "firecrawl-anydoc",
+      "license": "MIT",
+      "saas_cost": 0
+    },
+    "portal_role": "labels + tool_progress only; no BFF customer-byte parse",
+    "ocr": {
+      "provider": "Firecrawl Parse",
+      "step": "F5",
+      "env": "FIRECRAWL_API_KEY",
+      "location": "host secrets envelope only"
+    },
+    "path_acl_roots": ["vault", "/staging/uploads"],
+    "sidecar": "<stem>.parse.md",
+    "portal_label": "Parsing a document"
+  },
+  "planned_types": {
+    "args": {
+      "path": "string",
+      "max_chars": "number optional default ~48000",
+      "force_ocr": "boolean optional",
+      "write_sidecar": "boolean optional default true"
+    },
+    "result": {
+      "markdown": "string",
+      "format": "string",
+      "parser": ["anydoc", "firecrawl_parse", "pdftotext", "focr"],
+      "chars": "number",
+      "truncated": "boolean",
+      "sidecar_path": "string optional",
+      "error_code": [
+        "unsupported_scanned",
+        "path_denied",
+        "too_large",
+        "no_ocr_key"
+      ]
+    }
+  },
+  "agent_staging_read_on_pilot_pin": {
+    "path_stamp_visible_to_agent": true,
+    "evidence": "BFF formatStagingReferences + staging_paths on sendMessage",
+    "bytes_on_vault_fs_proven_offline": false,
+    "residual": "Default stagingStorageProvider is in-memory fixture; production vault transfer / sidecar not proven on pilot pin offline. File residual for F3/deploy before F6 E2E.",
+    "parse_document_on_pin": false,
+    "pin": {
+      "file": "compatibility/pins.hermes-lanyard-staging.example.yaml",
+      "backend_kind": "hermes_lanyard",
+      "backend_version": "v0.1.0-g7h3",
+      "vault_root_host": "/opt/company-brain"
+    }
+  },
+  "blast_radius": {
+    "host_tools_hl_la": "new tool + anydoc native dep (F3)",
+    "portal_labels": "humanToolActivityLabel + CONTEXT_GATHERING (F4)",
+    "portal_bff_parse": "none — forbidden for customer docs",
+    "deploy_secrets": "reuse FIRECRAWL_API_KEY for OCR only (F5)",
+    "soft_open_pane": "unchanged non-goal",
+    "focr_pack": "unchanged offline workers",
+    "lp_uxy_7_web_firecrawl": "orthogonal — do not overload scrape for office"
+  },
+  "costs": {
+    "local_anydoc": "$0 SaaS host CPU",
+    "firecrawl_parse_ocr": "paid; key cost-gated",
+    "portal_ui": "$0"
+  },
+  "docs_note": "docs/architecture/portal-parse-document-anydoc.md",
+  "later_steps_not_implemented": [
+    "lp-uxy.10.2 F1 throughput",
+    "lp-uxy.10.3 F2 architect types",
+    "lp-uxy.10.4 F3 host anydoc",
+    "lp-uxy.10.5 F4 Portal label",
+    "lp-uxy.10.6 F5 OCR",
+    "lp-uxy.10.7 F6 prove"
+  ]
+}

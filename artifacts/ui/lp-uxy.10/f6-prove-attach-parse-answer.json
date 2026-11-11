@@ -1,0 +1,145 @@
+{
+  "bead_id": "lp-uxy.10.7",
+  "parent_feature": "lp-uxy.10",
+  "epic": "lp-uxy",
+  "step": "F6",
+  "title": "parse_document F6 prove attach\u2192parse\u2192answer",
+  "date": "2026-08-27",
+  "kind": "offline_attach_parse_answer_proof",
+  "live_anydoc_installed": false,
+  "live_firecrawl_calls": false,
+  "cost_gated_ocr": true,
+  "local_anydoc_cost": "$0 SaaS host CPU",
+  "markers": {
+    "docx": "LANYARD_F6_DOCX_Q3_REVENUE_MARKER",
+    "pdf": "LANYARD_F6_PDF_POLICY_MARKER",
+    "xlsx": "LANYARD_F6_XLSX_CELL_MARKER"
+  },
+  "tool_identity": {
+    "canonical": "parse_document",
+    "tool_label": "Parsing a document",
+    "placement": "host_agent_tool",
+    "not_bff": true
+  },
+  "checks": [
+    {
+      "name": "attach_parse_docx",
+      "ok": true,
+      "detail": {
+        "path": "/tmp/lp-uxy10-f6-wr49cdh_/staging/uploads/_inbox/sample.docx",
+        "parser": "anydoc",
+        "format": "docx",
+        "statuses": [
+          "running",
+          "complete"
+        ],
+        "marker_in_markdown": true,
+        "error_code": null,
+        "live_anydoc": false
+      }
+    },
+    {
+      "name": "attach_parse_text_pdf",
+      "ok": true,
+      "detail": {
+        "path": "/tmp/lp-uxy10-f6-wr49cdh_/staging/uploads/_inbox/sample.pdf",
+        "parser": "anydoc",
+        "format": "pdf",
+        "statuses": [
+          "running",
+          "complete"
+        ],
+        "marker_in_markdown": true,
+        "error_code": null,
+        "live_anydoc": false
+      }
+    },
+    {
+      "name": "parse_xlsx",
+      "ok": true,
+      "detail": {
+        "parser": "anydoc",
+        "format": "xlsx",
+        "error_code": null
+      }
+    },
+    {
+      "name": "model_answer_cites_parsed_content",
+      "ok": true,
+      "detail": {
+        "answer_excerpt": "From the attached Word report I see LANYARD_F6_DOCX_Q3_REVENUE_MARKER. From the PDF policy note I see LANYARD_F6_PDF_POLICY_MARKER.",
+        "attach_block": "[staging uploads]\n- /tmp/lp-uxy10-f6-wr49cdh_/staging/uploads/_inbox/sample.docx\n- /tmp/lp-uxy10-f6-wr49cdh_/staging/uploads/_inbox/sample.pdf\n"
+      }
+    },
+    {
+      "name": "negative_path_acl_denied",
+      "ok": true,
+      "detail": {
+        "error_code": "path_denied",
+        "statuses": [
+          "running",
+          "error"
+        ]
+      }
+    },
+    {
+      "name": "negative_dotdot_escape",
+      "ok": true,
+      "detail": {
+        "path": "/tmp/lp-uxy10-f6-wr49cdh_/staging/uploads/_inbox/../../../outside/escape.docx",
+        "error_code": "path_denied"
+      }
+    },
+    {
+      "name": "negative_scanned_pdf_no_key",
+      "ok": true,
+      "detail": {
+        "error_code": "unsupported_scanned",
+        "statuses": [
+          "running",
+          "error"
+        ]
+      }
+    },
+    {
+      "name": "negative_force_ocr_no_key",
+      "ok": true,
+      "detail": {
+        "error_code": "no_ocr_key"
+      }
+    },
+    {
+      "name": "no_live_firecrawl_api",
+      "ok": true,
+      "detail": {
+        "firecrawl_api_key_set": false,
+        "live_paid_calls": 0
+      }
+    }
+  ],
+  "acceptance": {
+    "attach_docx_and_text_pdf": true,
+    "tool_row_dual_emit": true,
+    "model_cites_content": true,
+    "path_acl_negative": true,
+    "scanned_without_key_clean_error": true,
+    "no_bff_parse": true,
+    "no_live_ocr": true
+  },
+  "all_passed": true,
+  "failures": [],
+  "story": "?story=parse-document",
+  "portal_story": "portal/packages/web/src/features/chat/ParseDocumentProofStory.tsx",
+  "portal_story_test": "portal/packages/web/src/features/chat/ParseDocumentProofStory.test.tsx",
+  "docs_note": "docs/architecture/portal-parse-document-f6-prove.md",
+  "screenshots": {
+    "full_story": "artifacts/ui/lp-uxy.10/f6-attach-parse-answer.png",
+    "story_url": "/?story=parse-document",
+    "capture": "chromium headless full-page (fixture story; no live agent host)",
+    "file_present": true
+  },
+  "residuals": [
+    "Pilot pin may not yet ship host tool until F7 external HL/LA pin bump",
+    "Live browser mocklab against real agent host remains residual when pin ships"
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "bead_id": "lp-uxy.10.2",
+  "parent_feature": "lp-uxy.10",
+  "epic": "lp-uxy",
+  "step": "F1",
+  "title": "parse_document F1 throughput checkpoint",
+  "date": "2026-08-04",
+  "kind": "throughput_checkpoint",
+  "implementation_shipped": false,
+  "live_firecrawl_calls": false,
+  "cost_gated_ocr_deferred": true,
+  "binding_decisions": {
+    "D1_first_ship": "Hermes-Lanyard local anydoc parse_document; Portal labels same monorepo wave; LA sister parity; OCR not required for v1",
+    "D2_ocr_not_gate": "F5 cost-gated FIRECRAWL_API_KEY host-only; fail closed unsupported_scanned/no_ocr_key; never BFF key",
+    "D3_portal_no_customer_parse": "labels + tool_progress only; no BFF anydoc/OCR of customer bytes",
+    "D4_one_output_per_step": "leaf PRs validate independently of full feature"
+  },
+  "ship_order": [
+    {
+      "order": 0,
+      "step": "F0",
+      "bead": "lp-uxy.10.1",
+      "status": "closed",
+      "output": "HOW + blast radius + staging residual"
+    },
+    {
+      "order": 1,
+      "step": "F1",
+      "bead": "lp-uxy.10.2",
+      "status": "this_checkpoint",
+      "output": "ship order locked"
+    },
+    {
+      "order": 2,
+      "step": "F2",
+      "bead": "lp-uxy.10.3",
+      "status": "see_f2_artifact",
+      "output": "ParseDocumentArgs/Result + module ownership locked",
+      "docs": "docs/architecture/portal-parse-document-f2-tool-contract.md",
+      "evidence": "artifacts/ui/lp-uxy.10/f2-architect-tool-args-result.json"
+    },
+    {
+      "order": "3a",
+      "step": "F3",
+      "bead": "lp-uxy.10.4",
+      "status": "open",
+      "plane": "external_hl_first_la_sister",
+      "output": "local anydoc host tool + ACL + dual-emit tool_progress",
+      "parallel_with": "lp-uxy.10.5"
+    },
+    {
+      "order": "3b",
+      "step": "F4",
+      "bead": "lp-uxy.10.5",
+      "status": "open",
+      "plane": "monorepo_portal",
+      "output": "humanToolActivityLabel Parsing a document + unit tests",
+      "parallel_with": "lp-uxy.10.4"
+    },
+    {
+      "order": 4,
+      "step": "F6",
+      "bead": "lp-uxy.10.7",
+      "status": "open",
+      "depends_on": ["lp-uxy.10.4", "lp-uxy.10.5"],
+      "output": "attach→parse→answer proof + negatives; artifacts/ui"
+    },
+    {
+      "order": 5,
+      "step": "F5",
+      "bead": "lp-uxy.10.6",
+      "status": "open",
+      "optional": true,
+      "blocks_v1": false,
+      "depends_on": ["lp-uxy.10.4"],
+      "output": "scanned PDF OCR escalation or clear fail-closed"
+    }
+  ],
+  "product_order": {
+    "hermes_lanyard": "first host implementation (pilot pin kind)",
+    "portal_labels": "same monorepo wave when HL dual-emits",
+    "lanyard_agent": "sister parity after or beside HL; same F2 contract",
+    "firecrawl_parse_ocr": "deferred F5; not v1 gate"
+  },
+  "first_shippable": {
+    "required": [
+      "HL parse_document local anydoc (docx + pptx|xlsx + text pdf)",
+      "path ACL vault + /staging/uploads",
+      "tool_progress running→complete/error with tool_target",
+      "Portal label Parsing a document (or host tool_label)"
+    ],
+    "not_required": [
+      "LA pin parity",
+      "Firecrawl Parse OCR",
+      "BFF customer-byte parse",
+      "live paid FIRECRAWL_API_KEY"
+    ]
+  },
+  "residuals_from_f0": [
+    {
+      "id": "staging_fixture_provider",
+      "blocks": "full F6 vault-byte E2E on pilot",
+      "does_not_block": ["F2", "F3 architect/tool", "F4 labels"]
+    },
+    {
+      "id": "no_parse_document_on_pin_v0.1.0-g7h3",
+      "blocks": "live chat proof until F3 + pin bump"
+    }
+  ],
+  "costs": {
+    "local_anydoc": "$0 SaaS host CPU",
+    "portal_ui": "$0",
+    "firecrawl_parse_ocr": "paid; deferred"
+  },
+  "docs_note": "docs/architecture/portal-parse-document-f1-throughput-checkpoint.md",
+  "later_steps_not_implemented": [
+    "lp-uxy.10.4 F3 host anydoc",
+    "lp-uxy.10.5 F4 Portal label",
+    "lp-uxy.10.6 F5 OCR",
+    "lp-uxy.10.7 F6 prove"
+  ],
+  "f2_pointer": {
+    "bead": "lp-uxy.10.3",
+    "docs": "docs/architecture/portal-parse-document-f2-tool-contract.md",
+    "evidence": "artifacts/ui/lp-uxy.10/f2-architect-tool-args-result.json"
+  }
+}
