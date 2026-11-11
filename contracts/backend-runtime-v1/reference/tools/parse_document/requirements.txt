@@ -1,0 +1,4 @@
+# Local AnyDoc converter for parse_document host tool (F3 / lp-uxy.10.4).
+# MIT license. Local CPU only — $0 SaaS. Not Firecrawl crawl/search.
+# https://github.com/firecrawl/anydoc
+firecrawl-anydoc>=0.1.2,<0.2
