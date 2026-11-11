@@ -1,0 +1,203 @@
+region        = "us-east-1"
+project_name  = "company-brain"
+instance_type = "t3.medium"
+
+# ---------------------------------------------------------------------------
+# Access — SSM-first (production); SSH optional break-glass
+# ---------------------------------------------------------------------------
+# Empty CIDRs = no port 22 ingress (recommended for production).
+operator_ssh_cidrs = []
+# ssh_key_name optional when SSM-only:
+# ssh_key_name = null
+
+# Lab-only SSH break-glass example (never 0.0.0.0/0; RFC 5737 documentation IP):
+# operator_ssh_cidrs = ["203.0.113.10/32"]
+# ssh_key_name       = "company-brain-hermes"
+
+enable_ssm_access = true
+# Private subnet without NAT: enable SSM VPC endpoints
+# create_ssm_vpc_endpoints     = true
+# ssm_vpc_endpoint_subnet_ids  = ["subnet-REPLACE_ME"]
+# Optional session logging log group (also configure SSM-SessionManagerRunShell prefs):
+# enable_ssm_session_log_group = true
+# ssm_session_logs_s3_bucket_name = "example-ssm-session-logs"
+
+install_path        = "/opt/company-brain"
+vault_path          = "/opt/company-brain"
+hermes_install_path = "/opt/hermes-lanyard"
+
+# Artifact contract — replace UNCONFIGURED before real apply.
+# Prefer s3:// or HTTPS URLs served to the instance role. Do not use git clone.
+client_core_artifact_url     = "UNCONFIGURED" # e.g. s3://example-artifacts/client-core/v0.1.0/client-core-v0.1.0.tar.gz
+client_core_artifact_version = "UNCONFIGURED" # e.g. v0.1.0
+client_core_artifact_sha256  = "UNCONFIGURED" # 64-char hex digest
+
+hermes_artifact_url     = "UNCONFIGURED" # e.g. s3://example-artifacts/hermes/vX.Y.Z/hermes-lanyard-vX.Y.Z.tar.gz
+hermes_artifact_version = "UNCONFIGURED"
+hermes_artifact_sha256  = "UNCONFIGURED"
+
+relay_contract_major = "1"
+
+# ---------------------------------------------------------------------------
+# Network placement
+# ---------------------------------------------------------------------------
+# production: private-by-default — requires vpc_id + subnet_id; public IP forced off;
+#             controlled egress (not protocol=-1/0.0.0.0/0); pinned ami_id required.
+# lab: non-prod only — may use default VPC + public IP + open egress for quick bring-up.
+network_mode = "lab"
+
+# Production example (replace with real private VPC/subnet IDs from your account):
+# network_mode        = "production"
+# vpc_id              = "vpc-REPLACE_ME"
+# subnet_id           = "subnet-REPLACE_ME" # private subnet with NAT/endpoints/egress
+# associate_public_ip = false
+# ami_id              = "ami-REPLACE_ME"    # golden/hardened AMI pin
+# use_golden_ami      = true
+# create_ssm_vpc_endpoints = true
+# create_s3_gateway_endpoint = true
+# s3_gateway_endpoint_route_table_ids = ["rtb-REPLACE_ME"]
+# create_aws_interface_endpoints = true
+
+# Lab-only public defaults (do not use for production):
+associate_public_ip = true
+# subnet_id = null
+# vpc_id    = null
+
+# ---------------------------------------------------------------------------
+# Controlled egress (production default when network_mode=production)
+# ---------------------------------------------------------------------------
+# egress_mode null → production=controlled, lab=open
+# egress_mode = "controlled"
+# Port-restricted defaults (443/53/123). Tighten HTTPS destinations when known:
+# egress_https_cidrs            = ["0.0.0.0/0"] # SaaS practicality; prefer prefix lists / Network Firewall
+# egress_https_prefix_list_ids  = []
+# See references/runbooks/controlled-egress.md
+
+# ---------------------------------------------------------------------------
+# Instance role S3 read (scope to product-artifact prefixes)
+# ---------------------------------------------------------------------------
+# Bucket ARN only:
+# artifact_s3_bucket_arns = ["arn:aws:s3:::example-artifacts"]
+#
+# Production auto-scopes GetObject to hermes/* + client-core/* when object ARNs
+# are omitted. Prefer explicit pins aligned with pin URLs:
+# artifact_s3_object_arns = [
+#   "arn:aws:s3:::example-artifacts/hermes/*",
+#   "arn:aws:s3:::example-artifacts/client-core/*",
+# ]
+# artifact_s3_list_prefixes = ["hermes/", "hermes/*", "client-core/", "client-core/*"]
+#
+# Lab-only: empty object ARNs with buckets set grants bucket/* GetObject — not for prod.
+
+# ---------------------------------------------------------------------------
+# EBS CMK + snapshot public-share block (strongly recommended for production)
+# ---------------------------------------------------------------------------
+# ebs_kms_key_id = "arn:aws:kms:us-east-1:111122223333:key/REPLACE_ME"
+# Key policy principals: EC2 instance role, DLM role, operators (no Principal "*").
+# DLM snapshots inherit the volume CMK automatically.
+enable_ebs_snapshot_block_public_access    = true
+ebs_snapshot_block_public_access_state     = "block-all-sharing"
+
+# Bootstrap script injection (prefer tenant template; it sets this automatically):
+# From deploy/templates/tenant or this module dir, ../../scripts is deploy/scripts:
+# bootstrap_script_b64 = base64gzip(file("${path.module}/../../scripts/bootstrap-host.sh"))
+# Installed on host as root-owned executable at bootstrap_install_path.
+# bootstrap_install_path = "/usr/local/sbin/company-brain-bootstrap"
+
+# ---------------------------------------------------------------------------
+# AMI / supply chain
+# ---------------------------------------------------------------------------
+# Lab: null → latest Amazon Linux 2023. Production: pin golden AMI (required by default).
+# ami_id         = null
+# use_golden_ami = false  # true skips dnf sprawl in user_data
+# require_pinned_ami = null  # null → true in production
+
+root_volume_size_gb = 40
+
+# Optional second volume for vault/beads (0 = vault on root)
+# data_volume_size_gb = 100
+
+timezone                 = "UTC"
+snapshot_retention_count = 14
+enable_dlm               = true
+enable_status_alarm      = true
+create_instance_role     = true
+
+# ---------------------------------------------------------------------------
+# Opt-in DR snapshot copy / share (cbd-mta.7.4) — defaults OFF (fail-closed)
+# Policy: references/tenant-isolation-decision.md § Snapshot copy
+# Ops/RPO-RTO: references/runbooks/dlm-restore-drill.md
+# Never commit live DR account IDs here — private tfvars only.
+# ---------------------------------------------------------------------------
+enable_cross_region_copy = false
+# destination_region               = "us-west-2"  # required when enable_cross_region_copy=true; != primary region
+# cross_region_copy_cmk_arn        = "arn:aws:kms:us-west-2:000000000000:key/00000000-0000-0000-0000-000000000000"
+# cross_region_copy_retain_interval      = 14
+# cross_region_copy_retain_interval_unit = "DAYS"
+enable_dr_account_share = false
+# dr_account_id                  = "000000000000"  # dedicated DR account only; never another tenant
+# dr_account_unshare_interval      = null
+# dr_account_unshare_interval_unit = "DAYS"
+
+# ---------------------------------------------------------------------------
+# Host observability (cbd-zzx.12) — default off; enable for production
+# ---------------------------------------------------------------------------
+# enable_ssm_managed_instance_core = true
+# enable_cloudwatch_agent_iam      = true  # implied by enable_host_log_shipping
+# enable_host_log_shipping         = true
+# host_log_group_name              = "/company-brain/company-brain/host"
+# host_log_retention_days          = 30
+# status_alarm_actions = [
+#   "arn:aws:sns:us-east-1:123456789012:example-security-alerts", # placeholder shape only
+# ]
+# Prefer modules/security-observability for SNS + VPC Flow Logs + GuardDuty bridge.
+
+# ---------------------------------------------------------------------------
+# Snapshot-age / missing backup alarms (cbd-zzx.20) — default off
+# ---------------------------------------------------------------------------
+# Metric CompanyBrain/Backup NewestSnapshotAgeHours is published by:
+#   bash scripts/check-snapshot-age.sh --project company-brain --publish-metric
+# enable_snapshot_age_alarm          = true
+# snapshot_max_age_hours             = 36
+# snapshot_age_alarm_actions = [
+#   "arn:aws:sns:us-east-1:123456789012:example-security-alerts", # placeholder shape only
+# ]
+# enable_snapshot_age_check_schedule = true  # EventBridge daily SNS reminder
+# Restore: scripts/restore-from-snapshot.sh (dry-run default); see dlm-restore-drill.md
+
+# Optional Tailscale secondary access (cbd-zzx.4) — default off
+# Auth key in SSM/SM only (never the key value in tfvars). SSM remains primary.
+# See references/runbooks/tailscale-operator-access.md
+# ---------------------------------------------------------------------------
+# enable_tailscale = true
+# tailscale_auth_secret_source        = "ssm"
+# tailscale_auth_secret_ssm_parameter = "/company-brain/company-brain/tailscale-auth-key"
+# # tailscale_auth_secret_secretsmanager_arn = "arn:aws:secretsmanager:us-east-1:111122223333:secret:example"
+# # tailscale_tags = ["tag:tenant=company-brain", "tag:role=company-brain"]  # default from project_name
+# # tailscale_hostname = "company-brain-hermes"
+# # tailscale_auto_enroll = true
+# # tailscale_allow_direct_udp = false  # DERP over TCP/443; set true only if UDP 41641 approved
+
+# Omnibox Mode A (cbd-o9s.10) — default false; does not replace hermes-gateway ExecStart
+enable_omnibox = false
+# enable_omnibox = true  # after phase-9 staging; sets OMNIBOX_* + bootstrap ensure-omnibox
+
+# ---------------------------------------------------------------------------
+# Backend runtime secrets via AWS Secrets Manager (lp-645.4)
+# ARN reference + non-secret model defaults only. NEVER put API keys / secret
+# values in tfvars, user_data, or Terraform state.
+# Envelope schema: contracts/backend-runtime-v1/secrets-envelope.schema.json
+# ---------------------------------------------------------------------------
+# backend_runtime_secrets_arn = "arn:aws:secretsmanager:us-east-1:111122223333:secret:company-brain/example/backend-runtime-XXXXXX"
+# backend_runtime_secrets_enabled = true   # default true when ARN set; false disables IAM/hooks
+# backend_runtime_secrets_region  = "us-east-1"  # optional; default = module region
+# Non-secret public config seeds (not SM):
+# backend_model_provider = "xai"       # e.g. openai, xai, anthropic
+# backend_model_default  = "grok-3"    # provider model id
+# Host materialize: /usr/local/sbin/materialize-backend-secrets (ExecStartPre + setup.sh)
+# IAM: instance role GetSecretValue (+ kms:Decrypt via secretsmanager) scoped to the ARN only.
+
+# extra_tags = {
+#   Customer = "acme"
+#   Env      = "prod"
+# }
