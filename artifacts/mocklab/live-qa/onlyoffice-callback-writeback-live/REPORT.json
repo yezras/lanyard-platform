@@ -1,0 +1,170 @@
+{
+  "bead": "lp-zuh.13.1",
+  "when": "2026-08-19T11:50:51Z",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "docx_path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+  "auth_source": "password-login+csrf",
+  "csrf_present": true,
+  "redeploy": {
+    "cp_cluster": "lanyard-platform-staging-portal-cp",
+    "cp_service": "lanyard-platform-staging-cp",
+    "cp_task_def": "lanyard-platform-staging-cp:26",
+    "cp_image_tag": "lp-oop37-cp-43e10186",
+    "cp_image_digest": "sha256:a4ceafd95b78200d42fbf2ad7530a0338d7afded40c2e007bcc302f0543e36af",
+    "bff_cluster": "lanyard-platform-staging-portal",
+    "bff_service": "lanyard-platform-staging-bff",
+    "bff_task_def": "lanyard-platform-staging-bff:34",
+    "bff_image_tag": "lp-oop37-f353341e",
+    "bff_image_digest": "sha256:638a02954e586dfb28522761c1607ffd231e086302800d8dc0ffe6b7065334d2",
+    "force_new_deployment_at": "2026-08-19T11:45:04Z",
+    "env": {
+      "VAULT_PLANE": "cp_s3",
+      "BFF_OFFICE_VAULT_EDIT": "true"
+    }
+  },
+  "probes": {
+    "auth_me": {
+      "status": 200,
+      "looks_like_spa_html": false
+    },
+    "context": {
+      "status": 200,
+      "looks_like_spa_html": false,
+      "vault_edit": true,
+      "vault_plane": "cp_s3",
+      "brain_rpc_enabled": true
+    },
+    "s3_backup": {
+      "ok": true,
+      "uri_bucket_key_present": true,
+      "backup_bytes": 1322
+    },
+    "vault_before": {
+      "status": 200,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "kind": "file",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "size_bytes": 1368,
+      "content_sha256": "282cf8fc6fb5c4f8e98579c90fb341825ccd595988a5f4c47b66cb1787365fcd",
+      "encoding": "base64"
+    },
+    "mint_edit": {
+      "status": 201,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "030c1a3fba44",
+      "mode": "edit",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "error": null,
+      "editor_config": {
+        "editor_mode": "edit",
+        "permissions_edit": true,
+        "callback_url_host_path": "https://app.withlanyard.com/mocklab/api/office/callback",
+        "callback_query_has_session_id": true,
+        "callback_query_has_nonce": true,
+        "token_present": true
+      }
+    },
+    "callback_target": {
+      "host": "app.withlanyard.com",
+      "path": "/mocklab/api/office/callback",
+      "query_redacted": true
+    },
+    "callback_status_1": {
+      "status": 200,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "body": {
+        "error": 0,
+        "code": "ignored"
+      }
+    },
+    "callback_status_2": {
+      "status": 200,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "assembled_url_host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+      "assembled_url_path": "/healthcheck",
+      "assembled_body_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+      "body": {
+        "error": 0,
+        "code": "saved"
+      },
+      "vault_write_cas": true
+    },
+    "vault_after": {
+      "status": 200,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "kind": "file",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "size_bytes": 4,
+      "content_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+      "encoding": "base64"
+    },
+    "mint_edit_after_write": {
+      "status": 201,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "013a352dda02",
+      "mode": "edit",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "error": null,
+      "editor_config": {
+        "editor_mode": "edit",
+        "permissions_edit": true,
+        "callback_url_host_path": "https://app.withlanyard.com/mocklab/api/office/callback",
+        "callback_query_has_session_id": true,
+        "callback_query_has_nonce": true,
+        "token_present": true
+      }
+    },
+    "revision_advance": {
+      "vault_sha256_before": "282cf8fc6fb5c4f8e98579c90fb341825ccd595988a5f4c47b66cb1787365fcd",
+      "vault_sha256_after": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+      "assembled_body_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+      "sha256_changed": true,
+      "after_matches_assembled": true,
+      "document_key_prefix_before": "030c1a3fba44",
+      "document_key_prefix_after": "013a352dda02",
+      "document_key_changed": true,
+      "note": "DocumentRevision.token kind=content_hash equals sha256 of vault bytes; HTTP callback body is OnlyOffice {error,code} only \u2014 revision proved via vault content hash + document.key advance."
+    },
+    "s3_restore": {
+      "ok": true,
+      "uri_bucket_key_present": true
+    },
+    "vault_restored": {
+      "status": 200,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "kind": "file",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "size_bytes": 1368,
+      "content_sha256": "282cf8fc6fb5c4f8e98579c90fb341825ccd595988a5f4c47b66cb1787365fcd",
+      "encoding": "base64",
+      "matches_backup_sha256": true
+    }
+  },
+  "residuals": [],
+  "acceptance": {
+    "redeploy_cp_bff_with_vault_plane_cp_s3": true,
+    "bff_office_vault_edit_true": true,
+    "edit_mint_json": true,
+    "callback_status_1_ignored": true,
+    "callback_status_2_saved": true,
+    "document_revision_on_vault_path": true,
+    "fail_closed_edit_flag_false": true,
+    "vault_restored_after_probe": true
+  },
+  "verdict": "GO_LIVE_WRITEBACK",
+  "context_vault_edit": true
+}
