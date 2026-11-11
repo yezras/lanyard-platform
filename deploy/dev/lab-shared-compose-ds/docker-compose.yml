@@ -1,0 +1,79 @@
+# Lab-only ONLYOFFICE Document Server — topology `lab-shared-compose-ds` (lp-5q6.25 / ADR 0006).
+#
+# NOT for production. NOT for customer vault bytes. Free-track Community image only.
+# Production Document Server remains blocked by free-track license + security gates.
+#
+# Quickstart (from this directory):
+#   cp .env.example .env          # optional: override lab JWT / ports
+#   docker compose up -d
+#   curl -sf "http://127.0.0.1:${DS_HOST_PORT:-8080}/healthcheck"
+#   curl -sf "http://127.0.0.1:${DS_HOST_PORT:-8080}/web-apps/apps/api/documents/api.js" | head -c 200
+#
+# Full operator procedure: references/runbooks/lab-onlyoffice-document-server.md
+# Offline smoke (no Docker pull): bash scripts/smoke-lab-onlyoffice-compose.sh
+
+name: lab-shared-compose-ds
+
+services:
+  onlyoffice-documentserver:
+    # Community Edition — free track for lab/internal proof (lp-5q6.7).
+    # Pin a tag when you need reproducible lab repros; `:latest` is fine for spike latency checks.
+    image: onlyoffice/documentserver:${ONLYOFFICE_DS_TAG:-latest}
+    container_name: lab-onlyoffice-ds
+    restart: unless-stopped
+    ports:
+      # Browser → Document Server (api.js + editor UI). Default host port 8080 avoids clashing with host :80.
+      - "${DS_HOST_BIND:-127.0.0.1}:${DS_HOST_PORT:-8080}:80"
+    environment:
+      # JWT is required for lab proof of signed editor config (BFF mints; DS verifies).
+      JWT_ENABLED: "${JWT_ENABLED:-true}"
+      # Lab-only secret. Must match BFF ONLYOFFICE_JWT_SECRET / document-config signer when wired (lp-5q6.21+).
+      # Never use production SM values here. Never commit a real .env.
+      JWT_SECRET: "${JWT_SECRET:?Set JWT_SECRET in .env (copy from .env.example)}"
+      JWT_HEADER: "${JWT_HEADER:-Authorization}"
+      JWT_IN_BODY: "${JWT_IN_BODY:-true}"
+      # Allow DS to follow redirects when fetching signed BFF download URLs if the BFF uses them.
+      ALLOW_PRIVATE_IP_ADDRESS: "${ALLOW_PRIVATE_IP_ADDRESS:-true}"
+      ALLOW_META_IP_ADDRESS: "${ALLOW_META_IP_ADDRESS:-true}"
+    volumes:
+      # Transient editor cache / forgotten files. Wipe on teardown (see runbook).
+      - lab_onlyoffice_data:/var/www/onlyoffice/Data
+      - lab_onlyoffice_logs:/var/log/onlyoffice
+      - lab_onlyoffice_lib:/var/lib/onlyoffice
+      - lab_onlyoffice_db:/var/lib/postgresql
+    extra_hosts:
+      # Document Server → BFF download/callback URLs on the developer host.
+      # Use http://host.docker.internal:<bff-port>/... in document.url and editorConfig.callbackUrl
+      # — never http://localhost:... from inside the container (that would mean the DS container itself).
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      # Official image exposes /healthcheck once services are up (often 60–180s on first pull).
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/healthcheck | grep -qiE 'true|ok' || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
+    # Soft limits for lab hosts. Raise if conversion OOMs; see runbook resource table.
+    deploy:
+      resources:
+        limits:
+          cpus: "${DS_CPUS:-2.0}"
+          memory: ${DS_MEMORY:-4G}
+        reservations:
+          cpus: "1.0"
+          memory: 2G
+    labels:
+      lanyard.topology: lab-shared-compose-ds
+      lanyard.bead: lp-5q6.25
+      lanyard.environment: lab
+      lanyard.production: "false"
+
+volumes:
+  lab_onlyoffice_data:
+    name: lab_onlyoffice_data
+  lab_onlyoffice_logs:
+    name: lab_onlyoffice_logs
+  lab_onlyoffice_lib:
+    name: lab_onlyoffice_lib
+  lab_onlyoffice_db:
+    name: lab_onlyoffice_db
