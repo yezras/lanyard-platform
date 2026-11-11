@@ -1,0 +1,4 @@
+# Local probe outputs that may contain transient PII paths — keep committed RESULT/REPORT only by default.
+# Screenshots and sanitized logs are intentionally committed when redacted.
+**/*.env
+**/secrets*

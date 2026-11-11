@@ -1,0 +1,14 @@
+{
+  "verdict": "GO_LIVE_WRITEBACK",
+  "residuals": [],
+  "acceptance": {
+    "redeploy_cp_bff_with_vault_plane_cp_s3": true,
+    "bff_office_vault_edit_true": true,
+    "edit_mint_json": true,
+    "callback_status_1_ignored": true,
+    "callback_status_2_saved": true,
+    "document_revision_on_vault_path": true,
+    "fail_closed_edit_flag_false": true,
+    "vault_restored_after_probe": true
+  }
+}
