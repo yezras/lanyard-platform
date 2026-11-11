@@ -1,0 +1,73 @@
+# Copy to backend.tf in a private deploy working tree. Do not use local state for production.
+# Replace placeholders — do not invent real account or bucket names in docs or commit live IDs.
+#
+# State backend hardening (required for production):
+#   - encrypt = true (SSE-S3 or SSE-KMS)
+#   - DynamoDB (or S3 native) locking enabled
+#   - Bucket: Block Public Access ON, no public ACLs/policies
+#   - Bucket policy: least-privilege principals (deploy roles only); deny non-TLS
+#   - Versioning ON; optional Object Lock / MFA delete for break-glass retention
+#   - Never put relay secrets in state: use relay_secret_source=ssm|secretsmanager
+# Full checklist: references/runbooks/relay-secret-lifecycle.md
+#
+# ============================================================================
+# Track A — lanyard_hosted (prefer account-factory baseline outputs)
+# ============================================================================
+# After modules/account-factory with create_account_baseline=true, copy values from:
+#   terraform output state_backend_config_template
+#   terraform output state_bucket_name
+#   terraform output state_lock_table_name
+#   terraform output kms_key_arn          # optional backend kms_key_id
+#
+# Credentials: SSO into the tenant account OR set deploy_role_arn on the default
+# provider (templates/tenant versions.tf assume_role). No static access keys.
+#
+# terraform {
+#   backend "s3" {
+#     bucket         = "company-brain-tfstate-acme-brain-REPLACE"  # state_bucket_name
+#     key            = "company-brain/acme/terraform.tfstate"      # unique per tenant
+#     region         = "us-east-1"
+#     dynamodb_table = "company-brain-tf-locks-acme-brain"         # state_lock_table_name
+#     encrypt        = true
+#     # kms_key_id  = "arn:aws:kms:us-east-1:111122223333:key/REPLACE"  # tenant CMK when used
+#   }
+# }
+#
+# Document the same names in private terraform.tfvars for operator notes:
+#   state_backend_bucket         = "company-brain-tfstate-acme-brain-REPLACE"
+#   state_backend_dynamodb_table = "company-brain-tf-locks-acme-brain"
+#   state_backend_key            = "company-brain/acme/terraform.tfstate"
+#
+# ============================================================================
+# Track B — customer_account (customer-owned backend; never Lanyard platform state)
+# ============================================================================
+# State and credentials stay in the *customer* account (or a customer-designated
+# state account). Lanyard platform terraform state must not share this bucket/key.
+# Provider: deploy_role_arn + deploy_role_external_id (from
+# modules/customer-account-access). See providers.tf.example and
+# references/runbooks/track-b-customer-account-access.md.
+#
+# terraform {
+#   backend "s3" {
+#     bucket         = "customer-tfstate-REPLACE"                 # customer-owned
+#     key            = "company-brain/acme/terraform.tfstate"     # unique per tenant
+#     region         = "us-east-1"
+#     dynamodb_table = "customer-tf-locks-REPLACE"
+#     encrypt        = true
+#   }
+# }
+#
+# ============================================================================
+# Interim / lab (same Lanyard account, vpc_interim) — still one key per tenant
+# ============================================================================
+# terraform {
+#   backend "s3" {
+#     bucket         = "lanyard-tfstate-REPLACE"
+#     key            = "company-brains/acme/terraform.tfstate"
+#     region         = "us-east-1"
+#     dynamodb_table = "lanyard-tf-locks"
+#     encrypt        = true
+#   }
+# }
+#
+# Never share one state file across production clients.
