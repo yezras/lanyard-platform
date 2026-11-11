@@ -1,0 +1,6 @@
+{
+  "task_definition": "lanyard-platform-staging-cp:25",
+  "image_tag": "lp-zuh123-cp-s3-store-202608181240",
+  "image_digest": "sha256:48a80a87c3d192ffed0c2ccad0d271d560defdde5463f3b197edbe922b6f367c",
+  "vault_object_store_configured": true
+}
