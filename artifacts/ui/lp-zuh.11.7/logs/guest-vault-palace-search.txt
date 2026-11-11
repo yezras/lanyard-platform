@@ -1,0 +1,21 @@
+usage: mempalace [-h] [--version] [--palace PALACE] [--backend GLOBAL_BACKEND]
+                 {init,mine,sweep,sync,search,compress,wake-up,split,hook,instructions,repair,repair-status,daemon,mcp,serve,migrate,migrate-wings,hallways,status,logstream,artifact,palace}
+                 ...
+mempalace: error: unrecognized arguments: --palace
+usage: mempalace [-h] [--version] [--palace PALACE] [--backend GLOBAL_BACKEND]
+                 {init,mine,sweep,sync,search,compress,wake-up,split,hook,instructions,repair,repair-status,daemon,mcp,serve,migrate,migrate-wings,hallways,status,logstream,artifact,palace}
+                 ...
+mempalace: error: unrecognized arguments: --palace /mnt/vault/mempalace
+usage: mempalace [-h] [--version] [--palace PALACE] [--backend GLOBAL_BACKEND]
+                 {init,mine,sweep,sync,search,compress,wake-up,split,hook,instructions,repair,repair-status,daemon,mcp,serve,migrate,migrate-wings,hallways,status,logstream,artifact,palace}
+                 ...
+mempalace: error: unrecognized arguments: --palace /mnt/vault/mempalace
+total 1
+drwxr-xr-x 2 brain brain  0 Aug 17 14:32 .
+drwxr-xr-x 2 brain brain  0 Aug 17 14:32 ..
+-rw-r--r-- 1 brain brain  0 Aug 14 16:59 .keep
+-rw-r--r-- 1 brain brain  0 Aug 14 16:38 .lp-zuh9-keep
+drwxr-xr-x 2 brain brain  0 Aug 17 14:32 .mempalace
+-rw-r--r-- 1 brain brain 56 Aug 17 14:42 lp-zuh117-probe.md
+-rw-r--r-- 1 brain brain 73 Aug 17 14:43 lp-zuh117-vault-probe.md
+{"ok":true,"status":"ready","shuttingDown":false,"inFlightSessions":0,"activeSessionKeys":0,"channels":[{"channel":"portal","ok":true,"detail":"connected platform=lanyard_web"}],"cron":{"enabled":true,"tickerAlive":true,"lastTickAt":"2026-08-17T14:43:53.315Z"},"mempalace":{"enabled":true,"ok":true,"detail":"MemPalace available: MemPalace 3.7.0 (/usr/local/bin/mempalace); path=/mnt/vault/mempalace; wing=mocklab","reason":"ok","binaryPath":"/usr/local/bin/mempalace","version":"MemPalace 3.7.0","path":"/mnt/vault/mempalace","wing":"mocklab"}}

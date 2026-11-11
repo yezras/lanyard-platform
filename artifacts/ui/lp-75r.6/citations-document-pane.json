@@ -1,0 +1,53 @@
+{
+  "bead": "lp-75r.6",
+  "related_bead": "lp-86d.12",
+  "story": "citations-document-pane",
+  "url": "http://127.0.0.1:3023/?story=citations-document-pane",
+  "captured_at": "2026-07-31",
+  "seeded_citations": [
+    {
+      "path": "/Projects/A/README.md",
+      "testid": "vault-citation-1"
+    },
+    {
+      "path": "/Projects/A/notes.md",
+      "testid": "vault-citation-2"
+    }
+  ],
+  "opens": [
+    {
+      "source": "citation",
+      "path": "/Projects/A/README.md"
+    },
+    {
+      "source": "citation",
+      "path": "/Projects/A/notes.md"
+    },
+    {
+      "source": "artifact_event",
+      "path": "/Projects/A/memo.md"
+    },
+    {
+      "source": "tool_target",
+      "path": "/Projects/Legal/memo.md"
+    }
+  ],
+  "artifact_open_path": "/Projects/A/memo.md",
+  "tool_target_path": "/Projects/Legal/memo.md",
+  "external_href": "https://example.com/docs/external-only",
+  "external_blocked": true,
+  "open_count": "4",
+  "external_click_count": "1",
+  "screenshots": [
+    "seeded-citations-closed.png",
+    "vault-citation-1-readme.png",
+    "vault-citation-2-notes.png",
+    "artifact-open-memo.png",
+    "tool-target-legal.png",
+    "external-https-no-pane.png",
+    "citations-matrix-composite.png"
+  ],
+  "unit_path": "PortalShell.test lp-vnz.8 / chatArtifactRouting.test",
+  "mock_gateway": "portal/scripts/dev-mock-gateway.ts (tools + artifact.open + citations)",
+  "notes": "Auth-free story seeds vault + artifact paths so proof is not blocked by empty chat history after BFF restart. Coordinates with lp-86d.12 (artifacts also under artifacts/ui/lp-86d/citations/)."
+}

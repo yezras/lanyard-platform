@@ -1,0 +1,19 @@
+{
+  "bead": "lp-a79.13",
+  "story": "table-badge-links",
+  "url": "/?story=table-badge-links",
+  "screenshot": "artifacts/ui/lp-a79/table-badge-links.png",
+  "projectVaultPath": "/home/u/Core",
+  "vaultHref": "docs/runbooks/finding-f12.md",
+  "vaultResolvedPath": "/home/u/Core/docs/runbooks/finding-f12.md",
+  "externalHref": "https://linear.app/example/issue/LIN-204",
+  "hasCard": true,
+  "hasTableRole": true,
+  "tableTag": "TABLE",
+  "badgeCount": 2,
+  "hasHigh": true,
+  "externalTarget": "_blank",
+  "vaultResolved": "/home/u/Core/docs/runbooks/finding-f12.md",
+  "lastVaultClick": "/home/u/Core/docs/runbooks/finding-f12.md",
+  "notes": "Astryx Table in chat via ```table fence. Vault path documented above; click invokes onCitationClick with project-joined path."
+}
