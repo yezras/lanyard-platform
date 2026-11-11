@@ -1,0 +1,51 @@
+{
+  "bead": "lp-75r.9",
+  "related_bead": "lp-a79.9",
+  "story": "chart-bar-pie",
+  "url": "http://127.0.0.1:3010/?story=chart-bar-pie",
+  "screenshot": "artifacts/ui/lp-75r.9/chart-bar-pie.png",
+  "captured_at": "2026-07-31",
+  "cardCount": 2,
+  "hasBar": true,
+  "hasPie": true,
+  "barTitle": "Q1 revenue vs cost",
+  "pieTitle": "Spend by category",
+  "barSvg": true,
+  "pieSvg": true,
+  "barSvgWidth": 660,
+  "barSvgHeight": 280,
+  "pieSvgWidth": 660,
+  "pieSvgHeight": 280,
+  "hasError": true,
+  "errorCode": "schema",
+  "errorRole": "alert",
+  "proseBar": true,
+  "prosePie": true,
+  "portal_chart_card_testid": "portal-chart-card",
+  "side_pane_chart_host": false,
+  "barPaint": {
+    "w": 660,
+    "h": 280,
+    "paths": 12,
+    "rects": 1,
+    "sectors": 0,
+    "bars": 18
+  },
+  "piePaint": {
+    "w": 660,
+    "h": 280,
+    "paths": 3,
+    "rects": 1,
+    "sectors": 6,
+    "bars": 0
+  },
+  "prompt_source": {
+    "catalog": "docs/plans/0009-portal-chat-charts/agent-chart-catalog.md",
+    "la_function": "formatPortalRichBlocksSection",
+    "la_file": "packages/agent-core/src/system-prompt.ts",
+    "la_sha": "751ef96",
+    "la_pr": "https://github.com/LanyardBrain/lanyard-agent/pull/224",
+    "gateway_wiring": "apps/gateway/src/agent-wiring.ts → buildSystemPrompt → createAgentCore"
+  },
+  "notes": "lp-75r.9 re-proof: assistant bubble ```chart fences → PortalChartCard (Evil bar+pie) inline; SVG paint asserted. No side-pane chart host. Mock-gateway does not emit fences (expected). Full map: docs/plans/0009-portal-chat-charts/e2e-verify-rich-blocks.md"
+}
