@@ -1,0 +1,196 @@
+#!/bin/bash
+set -euo pipefail
+
+# Packages: golden AMI skips dnf (prefer production). See golden-ami-supply-chain.md
+%{ if use_golden_ami ~}
+echo "[company-brain-ec2] use_golden_ami=true — skipping broad dnf package installs"
+if ! command -v aws >/dev/null 2>&1; then
+  echo "[company-brain-ec2] WARNING: awscli missing on golden AMI; install via controlled repo or rebuild AMI" >&2
+fi
+%{ else ~}
+dnf update -y
+dnf install -y git golang nodejs22 npm unzip tar rsync awscli || dnf install -y git golang nodejs npm unzip tar rsync awscli
+dnf install -y sqlite poppler-utils 2>/dev/null || true
+dnf install -y dnf-automatic
+sed -i 's/^apply_updates.*/apply_updates = yes/' /etc/dnf/automatic.conf
+systemctl enable --now dnf-automatic.timer
+%{ endif ~}
+
+timedatectl set-timezone ${timezone}
+
+# Artifact pins: BACKEND_* primary; HERMES_* dual-write during migration (lp-k7g.10.3).
+mkdir -p /etc/company-brain
+cat >/etc/company-brain/artifact-pins.env <<'PINS'
+# company-brain-ec2 user_data — replace UNCONFIGURED before bootstrap
+CLIENT_CORE_ARTIFACT_URL=${client_core_artifact_url}
+CLIENT_CORE_ARTIFACT_VERSION=${client_core_artifact_version}
+CLIENT_CORE_ARTIFACT_SHA256=${client_core_artifact_sha256}
+BACKEND_ARTIFACT_URL=${backend_artifact_url}
+BACKEND_ARTIFACT_VERSION=${backend_artifact_version}
+BACKEND_ARTIFACT_SHA256=${backend_artifact_sha256}
+BACKEND_ARTIFACT_KIND=${backend_artifact_kind}
+BACKEND_ARTIFACT_ARCH=${backend_artifact_arch}
+BACKEND_ARTIFACT_SIGNATURE_B64=${backend_artifact_signature_b64}
+BACKEND_CONTRACT_RUNTIME_LAYOUT=${backend_contract_runtime_layout}
+BACKEND_CONTRACT_RELAY=${backend_contract_relay}
+BACKEND_CONTRACT_BRAIN_RPC=${backend_contract_brain_rpc}
+BACKEND_INSTALL_PATH=${backend_install_path}
+HERMES_ARTIFACT_URL=${backend_artifact_url}
+HERMES_ARTIFACT_VERSION=${backend_artifact_version}
+HERMES_ARTIFACT_SHA256=${backend_artifact_sha256}
+HERMES_ARTIFACT_ARCH=${backend_artifact_arch}
+RELAY_CONTRACT_MAJOR=${backend_contract_relay}
+HERMES_INSTALL_PATH=${backend_install_path}
+VAULT_ROOT=${install_path}
+ENABLE_OMNIBOX=${enable_omnibox ? "1" : "0"}
+OMNIBOX_ENABLED=${enable_omnibox ? "1" : "0"}
+PINS
+chmod 644 /etc/company-brain/artifact-pins.env
+printf 'OMNIBOX_ENABLED=%s\nOMNIBOX_CONFIG_DIR=/etc/company-brain/omnibox\nOMNIBOX_WRAPPER=/usr/local/sbin/run-under-omnibox\n' \
+  '${enable_omnibox ? "1" : "0"}' >/etc/company-brain/omnibox.env
+chmod 644 /etc/company-brain/omnibox.env
+
+# Bootstrap: monorepo scripts/bootstrap-host.sh injected via base64gzip
+BOOTSTRAP_INSTALL_PATH='${bootstrap_install_path}'
+mkdir -p "$(dirname "$BOOTSTRAP_INSTALL_PATH")"
+%{ if bootstrap_script_b64 != "" ~}
+echo '${bootstrap_script_b64}' | base64 -d | gzip -dc >"$BOOTSTRAP_INSTALL_PATH"
+%{ else ~}
+cat >"$BOOTSTRAP_INSTALL_PATH" <<'STUB'
+#!/usr/bin/env bash
+echo "[company-brain-bootstrap] ERROR: bootstrap script was not injected." >&2
+echo "[company-brain-bootstrap] Pass bootstrap_script_b64 = base64gzip(file(\".../scripts/bootstrap-host.sh\"))" >&2
+echo "[company-brain-bootstrap] from the tenant root (templates/tenant does this automatically)." >&2
+exit 2
+STUB
+%{ endif ~}
+chown root:root "$BOOTSTRAP_INSTALL_PATH"
+chmod 0755 "$BOOTSTRAP_INSTALL_PATH"
+
+# ---------------------------------------------------------------------------
+# Optional host log shipping (CloudWatch agent) — enable_host_log_shipping
+# ---------------------------------------------------------------------------
+%{ if enable_host_log_shipping ~}
+echo "[company-brain-user-data] Configuring CloudWatch agent host log shipping → ${host_log_group_name}"
+dnf install -y amazon-cloudwatch-agent 2>/dev/null || yum install -y amazon-cloudwatch-agent 2>/dev/null || true
+
+mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
+cat >/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<'CWAGENT'
+{
+  "agent": {
+    "metrics_collection_interval": 60,
+    "run_as_user": "root"
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/secure",
+            "log_group_name": "${host_log_group_name}",
+            "log_stream_name": "{instance_id}/secure",
+            "retention_in_days": -1
+          },
+          {
+            "file_path": "/var/log/messages",
+            "log_group_name": "${host_log_group_name}",
+            "log_stream_name": "{instance_id}/messages",
+            "retention_in_days": -1
+          },
+          {
+            "file_path": "${backend_install_path}/logs/*.log",
+            "log_group_name": "${host_log_group_name}",
+            "log_stream_name": "{instance_id}/backend",
+            "retention_in_days": -1
+          },
+          {
+            "file_path": "/var/log/company-brain/*.log",
+            "log_group_name": "${host_log_group_name}",
+            "log_stream_name": "{instance_id}/company-brain",
+            "retention_in_days": -1
+          }
+        ]
+      }
+    }
+  }
+}
+CWAGENT
+
+# Ensure journald persists auth-related units; rsyslog writes /var/log/secure on AL2023.
+mkdir -p /var/log/company-brain
+chmod 755 /var/log/company-brain
+
+if command -v amazon-cloudwatch-agent-ctl >/dev/null 2>&1; then
+  /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+    -a fetch-config -m ec2 -s \
+    -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json \
+    || true
+  systemctl enable amazon-cloudwatch-agent 2>/dev/null || true
+fi
+%{ endif ~}
+
+# ---------------------------------------------------------------------------
+# Optional Tailscale secondary access (cbd-zzx.4) — enable_tailscale
+# Auth key is NOT written here; instance role fetches from SSM/Secrets Manager.
+# ---------------------------------------------------------------------------
+%{ if enable_tailscale ~}
+echo "[company-brain-user-data] Configuring optional Tailscale enrollment helper (secondary access)"
+mkdir -p /etc/company-brain
+cat >/etc/company-brain/tailscale.env <<'TSENV'
+# Non-secret Tailscale config — generated by company-brain-ec2 user_data.
+# Auth key is fetched at enroll time from SSM/Secrets Manager (never stored here).
+PROJECT_NAME=${project_name}
+AWS_REGION=${region}
+AWS_DEFAULT_REGION=${region}
+TAILSCALE_AUTH_SECRET_SOURCE=${tailscale_auth_secret_source}
+TAILSCALE_AUTH_SECRET_SSM_PARAMETER=${tailscale_auth_secret_ssm_parameter}
+TAILSCALE_AUTH_SECRET_SECRETS_MANAGER_ARN=${tailscale_auth_secret_secretsmanager_arn}
+TAILSCALE_TAGS=${tailscale_tags_csv}
+TAILSCALE_HOSTNAME=${tailscale_hostname}
+TAILSCALE_ACCEPT_DNS=false
+TAILSCALE_ACCEPT_ROUTES=false
+TAILSCALE_SSH=${tailscale_ssh}
+TAILSCALE_EXTRA_UP_ARGS=${tailscale_extra_up_args}
+ENABLE_TAILSCALE_INSTALL=1
+TSENV
+chmod 0640 /etc/company-brain/tailscale.env
+
+ENROLL_PATH=/usr/local/sbin/company-brain-tailscale-enroll
+mkdir -p "$(dirname "$ENROLL_PATH")"
+echo '${tailscale_enroll_script_b64}' | base64 -d | gzip -dc >"$ENROLL_PATH"
+chown root:root "$ENROLL_PATH"
+chmod 0755 "$ENROLL_PATH"
+
+# accept-dns drop-in before first tailscaled start
+mkdir -p /etc/systemd/system/tailscaled.service.d
+cat >/etc/systemd/system/tailscaled.service.d/accept-dns-off.conf <<'DROPIN'
+# company-brain-ec2 user_data — keep VPC DNS; MagicDNS breaks model/API egress.
+[Service]
+ExecStartPost=-/usr/bin/bash -c 'for i in $(seq 1 45); do /usr/bin/tailscale set --accept-dns=false 2>/dev/null && exit 0; sleep 2; done; exit 0'
+DROPIN
+
+%{ if tailscale_auto_enroll ~}
+echo "[company-brain-user-data] Auto-enrolling Tailscale (auth key via instance role; value not logged)"
+if "$ENROLL_PATH"; then
+  echo "[company-brain-user-data] Tailscale enrollment finished"
+else
+  echo "[company-brain-user-data] WARNING: Tailscale enrollment failed — fix IAM/secret/egress and re-run: sudo $ENROLL_PATH" >&2
+fi
+%{ else ~}
+echo "[company-brain-user-data] Tailscale helper installed; auto-enroll off — run: sudo $ENROLL_PATH"
+%{ endif ~}
+%{ endif ~}
+
+mkdir -p /etc/motd.d
+cat >/etc/motd.d/${project_name}.motd <<'MOTD'
+Company Brain host (${project_name}) — %{ if use_golden_ami ~}golden AMI%{ else ~}base packages%{ endif ~}.
+SSM-first access: aws ssm start-session --target <instance-id>
+%{ if enable_tailscale ~}
+Tailscale secondary: /usr/local/sbin/company-brain-tailscale-enroll
+%{ endif ~}
+Pins: cat /etc/company-brain/artifact-pins.env  (BACKEND_* primary; HERMES_* migration aliases)
+Bootstrap: sudo ${bootstrap_install_path}   (optional: --packs gws,wacli)
+  → install backend to ${backend_install_path}; client-core seed to ${install_path}
+Vault: ${vault_path}  (EBS + DLM Backup=daily)
+Docs: deploy references/provision-runbook.md, ssm-break-glass.md, golden-ami-supply-chain.md
+MOTD
