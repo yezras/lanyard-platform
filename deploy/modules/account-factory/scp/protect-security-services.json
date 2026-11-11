@@ -1,0 +1,34 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ProtectCloudTrailStops",
+      "Effect": "Deny",
+      "Action": [
+        "cloudtrail:StopLogging",
+        "cloudtrail:DeleteTrail"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ProtectGuardDutyDisassociate",
+      "Effect": "Deny",
+      "Action": [
+        "guardduty:DeleteDetector",
+        "guardduty:DisassociateFromMasterAccount",
+        "guardduty:DisassociateMembers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ProtectSecurityHubDisable",
+      "Effect": "Deny",
+      "Action": [
+        "securityhub:DisableSecurityHub",
+        "securityhub:DeleteInvitations",
+        "securityhub:DisassociateFromAdministratorAccount"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

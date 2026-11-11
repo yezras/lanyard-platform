@@ -1,0 +1,18 @@
+# Documentation-only example — do not apply with ACCOUNT_ID placeholders.
+# Copy to an untracked tfvars for a real environment and replace markers.
+
+name_prefix       = "lanyard-platform-lab"
+environment       = "lab"
+role_name         = "lanyard-sandbox-vault-mount"
+vault_bucket_name = "lanyard-mocklab-vault-123456789012"
+
+# Product: Control Plane ECS task role only (no Principal *, no long-lived keys)
+orchestrator_principal_arns = [
+  "arn:aws:iam::ACCOUNT_ID:role/lanyard-platform-staging-cp-task",
+]
+
+attach_orchestrator_assume_policy = true
+max_session_duration              = 3600
+
+# Optional ExternalId (set only in private tfvars / secrets — never commit)
+# external_id = "set-in-private-tfvars-only"
