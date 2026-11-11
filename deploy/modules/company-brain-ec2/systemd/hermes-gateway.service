@@ -1,0 +1,75 @@
+# Hermes gateway — unprivileged, sandboxed systemd unit (cbd-zzx.15).
+# Install via modules/company-brain-ec2/setup.sh or scripts/ensure-runtime-hardening.sh.
+# Docs: references/runbooks/host-runtime-hardening.md
+#
+# Adjust ExecStart if the Hermes artifact exposes a different gateway entrypoint.
+# Environment secrets live in EnvironmentFile (mode 0600, service-user owned).
+
+[Unit]
+Description=Hermes Company Brain gateway (unprivileged)
+Documentation=file:///opt/company-brain/AGENTS.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hermes
+Group=hermes
+# Service home / config (not shared ec2-user)
+Environment=HOME=/home/hermes
+Environment=HERMES_HOME=/home/hermes/.hermes
+Environment=VAULT_ROOT=/opt/company-brain
+Environment=HERMES_INSTALL_PATH=/opt/hermes-lanyard
+EnvironmentFile=-/home/hermes/.hermes/.env
+# Non-secret ARN/region for materialize when SM wired (platform layout may override HOME).
+EnvironmentFile=-/etc/company-brain/backend-runtime-secrets.env
+# SM materialize output under Hermes home (legacy path; platform uses BACKEND_HOME).
+EnvironmentFile=-/home/hermes/.hermes/.env.secrets
+WorkingDirectory=/opt/company-brain
+
+# Refresh secrets from SM before start (no-op when wrapper missing; fail-closed when wired).
+ExecStartPre=/usr/bin/bash -c 'if [ -x /usr/local/sbin/materialize-backend-secrets ]; then exec /usr/local/sbin/materialize-backend-secrets; fi'
+
+# Prefer installed binary; fall back to PATH hermes if symlink layout differs.
+ExecStart=/opt/hermes-lanyard/bin/hermes gateway
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+
+# --- sandbox / least privilege (systemd) ---
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+MemoryDenyWriteExecute=false
+# Hermes may need network for model APIs + portal relay WSS
+PrivateNetwork=false
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallArchitectures=native
+# Broad but non-root; tighten further per tenant if required
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0077
+
+# Writable paths under ProtectSystem=strict / ProtectHome=true
+ReadWritePaths=/opt/company-brain /opt/hermes-lanyard /home/hermes /var/tmp
+# Read-only install tree preference: re-open write only where needed (logs/state)
+# Operators may add drop-ins under hermes-gateway.service.d/ for extra paths
+# (e.g. /data when vault lives on a secondary volume).
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=hermes-gateway
+
+[Install]
+WantedBy=multi-user.target

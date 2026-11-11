@@ -1,0 +1,62 @@
+# Documentation-only example inputs for modules/portal-relay-service.
+# Copy to a *private* terraform.tfvars — never commit live account IDs or secrets.
+# NOT auto-applied from git examples.
+
+name_prefix = "lanyard-portal-staging"
+environment = "staging"
+
+vpc_id = "vpc-00000000000000000"
+public_subnet_ids = [
+  "subnet-00000000000000001",
+  "subnet-00000000000000002",
+]
+private_subnet_ids = [
+  "subnet-00000000000000003",
+  "subnet-00000000000000004",
+]
+
+image_repository = "000000000000.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/relay"
+image_digest     = "sha256:0000000000000000000000000000000000000000000000000000000000000003"
+image_tag_hint   = "v0.0.0-example"
+
+container_port      = 8080
+health_check_path   = "/health"
+desired_count       = 1
+stickiness_enabled  = true
+create_ecs_cluster  = true
+assign_public_ip    = false
+enable_https        = false
+# acknowledge_g6_scale_beyond_one = false  # required true only if desired_count > 1
+
+# Non-secret env only. Production-like environments reject known secret names here
+# (including REDIS_URL). Bus/cluster flags are plain config, not secrets.
+# environment_variables = {
+#   NODE_ENV           = "production"
+#   RELAY_CLUSTER_MODE = "single" # default; "bus" only with REDIS_URL + G6 proof
+#   # RELAY_ADVERTISE_URL = "https://relay.example.invalid"
+#   # RELAY_NODE_ID       = "relay-staging-a"
+# }
+
+# Generic SM/SSM injection (ARNs only — never secret values).
+#
+# Preferred REDIS_URL path (G6 owner leases / bus / jti / revocation) — modules/portal-valkey:
+#   secrets = {
+#     REDIS_URL = {
+#       value_from = "${module.portal_valkey.redis_url_secret_arn}:REDIS_URL::"
+#     }
+#   }
+# secrets = {
+#   RELAY_INTERNAL_TOKEN = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/relay-internal-token"
+#   }
+#   REDIS_URL = {
+#     # Prefer: "${module.portal_valkey.redis_url_secret_arn}:REDIS_URL::"
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/redis-url-XyZ123:REDIS_URL::"
+#   }
+# }
+
+acknowledge_not_auto_applied = true
+
+tags = {
+  Owner = "platform"
+}
