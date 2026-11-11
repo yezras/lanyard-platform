@@ -1,0 +1,10 @@
+# ClientCorePack metadata — required for monorepo pack validation (lp-k7g.9.3)
+name: self-improve
+summary: SOW enables nightly eval loop
+when_to_enable: SOW enables nightly eval loop
+contents: skill + tools + init/sync scripts
+sources:
+  - skills/self-improve
+  - tools/self-improve
+  - scripts
+dependencies: []
