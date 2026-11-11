@@ -50,7 +50,7 @@ Issues in Beads are:
 - Works offline, syncs when you push
 - Fast, lightweight, and stays out of your way
 
-🛠 **Git Integration**
+🔧 **Git Integration**
 - Dolt-native sync via bd dolt push / bd dolt pull
 - Branch-aware issue tracking
 - Dolt-native three-way merge resolution
