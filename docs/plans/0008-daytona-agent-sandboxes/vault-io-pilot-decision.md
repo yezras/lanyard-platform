@@ -73,14 +73,7 @@ Pilot **must not** ship agent patterns that, on each interactive turn (or tight 
 
 - open/read **hundreds** of tiny vault files, or  
 - create **hundreds** of tiny vault files, or  
-5. Treat sequential... wait no I must not invent. The source says:
-
-Looking at the read:
-```
-- open/read **hundreds** of tiny vault files, or  
-- create **hundreds** of tiny vault files, or  
 - re-walk the full vault with per-file open/read as if latency were local SSD.
-```
 
 Those patterns are **NO-GO without** a guest working-set cache or an I/O redesign that reduces S3 object ops. Evidence: 100×64 B reads ~8.5 s; 100 writes ~27 s ([spike-kx4](./spike-kx4-vault-io-patterns.md) §4).
 
