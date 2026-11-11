@@ -1,0 +1,26 @@
+{
+  "run_id": "wf_7fad97d2e324fa00",
+  "display_name": "research-lite",
+  "workflow_name": "research-lite",
+  "status": "failed",
+  "phases": [
+    "plan"
+  ],
+  "current_phase": "plan",
+  "agents_used": 0,
+  "agents": [],
+  "budget_total": 8,
+  "created_at_ms": 1786731271289,
+  "updated_at_ms": 1786731278696,
+  "outcome": {
+    "kind": "failed",
+    "error": "journal io: EPERM: operation not permitted, open '/mnt/vault/wf_7fad97d2e324fa00/journal.jsonl'",
+    "cause": {
+      "code": "io",
+      "name": "JournalError"
+    }
+  },
+  "source_kind": "builtin",
+  "pause_requested": false,
+  "error": "journal io: EPERM: operation not permitted, open '/mnt/vault/wf_7fad97d2e324fa00/journal.jsonl'"
+}

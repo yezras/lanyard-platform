@@ -1,0 +1,28 @@
+{
+  "track": "A_story_mock_surface",
+  "base": "http://127.0.0.1:3027",
+  "passed": true,
+  "checks": {
+    "story_mode": "onlyoffice",
+    "story_url": "http://127.0.0.1:3027/chat?story=document-pane&mode=onlyoffice&layout=split",
+    "renderer": "onlyoffice",
+    "editor_host_visible": true,
+    "mock_surface_text_snip": "ONLYOFFICE editor (mock)\nProposal.docx \u2014 nonblank mount for lab screenshot (lp-5q6.27 / lp-5q6.37).\nDocument Server api.js is mocked; BFF mint is not required f",
+    "mock_surface_box": {
+      "x": 1001,
+      "y": 57,
+      "width": 439,
+      "height": 843
+    },
+    "preview_text_count": 0,
+    "data_preview_fallback": "0",
+    "root_story_redirect_url": "http://127.0.0.1:3027/chat?story=document-pane&mode=onlyoffice&layout=split",
+    "root_story_mode": "onlyoffice",
+    "flag_off_mode": "flag_off",
+    "flag_off_preview_fallback": "1",
+    "flag_off_renderer": "preview",
+    "flag_off_screenshot": "02-story-flag-off-preview-fallback.png",
+    "screenshot": "01-story-onlyoffice-editor-host-nonblank.png",
+    "screenshot_bytes": 80079
+  }
+}

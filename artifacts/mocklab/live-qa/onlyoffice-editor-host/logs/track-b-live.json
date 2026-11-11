@@ -1,0 +1,73 @@
+{
+  "track": "B_live_mocklab_residual",
+  "base": "https://app.withlanyard.com/mocklab",
+  "passed": true,
+  "editor_go_claimed": false,
+  "checks": {
+    "ds_https_api_js": {
+      "url": "https://lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com/web-apps/apps/api/documents/api.js",
+      "status": 0,
+      "content_type": "",
+      "bytes": 0,
+      "head": "",
+      "ok": false
+    },
+    "ds_http_api_js": {
+      "url": "http://lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com/web-apps/apps/api/documents/api.js",
+      "status": 200,
+      "content_type": "application/javascript",
+      "bytes": 65363,
+      "head": "/*\n * Copyright (C) Ascensio System SIA, 2009-2026\n *\n * This program is a free software product. You can redistribute it and/or\n * modify it under the terms of",
+      "ok": true
+    },
+    "ds_https_tcp": {
+      "host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+      "port": 443,
+      "ok": false,
+      "error": "timed out"
+    },
+    "storage_state": "artifacts/ui/.auth/mocklab-agent.json",
+    "shell": {
+      "url": "https://app.withlanyard.com/mocklab/chat",
+      "not_found": true,
+      "shell_buttons": 0,
+      "body_snip": "Not Found"
+    },
+    "shell_screenshot": "03-live-mocklab-chat-shell.png",
+    "vault": {
+      "url": "https://app.withlanyard.com/mocklab/vault",
+      "not_found": true,
+      "body_snip": "Not Found",
+      "host_count": 0,
+      "docsapi": false
+    },
+    "vault_screenshot": "04-live-mocklab-vault.png",
+    "auth_me": {
+      "status": 200,
+      "ok": true,
+      "ct": "application/json"
+    },
+    "mint": {
+      "status": 201,
+      "ct": "application/json",
+      "spa": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "editor_config_present": true,
+      "token_present": true,
+      "error": null
+    },
+    "spa_vite_bake": {
+      "ok": true,
+      "js_path": "/assets/index-DzazbXcP.js",
+      "js_bytes": 1342260,
+      "VITE_ONLYOFFICE_EDITOR": "true",
+      "VITE_ONLYOFFICE_DS_URL": "https://lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com"
+    },
+    "mint_happy_path_still_go": true
+  },
+  "residuals": [
+    "https_ds_residual",
+    "mocklab_spa_not_found"
+  ]
+}
