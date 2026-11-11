@@ -1,0 +1,60 @@
+# Public (non-secret) Hermes-Lanyard config seed for multi-provider selection.
+# lp-645.8.4 teaching fixture — no API keys, no OAuth tokens.
+# Credentials come from materialize: .env.secrets, auth.json, config.secrets.yaml.
+# Validates against contracts/backend-runtime-v1/config.schema.json.
+#
+# Switch active path by changing model.provider / model.default only (and
+# ensuring the matching SM slots are live). Prefer OAuth provider ids over API
+# key provider ids when both credential types are present.
+
+_config_version: 1
+
+# Active path examples (pick one pair at a time on a live host):
+#   Super Heavy OAuth:  provider: xai-oauth     default: grok-3
+#   Codex OAuth:        provider: openai-codex  default: gpt-4.1
+#   Meta custom:        provider: meta          default: llama-3.1-405b
+#   xAI API key backup: provider: xai           default: grok-3
+#   OpenAI API key:     provider: openai        default: gpt-4.1
+model:
+  provider: xai-oauth
+  default: grok-3
+
+# Named providers. Secret values never inline — only key_env names.
+# OAuth-backed ids (xai-oauth, openai-codex) resolve tokens from $HERMES_HOME/auth.json.
+# Custom / API-key providers resolve keys from process env (.env.secrets).
+providers:
+  xai-oauth:
+    # Built-in Hermes OAuth provider; auth material in auth.json providers.xai-oauth
+    request_timeout_seconds: 1800
+  openai-codex:
+    # Built-in Hermes Codex OAuth; auth material in auth.json providers.openai-codex
+    request_timeout_seconds: 1800
+  xai:
+    # API-key backup path when Super Heavy OAuth is unavailable
+    key_env: XAI_API_KEY
+    request_timeout_seconds: 1800
+  openai:
+    key_env: OPENAI_API_KEY
+    request_timeout_seconds: 1800
+  meta:
+    base_url: https://api.llama.com/compat/v1
+    key_env: META_API_KEY
+    default_model: llama-3.1-405b
+    api_mode: chat_completions
+    request_timeout_seconds: 1800
+
+# Optional fallback chain (non-secret ids only).
+fallback_providers:
+  - provider: xai
+    model: grok-3
+
+agent:
+  max_turns: 60
+  verbose: false
+  reasoning_effort: medium
+
+streaming:
+  enabled: false
+
+max_concurrent_sessions: null
+group_sessions_per_user: true
