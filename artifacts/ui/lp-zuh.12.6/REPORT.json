@@ -1,0 +1,156 @@
+{
+  "bead_id": "lp-zuh.12.6",
+  "when": "2026-08-19T01:23:17.875765+00:00",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "app_origin": "https://app.withlanyard.com",
+  "login_email": "agent-dev@mocklab.example.com",
+  "passed": true,
+  "skipped": false,
+  "summary": "PASS_MOCKLAB_SPA_SHELL: shell_ok=True not_found=False js=/assets/index-yB4LmRb5.js api_ok=True me_ok=True residuals=[] shots=5 passed=True",
+  "checks": [
+    {
+      "id": "api-login",
+      "ok": true,
+      "detail": {
+        "email": "agent-dev@mocklab.example.com",
+        "user_id_present": true,
+        "cookie_names": [
+          "lanyard_session",
+          "lanyard_csrf"
+        ]
+      }
+    },
+    {
+      "id": "live-pin-identity",
+      "ok": true,
+      "detail": {
+        "js_path": "/assets/index-yB4LmRb5.js",
+        "is_pre_fix_pin_DzazbXcP": false,
+        "note": "630a91d7 / f162f4e7 rewrite fix requires new pack/promote beyond index-DzazbXcP.js",
+        "pin": {
+          "status": 200,
+          "js_path": "/assets/index-yB4LmRb5.js",
+          "html_len": 1912,
+          "fromDoc": "/assets/index-yB4LmRb5.js"
+        }
+      }
+    },
+    {
+      "id": "mocklab-shell-not-not-found",
+      "ok": true,
+      "detail": {
+        "url": "https://app.withlanyard.com/mocklab/chat",
+        "shell_buttons": 3,
+        "shell_nav": 7,
+        "not_found": false,
+        "hydration_418": false,
+        "body_snip": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nDemo\nNo chats yet\nDemo2\nNo chats yet\nGeneral\nWarden\nDo not use tools. Reply with exactly: pong lp-o\u2026\nCipher\nAug 18",
+        "path_diag": {
+          "href": "https://app.withlanyard.com/mocklab/chat",
+          "pathname": "/mocklab/chat",
+          "tenant_basepath": "/mocklab",
+          "api_prefix": "/mocklab/api",
+          "body_snip": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nDemo\nNo chats yet\nDemo2\nNo chats yet\nGeneral\nWarden\nDo not use tools. Repl",
+          "title": "Lanyard Portal"
+        },
+        "js_path": "/assets/index-yB4LmRb5.js"
+      }
+    },
+    {
+      "id": "auth-me",
+      "ok": true,
+      "detail": {
+        "status": 200,
+        "email": "agent-dev@mocklab.example.com",
+        "ct": "application/json"
+      }
+    },
+    {
+      "id": "mocklab-route-vault",
+      "ok": true,
+      "detail": {
+        "url": "https://app.withlanyard.com/mocklab/vault",
+        "not_found": false,
+        "body_snip": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nSearch\ncron\nKnowledge\nlp-kng67-dem"
+      },
+      "soft": true
+    },
+    {
+      "id": "mocklab-route-agents",
+      "ok": false,
+      "detail": {
+        "url": "https://app.withlanyard.com/mocklab/agents",
+        "not_found": true,
+        "body_snip": "Not Found"
+      },
+      "soft": true
+    },
+    {
+      "id": "root-chat-contrast",
+      "ok": true,
+      "detail": {
+        "url": "https://app.withlanyard.com/chat",
+        "password_inputs": 1,
+        "not_found": false
+      },
+      "soft": true
+    }
+  ],
+  "residuals": [],
+  "network": {
+    "api_login": {
+      "email": "agent-dev@mocklab.example.com",
+      "user_id_present": true,
+      "cookie_names": [
+        "lanyard_session",
+        "lanyard_csrf"
+      ]
+    },
+    "live_pin": {
+      "status": 200,
+      "js_path": "/assets/index-yB4LmRb5.js",
+      "html_len": 1912,
+      "fromDoc": "/assets/index-yB4LmRb5.js"
+    },
+    "path_diag": {
+      "href": "https://app.withlanyard.com/mocklab/chat",
+      "pathname": "/mocklab/chat",
+      "tenant_basepath": "/mocklab",
+      "api_prefix": "/mocklab/api",
+      "body_snip": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nDemo\nNo chats yet\nDemo2\nNo chats yet\nGeneral\nWarden\nDo not use tools. Repl",
+      "title": "Lanyard Portal"
+    },
+    "page_errors": [],
+    "console_errors": [
+      "Failed to load resource: the server responded with a status of 503 ()",
+      "Failed to load resource: the server responded with a status of 503 ()"
+    ],
+    "auth_me": {
+      "status": 200,
+      "email": "agent-dev@mocklab.example.com",
+      "ct": "application/json"
+    }
+  },
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-zuh.12.6/artifacts/ui/lp-zuh.12.6/01-mocklab-chat-shell.png",
+    "/tmp/lp-bead-lp-zuh.12.6/artifacts/ui/lp-zuh.12.6/02-shell-evidence-overlay.png",
+    "/tmp/lp-bead-lp-zuh.12.6/artifacts/ui/lp-zuh.12.6/03-mocklab-vault.png",
+    "/tmp/lp-bead-lp-zuh.12.6/artifacts/ui/lp-zuh.12.6/04-mocklab-agents.png",
+    "/tmp/lp-bead-lp-zuh.12.6/artifacts/ui/lp-zuh.12.6/05-root-chat.png"
+  ],
+  "error": "",
+  "feature_branch": "beads/lp-zuh.12.6-mocklab-spa-mocklab-client-not-found-hyd",
+  "fix_commit": "landed_on_main_via_lp-zuh.12.8_#524 (tenantUiLocationRewrite; orig f162f4e7)",
+  "acceptance": {
+    "mocklab_chat_shell_not_not_found": true,
+    "live_pin_promoted_beyond_DzazbXcP": true
+  },
+  "related": {
+    "supersedes_fail_evidence": "prior lp-zuh.12.6 UI QA fail was pre-promote pin DzazbXcP",
+    "code_pr": "https://github.com/LanyardBrain/lanyard-platform/pull/524",
+    "original_draft_pr": "https://github.com/LanyardBrain/lanyard-platform/pull/511"
+  },
+  "soft_residuals": [
+    "/mocklab/agents path Not Found is expected (Agents is shell chrome on /chat)"
+  ]
+}
