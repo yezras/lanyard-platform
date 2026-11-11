@@ -40,17 +40,17 @@ gate=""
 classify() {
   local cmd="$1"
   case "$cmd" in
-    *" gmail users drafts create"*|" gmail users drafts update"*)
+    *" gmail users drafts create"*|*" gmail users drafts update"*)
       action="gmail.draft"; gate="sticky" ;;
-    *" gmail users messages send"*|" gmail users drafts send"*|" gmail +send"*|" gmail +reply"*|" gmail +reply-all"*|" gmail +forward"*)
+    *" gmail users messages send"*|*" gmail users drafts send"*|*" gmail +send"*|*" gmail +reply"*|*" gmail +reply-all"*|*" gmail +forward"*)
       action="gmail.send"; gate="every_call" ;;
     *" gmail "*)
       action="gmail.read"; gate="sticky" ;;
-    *" calendar events insert"*|" calendar events update"*|" calendar events patch"*|" calendar events delete"*|" calendar events move"*|" calendar events import"*|" calendar events quickAdd"*|" calendar +insert"*)
+    *" calendar events insert"*|*" calendar events update"*|*" calendar events patch"*|*" calendar events delete"*|*" calendar events move"*|*" calendar events import"*|*" calendar events quickAdd"*|*" calendar +insert"*)
       action="calendar.write"; gate="every_call" ;;
     *" calendar "*)
       action="calendar.read"; gate="sticky" ;;
-    *" drive files create"*|" drive files update"*|" drive files copy"*|" drive files delete"*|" drive permissions create"*|" drive permissions update"*|" drive permissions delete"*|" drive +upload"*)
+    *" drive files create"*|*" drive files update"*|*" drive files copy"*|*" drive files delete"*|*" drive permissions create"*|*" drive permissions update"*|*" drive permissions delete"*|*" drive +upload"*)
       action="drive.write"; gate="every_call" ;;
     *" drive "*)
       action="drive.read"; gate="sticky" ;;
