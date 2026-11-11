@@ -1,0 +1,552 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/backend-runtime-v1/config.schema.json",
+  "title": "Backend runtime config (backend-runtime-v1)",
+  "description": "Shape of BACKEND_HOME/config.yaml (and artifact config/defaults.yaml). Hermes-Lanyard is the v1 reference: Portal settings and deploy templates consume this surface. Secrets must not be committed in examples or defaults; use host env (.env), secret managers, or key_env / ${VAR} references. Root additionalProperties is true so full Hermes-Lanyard configs validate while the contract documents the settings surface used by Portal (models, providers, skills, cron).",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "_config_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Optional Hermes config file format version (migrated on load). Platform contract major is independent (this schema's document version is fixed by $id path backend-runtime-v1)."
+    },
+    "model": {
+      "description": "Active chat model. Hermes accepts a bare model id string or an object. Canonical object key for the model id is `default` (aliases `model` / `name` are accepted by Hermes and normalized on load).",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Bare model id (e.g. anthropic/claude-opus-4.6 or grok-4.5)."
+        },
+        {
+          "$ref": "#/$defs/modelSettings"
+        }
+      ]
+    },
+    "providers": {
+      "type": "object",
+      "description": "Named provider overrides and custom OpenAI-compatible endpoints. Keys are provider ids (built-in names or custom). Prefer key_env / ${ENV} for credentials — do not commit plaintext api_key values.",
+      "additionalProperties": {
+        "$ref": "#/$defs/providerEntry"
+      }
+    },
+    "fallback_providers": {
+      "description": "Ordered fallback chain when the primary model/provider fails. Hermes accepts a list of provider/model pairs or legacy single-object shapes.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fallbackEntry"
+          }
+        },
+        {
+          "$ref": "#/$defs/fallbackEntry"
+        }
+      ]
+    },
+    "fallback_model": {
+      "description": "Legacy single fallback (dict or list). Prefer fallback_providers for new configs.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/fallbackEntry"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fallbackEntry"
+          }
+        }
+      ]
+    },
+    "provider_routing": {
+      "type": "object",
+      "description": "OpenRouter-only routing preferences (sort, only, ignore, order, etc.).",
+      "additionalProperties": true
+    },
+    "skills": {
+      "$ref": "#/$defs/skillsSettings",
+      "description": "Skills loading and safety settings. On-disk skill packages live under BACKEND_HOME/skills/ (see filesystem-layout.md); this object configures behavior, not the package tree itself."
+    },
+    "cron": {
+      "$ref": "#/$defs/cronSettings",
+      "description": "Cron scheduler settings. Job definitions live in BACKEND_HOME/cron/jobs.json; this object configures the in-process/managed scheduler (provider, Chronos, delivery, retention)."
+    },
+    "curator": {
+      "type": "object",
+      "description": "Background skill maintenance (stale/archive/consolidate). Related to skills; optional.",
+      "additionalProperties": true
+    },
+    "agent": {
+      "type": "object",
+      "description": "Agent loop settings (max_turns, timeouts, reasoning_effort, coding posture, etc.).",
+      "additionalProperties": true
+    },
+    "terminal": {
+      "type": "object",
+      "description": "Terminal tool backend (local, ssh, docker, …). Never commit sudo_password; use host secrets.",
+      "additionalProperties": true
+    },
+    "platform_toolsets": {
+      "type": "object",
+      "description": "Per-platform toolset presets or lists (cli, telegram, discord, …).",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          }
+        ]
+      }
+    },
+    "toolsets": {
+      "description": "Legacy global toolsets list (Hermes prefers platform_toolsets).",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "mcp_servers": {
+      "type": "object",
+      "description": "MCP server definitions. Do not commit env maps or headers that hold tokens; use key refs or host env.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "auxiliary": {
+      "type": "object",
+      "description": "Side-task model routing (vision, compression, web_extract, etc.).",
+      "additionalProperties": true
+    },
+    "compression": {
+      "type": "object",
+      "description": "Conversation context compression thresholds.",
+      "additionalProperties": true
+    },
+    "memory": {
+      "type": "object",
+      "description": "Persistent MEMORY.md / USER.md limits and nudges.",
+      "additionalProperties": true
+    },
+    "session_reset": {
+      "type": "object",
+      "description": "Messaging session auto-reset policy.",
+      "additionalProperties": true
+    },
+    "streaming": {
+      "type": "object",
+      "description": "Gateway progressive-edit streaming to messaging platforms.",
+      "additionalProperties": true
+    },
+    "gateway": {
+      "type": "object",
+      "description": "Gateway-level options (platforms may also be top-level Hermes keys).",
+      "additionalProperties": true
+    },
+    "platforms": {
+      "type": "object",
+      "description": "Per-messaging-platform extras (telegram, discord, api_server, …).",
+      "additionalProperties": true
+    },
+    "approvals": {
+      "type": "object",
+      "description": "Dangerous-command approval policy including cron_mode.",
+      "additionalProperties": true
+    },
+    "security": {
+      "type": "object",
+      "description": "Optional security scanners and related knobs.",
+      "additionalProperties": true
+    },
+    "display": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "logging": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "network": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "browser": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "tts": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "stt": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "openrouter": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "tool_loop_guardrails": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "max_concurrent_sessions": {
+      "description": "Cap on concurrent chat sessions; null/0 = unbounded.",
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "group_sessions_per_user": {
+      "type": "boolean"
+    },
+    "timezone": {
+      "type": "string"
+    },
+    "personalities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "modelSettings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "default": {
+          "type": "string",
+          "description": "Canonical active model id."
+        },
+        "model": {
+          "type": "string",
+          "description": "Alias for default (normalized to default on Hermes load)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Alias for default (normalized to default on Hermes load)."
+        },
+        "provider": {
+          "type": "string",
+          "description": "Inference provider id (auto, openrouter, anthropic, custom, lmstudio, …)."
+        },
+        "base_url": {
+          "type": "string",
+          "description": "OpenAI-compatible API base URL when using custom/local endpoints."
+        },
+        "api_base": {
+          "type": "string",
+          "description": "Alias for base_url (normalized on Hermes load)."
+        },
+        "context_length": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total context window override when auto-detect is wrong."
+        },
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Per-response output token cap."
+        },
+        "auth_mode": {
+          "type": "string",
+          "description": "Provider auth mode (e.g. entra_id for Azure Foundry)."
+        },
+        "default_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Extra HTTP headers for OpenAI-wire requests. Values may be secret — prefer env substitution; omit from committed examples."
+        },
+        "extra_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Alias/merge partner of default_headers; treat values as secrets."
+        },
+        "api_key": {
+          "type": "string",
+          "description": "SECRET. Prefer host .env or provider key_env. Must not appear in committed examples or artifact defaults."
+        }
+      }
+    },
+    "providerEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "base_url": {
+          "type": "string",
+          "description": "OpenAI-compatible base URL (also accepted as url / api)."
+        },
+        "url": {
+          "type": "string"
+        },
+        "api": {
+          "type": "string"
+        },
+        "key_env": {
+          "type": "string",
+          "description": "Name of environment variable holding the API key (preferred over api_key)."
+        },
+        "api_key_env": {
+          "type": "string",
+          "description": "Alias for key_env."
+        },
+        "api_key": {
+          "type": "string",
+          "description": "SECRET. Prefer key_env. Must not appear in committed examples."
+        },
+        "api_mode": {
+          "type": "string"
+        },
+        "transport": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string",
+          "description": "Default model id for this provider."
+        },
+        "default_model": {
+          "type": "string"
+        },
+        "models": {
+          "description": "Per-model overrides (timeouts, etc.) or list of model ids.",
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": true
+            },
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "context_length": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "request_timeout_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "stale_timeout_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "discover_models": {
+          "type": "boolean"
+        },
+        "extra_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "May contain credentials; omit from committed examples or use ${ENV}."
+        },
+        "extra_body": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "ssl_verify": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "ssl_ca_cert": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        }
+      }
+    },
+    "fallbackEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "provider": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        }
+      }
+    },
+    "skillsSettings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "external_dirs": {
+          "description": "Read-only external skill roots (paths expanded for ~ and ${VAR}). Local BACKEND_HOME/skills/ still wins on name collision. Hermes accepts a single path string or a list of paths.",
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "disabled": {
+          "type": "array",
+          "description": "Skill ids/names/folder basenames disabled for the agent. Portal settings skill toggle (settings.patch skill.set_enabled) mutates this list. Empty = all discovered skills enabled.",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "creation_nudge_interval": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Remind the agent to create skills every N tool iterations; 0 disables."
+        },
+        "template_vars": {
+          "type": "boolean",
+          "description": "Expand ${HERMES_SKILL_DIR} / ${HERMES_SESSION_ID} in SKILL.md."
+        },
+        "inline_shell": {
+          "type": "boolean",
+          "description": "Allow !`cmd` pre-exec in skill bodies (off by default)."
+        },
+        "inline_shell_timeout": {
+          "type": "number",
+          "minimum": 0
+        },
+        "guard_agent_created": {
+          "type": "boolean"
+        },
+        "write_approval": {
+          "type": "boolean",
+          "description": "Stage skill_manage writes for operator approval."
+        }
+      }
+    },
+    "cronSettings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "provider": {
+          "type": "string",
+          "description": "Scheduler provider id. Empty = built-in in-process ticker; e.g. chronos for managed scale-to-zero."
+        },
+        "chronos": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "NAS-mediated managed cron settings (non-secret URLs/audience). No external-scheduler credentials in config.",
+          "properties": {
+            "portal_url": {
+              "type": "string"
+            },
+            "callback_url": {
+              "type": "string"
+            },
+            "expected_audience": {
+              "type": "string"
+            },
+            "nas_jwks_url": {
+              "type": "string"
+            }
+          }
+        },
+        "wrap_response": {
+          "type": "boolean"
+        },
+        "mirror_delivery": {
+          "type": "boolean",
+          "description": "When true, cron deliveries are continuable in the origin chat/thread."
+        },
+        "max_parallel_jobs": {
+          "description": "Max due jobs per tick; null/0 = unbounded.",
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_retention": {
+          "type": "integer",
+          "description": "Keep N most recent per-job output files; <=0 disables pruning."
+        }
+      }
+    }
+  },
+  "x-lanyard-secret-policy": {
+    "description": "Committed examples, artifact config/defaults.yaml, and monorepo fixtures must not contain secret values. Prefer key_env, ${VAR} substitution, host .env, and platform secret managers.",
+    "forbidden_example_keys": [
+      "api_key",
+      "sudo_password",
+      "password",
+      "passwd",
+      "token",
+      "access_token",
+      "refresh_token",
+      "client_secret",
+      "private_key",
+      "authorization",
+      "bearer",
+      "secret"
+    ],
+    "forbidden_nested_maps": [
+      "env",
+      "headers",
+      "secrets",
+      "credentials"
+    ],
+    "notes": [
+      "key_env and api_key_env name environment variables and are allowed in examples.",
+      "Empty-string placeholders for secrets are still discouraged in committed files; omit the key.",
+      "Hermes stores many secrets in BACKEND_HOME/.env (out of this schema); do not fold those into defaults.yaml."
+    ]
+  }
+}
