@@ -1,0 +1,72 @@
+{
+  "bead_id": "lp-uxy.15.2",
+  "shipped_feature": "lp-uxy.1",
+  "base_url": "http://demo.localhost:3010",
+  "passed": true,
+  "story_nested": {
+    "ok": true,
+    "detail": "story phase=nested: detail nested stream visible; roster rows=2; live_label=True",
+    "assertions": {
+      "detail_visible": true,
+      "nested_stream_visible": true,
+      "stream_nonempty": true,
+      "live_tools_label": true,
+      "stream_text_preview": "2 tool calls\nSearching files\nindemnification\n0.8s\nReading documents\n/Business/Contracts/MSA.docx",
+      "roster_row_count": 2,
+      "chip_opens_nested": true
+    },
+    "notes_shot": "01-detail-nested-tools-running.png",
+    "notes_shot_roster": "02-roster-multi-subagent.png"
+  },
+  "live_multi_subagent": {
+    "ok": false,
+    "detail": "live: subagent chips present; nested stream not observed (host attribution?)",
+    "assertions": {
+      "saw_subagent_chip": true,
+      "saw_activity_pane": true,
+      "saw_nested_stream": false
+    },
+    "screenshots": [
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/10-live-home.png",
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/11-live-sent.png",
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/12-live-subagent-chips.png",
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/13-live-activity-detail.png",
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/14-live-nested-empty-running.png",
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/12-live-subagent-chips.png",
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/13-live-activity-detail.png",
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/14-live-nested-empty-complete.png",
+      "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/15-live-final.png"
+    ]
+  },
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/01-detail-nested-tools-running.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/02-roster-multi-subagent.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/03-detail-from-roster-nested-stream.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/04-chip-opens-detail-nested.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/10-live-home.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/11-live-sent.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/12-live-subagent-chips.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/13-live-activity-detail.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/14-live-nested-empty-running.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/14-live-nested-empty-complete.png",
+    "/tmp/lp-bead-lp-uxy.15.2/artifacts/ui/lp-uxy-ship-qa/nested-tools/15-live-final.png"
+  ],
+  "errors": [
+    "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 15000ms\n  - waiting for get_by_role(\"textbox\").last\n\nAria snapshot:\n- link \"Skip to content\":\n  - /url: \"#astryx-app-shell-main\"\n- navigation \"Lanyard Portal\":\n  - text: Lanyard Portal\n  - navigation \"Tabs\":\n    - button \"Chat\"\n    - button \"Vault\"\n    - button \"Settings\"\n  - button \"Account menu\":\n    - img \"dev@demo.local\": D\n    - text: dev@demo.local\n- navigation \"Chat history\":\n  - button \"New chat\":\n    - text: New chat\n    - status\n  - button \"New project\":\n    - text: New project\n    - status\n  - link \"Workspace Project actions for Workspace\":\n    - /url: \"#project/p_bfa1ad12\"\n    - text: Workspace\n    - button \"Project actions for Workspace\":\n      - status\n  - button \"Collapse Workspace\" [expanded]\n  - group \"Workspace\":\n    - button \"No chats yet\" [disabled]\n  - link \"Clients Project actions for Clients\":\n    - /url: \"#project/p_9a5ec5aa\"\n    - text: Clients\n    - button \"Project actions for Clients\":\n      - status\n  - button \"Collapse Clients\" [expanded]\n  - group \"Clients\":\n    - link \"hi Response complete\":\n      - /url: \"#thread/06a37cf1-b0ec-4350-8dd3-f3de6ad11ee8\"\n      - text: hi\n      - img \"Response complete\"\n  - link \"demo Project actions for demo\":\n    - /url: \"#project/p_7df5c3d1\"\n    - text: demo\n    - button \"Project actions for demo\":\n      - status\n  - button \"Collapse demo\" [expanded]\n  - group \"demo\":\n    - button \"No chats yet\" [disabled]\n  - link \"legal_work Project actions for legal_work\":\n    - /url: \"#project/p_3505c9d9\"\n    - text: legal_work\n    - button \"Project actions for legal_work\":\n      - status\n  - button \"Collapse legal_work\" [expanded]\n  - group \"legal_work\":\n    - button \"No chats yet\" [disabled]\n  - link \"QaBugWd24645 Project actions for QaBugWd24645\":\n    - /url: \"#project/p_5a523b32\"\n    - text: QaBugWd24645\n    - button \"Project actions for QaBugWd24645\":\n      - status\n  - button \"Collapse QaBugWd24645\" [expanded]\n  - group \"QaBugWd24645\":\n    - button \"No chats yet\" [disabled]\n  - link \"FixWd25140 Project actions for FixWd25140\":\n    - /url: \"#project/p_2a7b8755\"\n    - text: FixWd25140\n    - button \"Project actions for FixWd25140\":\n      - status\n  - button \"Collapse FixWd25140\" [expanded]\n  - group \"FixWd25140\":\n    - button \"No chats yet\" [disabled]\n  - link \"k Project actions for k\":\n    - /url: \"#project/p_3dbe565b\"\n    - text: k\n    - button \"Project actions for k\":\n      - status\n  - button \"Collapse k\" [expanded]\n  - group \"k\":\n    - button \"No chats yet\" [disabled]\n  - link \"dmeo Project actions for dmeo\":\n    - /url: \"#project/p_b79bffcb\"\n    - text: dmeo\n    - button \"Project actions for dmeo\":\n      - status\n  - button \"Collapse dmeo\" [expanded]\n  - group \"dmeo\":\n    - button \"No chats yet\" [disabled]\n  - link \"General\":\n    - /url: \"#project/none\"\n  - button \"Collapse General\" [expanded]\n  - group \"General\":\n    - link \"New chat Idle\":\n      - /url: \"#thread/05b78f4d-7f1b-46a3-8a94-eb504808fb6f\"\n      - text: New chat\n      - img \"Idle\"\n  - button \"Collapse sidebar\":\n    - status\n- separator \"Resize sidebar\"\n- main:\n  - log:\n    - article \"Message from user\":\n      - text: hi\n      - time: 9:46 AM\n    - article \"Message from assistant\":\n      - document:\n        - paragraph: Hello! How can I help with the Lanyard vault?\n      - time: 9:46 AM\n      - text: \u00b7\n      - button \"Regenerate\":\n        - status\n      - button \"Copy\":\n        - status\n      - text: model unknown\n  - button \"Scroll to bottom\":\n    - text: Scroll to bottom\n    - status\n  - text: Scoped to Clients\n  - combobox \"Message input\"\n  - button \"Clients\":\n    - text: Clients\n    - status\n  - button \"Attach file\":\n    - status\n  - 'button \"Model intelligence: Auto\"':\n    - text: Auto\n    - status\n  - button \"Send\" [disabled]:\n    - status"
+  ],
+  "notes": [
+    "login_ok"
+  ],
+  "pass_criteria": {
+    "story_nested_required": true,
+    "story_nested_ok": true,
+    "live_required": false,
+    "live_ok": false,
+    "live_note": "live: subagent chips present; nested stream not observed (host attribution?)"
+  },
+  "verdict": "PASS_PORTAL_UI_FAIL_LIVE_HOST_ATTRIBUTION",
+  "portal_ui_ok": true,
+  "live_host_nested_ok": false,
+  "fix_bead": "lp-uxy.16",
+  "summary": "Portal nested live tool stream UI works (story phase=nested: roster + detail with Searching files / Reading documents). Live LA multi-subagent chips and detail open, but nested stream empty \u2014 host not dual-emitting parent_subagent_id. Fix bead filed."
+}
