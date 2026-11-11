@@ -1,0 +1,56 @@
+# Documentation-only example inputs for modules/platform-vpc.
+# Copy to a *private* terraform.tfvars (never commit live account IDs, real customer CIDRs claimed as live, or secrets).
+# This module is NOT auto-applied from git examples.
+#
+# Prerequisites (operator):
+#   - AWS credentials / backend configured outside this repository
+#   - Region with ≥2 AZs for Portal multi-AZ ALB/Fargate/RDS
+#   - Downstream consumers: modules/portal-*, modules/control-plane-rds (private subnets only)
+#
+# Lab CIDRs below are RFC1918 example ranges only — not claimed live production networks.
+
+name_prefix = "lanyard-platform-staging"
+environment = "staging"
+
+vpc_cidr = "10.0.0.0/16"
+
+availability_zones = [
+  "us-east-1a",
+  "us-east-1b",
+]
+
+# Public edge: BFF + relay ALBs (map_public_ip_on_launch = true)
+public_subnet_cidrs = [
+  "10.0.0.0/24",
+  "10.0.1.0/24",
+]
+
+# Private tier: Fargate tasks, internal control-plane ALB, RDS
+# map_public_ip_on_launch forced false — do not put CP/RDS on public subnets
+private_subnet_cidrs = [
+  "10.0.10.0/24",
+  "10.0.11.0/24",
+]
+
+# Must stay false (validation + resource hardcode reject true)
+private_map_public_ip_on_launch = false
+
+# Private egress: NAT for general internet; VPC endpoints for AWS APIs (ECR/Logs/SM/SSM/S3)
+enable_nat_gateway   = true
+single_nat_gateway   = true # staging-friendly; set false for multi-AZ NAT in prod private roots
+
+enable_s3_gateway_endpoint     = true
+enable_ecr_endpoints           = true
+enable_logs_endpoint           = true
+enable_secretsmanager_endpoint = true
+enable_ssm_endpoints           = true
+
+# Optional: tighten endpoint SG ingress (defaults to VPC CIDR when empty)
+# vpc_endpoint_allowed_cidr_blocks = ["10.0.0.0/16"]
+
+# Required honesty gate
+acknowledge_not_auto_applied = true
+
+tags = {
+  Owner = "platform"
+}

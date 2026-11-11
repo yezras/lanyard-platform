@@ -1,0 +1,43 @@
+# Documentation-only example inputs for modules/account-factory (Lanyard-hosted account-per-tenant).
+# Copy to a *private* terraform.tfvars — never commit live account IDs, emails, or ExternalIds as production claims.
+#
+# This module is NOT auto-applied from git. Status: infra_ready / contract.
+# Live Organizations CreateAccount / SCP attach / Control Tower apply: operator-owned (CT/AFT).
+# Default create_account_baseline=false → contract outputs only (safe offline).
+
+tenant_slug        = "acme"
+project_name       = "acme-brain"
+environment_class  = "production-client"
+account_name       = "lanyard-acme-prod"
+# Placeholder mailbox only — replace in private ops; do not use live Lanyard domains in examples.
+account_email      = "aws+acme-prod-example@example.com"
+target_ou_path     = "Root/Lanyard/clients/production-clients"
+
+# After CT/AFT vends the account, set the real 12-digit ID in private tfvars:
+# account_id = "000000000000"
+account_id = null
+
+region = "us-east-1"
+
+# Contract-only by default (no AWS resources). Set true only when applying *inside* the vended account.
+create_account_baseline = false
+
+# Required honesty gates
+acknowledge_not_auto_applied   = true
+enable_live_organizations_api  = false
+
+# When create_account_baseline=true, provide Lanyard principals (zeros = placeholder only):
+# lanyard_deploy_principal_arns = [
+#   "arn:aws:iam::000000000000:role/lanyard-platform-deployer",
+# ]
+# break_glass_principal_arns = [
+#   "arn:aws:iam::000000000000:role/lanyard-break-glass",
+# ]
+# deploy_role_external_id = "offline-doc-only-x7k9m2p4q8w1"  # never commit production value
+# require_mfa_break_glass = true
+# monthly_budget_limit_usd = 500
+# budget_notification_email = null
+
+extra_tags = {
+  Owner = "lanyard-ops"
+}

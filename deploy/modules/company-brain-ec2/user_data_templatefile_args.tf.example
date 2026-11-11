@@ -1,0 +1,30 @@
+# Reference: wire effective backend locals into user_data templatefile.
+# MERGED into modules/company-brain-ec2/main.tf (lp-k7g.10.3).
+# Keep client_core_* as-is. Do not pass raw hermes_artifact_* into the template;
+# dual-write of HERMES_* env keys happens inside user_data.sh.tftpl from backend_*.
+#
+# user_data = templatefile("${path.module}/user_data.sh.tftpl", {
+#   project_name                 = var.project_name
+#   install_path                 = var.install_path
+#   vault_path                   = var.vault_path
+#   timezone                     = var.timezone
+#
+#   client_core_artifact_url     = var.client_core_artifact_url
+#   client_core_artifact_version = var.client_core_artifact_version
+#   client_core_artifact_sha256  = var.client_core_artifact_sha256
+#
+#   # Primary (effective — never pass raw legacy-only vars without locals)
+#   backend_artifact_url              = local.effective_backend_artifact_url
+#   backend_artifact_version          = local.effective_backend_artifact_version
+#   backend_artifact_sha256           = local.effective_backend_artifact_sha256
+#   backend_artifact_kind             = local.effective_backend_artifact_kind
+#   backend_artifact_signature_b64    = local.effective_backend_artifact_signature_b64
+#   backend_contract_runtime_layout   = local.effective_backend_contract_runtime_layout
+#   backend_contract_relay            = local.effective_backend_contract_relay
+#   backend_contract_brain_rpc        = local.effective_backend_contract_brain_rpc
+#   backend_install_path              = local.effective_backend_install_path
+#
+#   bootstrap_script_b64   = var.bootstrap_script_b64
+#   bootstrap_install_path = var.bootstrap_install_path
+#   # ... remaining args unchanged (tailscale, omnibox, golden AMI, …) ...
+# })
