@@ -14,7 +14,7 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 128,
-      "pattern": "^[^:\\\\s]+$",
+      "pattern": "^[^:\\s]+$",
       "description": "Branded id. Colon is illegal (session-key delimiter). Whitespace is illegal."
     },
     "personaId": {
