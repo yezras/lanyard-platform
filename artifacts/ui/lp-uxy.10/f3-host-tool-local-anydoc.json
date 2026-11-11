@@ -1,0 +1,70 @@
+{
+  "bead_id": "lp-uxy.10.4",
+  "parent_feature": "lp-uxy.10",
+  "epic": "lp-uxy",
+  "step": "F3",
+  "title": "parse_document F3 host tool local anydoc (HL/LA)",
+  "date": "2026-08-04",
+  "kind": "host_tool_reference_implementation",
+  "implementation_shipped": true,
+  "plane": "monorepo_reference_for_external_hl_la",
+  "live_firecrawl_calls": false,
+  "cost_gated_ocr_deferred": true,
+  "local_anydoc_cost": "$0 SaaS host CPU",
+  "tool_identity": {
+    "canonical": "parse_document",
+    "alias": "extract_document_text",
+    "tool_label": "Parsing a document",
+    "placement": "host_agent_tool",
+    "not_bff": true
+  },
+  "module_paths": {
+    "reference_tool": "contracts/backend-runtime-v1/reference/tools/parse_document/parse_document_tool.py",
+    "tests": "contracts/backend-runtime-v1/reference/tools/parse_document/test_parse_document_tool.py",
+    "requirements": "contracts/backend-runtime-v1/reference/tools/parse_document/requirements.txt",
+    "hl_register_snippet": "contracts/backend-runtime-v1/reference/tools/parse_document/hermes_register_snippet.py",
+    "docs_note": "docs/architecture/portal-parse-document-f3-host-tool.md",
+    "f2_contract": "docs/architecture/portal-parse-document-f2-tool-contract.md"
+  },
+  "dependency": {
+    "python": "firecrawl-anydoc>=0.1.2,<0.2",
+    "node_sister": "@firecrawl/anydoc",
+    "upstream": "https://github.com/firecrawl/anydoc"
+  },
+  "features_implemented": [
+    "ParseDocumentArgs/Result per F2",
+    "path ACL vault roots + /staging/uploads",
+    "refuse .. escape, missing, non-regular, too_large (25 MiB)",
+    "anydoc.to_markdown_bytes content detection",
+    "truncation default 48000 clamp [1000,200000] pure slice",
+    "sidecar <stem>.parse.md soft-fail",
+    "dual-emit tool_progress running→complete/error with tool_target and tool_label",
+    "scanned/empty PDF → unsupported_scanned; force_ocr without key → no_ocr_key",
+    "no live OCR (F5 deferred)"
+  ],
+  "tests": {
+    "offline_injected_converter": true,
+    "live_anydoc_when_installed": ["docx", "xlsx", "text_pdf", "unsupported_binary"],
+    "runner": "python3 contracts/backend-runtime-v1/reference/tools/parse_document/test_parse_document_tool.py"
+  },
+  "acceptance": {
+    "host_tool_module": true,
+    "path_acl": true,
+    "dual_emit": true,
+    "local_convert_docx_xlsx_text_pdf": true,
+    "no_bff_parse": true,
+    "no_live_ocr": true,
+    "evidence_docs": true
+  },
+  "residuals": [
+    "External HL product copy + registry + image dep still required for pilot pin bump",
+    "LA sister port of same contract",
+    "Staging fixture may not materialize vault bytes offline (F6 topology)",
+    "F5 OCR not implemented"
+  ],
+  "later_steps_not_implemented": [
+    "lp-uxy.10.5 F4 Portal label",
+    "lp-uxy.10.6 F5 OCR",
+    "lp-uxy.10.7 F6 prove"
+  ]
+}

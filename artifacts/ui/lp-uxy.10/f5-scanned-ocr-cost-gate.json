@@ -1,0 +1,82 @@
+{
+  "bead_id": "lp-uxy.10.6",
+  "parent_feature": "lp-uxy.10",
+  "epic": "lp-uxy",
+  "step": "F5",
+  "title": "parse_document F5 scanned OCR Firecrawl Parse cost-gate",
+  "date": "2026-08-04",
+  "kind": "host_tool_ocr_cost_gate",
+  "implementation_shipped": true,
+  "plane": "monorepo_reference_for_external_hl_la",
+  "live_firecrawl_calls": false,
+  "live_paid_ocr_in_ci": false,
+  "costs": {
+    "local_anydoc": "$0 SaaS host CPU",
+    "firecrawl_parse_ocr": "paid; only when allow_ocr + live FIRECRAWL_API_KEY"
+  },
+  "tool_identity": {
+    "canonical": "parse_document",
+    "alias": "extract_document_text",
+    "parser_on_ocr_success": "firecrawl_parse",
+    "not_bff": true,
+    "key_plane": "host_secrets_envelope_only"
+  },
+  "module_paths": {
+    "reference_tool": "contracts/backend-runtime-v1/reference/tools/parse_document/parse_document_tool.py",
+    "tests": "contracts/backend-runtime-v1/reference/tools/parse_document/test_parse_document_tool.py",
+    "hl_register_snippet": "contracts/backend-runtime-v1/reference/tools/parse_document/hermes_register_snippet.py",
+    "docs_note": "docs/architecture/portal-parse-document-f5-scanned-ocr.md",
+    "example_ocr_result": "contracts/backend-runtime-v1/examples/parse-document.result.ocr.json",
+    "f2_contract": "docs/architecture/portal-parse-document-f2-tool-contract.md",
+    "f3_host": "docs/architecture/portal-parse-document-f3-host-tool.md"
+  },
+  "gates": {
+    "allow_ocr_default": false,
+    "auto_ocr_default": false,
+    "env_allow": "PARSE_DOCUMENT_ALLOW_OCR",
+    "env_auto": "PARSE_DOCUMENT_AUTO_OCR",
+    "env_key": "FIRECRAWL_API_KEY",
+    "placeholder_keys_rejected": true,
+    "api": "POST https://api.firecrawl.dev/v2/parse multipart; parsers pdf mode=ocr"
+  },
+  "behaviour": {
+    "scanned_no_force_no_auto": "unsupported_scanned",
+    "force_ocr_without_key_or_policy": "no_ocr_key",
+    "auto_ocr_without_key": "unsupported_scanned (no spam no_ocr_key)",
+    "force_or_auto_with_policy_and_live_key": "parser firecrawl_parse",
+    "ocr_http_or_empty_fail": "parse_failed",
+    "local_anydoc_success": "never calls OCR"
+  },
+  "features_implemented": [
+    "want_ocr_escalation(force_ocr | auto_ocr+ready)",
+    "is_live_firecrawl_key rejects placeholders",
+    "firecrawl_parse_upload stdlib client (injectable)",
+    "dual-emit tool_progress complete with parser firecrawl_parse",
+    "sidecar + truncation unchanged from F3",
+    "no BFF key; no live paid calls in monorepo tests"
+  ],
+  "tests": {
+    "offline_f5_class": true,
+    "live_firecrawl_network": false,
+    "runner": "python3 contracts/backend-runtime-v1/reference/tools/parse_document/test_parse_document_tool.py"
+  },
+  "acceptance": {
+    "escalation_policy": true,
+    "fail_closed_no_key": true,
+    "fail_closed_processor_not_approved": true,
+    "never_bff_key": true,
+    "no_live_paid_without_key": true,
+    "parser_firecrawl_parse": true,
+    "costs_documented": true,
+    "evidence_docs": true
+  },
+  "residuals": [
+    "F6 prove attach→parse (and scanned without key negative) in browser",
+    "External HL/LA pin bump with PARSE_DOCUMENT_ALLOW_OCR wiring",
+    "Live SM omits FIRECRAWL_API_KEY until budget sign-off"
+  ],
+  "later_steps_not_implemented": [
+    "lp-uxy.10.7 F6 prove",
+    "lp-uxy.10.8 F7 open PR / pin notes (external)"
+  ]
+}

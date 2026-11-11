@@ -1,0 +1,48 @@
+{
+  "bead_id": "lp-uxy.10.5",
+  "parent": "lp-uxy.10",
+  "step": "F4",
+  "title": "parse_document Portal label + tool_progress UI",
+  "date": "2026-08-04",
+  "status": "complete",
+  "scope": {
+    "in": [
+      "humanToolActivityLabel map for parse_document and extract_document_text",
+      "CONTEXT_GATHERING collapse for both tool ids",
+      "Prefer host tool_label when human activity language",
+      "Unit tests on chatToolCallMapper / mapToolCallFields",
+      "Docs note + this evidence artifact"
+    ],
+    "out": [
+      "Host anydoc tool implementation (F3)",
+      "BFF-side parse of customer document bytes",
+      "Firecrawl Parse OCR (F5)",
+      "Live attach→parse→answer browser proof (F6)"
+    ]
+  },
+  "labels": {
+    "parse_document": "Parsing a document",
+    "extract_document_text": "Parsing a document",
+    "prefer_host_tool_label": true,
+    "mcp_bare_key_supported": true
+  },
+  "implementation": {
+    "mapper": "portal/packages/web/src/features/chat/chatToolCallMapper.ts",
+    "tests": "portal/packages/web/src/features/chat/chatToolCallMapper.test.ts",
+    "docs": "docs/architecture/portal-parse-document-f4-portal-labels.md",
+    "tool_progress_ui": "existing mapToolCallFields + ChatTimeline (no new chrome required)"
+  },
+  "validation": {
+    "command": "pnpm exec vitest run src/features/chat/chatToolCallMapper.test.ts",
+    "cwd": "portal/packages/web",
+    "result": "35 passed"
+  },
+  "boundary": {
+    "bff_parses_customer_docs": false,
+    "ocr_key_on_bff": false,
+    "host_tool_shipped": false
+  },
+  "needs_ui_qa": true,
+  "needs_ui_qa_reason": "Label + tool row chrome benefits from browser proof when host dual-emits; F6 owns full attach→parse E2E screenshots. F4 proves mapping offline via unit tests.",
+  "needs_human": false
+}
