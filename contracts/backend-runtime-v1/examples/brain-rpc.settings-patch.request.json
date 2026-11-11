@@ -1,0 +1,27 @@
+{
+  "type": "brain_rpc_request",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLESETTINGSPATCH1",
+  "method": "settings.patch",
+  "timeout_ms": 15000,
+  "auth": {
+    "tenant_id": "ten_example",
+    "instance_id": "inst_example",
+    "subject": {
+      "portal_user_id": "usr_admin",
+      "backend_profile": "admin",
+      "hermes_profile": "admin",
+      "roles": ["admin"],
+      "path_prefixes": []
+    },
+    "session_id": "sess_example",
+    "issued_at": "2026-07-12T00:00:00.000Z",
+    "expires_at": "2026-07-12T00:05:00.000Z"
+  },
+  "params": {
+    "op": "skill.set_enabled",
+    "skill_id": "summarize",
+    "enabled": false
+  },
+  "idempotency_key": null
+}

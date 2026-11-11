@@ -1,0 +1,24 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEPROJCREATE1",
+  "ok": true,
+  "result": {
+    "id": "proj_ops",
+    "slug": "ops",
+    "name": "Ops",
+    "primary_path": "/Projects/Ops",
+    "folders": [
+      {
+        "path": "/Projects/Ops",
+        "label": null,
+        "is_primary": true
+      }
+    ]
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 42,
+    "host_time": "2026-07-12T00:00:00.120Z"
+  }
+}

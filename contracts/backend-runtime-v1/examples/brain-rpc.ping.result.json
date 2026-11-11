@@ -1,0 +1,19 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEPING0001",
+  "ok": true,
+  "result": {
+    "pong": true,
+    "echo": "hello",
+    "instance_id": "inst_example",
+    "contract_version": 1
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 4,
+    "backend_profile": "contributor",
+    "hermes_profile": "contributor",
+    "host_time": "2026-07-12T00:00:00.050Z"
+  }
+}

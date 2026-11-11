@@ -1,0 +1,15 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEPROJDELETE1",
+  "ok": true,
+  "result": {
+    "id": "proj_ops",
+    "archived": true
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 18,
+    "host_time": "2026-07-12T00:00:00.140Z"
+  }
+}
