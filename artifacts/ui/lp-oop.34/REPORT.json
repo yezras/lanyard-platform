@@ -1,0 +1,473 @@
+{
+  "bead_id": "lp-oop.34",
+  "acceptance": "RESULT.md GO or GO_WITH_WAIVERS. Waivers named.",
+  "base_url": "http://127.0.0.1:3138/mocklab",
+  "login": "agent-dev@mocklab.local",
+  "started_at": "2026-08-17T17:54:40.278792+00:00",
+  "prompt_marker": "lp-oop.34-kitchen-sink-ping",
+  "vault_marker": "short-stack-kitchen-sink.md",
+  "checks": {
+    "login": {
+      "ok": true,
+      "detail": "url=http://127.0.0.1:3138/mocklab/",
+      "screenshot": "01-auth-home.png"
+    },
+    "nav_agents_vault_tools": {
+      "ok": true,
+      "detail": "agents=1 vault=1 tools=1",
+      "screenshot": "02-agents-shell.png"
+    },
+    "composer": {
+      "ok": true,
+      "detail": "visible=True url=http://127.0.0.1:3138/mocklab/",
+      "screenshot": "03-new-chat-composer.png"
+    },
+    "prompt-sent": {
+      "ok": true,
+      "detail": "marker=lp-oop.34-kitchen-sink-ping",
+      "screenshot": "04-prompt-sent.png"
+    },
+    "send": {
+      "ok": true,
+      "detail": "marker=lp-oop.34-kitchen-sink-ping",
+      "screenshot": "04-prompt-sent.png"
+    },
+    "user-prompt-visible": {
+      "ok": true,
+      "detail": "marker=lp-oop.34-kitchen-sink-ping",
+      "screenshot": "04-prompt-sent.png"
+    },
+    "assistant-reply": {
+      "ok": true,
+      "detail": "len=171 excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.34-kitchen-sink-ping\\n1:54 PM\\n\u00b7\\ngrok-3'",
+      "screenshot": "05-assistant-reply.png"
+    },
+    "echo-or-pong": {
+      "ok": true,
+      "detail": "excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.34-kitchen-sink-ping\\n1:54 PM\\n\u00b7\\ngrok-3'",
+      "screenshot": null
+    },
+    "stream": {
+      "ok": true,
+      "detail": "{\"browser_sse\": 1, \"hop_sse_count\": 2, \"event_types\": [\"message_send\"]}",
+      "screenshot": "05-assistant-reply.png"
+    },
+    "relay-not-on-hop": {
+      "ok": true,
+      "detail": "{\"relay\": {\"deliverInbound\": 0, \"interruptInbound\": 0, \"openChatEventStream\": 0, \"fetchChatHistory\": 0}, \"harness_kind\": \"real-harness\", \"vault_plane\": \"cp_s3\"}",
+      "screenshot": null
+    },
+    "guest-path-still-available": {
+      "ok": true,
+      "detail": "{\"guest_path_default\": \"relay\", \"live_chat_delivery_flipped\": false}",
+      "screenshot": null
+    },
+    "vault-tree-visible": {
+      "ok": true,
+      "detail": "marker=True roots=['cron', 'jobs.json', 'notes', 'lp-oop.34-gate.md', 'Projects', 'Workspace', 'readme.md', 'skills']",
+      "screenshot": "06-vault-tree.png"
+    },
+    "vault-tree-did-not-502-wake": {
+      "ok": true,
+      "detail": "{\"last_status\": 200, \"browser_502\": false, \"did_not_502_wake\": true, \"ensure_online_during_tree\": 0, \"wake\": {\"bff_ensureOnline\": 0, \"bff_ensureOnlineByUser\": 1, \"cp_ensureOnline\": 0, \"getPrimaryGatewayInstance\": 2}}",
+      "screenshot": "06-vault-tree.png"
+    },
+    "vault-entry-open": {
+      "ok": true,
+      "detail": "clicked vault label",
+      "screenshot": "07-vault-entry.png"
+    },
+    "tools-nav": {
+      "ok": true,
+      "detail": "nav=['Skills', 'Workflows', 'MCP', 'Models', 'Integrations']",
+      "screenshot": "08-tools-overview.png"
+    },
+    "tools-workflows": {
+      "ok": true,
+      "detail": "clicked=True gateway_down=False snip='Skip to content | Lanyard Portal | Agents | Vault | Tools | A | agent-dev@mocklab.local | Skills | Workflows | MCP | Models | Integrations | Refresh | Fixture settings snapshot (no'",
+      "screenshot": "09-tools-workflows.png"
+    },
+    "tools-mcp": {
+      "ok": true,
+      "detail": "clicked=True empty_honest=False waiver=PRODUCT_NA_SIGNED snip='Skip to content | Lanyard Portal | Agents | Vault | Tools | A | agent-dev@mocklab.local | Skills | Workflows | MCP | Models | Integrations | Refresh | Fixture settings snapshot (no'",
+      "screenshot": "10-tools-mcp.png"
+    },
+    "scheduled-tasks": {
+      "ok": true,
+      "detail": "clicked=True label_visible=True",
+      "screenshot": "11-scheduled-tasks.png"
+    },
+    "final": {
+      "ok": true,
+      "detail": "url=http://127.0.0.1:3138/mocklab/",
+      "screenshot": "12-final.png"
+    }
+  },
+  "screenshots": [
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/01-auth-home.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/02-agents-shell.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/03-new-chat-composer.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/04-prompt-sent.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/04-prompt-sent.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/04-prompt-sent.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/05-assistant-reply.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/05-assistant-reply.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/06-vault-tree.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/06-vault-tree.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/07-vault-entry.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/08-tools-overview.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/09-tools-workflows.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/10-tools-mcp.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/11-scheduled-tasks.png",
+    "/tmp/lp-bead-lp-oop.34/artifacts/ui/lp-oop.34/12-final.png"
+  ],
+  "errors": [],
+  "url": "http://127.0.0.1:3138/mocklab/",
+  "assistant_excerpt": "echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.34-kitchen-sink-ping\n1:54 PM\n\u00b7\ngrok-3",
+  "stream": {
+    "browser_sse": [
+      {
+        "url": "http://127.0.0.1:3138/mocklab/api/chat/threads/3655dd5b-3fa9-449a-ae7d-242b3cd34857/events",
+        "status": 200,
+        "content_type": "text/event-stream"
+      }
+    ],
+    "hop_sse_count": 2,
+    "hop_event_types": [
+      "message_send"
+    ]
+  },
+  "vault_tree": {
+    "browser": [
+      {
+        "url": "http://127.0.0.1:3138/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3138/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3138/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3138/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3138/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3138/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3138/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      }
+    ],
+    "wake_502": [],
+    "last_status": 200,
+    "last_roots": [
+      "cron",
+      "jobs.json",
+      "notes",
+      "lp-oop.34-gate.md",
+      "Projects",
+      "Workspace",
+      "readme.md",
+      "skills",
+      "INDEX.md",
+      "workflows",
+      "README.md",
+      "AGENTS.md",
+      "short-stack-kitchen-sink.md",
+      "welcome.md"
+    ],
+    "marker_visible": true,
+    "seed_hits": [
+      "AGENTS.md",
+      "Projects",
+      "skills",
+      "workflows",
+      "cron",
+      "welcome.md",
+      "short-stack-kitchen-sink.md"
+    ]
+  },
+  "hop": {
+    "bead_id": "lp-oop.34",
+    "chat_delivery": "harness",
+    "vault_plane": "cp_s3",
+    "guest_path_default": "relay",
+    "live_chat_delivery_flipped": false,
+    "harness_kind": "real-harness",
+    "harness_url": "in-process",
+    "fake_harness_http": true,
+    "tenant_slug": "mocklab",
+    "vault_marker": "short-stack-kitchen-sink.md",
+    "relay": {
+      "deliverInbound": 0,
+      "interruptInbound": 0,
+      "openChatEventStream": 0,
+      "fetchChatHistory": 0
+    },
+    "wake": {
+      "bff_ensureOnline": 0,
+      "bff_ensureOnlineByUser": 1,
+      "cp_ensureOnline": 0,
+      "getPrimaryGatewayInstance": 2
+    },
+    "stream": {
+      "requests": [
+        {
+          "path": "/mocklab/api/chat/threads/ca3be7d4-c5d4-433c-a0b8-8904f251ccf0/events",
+          "status": 200,
+          "content_type": "text/event-stream"
+        },
+        {
+          "path": "/mocklab/api/chat/threads/3655dd5b-3fa9-449a-ae7d-242b3cd34857/events",
+          "status": 200,
+          "content_type": "text/event-stream"
+        }
+      ],
+      "sse_count": 2
+    },
+    "vault_tree": {
+      "requests": [
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/cron",
+            "/notes",
+            "/Projects",
+            "/skills",
+            "/workflows",
+            "/AGENTS.md",
+            "/short-stack-kitchen-sink.md",
+            "/welcome.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/cron",
+            "/notes",
+            "/Projects",
+            "/skills",
+            "/workflows",
+            "/AGENTS.md",
+            "/short-stack-kitchen-sink.md",
+            "/welcome.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/cron",
+            "/notes",
+            "/Projects",
+            "/skills",
+            "/workflows",
+            "/AGENTS.md",
+            "/short-stack-kitchen-sink.md",
+            "/welcome.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/cron",
+            "/notes",
+            "/Projects",
+            "/skills",
+            "/workflows",
+            "/AGENTS.md",
+            "/short-stack-kitchen-sink.md",
+            "/welcome.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 1,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 2
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 1,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 2
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/cron",
+            "/notes",
+            "/Projects",
+            "/skills",
+            "/workflows",
+            "/AGENTS.md",
+            "/short-stack-kitchen-sink.md",
+            "/welcome.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 1,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 2
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 1,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 2
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/cron",
+            "/notes",
+            "/Projects",
+            "/skills",
+            "/workflows",
+            "/AGENTS.md",
+            "/short-stack-kitchen-sink.md",
+            "/welcome.md"
+          ],
+          "source": null
+        }
+      ],
+      "last_status": 200,
+      "last_roots": [
+        "/cron",
+        "/notes",
+        "/Projects",
+        "/skills",
+        "/workflows",
+        "/AGENTS.md",
+        "/short-stack-kitchen-sink.md",
+        "/welcome.md"
+      ],
+      "last_source": null,
+      "ensure_online_during_tree": 0,
+      "did_not_502_wake": true
+    },
+    "turns": [
+      {
+        "turn_id": "turn_1",
+        "message": "Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.34-kitchen-sink-ping",
+        "interrupted": false,
+        "event_types": [
+          "message_send"
+        ]
+      }
+    ],
+    "checks": {
+      "relay.not_on_hop": true,
+      "vault_tree.did_not_502_wake": true,
+      "stream.sse": true,
+      "guest_path.still_default": true
+    }
+  },
+  "matrix": {
+    "shell_auth": "GO",
+    "harness_chat_send_stream": "GO",
+    "guest_path_still_available": "GO",
+    "vault_tree": "GO",
+    "tools_nav": "GO",
+    "tools_workflows": "GO",
+    "mcp": "PRODUCT_NA_SIGNED_WAIVER",
+    "cron_scheduled_tasks_ui": "GO"
+  },
+  "waivers": {
+    "live_flip_chat_delivery": "operator (lp-oop.29 runbook); MockLab stays relay",
+    "live_tool_only_snapshot": "human pin held (lp-oop.23 / lp-oop.32)",
+    "live_tools_web_search": "held until live flip + tool-only pin",
+    "live_subagents": "held until live flip + tool-only pin",
+    "live_workflows_launch": "held until live flip + tool-only pin",
+    "onlyoffice_editor_host": "EXPLICIT_HARD_RESIDUAL (lp-zuh.11.3)",
+    "mcp": "PRODUCT_NA_SIGNED (lp-zuh.11.5 / PR #488)",
+    "mempalace": "guest-path GO carried (lp-zuh.11.4); not harness-path",
+    "live_guest_chat": "Hermes 504 noted; OPERATOR HOLD; guest path still default"
+  },
+  "honesty": "Browser proof against branch-local BFF ChatDelivery=harness and VaultPlane=cp_s3. Live AWS MockLab chat_delivery stays default relay (OPERATOR HOLD; no terraform apply / no flip). Guest path remains available.",
+  "finished_at": "2026-08-17T17:55:02.298272+00:00",
+  "passed": true,
+  "overall_verdict": "GO_WITH_WAIVERS"
+}
