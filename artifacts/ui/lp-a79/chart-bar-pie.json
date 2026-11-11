@@ -1,0 +1,39 @@
+{
+  "bead": "lp-a79.9",
+  "story": "chart-bar-pie",
+  "url": "http://127.0.0.1:39751/?story=chart-bar-pie",
+  "screenshot": "artifacts/ui/lp-a79/chart-bar-pie.png",
+  "cardCount": 2,
+  "hasBar": true,
+  "hasPie": true,
+  "barTitle": "Q1 revenue vs cost",
+  "pieTitle": "Spend by category",
+  "barSvg": true,
+  "pieSvg": true,
+  "barSvgWidth": 660,
+  "barSvgHeight": 280,
+  "pieSvgWidth": 660,
+  "pieSvgHeight": 280,
+  "hasError": true,
+  "errorCode": "schema",
+  "errorRole": "alert",
+  "proseBar": true,
+  "prosePie": true,
+  "barPaint": {
+    "w": 660,
+    "h": 280,
+    "paths": 12,
+    "rects": 1,
+    "sectors": 0,
+    "bars": 18
+  },
+  "piePaint": {
+    "w": 660,
+    "h": 280,
+    "paths": 3,
+    "rects": 1,
+    "sectors": 6,
+    "bars": 0
+  },
+  "notes": "Bar + pie charts in chat via ```chart fences (ChatMessageContent → PortalChartCard). SVG paint asserted (non-zero geometry + sectors/bars). Invalid fence shows ChartSpecErrorCard without crash."
+}
