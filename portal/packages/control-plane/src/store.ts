@@ -1,1 +1,5 @@
-PLACEHOLDER_WILL_NOT_USE
+import { randomUUID } from "node:crypto";
+import {
+  redactAuditMetadata,
+  type OpsSecretSlot,
+} from "@lanyard/shared";
