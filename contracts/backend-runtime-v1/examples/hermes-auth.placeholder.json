@@ -1,0 +1,24 @@
+{
+  "providers": {
+    "openai-codex": {
+      "access_token": "oauth-placeholder-openai-codex-access",
+      "refresh_token": "oauth-placeholder-openai-codex-refresh",
+      "expires_at": "2026-12-31T00:00:00Z",
+      "token_type": "Bearer",
+      "metadata": {
+        "account_label": "REPLACE_ME_codex_account_label",
+        "chatgpt_account_id": "REPLACE_ME_chatgpt_account_id"
+      }
+    },
+    "xai-oauth": {
+      "access_token": "oauth-placeholder-xai-oauth-access",
+      "refresh_token": "oauth-placeholder-xai-oauth-refresh",
+      "expires_at": "2026-12-31T00:00:00Z",
+      "token_type": "Bearer",
+      "metadata": {
+        "account_label": "REPLACE_ME_super_heavy_account_label"
+      }
+    }
+  },
+  "notes": "Placeholder Hermes $HERMES_HOME/auth.json shape (lp-645.8.4). Matches materialize build_hermes_auth_store output. Not a BackendRuntimeSecretsEnvelope. Never commit real tokens."
+}

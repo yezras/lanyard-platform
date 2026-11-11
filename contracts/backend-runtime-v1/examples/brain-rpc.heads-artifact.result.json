@@ -1,0 +1,33 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEHEADA01",
+  "ok": true,
+  "result": {
+    "schema_version": 1,
+    "record_type": "artifact_head",
+    "tenant_id": "ten_example",
+    "path": "/Projects/Legal/memo.md",
+    "operation_id": "op_01HUMANWRITE0001",
+    "revision": {
+      "token": "sha256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+      "kind": "content_hash",
+      "size_bytes": 48,
+      "modified_at": "2026-07-12T00:00:01.200Z"
+    },
+    "updated_at": "2026-07-12T00:00:01.200Z",
+    "head_kind": "canonical",
+    "actor": {
+      "kind": "human",
+      "subject_id": "usr_example",
+      "portal_user_id": "usr_example",
+      "backend_profile": "contributor"
+    },
+    "workspace_id": "default"
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 4,
+    "host_time": "2026-07-12T00:00:01.250Z"
+  }
+}

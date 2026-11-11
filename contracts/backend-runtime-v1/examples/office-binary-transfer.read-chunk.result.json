@@ -1,0 +1,27 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLERCHUNK001",
+  "ok": true,
+  "result": {
+    "path": "/Projects/Legal/proposal.docx",
+    "offset": 0,
+    "encoding": "base64",
+    "content": "UEsDBBQAAAAIAAAAIQAAAAAAAAAAAAAAAAAJAAAAW0NvbnRlbnRfVHlwZXNdLnhtbC1maXh0dXJl",
+    "size_bytes": 57,
+    "eof": false,
+    "file_size_bytes": 184320,
+    "revision": {
+      "token": "sha256:4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "kind": "content_hash",
+      "size_bytes": 184320,
+      "modified_at": "2026-07-12T00:00:00.000Z"
+    },
+    "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 12,
+    "host_time": "2026-07-12T00:00:00.120Z"
+  }
+}

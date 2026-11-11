@@ -1,0 +1,22 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEHEADW01",
+  "ok": true,
+  "result": {
+    "schema_version": 1,
+    "record_type": "workspace_head",
+    "tenant_id": "ten_example",
+    "workspace_id": "default",
+    "tree_root_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "operation_id": "op_01WSTREEADV0001",
+    "updated_at": "2026-07-12T00:00:05.500Z",
+    "entry_count": 3,
+    "root_path": "/Projects"
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 3,
+    "host_time": "2026-07-12T00:00:05.550Z"
+  }
+}

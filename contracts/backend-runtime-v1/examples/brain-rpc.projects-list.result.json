@@ -1,0 +1,29 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEPROJLIST1",
+  "ok": true,
+  "result": {
+    "projects": [
+      {
+        "id": "proj_legal",
+        "slug": "legal",
+        "name": "Legal",
+        "primary_path": "/Projects/Legal",
+        "folders": [
+          {
+            "path": "/Projects/Legal",
+            "label": null,
+            "is_primary": true
+          }
+        ]
+      }
+    ],
+    "source": "hermes_projects_db"
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 9,
+    "host_time": "2026-07-12T00:00:00.090Z"
+  }
+}
