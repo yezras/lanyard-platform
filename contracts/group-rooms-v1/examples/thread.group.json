@@ -1,0 +1,30 @@
+{
+  "kind": "group",
+  "thread_id": "room-skip-lev-bana",
+  "tenant_id": "ten_example",
+  "title": "Review room",
+  "lead_persona_id": "skip",
+  "orchestrator_persona_id": "skip",
+  "participants": [
+    {
+      "kind": "human",
+      "user_id": "usr_alice",
+      "display_name": "Alice"
+    },
+    {
+      "kind": "persona",
+      "persona_id": "skip",
+      "display_name": "Skip"
+    },
+    {
+      "kind": "persona",
+      "persona_id": "lev",
+      "display_name": "Lev"
+    },
+    {
+      "kind": "persona",
+      "persona_id": "bana",
+      "display_name": "Bana"
+    }
+  ]
+}

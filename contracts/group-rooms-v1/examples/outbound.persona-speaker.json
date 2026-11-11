@@ -1,0 +1,20 @@
+{
+  "type": "outbound",
+  "requestId": "req-skip-1",
+  "platform": "lanyard_web",
+  "action": {
+    "op": "send",
+    "chat_id": "room-skip-lev-bana",
+    "content": "I'll take the first pass.",
+    "session_key": "agent:skip:relay:dm:room-skip-lev-bana",
+    "metadata": {
+      "persona_id": "skip",
+      "wake_reason": "orchestrator",
+      "speaker": {
+        "kind": "persona",
+        "id": "skip",
+        "display_name": "Skip"
+      }
+    }
+  }
+}

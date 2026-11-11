@@ -1,0 +1,8 @@
+# ClientCorePack metadata — required for monorepo pack validation (lp-k7g.9.3)
+name: granola
+summary: Granola meeting notes MCP
+when_to_enable: Granola meeting notes MCP
+contents: MCP connection package
+sources:
+  - mcp
+dependencies: []

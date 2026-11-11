@@ -1,0 +1,16 @@
+meta:
+  app: lanyard-portal
+  convention: data-testid
+  base_url_env: BASE_URL
+
+selectors:
+  # Portal web (apps/web/src/features/chat)
+  chat_thread_list: '[data-testid^="agent-chat-header-"]'
+  chat_composer_input: 'textarea'
+  chat_send_button:
+    role: button
+    name: Send
+  channel_add_member_button:
+    role: button
+    name: Add member
+  agent_picker: '[data-testid="agent-picker"]'

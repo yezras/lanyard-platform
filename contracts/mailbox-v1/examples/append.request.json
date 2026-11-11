@@ -1,0 +1,8 @@
+{
+  "to": "fizz",
+  "room": "thr_workshop",
+  "text": "Need a second pair of eyes on the brief.",
+  "nonce": "11111111-1111-1111-1111-111111111111",
+  "from": "bill",
+  "tenant_id": "ten_example"
+}
