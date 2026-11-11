@@ -1,0 +1,25 @@
+# MemPalace starter rooms for a customer Company Brain.
+# wing name is replaced at provision with the tenant slug when desired.
+wing: company-brain
+rooms:
+  - name: knowledge
+    description: Organization knowledge and durable reference material.
+    keywords: [knowledge, doctrine, reference]
+  - name: projects
+    description: Active and past projects.
+    keywords: [projects, delivery, workstreams]
+  - name: clients
+    description: Accounts, CRM notes, and relationship context (if CRM scaffold used).
+    keywords: [clients, accounts, crm]
+  - name: skills
+    description: Skills and procedural playbooks.
+    keywords: [skills, playbooks]
+  - name: agents
+    description: Agent definitions and operating roles.
+    keywords: [agents, roles]
+  - name: memory
+    description: Deep and ephemeral memory conventions.
+    keywords: [memory, recall]
+  - name: general
+    description: Files that do not fit another room.
+    keywords: []
