@@ -29,7 +29,7 @@ for f in versions.tf variables.tf main.tf outputs.tf README.md INDEX.md terrafor
 done
 
 # --- Must compose portal-relay-service (not sketch-only zero resources) ---
-grep -Eq 'source[[:space:]]*=[[:space:]]*"\\.\\./portal-relay-service"' "$MOD/main.tf" \
+grep -Eq 'source[[:space:]]*=[[:space:]]*"\.\./portal-relay-service"' "$MOD/main.tf" \
   || fail "tier3-dedicated-relay must compose ../portal-relay-service"
 grep -Eq 'module[[:space:]]+"relay"' "$MOD/main.tf" \
   || fail "tier3-dedicated-relay must define module \"relay\""
@@ -37,7 +37,7 @@ grep -Eq 'module[[:space:]]+"relay"' "$MOD/main.tf" \
 # --- Digest pin + private tasks + public ALB (via composed module + passthrough vars) ---
 grep -Eq 'variable[[:space:]]+"image_digest"' "$MOD/variables.tf" \
   || fail "tier3-dedicated-relay missing image_digest"
-grep -Eq 'sha256:\\[a-f0-9\\]\\{64\\}' "$MOD/variables.tf" \
+grep -Eq 'sha256:\[a-f0-9\]\{64\}' "$MOD/variables.tf" \
   || fail "tier3-dedicated-relay must validate sha256 digest format"
 grep -Eq 'variable[[:space:]]+"private_subnet_ids"' "$MOD/variables.tf" \
   || fail "tier3-dedicated-relay missing private_subnet_ids"
@@ -57,7 +57,7 @@ grep -Eq 'acknowledge_g6_scale_beyond_one' "$MOD/variables.tf" "$MOD/main.tf" \
 # Secrets map passthrough
 grep -Eq 'variable[[:space:]]+"secrets"' "$MOD/variables.tf" \
   || fail "tier3-dedicated-relay missing secrets map"
-grep -Eq 'secrets[[:space:]]*=[[:space:]]*var\\.secrets' "$MOD/main.tf" \
+grep -Eq 'secrets[[:space:]]*=[[:space:]]*var\.secrets' "$MOD/main.tf" \
   || fail "tier3-dedicated-relay must pass secrets to composed relay module"
 
 # --- Optional DNS + WAF hooks ---
@@ -80,7 +80,7 @@ grep -Eq 'output[[:space:]]+"relay_wss_url"' "$MOD/outputs.tf" \
 grep -Eq 'output[[:space:]]+"relay_hostname"' "$MOD/outputs.tf" \
   || fail "tier3-dedicated-relay missing relay_hostname output"
 # Reject insecure client schemes in hostname override validation
-grep -Eq 'wss\\?://|ws://' "$MOD/variables.tf" \
+grep -Eq 'wss\?://|ws://' "$MOD/variables.tf" \
   || fail "tier3-dedicated-relay must reject ws:// schemes on hostname override"
 
 # --- Honesty: infra_ready, not production claim ---
@@ -115,7 +115,7 @@ grep -Eqi 'not production|not auto-applied|staging proof' "$MOD/README.md" \
   || fail "tier3 README must state not production-certified / not auto-applied"
 
 # Must not still claim sketch-only zero resources as current status
-if grep -Eqi 'zero AWS resources|sketch only \\(zero' "$MOD/README.md"; then
+if grep -Eqi 'zero AWS resources|sketch only \(zero' "$MOD/README.md"; then
   # Allow historical mention only if clearly past tense / superseded
   if ! grep -Eqi 'infra_ready' "$MOD/README.md"; then
     fail "tier3 README still claims sketch-only without infra_ready status"
