@@ -1,0 +1,70 @@
+{
+  "bead_id": "lp-oop.37.4",
+  "result": "BLOCKED",
+  "stamp": "20260819T074500Z",
+  "live_cutover": "blocked",
+  "apply_to_live": false,
+  "terraform_apply": false,
+  "ecs_update_service": false,
+  "ecr_push": false,
+  "guest_snapshot_rewritten": false,
+  "agent_core_required_on_guest": false,
+  "remaining_gap": "operator-image-roll",
+  "live_now": {
+    "family": "lanyard-platform-staging-harness",
+    "revision": 3,
+    "ecr_tag": "la-52f5e4d",
+    "kind": "createHarnessTurnServer",
+    "reply_shape": "echo: <message>",
+    "cluster": "lanyard-platform-staging-portal-cp",
+    "alb_port": 8080,
+    "service_token_header": "x-harness-service-token",
+    "image_digest_prefix": "sha256:3e03be54"
+  },
+  "previous_echo_task": {
+    "revision": 2,
+    "ecr_tag": "lp-oop-flip",
+    "kind": "stdlib-echo-contract-server"
+  },
+  "turn_request_fields": [
+    "tenant_id",
+    "user_id",
+    "instance_id",
+    "thread_id",
+    "message"
+  ],
+  "lanyard_agent": {
+    "pr": 244,
+    "pr_url": "https://github.com/LanyardBrain/lanyard-agent/pull/244",
+    "pr_state": "MERGED",
+    "pr_draft": false,
+    "mergeable": "MERGED",
+    "git_commit": "fb70865bf8c74a6eb980095fa404e5b7e9327f13",
+    "git_commit_short": "fb70865",
+    "branch": "beads/lp-oop.37.4-non-echo-runner",
+    "on_origin_main": true,
+    "merged_at": "2026-08-19T12:38:35Z",
+    "default_runner": "createEchoTurnRunner",
+    "runner_factory": "createEnvLiteLlmTurnRunner",
+    "previous_http_server_pr": 242,
+    "previous_http_server_sha": "52f5e4db93e7c71b279fedb79f7cc11a9cb82d30"
+  },
+  "toolbox_followup": {
+    "pr": 243,
+    "pr_url": "https://github.com/LanyardBrain/lanyard-agent/pull/243",
+    "pr_state": "OPEN",
+    "pr_draft": true,
+    "git_commit": "6bfd52210c194380041bc8581d836f078ed76378"
+  },
+  "checks": {
+    "pin.present": true,
+    "runbook.present": true,
+    "image_recipe.present": true,
+    "start_wrapper.looks_for_env_runner_factory": true,
+    "live.createHarnessTurnServer": true,
+    "live.echo_replaced": false,
+    "live.real_la_reply": false,
+    "guest.no_agent_core_required": true,
+    "evidence.no_secrets": true
+  }
+}
