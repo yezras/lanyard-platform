@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset=utf-8><title>lp-zuh.12.1 OnlyOffice flag-on evidence</title>
+<style>
+body{font-family:ui-sans-serif,system-ui,sans-serif;margin:2rem;background:#0b1220;color:#e8eefc}
+card{display:block;max-width:720px;padding:1.25rem 1.5rem;border:1px solid #2a3b5c;border-radius:12px;background:#121a2b}
+h1{font-size:1.25rem;margin:0 0 .75rem}
+.ok{color:#3dd68c;font-weight:600}
+code{background:#0b1220;padding:.1rem .35rem;border-radius:4px}
+pre{white-space:pre-wrap;word-break:break-all;background:#0b1220;padding:1rem;border-radius:8px;font-size:12px}
+</style></head><body>
+<card>
+<h1>lp-zuh.12.1 — MockLab SPA OnlyOffice bake</h1>
+<p class=ok>FLAG ON — <code>VITE_ONLYOFFICE_EDITOR:"true"</code> live on app.withlanyard.com</p>
+<p>Pin: <code>v0.1.6-mocklab-oo-zuh121-20260818</code></p>
+<p>Script: <code>/assets/index-DzazbXcP.js</code></p>
+<p>DS URL (HTTPS preferred bake): staging docs ALB host</p>
+<p>Allowlist: DS origin + <code>https://app.withlanyard.com</code></p>
+<p>HTTPS residual: DS ALB HTTP-only (sibling lp-zuh.12.2) — DocsAPI GO not claimed</p>
+<pre id=env>{VITE_ONLYOFFICE_EDITOR:"true",VITE_FEATURE_ONLYOFFICE_EDITOR:void 0,VITE_ONLYOFFICE_DS_URL:"https://lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",VITE_ONLYOFFICE_DOCUMENT_SERVER_URL:void 0,VITE_ONLYOFFICE_DS_ALLOWED_ORIGINS:"https://lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com,https://app.withlanyard.com"}</pre>
+</card>
+<script>
+window.__LANYARD_FEATURE_FLAGS__ = { onlyoffice_editor: true };
+document.title = 'lp-zuh.12.1 flag-on | onlyoffice_editor=true';
+</script>
+</body></html>

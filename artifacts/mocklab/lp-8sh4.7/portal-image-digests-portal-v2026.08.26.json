@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "version": "portal-v2026.08.26",
+  "bead": "lp-8sh4.7",
+  "git_sha_main": "62218130b05a2a3b7a34cc65b394841f394d6826",
+  "release_workflow_run": "https://github.com/LanyardBrain/lanyard-platform/actions/runs/32921346986",
+  "release_notes": "workflow_dispatch skip_upload=false components=all. portal-web S3 publish succeeded. portal-images job failed tsc (BFF sandboxNeed). Images built+pushed locally from this worktree after compile/docker fixes. ECR tags immutable; tag portal-v2026.08.26 unused until this push.",
+  "registry": "123456789012.dkr.ecr.us-east-1.amazonaws.com",
+  "ecr_name_prefix": "lanyard-platform-staging",
+  "images": {
+    "bff": {
+      "repository": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/bff",
+      "digest": "sha256:173149efacbd253da92140bbe3f019af1d8c301562de7cdd8eb1ef44211fb63d",
+      "tag": "portal-v2026.08.26",
+      "pin_ref": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/bff@sha256:173149efacbd253da92140bbe3f019af1d8c301562de7cdd8eb1ef44211fb63d"
+    },
+    "relay": {
+      "repository": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/relay",
+      "digest": "sha256:9330cd7c9b3d1f21df1dfa56dc843583a5a37924ce79731b7136816377207eb2",
+      "tag": "portal-v2026.08.26",
+      "pin_ref": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/relay@sha256:9330cd7c9b3d1f21df1dfa56dc843583a5a37924ce79731b7136816377207eb2"
+    },
+    "control-plane": {
+      "repository": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/control-plane",
+      "digest": "sha256:8290cf82276f3e237e14f9126aa48ef830119e856705ab4ad6ab5c61c3002532",
+      "tag": "portal-v2026.08.26",
+      "pin_ref": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/control-plane@sha256:8290cf82276f3e237e14f9126aa48ef830119e856705ab4ad6ab5c61c3002532"
+    }
+  },
+  "web": {
+    "version": "portal-v2026.08.26",
+    "sha256": "46a96980ad38d8c2a6843617a3cf495e53d52ab7d1406f41fc46f989c5622557",
+    "url": "s3://lanyard-product-artifacts-staging-123456789012/portal-web/portal-v2026.08.26/portal-web.tar.gz",
+    "live_js": "/assets/index-B9mLAxco.js",
+    "cloudfront_invalidation": "ICKQMIF3PEX003CVO83D4OPT5T"
+  }
+}

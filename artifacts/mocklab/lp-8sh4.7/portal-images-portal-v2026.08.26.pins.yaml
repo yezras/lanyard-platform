@@ -1,0 +1,21 @@
+# portal.images pin fragment — portal-v2026.08.26 (lp-8sh4.7 MockLab)
+# Digest is deploy authority. Do not invent digests. Do not use :latest.
+# Sibling lp-na7d owns deploy/daytona/agent-gateway/pins/staging-pilot.pins.yaml.
+portal:
+  web:
+    version: "portal-v2026.08.26"
+    sha256: "46a96980ad38d8c2a6843617a3cf495e53d52ab7d1406f41fc46f989c5622557"
+    url: "s3://lanyard-product-artifacts-staging-123456789012/portal-web/portal-v2026.08.26/portal-web.tar.gz"
+  images:
+    bff:
+      repository: "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/bff"
+      digest: "sha256:173149efacbd253da92140bbe3f019af1d8c301562de7cdd8eb1ef44211fb63d"
+      tag: "portal-v2026.08.26"
+    relay:
+      repository: "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/relay"
+      digest: "sha256:9330cd7c9b3d1f21df1dfa56dc843583a5a37924ce79731b7136816377207eb2"
+      tag: "portal-v2026.08.26"
+    control-plane:
+      repository: "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/control-plane"
+      digest: "sha256:8290cf82276f3e237e14f9126aa48ef830119e856705ab4ad6ab5c61c3002532"
+      tag: "portal-v2026.08.26"
