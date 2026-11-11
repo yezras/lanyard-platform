@@ -1,0 +1,44 @@
+{
+  "suite": "lp-cxhb.3",
+  "i1": true,
+  "i2": true,
+  "checks": [
+    {
+      "feature": "I2-tab-label-agents",
+      "ok": true,
+      "detail": "Agents tab count=1",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/01-agents-tab.png"
+    },
+    {
+      "feature": "I2-folder-order",
+      "ok": true,
+      "detail": "folder_testids=['channels-folder', 'agents-folder', 'scheduled-tasks-folder']",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/02-sidenav-ia-folders.png"
+    },
+    {
+      "feature": "I2-no-projects-folders",
+      "ok": true,
+      "detail": "general-folder and Project actions absent",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/02-sidenav-ia-folders.png"
+    },
+    {
+      "feature": "I2-no-projects-create-path",
+      "ok": true,
+      "detail": "agent=1 channel=1 sched=1 project=0",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/03-create-menu-no-project.png"
+    },
+    {
+      "feature": "I1-agent-rows-not-project-folders",
+      "ok": true,
+      "detail": "agent_rows=53 job_rows=7 empty_agents=0",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/04-agent-rows.png"
+    }
+  ],
+  "shots": [
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/01-agents-tab.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/02-sidenav-ia-folders.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/02-sidenav-ia-folders.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/03-create-menu-no-project.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/04-agent-rows.png"
+  ]
+}
