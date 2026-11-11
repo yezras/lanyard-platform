@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "record_type": "access_grant",
+  "grant_id": "grant_01KNOWNAGENT00001",
+  "tenant_id": "ten_example",
+  "instance_id": "inst_example",
+  "subject": {
+    "kind": "agent",
+    "subject_id": "agent:main",
+    "agent_id": "agent:main",
+    "run_id": "run-99",
+    "display_name": "Main agent"
+  },
+  "path_prefixes": [
+    "/Projects/Acme"
+  ],
+  "capabilities": [
+    "vault.read",
+    "vault.stat",
+    "vault.write"
+  ],
+  "issued_at": "2026-07-12T00:00:00.000Z",
+  "expires_at": "2026-07-12T06:00:00.000Z",
+  "issuer": "backend-runtime",
+  "backend_profile": "contributor",
+  "signature": {
+    "alg": "ed25519",
+    "key_id": "fixture-grant-key-v1",
+    "value": "Zml4dHVyZS1zaWduYXR1cmUtZ3JhbnQtYWdlbnQtdjE",
+    "signed_at": "2026-07-12T00:00:00.010Z"
+  }
+}

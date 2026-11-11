@@ -1,0 +1,22 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLESETTINGSPATCH1",
+  "ok": true,
+  "result": {
+    "op": "skill.set_enabled",
+    "source": "hermes",
+    "skill": {
+      "id": "summarize",
+      "name": "summarize",
+      "enabled": false,
+      "path": "skills/summarize",
+      "source": "hermes"
+    }
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 28,
+    "host_time": "2026-07-12T00:00:00.200Z"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "hermes_upstream",
+  "version": "v0.0.0-example",
+  "entrypoint": "bin/company-brain-backend",
+  "contract": {
+    "runtime_layout": 1,
+    "relay": 1,
+    "brain_rpc": 1
+  },
+  "capabilities": {
+    "profiles": ["admin", "contributor"],
+    "brain_rpc_methods": [
+      "brain.ping",
+      "brain.health",
+      "vault.list",
+      "vault.stat",
+      "vault.read",
+      "settings.snapshot",
+      "projects.list"
+    ],
+    "features": {
+      "cron": true,
+      "models": true,
+      "settings_patch": false,
+      "vault_write": false,
+      "projects_create": false
+    }
+  },
+  "provenance": {
+    "source_repo": "https://github.com/example/hermes",
+    "release_tag": "v0.0.0-example",
+    "build_time": "2026-07-20T00:00:00Z"
+  },
+  "config_defaults": "config/defaults.yaml",
+  "docs": "docs/backend-release.md"
+}

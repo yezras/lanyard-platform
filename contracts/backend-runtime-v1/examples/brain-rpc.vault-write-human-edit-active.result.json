@@ -1,0 +1,21 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEVWRITEHEA001",
+  "ok": false,
+  "result": null,
+  "error": {
+    "code": "conflict",
+    "message": "Human edit session owns this path; agent write blocked",
+    "retryable": false,
+    "details": {
+      "path": "/Projects/Acme/proposal.docx",
+      "reason": "human_edit_active",
+      "session_id": "oo_sess_example"
+    }
+  },
+  "meta": {
+    "duration_ms": 4,
+    "host_time": "2026-07-12T00:00:03.000Z"
+  }
+}
