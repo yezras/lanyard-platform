@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "record_type": "group_rooms_fake_gateway",
+  "thread": {
+    "kind": "group",
+    "thread_id": "room-skip-only",
+    "tenant_id": "ten_example",
+    "title": "Skip only",
+    "lead_persona_id": "skip",
+    "orchestrator_persona_id": "skip",
+    "participants": [
+      {
+        "kind": "human",
+        "user_id": "usr_alice",
+        "display_name": "Alice"
+      },
+      {
+        "kind": "persona",
+        "persona_id": "skip",
+        "display_name": "Skip"
+      }
+    ]
+  },
+  "wake": {
+    "target_persona_ids": ["skip"],
+    "reason": "orchestrator"
+  },
+  "inbound": {
+    "type": "inbound",
+    "event": {
+      "text": "Go.",
+      "message_type": "text",
+      "message_id": "msg-user-2",
+      "source": {
+        "platform": "lanyard_web",
+        "chat_id": "room-skip-only",
+        "chat_type": "dm",
+        "chat_name": "Skip only",
+        "user_id": "usr_alice",
+        "user_name": "Alice",
+        "thread_id": null,
+        "chat_topic": null,
+        "profile": "default"
+      },
+      "metadata": {
+        "target_persona_ids": ["skip"],
+        "target_persona_id": "skip",
+        "lead_persona_id": "skip",
+        "wake_reason": "orchestrator",
+        "mentioned_persona_ids": [],
+        "mentioned_user_ids": []
+      }
+    }
+  },
+  "outbound": {
+    "type": "outbound",
+    "requestId": "req-impersonate",
+    "platform": "lanyard_web",
+    "action": {
+      "op": "send",
+      "chat_id": "room-skip-only",
+      "content": "I am Lev.",
+      "session_key": "agent:skip:relay:dm:room-skip-only",
+      "metadata": {
+        "persona_id": "lev",
+        "speaker": {
+          "kind": "persona",
+          "id": "lev",
+          "display_name": "Lev"
+        }
+      }
+    }
+  }
+}

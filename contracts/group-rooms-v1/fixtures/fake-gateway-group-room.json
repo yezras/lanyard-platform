@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "record_type": "group_rooms_fake_gateway",
+  "thread": {
+    "kind": "group",
+    "thread_id": "room-skip-lev-bana",
+    "tenant_id": "ten_example",
+    "title": "Review room",
+    "lead_persona_id": "skip",
+    "orchestrator_persona_id": "skip",
+    "participants": [
+      {
+        "kind": "human",
+        "user_id": "usr_alice",
+        "display_name": "Alice"
+      },
+      {
+        "kind": "persona",
+        "persona_id": "skip",
+        "display_name": "Skip"
+      },
+      {
+        "kind": "persona",
+        "persona_id": "lev",
+        "display_name": "Lev"
+      },
+      {
+        "kind": "persona",
+        "persona_id": "bana",
+        "display_name": "Bana"
+      }
+    ]
+  },
+  "wake": {
+    "target_persona_ids": ["skip"],
+    "reason": "orchestrator"
+  },
+  "inbound": {
+    "type": "inbound",
+    "event": {
+      "text": "Please review the auth change.",
+      "message_type": "text",
+      "message_id": "msg-user-1",
+      "source": {
+        "platform": "lanyard_web",
+        "chat_id": "room-skip-lev-bana",
+        "chat_type": "dm",
+        "chat_name": "Review room",
+        "user_id": "usr_alice",
+        "user_name": "Alice",
+        "thread_id": null,
+        "chat_topic": null,
+        "profile": "default"
+      },
+      "metadata": {
+        "target_persona_ids": ["skip"],
+        "target_persona_id": "skip",
+        "lead_persona_id": "skip",
+        "wake_reason": "orchestrator",
+        "mentioned_persona_ids": [],
+        "mentioned_user_ids": []
+      }
+    }
+  },
+  "outbound": {
+    "type": "outbound",
+    "requestId": "req-skip-1",
+    "platform": "lanyard_web",
+    "action": {
+      "op": "send",
+      "chat_id": "room-skip-lev-bana",
+      "content": "I'll take the first pass.",
+      "session_key": "agent:skip:relay:dm:room-skip-lev-bana",
+      "metadata": {
+        "persona_id": "skip",
+        "wake_reason": "orchestrator",
+        "speaker": {
+          "kind": "persona",
+          "id": "skip",
+          "display_name": "Skip"
+        }
+      }
+    }
+  }
+}
