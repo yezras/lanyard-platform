@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "record_type": "chat_turn",
+  "tenant_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "user_id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+  "instance_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+  "thread_id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+  "turn_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+  "session_key": "agent:main:relay:dm:eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+  "created_at": "2026-08-07T16:30:00.000Z",
+  "completed_at": "2026-08-07T16:30:04.250Z",
+  "model": {
+    "provider": "litellm",
+    "name": "laguna-s-2.1",
+    "api_id": "poolside/laguna-s-2.1"
+  },
+  "input": {
+    "role": "user",
+    "content": "What does README.md say about contracts?",
+    "content_sha256": "fc275b2211a6c09d81424d71f6ee2ec9042a5e10112d47e01b1160470607655e",
+    "content_type": "text/plain"
+  },
+  "output": {
+    "role": "assistant",
+    "content": "The README says backend agents publish versioned artifacts that conform to contracts/backend-runtime-v1.",
+    "content_sha256": "7a24c3a754ed7cced9a5299c82f6539be438099753b28911256ab8639b5e0271",
+    "finish_reason": "stop",
+    "content_type": "text/markdown"
+  },
+  "tool_events": [
+    {
+      "tool_call_id": "call_read_1",
+      "tool_name": "read_file",
+      "status": "complete",
+      "target": "/Projects/README.md",
+      "duration_ms": 45,
+      "result_summary": "# Lanyard Platform\n…",
+      "started_at": "2026-08-07T16:30:01.000Z",
+      "finished_at": "2026-08-07T16:30:01.045Z"
+    },
+    {
+      "tool_call_id": "call_bash_1",
+      "tool_name": "bash",
+      "status": "error",
+      "target": "rg contracts README.md",
+      "duration_ms": 12,
+      "error_message": "command not found: rg",
+      "started_at": "2026-08-07T16:30:02.000Z",
+      "finished_at": "2026-08-07T16:30:02.012Z"
+    }
+  ],
+  "meta": {
+    "request_id": "req-example-tools",
+    "duration_ms": 4250,
+    "sandbox_id": "sandbox-example-1",
+    "client": "portal_web",
+    "relay_session_id": "relay-sess-example"
+  }
+}
