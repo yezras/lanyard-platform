@@ -100,7 +100,7 @@ else
 fi
 
 # Reject lines that look like assigned live secrets (heuristic)
-if grep -nE '(sk_live_|ghp_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|password\s*=\s*["'\'''][^"'\''']{8,})' "$DOC"; then
+if grep -nE '(sk_live_|ghp_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|password\s*=\s*["'\''][^"'\'']{8,})' "$DOC"; then
   fail "document may contain live credential material"
 else
   pass "no obvious live credential patterns"
