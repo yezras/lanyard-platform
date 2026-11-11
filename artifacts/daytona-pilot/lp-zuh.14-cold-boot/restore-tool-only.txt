@@ -1,0 +1,5 @@
+RESTORE_TOOL
+{"instance_id":"452b1348-772a-49d0-8038-a410eda8accf","tenant_id":"319d3808-e533-44db-bfdf-7b6ef8caaae1","label":null,"last_seen_at":null,"health_status":"unknown","credential_rotated_at":"2026-08-19T02:16:11.032Z","secret_param_arn":null,"ec2_instance_id":null,"aws_region":null,"revoked_at":null,"runtime_kind":"daytona","sandbox_id":null,"presence":"online","agent_snapshot_id":"b13c2b8d-fcab-480b-aaea-5bc57c64f054","s3_vault_prefix":"tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/","last_activity_at":"2026-08-19T21:19:11.819Z","chat_delivery":null}
+PRESENCE
+{"instance_id":"452b1348-772a-49d0-8038-a410eda8accf","tenant_id":"319d3808-e533-44db-bfdf-7b6ef8caaae1","presence":"online","sandbox_id":null,"runtime_kind":"daytona","agent_snapshot_id":"b13c2b8d-fcab-480b-aaea-5bc57c64f054","s3_vault_prefix":"tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/","last_activity_at":"2026-08-19T21:19:11.819Z","revoked_at":null}
+DONE_RESTORE

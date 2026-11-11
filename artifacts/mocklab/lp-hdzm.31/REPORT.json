@@ -1,0 +1,46 @@
+{
+  "bead_id": "lp-hdzm.31",
+  "passed": true,
+  "evidence": {
+    "bead_id": "lp-hdzm.31",
+    "tuple": {
+      "domain": "stripe.com",
+      "connector_id": "stripe",
+      "tenant_slug": "mocklab",
+      "principal": "tenant",
+      "auth_kind": "bearer",
+      "paste": "superadmin",
+      "surface": "openapi",
+      "surface_id": "api",
+      "tool": "GET /v1/customers",
+      "group": "read"
+    },
+    "checks": {
+      "six_tuple": true,
+      "one_surface": true,
+      "cp_row": true,
+      "tool_2xx": true,
+      "no_token_on_sandbox": true,
+      "rewake_no_prompt": true,
+      "member_omit_fail_closed": true
+    },
+    "http_status": 200,
+    "rewake_http_status": 200,
+    "member_omit_status": 403,
+    "guest_files_wake": [],
+    "guest_files_rewake": [],
+    "cp_fingerprint": "sha256:a1cc4b807aab",
+    "fetch_mode": "stub",
+    "authorization_logged": "[REDACTED]",
+    "token_leaked": false
+  },
+  "live": {
+    "probed": true,
+    "admin_http": 200,
+    "me_http": 401,
+    "tenants_http": 401,
+    "operator_emails_residual": true,
+    "note": "PLATFORM_OPERATOR_EMAILS / lp-2qs.6 may still block live /admin sign-in. needs_ui_qa."
+  },
+  "authorization_header": "Authorization"
+}

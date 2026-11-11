@@ -1,0 +1,26 @@
+{
+  "mode": "publish",
+  "version": "la-main-85622faa37d2-enosys-zuh109-20260814",
+  "platform": "linux/amd64",
+  "bead": "lp-zuh.10.9",
+  "image": {
+    "repository": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway",
+    "tag": "la-main-85622faa37d2-enosys-zuh109-20260814",
+    "digest": "sha256:22734c070eb3ee85060b8bc26718ea82eef793ab2cc5dfdb8897fc47221dc860",
+    "pin_ref": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway@sha256:22734c070eb3ee85060b8bc26718ea82eef793ab2cc5dfdb8897fc47221dc860"
+  },
+  "daytona_snapshot": {
+    "id": "5c0d199a-00cf-4510-bc81-b24956656d13",
+    "name": "lanyard-la-main-85622faa37d2-enosys-zuh109-20260814",
+    "state": "active",
+    "class": "container"
+  },
+  "lanyard_agent": {
+    "version": "0.0.0-main.85622faa37d2",
+    "git_commit": "85622faa37d236ced8e5e5e64ec6d07f8ecb716e",
+    "sha256": "98db6ddb44ad7d8a3cfa77fdb7dafdb97882da2777ee8ad0f7f5e893523ba3d5",
+    "pr": "https://github.com/LanyardBrain/lanyard-agent/pull/240"
+  },
+  "previous_daytona_default_snapshot": "41e87f4d-d639-4445-9402-88d39d44ac2d",
+  "note": "Mountpoint ENOSYS cron store rename fallback + MemPalace 3.7.0 + mount-s3 1.23.0"
+}
