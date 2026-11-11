@@ -1,0 +1,90 @@
+{
+  "suite": "lp-cxhb.4",
+  "i3": true,
+  "checks": [
+    {
+      "feature": "I3-first-post-catalog",
+      "ok": true,
+      "detail": "agent_posts=[{'status': 201, 'agent_id': 'd08aa267-f9a6-4654-860d-73baf3f2e123', 'thread_id': '5018e619-4c2d-404a-b1c1-d69e5ae55792'}] chat_thread_posts=0",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/05-i3-first-new-agent.png"
+    },
+    {
+      "feature": "I3-first-does-not-post-chat-threads",
+      "ok": true,
+      "detail": "chat_thread_posts=[]",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/05-i3-first-new-agent.png"
+    },
+    {
+      "feature": "I3-first-opens-1-1",
+      "ok": true,
+      "detail": "before=63 after=64 thread=5018e619-4c2d-404a-b1c1-d69e5ae55792",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/05-i3-first-new-agent.png"
+    },
+    {
+      "feature": "I3-second-is-different-person",
+      "ok": true,
+      "detail": "agent_posts=[{'status': 201, 'agent_id': 'd08aa267-f9a6-4654-860d-73baf3f2e123', 'thread_id': '5018e619-4c2d-404a-b1c1-d69e5ae55792'}, {'status': 201, 'agent_id': '5eba8561-065c-49fc-bb98-ef8f00180da3', 'thread_id': '3daec5e0-acef-46dd-b9db-2ea2caf8763b'}]",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png"
+    },
+    {
+      "feature": "I3-second-does-not-post-chat-threads",
+      "ok": true,
+      "detail": "chat_thread_posts=[]",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png"
+    },
+    {
+      "feature": "I3-two-rows",
+      "ok": true,
+      "detail": "before=63 after=65",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png"
+    },
+    {
+      "feature": "I3-catalog-get-ok",
+      "ok": true,
+      "detail": "status=200",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png"
+    },
+    {
+      "feature": "I3-catalog-has-both-with-one-thread-each",
+      "ok": true,
+      "detail": "first={'agent_id': 'd08aa267-f9a6-4654-860d-73baf3f2e123', 'name': 'New agent', 'avatar': 'f8256f5d91e19a3c', 'objective': '', 'thread_id': '5018e619-4c2d-404a-b1c1-d69e5ae55792', 'created_at': '2026-08-23T20:59:34.880Z'} second={'agent_id': '5eba8561-065c-49fc-bb98-ef8f00180da3', 'name': 'New agent', 'avatar': '60d344b4cef73c61', 'objective': '', 'thread_id': '3daec5e0-acef-46dd-b9db-2ea2caf8763b', 'created_at': '2026-08-23T20:59:35.296Z'} n=48",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png"
+    },
+    {
+      "feature": "I3-exactly-one-1-1-per-new-agent",
+      "ok": true,
+      "detail": "first_matches=1 second_matches=1",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png"
+    },
+    {
+      "feature": "I3-reselect-does-not-mint",
+      "ok": true,
+      "detail": "agent_posts=2 expected=2 chat_thread_posts=0",
+      "shot": "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/07-i3-reselect-existing.png"
+    }
+  ],
+  "shots": [
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/05-i3-first-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/05-i3-first-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/05-i3-first-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/06-i3-second-new-agent.png",
+    "/home/operator/Lanyard-Dev/lanyard-platform-integrate-lac-bx3/artifacts/ui/agents-channels-ia/07-i3-reselect-existing.png"
+  ],
+  "agent_posts": [
+    {
+      "status": 201,
+      "agent_id": "d08aa267-f9a6-4654-860d-73baf3f2e123",
+      "thread_id": "5018e619-4c2d-404a-b1c1-d69e5ae55792"
+    },
+    {
+      "status": 201,
+      "agent_id": "5eba8561-065c-49fc-bb98-ef8f00180da3",
+      "thread_id": "3daec5e0-acef-46dd-b9db-2ea2caf8763b"
+    }
+  ]
+}
