@@ -77,7 +77,7 @@ copy_tree() {
     return 0
   fi
   mkdir -p "$DEST/$rel"
-  (cd "$src" && find . -type f -print) | sed 's|^\\./||' | while read -r f; do
+  (cd "$src" && find . -type f -print) | sed 's|^\./||' | while read -r f; do
     [ -n "$f" ] || continue
     copy_file "$rel/$f"
   done
