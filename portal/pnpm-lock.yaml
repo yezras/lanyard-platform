@@ -10,3 +10,11 @@ overrides:
   postcss: '>=8.5.18'
   esbuild: '>=0.25.0'
   ws: '>=8.21.0'
+
+importers:
+
+  .:
+    devDependencies:
+      pg:
+        specifier: ^8.22.0
+        version: 8.22.0
