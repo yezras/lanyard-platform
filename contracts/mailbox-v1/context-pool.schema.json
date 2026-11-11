@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/mailbox-v1/context-pool.schema.json",
+  "title": "context-pool-v1",
+  "description": "Human-scoped 1:1 context pool (lp-ornl). Key (tenant, human). BFF-owned table context_pool, revision_id versioned on MessageEvent append. Live per-call fetch, harness delta via SessionState delivered_event_ids + standing_context_sent. Messages-only, any writer, participants-only.",
+  "$defs": {
+    "contextPoolKey": {
+      "type": "object",
+      "required": ["tenant_id", "human_user_id"],
+      "additionalProperties": false,
+      "properties": {
+        "tenant_id": { "type": "string", "minLength": 1 },
+        "human_user_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "contextPoolEvent": {
+      "type": "object",
+      "required": ["event_id", "revision_id", "tenant_id", "human_user_id", "thread_id", "type", "content", "created_at", "event_json"],
+      "additionalProperties": false,
+      "properties": {
+        "event_id": { "type": "string", "minLength": 1 },
+        "revision_id": { "type": "integer", "minimum": 1 },
+        "tenant_id": { "type": "string", "minLength": 1 },
+        "human_user_id": { "type": "string", "minLength": 1 },
+        "thread_id": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "enum": ["user_message", "message_send", "system_notice"] },
+        "content": { "type": "string" },
+        "speaker": {
+          "type": "object",
+          "required": ["kind", "id", "display_name"],
+          "properties": {
+            "kind": { "type": "string", "enum": ["human", "persona"] },
+            "id": { "type": "string", "minLength": 1 },
+            "display_name": { "type": "string", "minLength": 1 }
+          }
+        },
+        "created_at": { "type": "string", "minLength": 1 },
+        "event_json": { "type": "object" }
+      }
+    },
+    "contextPoolFetchResult": {
+      "type": "object",
+      "required": ["key", "revision_id", "events"],
+      "additionalProperties": false,
+      "properties": {
+        "key": { "$ref": "#/$defs/contextPoolKey" },
+        "revision_id": { "type": "integer", "minimum": 0 },
+        "events": { "type": "array", "items": { "$ref": "#/$defs/contextPoolEvent" } }
+      }
+    },
+    "contextPoolSessionState": {
+      "type": "object",
+      "required": ["key", "delivered_event_ids", "standing_context_sent", "last_revision_id"],
+      "additionalProperties": false,
+      "properties": {
+        "key": { "$ref": "#/$defs/contextPoolKey" },
+        "delivered_event_ids": { "type": "array", "items": { "type": "string" } },
+        "standing_context_sent": { "type": "boolean" },
+        "last_revision_id": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
