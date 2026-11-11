@@ -45,7 +45,7 @@ _SECRET_KEY_RE = re.compile(
     r"(token|jwt|secret|password|authorization|cookie|csrf|signature|api_key|nonce)",
     re.I,
 )
-_URL_SECRET_RE = re.compile(r"([?&](?:token|nonce)=)[^&#\\s\\\"']+", re.I)
+_URL_SECRET_RE = re.compile(r"([?&](?:token|nonce)=)[^&#\s\"']+", re.I)
 
 
 def _utc() -> str:
@@ -55,7 +55,7 @@ def _utc() -> str:
 def _scrub_str(value: str) -> str:
     if value.startswith("eyJ") and "." in value:
         return "<redacted-jwt>"
-    return _URL_SECRET_RE.sub(r"\\1<redacted>", value)
+    return _URL_SECRET_RE.sub(r"\1<redacted>", value)
 
 
 def _redact(obj: Any) -> Any:
