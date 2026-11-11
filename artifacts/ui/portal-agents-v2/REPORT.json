@@ -1,0 +1,94 @@
+{
+  "bead": "lp-lv9.9",
+  "suite": "portal-agents-v2",
+  "base_url": "http://demo.localhost:3010",
+  "login": "dev@demo.local",
+  "when": "2026-08-12T15:50:14.279415+00:00",
+  "verdict": "PASS",
+  "passed": true,
+  "checks": [
+    {
+      "feature": "login",
+      "ok": true,
+      "soft": false,
+      "detail": "logged in as dev@demo.local",
+      "shot": "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/01-post-login.png"
+    },
+    {
+      "feature": "folder-present",
+      "ok": true,
+      "soft": false,
+      "detail": "folder=1 icon=1",
+      "shot": "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/02-scheduled-tasks-folder-last.png"
+    },
+    {
+      "feature": "folder-last",
+      "ok": false,
+      "soft": true,
+      "detail": "general precedes scheduled-tasks: False; folder_testids=['scheduled-tasks-folder', 'general-folder']",
+      "shot": "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/02-scheduled-tasks-folder-last.png"
+    },
+    {
+      "feature": "job-row-surface",
+      "ok": true,
+      "soft": false,
+      "detail": "job_streams=0 empty_label=2",
+      "shot": "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/03-job-rows.png"
+    },
+    {
+      "feature": "config-pane",
+      "ok": true,
+      "soft": true,
+      "detail": "no job streams on host \u2014 config pane deferred (unit suite covers pane)",
+      "shot": null
+    },
+    {
+      "feature": "header-prompt-editor",
+      "ok": true,
+      "soft": true,
+      "detail": "not present on this stack (lp-lv9.4) \u2014 soft OK",
+      "shot": "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/05-header-prompt.png"
+    },
+    {
+      "feature": "tools-without-crons",
+      "ok": true,
+      "soft": true,
+      "detail": "Scheduled tasks still listed (count=1); expect removal after lp-lv9.6 merge \u2014 soft OK on this stack",
+      "shot": "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/06-tools-sections.png"
+    },
+    {
+      "feature": "plus-new-scheduled-task",
+      "ok": true,
+      "soft": false,
+      "detail": "menuitem count=1",
+      "shot": null
+    }
+  ],
+  "notes": [
+    "soft-skip folder-last: general precedes scheduled-tasks: False; folder_testids=['scheduled-tasks-folder', 'general-folder']",
+    "Scheduled Tasks not last in live DOM (pre-lp-lv9.1 deploy); unit gate threadGroups/ChatHistorySideNav covers order on this stack",
+    "no job streams; skipped live config-pane/slider interaction",
+    "header purpose/prompt editor absent (lp-lv9.4 not on stack)",
+    "Tools still shows Scheduled tasks (lp-lv9.6 not on live path / stack)"
+  ],
+  "soft_skipped": [
+    {
+      "feature": "folder-last",
+      "ok": false,
+      "soft": true,
+      "detail": "general precedes scheduled-tasks: False; folder_testids=['scheduled-tasks-folder', 'general-folder']",
+      "shot": "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/02-scheduled-tasks-folder-last.png"
+    }
+  ],
+  "screenshot_paths": [
+    "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/01-post-login.png",
+    "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/02-scheduled-tasks-folder-last.png",
+    "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/02-scheduled-tasks-folder-last.png",
+    "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/03-job-rows.png",
+    "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/05-header-prompt.png",
+    "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2/06-tools-sections.png"
+  ],
+  "selectors_map": "portal/packages/web/ui-testing/selectors.yaml",
+  "artifacts_dir": "/tmp/grok-1000/beads-execute-1786546804/wt-lp-lv9.9/artifacts/ui/portal-agents-v2",
+  "cross_pr_note": "Full cross-PR verify after merging draft PRs 375\u2013381 (.3/.4/.6 and possibly .2 may not be on this branch)."
+}
