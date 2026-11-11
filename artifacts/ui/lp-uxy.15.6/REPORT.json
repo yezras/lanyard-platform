@@ -1,0 +1,121 @@
+{
+  "bead_id": "lp-uxy.15.6",
+  "shipped_feature": "lp-uxy.5",
+  "base_url": "http://demo.localhost:3010",
+  "when": "2026-08-05T14:18:49.123056+00:00",
+  "login": "dev@demo.local",
+  "brain_rpc_enabled": true,
+  "backend_kind": "lanyard_agent",
+  "confirm_message": "Remove project \u201cSoftArchiveQA\u201d from Directory? This only archives the project registry entry \u2014 it leaves the list. Workspace and vault files stay on the agent disk (not deleted).",
+  "expected_confirm": "Remove project \u201cSoftArchiveQA\u201d from Directory? This only archives the project registry entry \u2014 it leaves the list. Workspace and vault files stay on the agent disk (not deleted).",
+  "confirm_honest": true,
+  "delete_api": {
+    "status": 200,
+    "body": {
+      "id": "p_7932d587",
+      "archived": true
+    }
+  },
+  "delete_archived": true,
+  "marker_path": "/home/operator/Lanyard/lp-uxy-15-6-soft-archive-qa/STAYS_ON_DISK.txt",
+  "marker_after_exists": true,
+  "project_left_list": true,
+  "target_project": "SoftArchiveQA",
+  "project_id": "p_f72fda60",
+  "checks": [
+    {
+      "feature": "login",
+      "ok": true,
+      "detail": "logged in as dev@demo.local (or existing session)",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/soft-archive/01-post-login.png"
+    },
+    {
+      "feature": "brain-rpc-enabled",
+      "ok": true,
+      "detail": "brain_rpc_enabled=True kind=lanyard_agent profile=admin",
+      "shot": null
+    },
+    {
+      "feature": "backend-kind-lanyard-agent",
+      "ok": true,
+      "detail": "kind=lanyard_agent",
+      "shot": null
+    },
+    {
+      "feature": "capabilities-projects-delete",
+      "ok": true,
+      "detail": "projects.delete in methods=True features.projects_list=True projects_create=True",
+      "shot": null
+    },
+    {
+      "feature": "brain-ping",
+      "ok": true,
+      "detail": "status=200 pong=True instance=1555e820-2eba-4e83-80bd-a93f3ae09e7c",
+      "shot": null
+    },
+    {
+      "feature": "marker-seeded",
+      "ok": true,
+      "detail": "path=/home/operator/Lanyard/lp-uxy-15-6-soft-archive-qa/STAYS_ON_DISK.txt",
+      "shot": null
+    },
+    {
+      "feature": "create-disposable-project",
+      "ok": true,
+      "detail": "reused existing id=p_f72fda60 primary=/home/operator/Lanyard/lp-uxy-15-6-soft-archive-qa",
+      "shot": null
+    },
+    {
+      "feature": "directory-shows-target-project",
+      "ok": true,
+      "detail": "target=SoftArchiveQA project_id=p_f72fda60 qa_visible=True",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/soft-archive/02-directory-with-project.png"
+    },
+    {
+      "feature": "project-actions-delete-visible",
+      "ok": true,
+      "detail": "Delete control visible for SoftArchiveQA",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/soft-archive/03-project-actions-menu.png"
+    },
+    {
+      "feature": "soft-archive-confirm-copy",
+      "ok": true,
+      "detail": "msg='Remove project \u201cSoftArchiveQA\u201d from Directory? This only archives the project registry entry \u2014 it leaves the list. Workspace and vault files stay on the agent disk (not deleted).' expected='Remove project \u201cSoftArchiveQA\u201d from Directory? This only archives the project registry entry \u2014 it leaves the list. Workspace and vault files stay on the agent disk (not deleted).' snippets_ok=True no_purge=True",
+      "shot": null
+    },
+    {
+      "feature": "project-left-directory-list",
+      "ok": true,
+      "detail": "api_left=True ui_left=True after_count=8",
+      "shot": "artifacts/ui/lp-uxy-ship-qa/soft-archive/04-after-soft-archive.png"
+    },
+    {
+      "feature": "vault-marker-stayed-on-disk",
+      "ok": true,
+      "detail": "exists=True content_ok=True path=/home/operator/Lanyard/lp-uxy-15-6-soft-archive-qa/STAYS_ON_DISK.txt",
+      "shot": null
+    },
+    {
+      "feature": "delete-api-archived-true",
+      "ok": true,
+      "detail": "status=200 body={'id': 'p_7932d587', 'archived': True}",
+      "shot": null
+    },
+    {
+      "feature": "vault-marker-stayed-after-api-delete",
+      "ok": true,
+      "detail": "exists=True path=/home/operator/Lanyard/lp-uxy-15-6-soft-archive-qa/STAYS_ON_DISK.txt",
+      "shot": null
+    }
+  ],
+  "screenshot_paths": [
+    "artifacts/ui/lp-uxy-ship-qa/soft-archive/01-post-login.png",
+    "artifacts/ui/lp-uxy-ship-qa/soft-archive/02-directory-with-project.png",
+    "artifacts/ui/lp-uxy-ship-qa/soft-archive/03-project-actions-menu.png",
+    "artifacts/ui/lp-uxy-ship-qa/soft-archive/04-after-soft-archive.png",
+    "artifacts/ui/lp-uxy-ship-qa/soft-archive/05-final-directory.png"
+  ],
+  "passed": true,
+  "verdict": "PASS",
+  "fix_bead": null
+}
