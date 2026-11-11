@@ -1,0 +1,120 @@
+name: client-core
+purpose: Generic Company Brain runtime seed for customer deployments (one-shot, then git-free).
+entrypoint: AGENTS.md
+version: 0.1.0
+data_boundary:
+  allowed:
+    - reusable operating doctrine (customer-generic)
+    - sanitized skills and optional packs
+    - templates
+    - starter agent definitions
+    - setup scripts
+    - empty scaffold folders
+    - empty database schemas
+  forbidden:
+    - live customer data
+    - Lanyard Business Plan / employment / sales assets
+    - CRM database rows
+    - transcripts
+    - private proposals
+    - credentials
+    - generated embeddings
+    - personal machine paths
+    - Terraform state / tfvars
+folders:
+  Knowledge:
+    purpose: Organization knowledge tree (empty until Discover).
+  Projects:
+    purpose: Project workspaces (empty until Discover).
+  staging:
+    purpose: Inbound uploads and agent staging paths.
+    uploads: staging/uploads/
+  Clients:
+    purpose: Optional account/CRM scaffold (empty buckets + schema only).
+    index: Clients/INDEX.md
+    rules: Clients/AGENTS.md
+    schema: Clients/schema.sql
+  agents:
+    purpose: Agent definitions.
+    vault_writer: agents/vault-writer.md
+    researcher: agents/researcher.md
+  skills:
+    purpose: Always-on skills.
+    note_taking: skills/note-taking
+    context_compaction_routing: skills/productivity/context-compaction-routing
+  packs:
+    purpose: Optional packs enabled per SOW/deploy flag.
+    index: packs/INDEX.md
+    gws: packs/gws
+    wacli: packs/wacli
+    self_improve: packs/self-improve
+    focr: packs/focr
+    crm: packs/crm
+    granola: packs/granola
+    excel_author: packs/excel-author
+    meadow_core: packs/meadow-core
+  memory:
+    purpose: Deep and ephemeral memory conventions.
+    policy: memory/INDEX.md
+    deep: memory/deep/
+  templates:
+    purpose: Artifact and entity templates.
+  scripts:
+    purpose: Seed setup and pack enablement.
+  docs:
+    purpose: Seed documentation (strip list, channel notes).
+artifact_types:
+  artifact:
+    template: templates/artifacts/artifact.md
+  client_profile:
+    template: templates/clients/AGENTS.md.template
+  client_recall:
+    template: templates/clients/RECALL.md.template
+  client_note:
+    template: templates/clients/note.md.template
+  project_index:
+    template: templates/clients/PROJECTS-INDEX.md.template
+runtime:
+  profiles:
+    - admin
+    - contributor
+  beads: git-free required on deployed host
+  vault_writer: required for canonical markdown
+  durability: EBS snapshots (host); seed git is not day-to-day ops
+  channels_mvp:
+    - portal
+    - email
+    - slack
+    - teams
+    - whatsapp
+memory:
+  mempalace_config: mempalace.yaml
+setup:
+  local_setup: scripts/setup-local.sh
+  enable_pack: scripts/enable-pack.sh
+  crm_init: scripts/init-crm-db.sh
+  pack_release: scripts/pack-release.sh
+release:
+  workflow: .github/workflows/release-artifact.yml
+  operator_docs: docs/RELEASE.md
+  object_key: client-core/<version>/client-core-<version>.tar.gz
+  filename_pattern: client-core-<version>.tar.gz
+  digest_file: client-core-<version>.tar.gz.sha256
+  version_policy: immutable labels only (reject main/master/HEAD/latest)
+  pack_method: git archive (tracked files only; no .git / gitignored runtime)
+  oidc:
+    role_key: client_core
+    subject: repo:LanyardBrain/client-core:ref:refs/tags/*
+  github_vars:
+    - ARTIFACT_BUCKET
+    - AWS_ROLE_ARN
+    - AWS_REGION
+  deploy_pins:
+    - client_core.version
+    - client_core.sha256
+    - client_core.url
+source:
+  derived_from: LanyardBrain/Core
+  doctrine: Business/Business Plan/SecondBrain/client-core-and-serving.md
+  strip_list: docs/STRIP-LIST.md
+  release_contract: company-brain-deploy references/product-artifact-release-contract.md
