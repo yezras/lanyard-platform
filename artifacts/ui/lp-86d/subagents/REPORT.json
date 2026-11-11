@@ -1,0 +1,62 @@
+{
+  "bead_id": "lp-86d.5",
+  "timestamp": "2026-08-13T12:12:01.322793+00:00",
+  "base_url": "http://demo.localhost:3010",
+  "login": "dev@demo.local",
+  "pilot_subagents_enabled": true,
+  "spawn_prompt": "You MUST use the spawn_subagent tool exactly once. Spawn a subagent named 'qa-helper' with description 'lp-86d.5 subagent QA' and prompt: 'Reply with exactly: SUBAGENT_OK. Do not use other tools.' After the subagent finishes, briefly report its reply. Do not refuse; subagents are enabled for this pilot.",
+  "story": {
+    "chip_visible": true,
+    "chip_surface": "dither-avatar-sa-explore-1",
+    "chip_status": "running",
+    "condensed_roster": true,
+    "detail_run_id": "sa-explore-1",
+    "detail_status": "running \u00b7 0:42",
+    "chip_opens_detail": true,
+    "roster_row_count": 2,
+    "roster_visible": true,
+    "ok": true
+  },
+  "live": {
+    "login_ok": true,
+    "prompt_sent": true,
+    "chip_visible": true,
+    "activity_pane_open": true,
+    "detail_visible": true,
+    "roster_visible": true,
+    "disabled_or_no_emit": false,
+    "notes": "",
+    "chip_surface": "dither-avatar-sa-b612b737-6821-4c87-8c8c-5703cf095147",
+    "chip_run_id": "sa-b612b737-6821-4c87-8c8c-5703cf095147",
+    "chip_status": "running",
+    "chip_count": 1,
+    "detail_run_id": "sa-b612b737-6821-4c87-8c8c-5703cf095147",
+    "detail_status": "running",
+    "roster_row_count": 1,
+    "ok": true
+  },
+  "screenshots": [
+    "artifacts/ui/lp-86d/subagents/01-story-chip-visible.png",
+    "artifacts/ui/lp-86d/subagents/02-story-chip-opens-detail.png",
+    "artifacts/ui/lp-86d/subagents/03-story-roster.png",
+    "artifacts/ui/lp-86d/subagents/10-live-home.png",
+    "artifacts/ui/lp-86d/subagents/11-live-new-chat.png",
+    "artifacts/ui/lp-86d/subagents/12-live-sent.png",
+    "artifacts/ui/lp-86d/subagents/13-live-subagent-chips.png",
+    "artifacts/ui/lp-86d/subagents/14-live-activity-detail.png",
+    "artifacts/ui/lp-86d/subagents/15-live-roster-or-detail.png",
+    "artifacts/ui/lp-86d/subagents/16-live-final.png"
+  ],
+  "errors": [],
+  "acceptance_met": true,
+  "verdict": "PASS",
+  "fix_bead": null,
+  "fix_bead_reason": null,
+  "pass_criteria": {
+    "story_required": true,
+    "story_ok": true,
+    "live_required": true,
+    "live_ok": true
+  },
+  "summary": "story_ok=True live_ok=True chip_surface_story=dither-avatar-sa-explore-1 chip_surface_live=dither-avatar-sa-b612b737-6821-4c87-8c8c-5703cf095147 detail=sa-b612b737-6821-4c87-8c8c-5703cf095147 roster_rows=1"
+}

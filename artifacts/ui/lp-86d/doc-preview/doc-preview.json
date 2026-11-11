@@ -1,0 +1,72 @@
+{
+  "bead": "lp-86d.9",
+  "related_beads": [
+    "lp-86d.12",
+    "lp-75r.6",
+    "lp-dpr.1"
+  ],
+  "title": "document viewer \u2014 markdown/doc preview pane body",
+  "status": "PASS",
+  "stories": [
+    "citations-document-pane",
+    "document-pane",
+    "document-pane&open=citation"
+  ],
+  "url_base": "http://127.0.0.1:3024",
+  "acceptance": {
+    "open_via_citation_or_soft_ref": true,
+    "chat_document_pane_non_empty_body": true,
+    "not_chrome_only": true,
+    "renderer": "preview"
+  },
+  "opens": [
+    {
+      "source": "citation",
+      "path": "/Projects/A/README.md",
+      "body_len": 107,
+      "word_count": 17,
+      "renderer": "preview",
+      "snippets_ok": [
+        "Team A README (vault citation)",
+        "side document pane preview body"
+      ]
+    },
+    {
+      "source": "citation",
+      "path": "/Projects/A/notes.md",
+      "body_len": 101,
+      "word_count": 16,
+      "renderer": "preview",
+      "snippets_ok": [
+        "Project notes (vault citation)",
+        "every chip opens the pane"
+      ]
+    },
+    {
+      "source": "artifact_event",
+      "path": "/Projects/A/memo.md",
+      "body_len": 85,
+      "word_count": 12,
+      "renderer": "preview",
+      "snippets_ok": [
+        "Memo (artifact.open)",
+        "portal_event metadata"
+      ]
+    }
+  ],
+  "screenshots": [
+    "citation-readme-body.png",
+    "citation-notes-body.png",
+    "artifact-open-memo-body.png",
+    "document-pane-default-body.png",
+    "soft-citation-open-body.png",
+    "doc-preview-matrix.png"
+  ],
+  "empty_chrome_rejected": "Select a file",
+  "unit_coverage": [
+    "useDocumentPanePreview.test.tsx (lp-dpr.1 chrome-without-body)",
+    "CitationsDocumentPaneProofStory.test.tsx",
+    "DocumentPaneShell.test.tsx (VaultReader markdown body)"
+  ],
+  "notes": "Auth-free stories prove markdown/doc preview body is non-empty when opened via citation chip, soft open=citation, default deep link, or artifact.open. Live LA agent citation metadata is covered by lp-86d.12 / lp-75r.6; this bead focuses on pane body content (not chrome-only toolbar). Artifacts: artifacts/ui/lp-86d/doc-preview/."
+}
