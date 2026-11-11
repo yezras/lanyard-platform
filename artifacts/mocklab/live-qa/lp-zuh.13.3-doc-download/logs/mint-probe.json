@@ -1,0 +1,12 @@
+{
+  "status": 200,
+  "ct": "application/json",
+  "spa": false,
+  "session_id_present": true,
+  "document_key_present": true,
+  "editor_config_present": true,
+  "token_present": true,
+  "document_url_path": "https://app.withlanyard.com/mocklab/api/office/sessions/w4aXZhC9FXj_lDLI6GndmuUS3deLgQAGXhquiQ4dC-w/content",
+  "document_server_url": null,
+  "error": null
+}
