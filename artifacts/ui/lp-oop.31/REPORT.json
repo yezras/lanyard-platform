@@ -1,0 +1,102 @@
+{
+  "bead_id": "lp-oop.36",
+  "parent_acceptance": "lp-oop.31 Evidence files. Relay not on the hop.",
+  "base_url": "http://127.0.0.1:3136/mocklab",
+  "login": "agent-dev@mocklab.local",
+  "started_at": "2026-08-17T16:31:43.759979+00:00",
+  "prompt_marker": "lp-oop.36-ui-no-tool-ping",
+  "checks": {
+    "login": {
+      "ok": true,
+      "detail": "url=http://127.0.0.1:3136/mocklab/",
+      "screenshot": "01-login-home.png"
+    },
+    "agents-tab": {
+      "ok": true,
+      "detail": "url=http://127.0.0.1:3136/mocklab/",
+      "screenshot": "02-agents.png"
+    },
+    "composer": {
+      "ok": true,
+      "detail": "visible=True url=http://127.0.0.1:3136/mocklab/",
+      "screenshot": "03-new-chat-composer.png"
+    },
+    "prompt-sent": {
+      "ok": true,
+      "detail": "marker=lp-oop.36-ui-no-tool-ping",
+      "screenshot": "04-prompt-sent.png"
+    },
+    "user-prompt-visible": {
+      "ok": true,
+      "detail": "marker=lp-oop.36-ui-no-tool-ping",
+      "screenshot": "04-prompt-sent.png"
+    },
+    "assistant-reply": {
+      "ok": true,
+      "detail": "len=170 excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.36-ui-no-tool-ping\\n12:31 PM\\n\u00b7\\ngrok-3'",
+      "screenshot": "05-assistant-reply.png"
+    },
+    "echo-or-pong": {
+      "ok": true,
+      "detail": "excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.36-ui-no-tool-ping\\n12:31 PM\\n\u00b7\\ngrok-3'",
+      "screenshot": null
+    },
+    "no-tool-chrome": {
+      "ok": true,
+      "detail": "{\"chat_tool_calls\": 0, \"collapsed_pills\": 0, \"tool_group\": 0}",
+      "screenshot": "05-assistant-reply.png"
+    },
+    "relay-not-on-hop": {
+      "ok": true,
+      "detail": "{\"relay\": {\"deliverInbound\": 0, \"interruptInbound\": 0, \"openChatEventStream\": 0, \"fetchChatHistory\": 0}, \"harness_kind\": \"real-harness\"}",
+      "screenshot": null
+    }
+  },
+  "screenshots": [
+    "/tmp/lp-bead-lp-oop.36/artifacts/ui/lp-oop.36/01-login-home.png",
+    "/tmp/lp-bead-lp-oop.36/artifacts/ui/lp-oop.36/02-agents.png",
+    "/tmp/lp-bead-lp-oop.36/artifacts/ui/lp-oop.36/03-new-chat-composer.png",
+    "/tmp/lp-bead-lp-oop.36/artifacts/ui/lp-oop.36/04-prompt-sent.png",
+    "/tmp/lp-bead-lp-oop.36/artifacts/ui/lp-oop.36/04-prompt-sent.png",
+    "/tmp/lp-bead-lp-oop.36/artifacts/ui/lp-oop.36/05-assistant-reply.png",
+    "/tmp/lp-bead-lp-oop.36/artifacts/ui/lp-oop.36/05-assistant-reply.png"
+  ],
+  "errors": [],
+  "url": "http://127.0.0.1:3136/mocklab/",
+  "assistant_excerpt": "echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.36-ui-no-tool-ping\n12:31 PM\n\u00b7\ngrok-3",
+  "tool_ui": {
+    "chat_tool_calls": 0,
+    "collapsed_pills": 0,
+    "tool_group": 0
+  },
+  "hop": {
+    "bead_id": "lp-oop.36",
+    "chat_delivery": "harness",
+    "harness_kind": "real-harness",
+    "harness_url": "in-process",
+    "fake_harness_http": true,
+    "tenant_slug": "mocklab",
+    "relay": {
+      "deliverInbound": 0,
+      "interruptInbound": 0,
+      "openChatEventStream": 0,
+      "fetchChatHistory": 0
+    },
+    "turns": [
+      {
+        "turn_id": "turn_1",
+        "message": "Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.36-ui-no-tool-ping",
+        "interrupted": false,
+        "event_types": [
+          "message_send"
+        ]
+      }
+    ],
+    "checks": {
+      "relay.not_on_hop": true
+    }
+  },
+  "honesty": "Browser proof against branch-local BFF ChatDelivery=harness. Live AWS MockLab chat_delivery stays default relay. lp-oop.33 is Playwright on a flipped MockLab.",
+  "finished_at": "2026-08-17T16:31:54.457391+00:00",
+  "passed": true
+}
