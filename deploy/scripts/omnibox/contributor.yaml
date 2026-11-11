@@ -1,0 +1,101 @@
+# OmniboxPolicy seed — contributor (Mode A / bwrap_inrepo)
+# Deploy-owned declarative grants for run-under-omnibox (phase 2+).
+# No secrets. Aligns with scripts/hermes-profiles/contributor.json and
+# scripts/tool-allowlists/contributor.json.
+#
+# Stricter than admin: no full-vault default grant; shell not expected;
+# vault access only via path_prefixes + contributor workspace.
+#
+# Install target (phase 3): /etc/company-brain/omnibox/contributor.yaml
+
+schema_version: 1
+profile: contributor
+backend: bwrap_inrepo
+description: >
+  Contributor Omnibox cage for any host-impacting tool path (rare; shell is
+  denied by tool allowlist). Vault RW only under portal path_prefixes when
+  provided; contributor workspace only. Secrets (.env, SSH, AWS, root) never
+  enter the box. Network default-deny + metadata/private block.
+
+# Hermes capability / tool-allowlist alignment (documentation for operators)
+aligns_with:
+  hermes_profile: scripts/hermes-profiles/contributor.json
+  tool_allowlist: scripts/tool-allowlists/contributor.json
+  capabilities:
+    - vault_read
+    - vault_write
+    - chat
+  # Explicitly not granted at Hermes layer (must stay absent):
+  denied_capabilities:
+    - vault_full
+    - profile_manage
+    - system_ops
+    - shell_exec
+    - gateway_config
+    - beads_admin
+
+fs:
+  # No full /opt/company-brain RW by default (stricter than admin).
+  # Wrapper binds only --path-prefix values under the vault root when provided.
+  grants:
+    - path: /var/lib/company-brain/omnibox/workspaces/contributor
+      mode: rw
+      note: Per-profile scratch workspace
+    # Vault: path_prefixes only (empty seed = portal/runtime prefixes required)
+    - path: /opt/company-brain
+      mode: rw
+      path_prefixes_only: true
+      note: >
+        Bind only portal-injected path_prefixes under vault root; never the
+        entire vault tree for contributor
+
+  # Paths that must never be bound into the sandbox.
+  # Includes gateway .env deny (required offline smoke signal).
+  never_grant:
+    - /home/hermes/.hermes/.env
+    - /home/hermes/.hermes/**/*.env
+    - /home/hermes/.ssh
+    - /home/hermes/.aws
+    - /root
+    - /root/.ssh
+    - /root/.aws
+    - /etc/company-brain/secrets
+    - /var/lib/company-brain/secrets
+    - /opt/hermes-lanyard/.env
+    - /var/lib/cloud
+    # Deny admin workspace cross-read
+    - /var/lib/company-brain/omnibox/workspaces/admin
+
+shell:
+  # Tool allowlist denies shell_exec for contributor; Omnibox must not assume shell.
+  expected: false
+  only_inside_grants: true
+
+network:
+  default: deny
+  unshare_net: true
+  block:
+    - 169.254.169.254/32   # IMDS
+    - 169.254.0.0/16       # link-local
+    - 10.0.0.0/8           # private
+    - 172.16.0.0/12        # private
+    - 192.168.0.0/16       # private
+    - 127.0.0.0/8
+    - ::1/128
+    - fc00::/7
+  allowlist: []
+
+credentials:
+  inject_placeholders: true
+  never_pass_env_prefixes:
+    - GATEWAY_
+    - AWS_
+    - OPENAI_
+    - ANTHROPIC_
+    - HERMES_API_
+    - RELAY_
+
+notes: >
+  Host seed only. Stricter than admin on FS (path_prefixes_only, no vault_full)
+  and shell expectation (false). never_grant includes .env for gateway secrets.
+  Hermes product must still deny shell_exec via tool-allowlists/contributor.json.
