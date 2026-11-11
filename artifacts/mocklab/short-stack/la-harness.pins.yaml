@@ -1,0 +1,166 @@
+# Secret-free pin: replace live echo harness with LA createHarnessTurnServer.
+# Bead: lp-oop.38.1 (image recipe; parent lp-oop.38). Previous: lp-oop.37.4.
+# Plan: docs/plans/0015-short-stack/replace-echo-harness-la.md
+# Runbook: deploy/references/runbooks/mocklab-replace-echo-harness-la.md
+#
+# apply_to_live: false means this file is not a terraform apply.
+# Do not write DAYTONA_DEFAULT_SNAPSHOT or agent_snapshot_id from this file.
+#
+# Honesty 2026-08-21: live Fargate :11 / la-c41aca0 (LA PR 252 stacked on
+# 2477b22) boots spawn_schemas=present + memory_read=present +
+# subagents.enabled. Previous :10 / la-2477b22 was spawn-only. Previous
+# :9 / la-c64a598 was 38.7 file/bash only. Historical echo was :3 /
+# la-52f5e4d. Guest snapshot still has no agent-core tree.
+
+harness:
+  env: mocklab
+  status: live-cutover-blocked
+  bead: lp-oop.38.1
+  parent: lp-oop.38
+  previous_bead: lp-oop.37.4
+  discovered_from: lp-oop.26
+  apply_to_live: false
+  write_daytona_default_snapshot: false
+  write_mocklab_agent_snapshot_id: false
+  kind: lanyard-agent-createHarnessTurnServer
+  shared_platform_task: true
+  new_aws_product: false
+  agent_loop_in_guest_snapshot: false
+  includes_agent_core_on_harness: true
+  includes_agent_core_on_guest: false
+
+  live_now:
+    # Observed 2026-08-21 after lp-oop.38.13 image roll.
+    family: lanyard-platform-staging-harness
+    revision: 11
+    ecr_tag: la-c41aca0
+    kind: createHarnessTurnServer
+    reply_shape: "tools + spawn_subagent + memory_read"
+    cluster: lanyard-platform-staging-portal-cp
+    service: lanyard-platform-staging-harness
+    alb_port: 8080
+    service_token_header: x-harness-service-token
+    image_digest_prefix: "sha256:3e425686"
+    note: "Browser → BFF → createHarnessTurnServer (live :11 / la-c41aca0). Boot logs: spawn_schemas=present memory_read=present spawn_tool=spawn_subagent subagents=enabled runner=tools BACKEND_HOME=/var/lib/lanyard-agent. Previous :10 / la-2477b22 was spawn-only. Previous :9 / la-c64a598 was 38.7 file/bash only (SPAWN_TOOL_MISSING). Historical echo was :3 / la-52f5e4d."
+
+  previous_echo_task:
+    family: lanyard-platform-staging-harness
+    revision: 2
+    ecr_tag: lp-oop-flip
+    kind: stdlib-echo-contract-server
+    note: "MockLab flip 2026-08-18 stand-in. Superseded by :3 / la-52f5e4d."
+
+  target:
+    process: createHarnessTurnServer
+    package: "@lanyard-agent/adapters-portal"
+    runner_factory: createEnvLiteLlmTurnRunner
+    runner_when_factory_missing: echo
+    cluster: lanyard-platform-staging-portal-cp
+    service: lanyard-platform-staging-harness
+    family: lanyard-platform-staging-harness
+    alb: lanyard-platform-staging-cp-alb
+    alb_port: 8080
+    service_token_header: x-harness-service-token
+    turn_request_fields:
+      - tenant_id
+      - user_id
+      - instance_id
+      - thread_id
+      - message
+      - sandbox_id
+    runner_factory_prefer:
+      - createEnvToolsTurnRunner
+      - createAgentCoreTurnRunner
+    desired_count: 1
+    assign_public_ip: DISABLED
+    note: "Same shared task. Isolation is tenant_id/user_id/instance_id on the turn; optional sandbox_id from ensure-online. Start wrapper prefers a tools factory ({ run } → runner=tools), then LiteLLM, then echo. 38.1 ships agent-core; 38.2 binds the tools runner. apply_to_live remains false."
+
+  lanyard_agent:
+    repo: https://github.com/LanyardBrain/lanyard-agent
+    pr: 253
+    pr_url: https://github.com/LanyardBrain/lanyard-agent/pull/253
+    pr_state: OPEN
+    pr_draft: false
+    mergeable: MERGEABLE
+    branch: beads/lp-oop.38.14-enable-spawn-subagent-on-the-harness-run
+    git_commit: 2477b22ec4d33161a6ff122cef6b01fe268d98de
+    git_commit_short: 2477b22
+    on_origin_main: false
+    spawn_subagent: true
+    previous_file_tools_pr: 243
+    previous_file_tools_sha: ad0ef5a03737e004d516c3fe2a22840c73510d6c
+    previous_file_tools:
+      pr: 243
+      pr_state: MERGED
+      git_commit: ad0ef5a03737e004d516c3fe2a22840c73510d6c
+    default_runner: createEchoTurnRunner
+    runner_factory: createEnvToolsTurnRunner
+    includes_agent_core: true
+    default_reply_shape: "echo: <message>"
+    remaining_gap: none
+    remaining_gap_note: "Live :11 / la-c41aca0 keeps spawn from 2477b22. Thread 0f2b339d spawned qa-helper (sa-1c7d3c54), isolationEffective none, SUBAGENT_OK, 2-agents chip. Not SUBAGENTS_DISABLED. apply_to_live remains false."
+    previous_runner_pr: 244
+    previous_runner_sha: fb70865bf8c74a6eb980095fa404e5b7e9327f13
+    previous_http_server_pr: 242
+    previous_http_server_sha: 52f5e4db93e7c71b279fedb79f7cc11a9cb82d30
+    observed_at: "2026-08-20T21:14:36Z"
+    note: "Spawn SHA 2477b22 (LA PR 253). Previous file/bash pin ad0ef5a. Live :11 / la-c41aca0 is PR 252 stacked on this SHA. apply_to_live remains false (no terraform from this file)."
+
+  ecr:
+    repository: lanyard-platform-staging/portal/harness
+    digest: "sha256:3e425686aa8cc7e2636f81a1bb0a1621cf4e63e8310bf0e22591b5598c3ff607"
+    tag: la-c41aca0
+    note: "Pushed and rolled to live :11 (memory SHA stacked on spawn). Previous live tag la-2477b22 digest sha256:f9f9cdf5 remains in ECR. apply_to_live remains false (this file is not a terraform apply)."
+
+  local_image:
+    tag: "lanyard/harness:la-c41aca0"
+    dockerfile: deploy/dev/mocklab-short-stack-harness/Dockerfile
+    build_script: deploy/scripts/build-la-harness-image.sh
+    start_script: deploy/dev/mocklab-short-stack-harness/start-la-harness.mjs
+    id: null
+    includes_agent_core: true
+    note: "Optional local build of memory SHA c41aca0 + this start wrapper (keeps HARNESS_REQUIRE_SPAWN from 38.14). Image copies adapters-portal + providers + agent-core and required workspace packages (config, logging, memory, session) plus production node_modules from the operator LA checkout. Not an ECR digest. Not pushed. Not a default ecs update-service. Not copied onto Daytona."
+
+  guest_snapshot:
+    agent_core_required: false
+    lanyard_agent_tree_required: false
+    tree: "/opt/company-brain-backend/current/lanyard-agent"
+    live_pin_file: deploy/daytona/agent-gateway/pins/staging-pilot.pins.yaml
+    lab_tool_only_pin: artifacts/lab/short-stack/tool-only.pins.yaml
+    note: "This path does not bake the loop into Daytona. Guest smoke: smoke-no-lanyard-agent-tree.sh"
+
+  live_untouched:
+    family: lanyard-platform-staging-harness
+    revision: 3
+    ecr_tag: la-52f5e4d
+    daytona_pin_file: deploy/daytona/agent-gateway/pins/staging-pilot.pins.yaml
+    note: "Recorded for compare only. This pin does not write live resources. apply_to_live remains false while reply is echo (38.2 rolls)."
+
+  memory_bind:
+    bead: lp-oop.38.13
+    placement: toolbox-cli
+    binary: /usr/local/bin/mempalace
+    palace_path: /mnt/vault/mempalace
+    cwd: /mnt/vault
+    spawn: ToolboxClient.execute
+    fail_closed_without_sandbox_id: true
+    write_policy_disabled_omits_memory_write: true
+    la_repo: https://github.com/LanyardBrain/lanyard-agent
+    la_pr: 252
+    la_pr_url: https://github.com/LanyardBrain/lanyard-agent/pull/252
+    la_branch: beads/lp-oop.38.13-bind-memory-toolbox
+    la_git_commit: c41aca03268446ed13299572250ec7709e6eb342
+    la_git_commit_short: c41aca0
+    apply_to_live: false
+    live_observed_at: "2026-08-21T02:56:49Z"
+    live_harness_family: lanyard-platform-staging-harness
+    live_harness_revision: 11
+    live_harness_tag: la-c41aca0
+    live_includes_la_sha: true
+    live_image_digest: "sha256:3e425686aa8cc7e2636f81a1bb0a1621cf4e63e8310bf0e22591b5598c3ff607"
+    live_turn_id: turn_3
+    live_thread_id: lp-oop-38-13-mem2
+    live_memory_read_result: "No memory hits."
+    live_binary_missing: false
+    stacked_on_la_sha: 2477b22ec4d33161a6ff122cef6b01fe268d98de
+    note: "Companion LA PR 252. memory_read on by default (Fargate has no guest config.yaml). Explicit mempalace.enabled false / HARNESS_MEMPALACE_ENABLED=0 omit. Platform start wrapper stacked on 38.14 so a bake of c41aca0 keeps HARNESS_REQUIRE_SPAWN. HARNESS_REQUIRE_MEMORY=1 fails boot when memory_read is missing (spawn-only 2477b22). Observed 2026-08-21: live :11 LP_IMAGE_TAG=la-c41aca0 digest sha256:3e425686 boots memory_read=present. Turn turn_3 called memory_read; result No memory hits. (unmined palace), not BINARY_MISSING, not TOOL_NOT_AVAILABLE. memory_write stayed unregistered. Not a new memory HTTP API. Not mempalace on Fargate. apply_to_live remains false (this file is not a terraform apply)."
