@@ -1,0 +1,10 @@
+# ClientCorePack metadata — required for monorepo pack validation (lp-k7g.9.3)
+name: gws
+summary: Google Workspace email/calendar/drive primary
+when_to_enable: Google Workspace email/calendar/drive primary
+contents: Google Workspace skills
+# Paths relative to this pack directory that enable-pack.sh installs from.
+sources:
+  - skills/gws
+  - skills/productivity-gws
+dependencies: []
