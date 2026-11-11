@@ -1,0 +1,42 @@
+# Lab-only short-stack harness (lp-oop.30 / plan 0015).
+#
+# Optional image path. Default operator path is the host process:
+#   export LANYARD_AGENT_ROOT=/path/to/lanyard-agent
+#   bash run-lab-harness.sh
+#
+#   docker compose --profile harness up -d
+#
+# NOT a new AWS product. NOT production. Guest chat stays Relay unless the
+# lab BFF is explicitly pointed at HARNESS_URL (CHAT_DELIVERY still defaults relay).
+#
+# Operator runbook: references/runbooks/mocklab-short-stack-harness.md
+# Offline smoke (no Docker pull): bash scripts/smoke-mocklab-short-stack-harness.sh
+
+name: mocklab-short-stack-harness
+
+services:
+  harness:
+    profiles: ["harness"]
+    image: ${HARNESS_IMAGE:-lanyard/harness:local}
+    container_name: mocklab-short-stack-harness
+    restart: unless-stopped
+    ports:
+      - "${HARNESS_HOST_BIND:-127.0.0.1}:${HARNESS_HOST_PORT:-8080}:8080"
+    environment:
+      HARNESS_HOST: "0.0.0.0"
+      HARNESS_PORT: "8080"
+      BACKEND_HOME: "/var/lib/lanyard-backend"
+      # Lab-only. Must match lab BFF HARNESS_SERVICE_TOKEN. Never a production SM value.
+      HARNESS_SERVICE_TOKEN: ${HARNESS_SERVICE_TOKEN:-placeholder-harness-service-token}
+      LANYARD_HARNESS_SERVICE_TOKEN: ${HARNESS_SERVICE_TOKEN:-placeholder-harness-service-token}
+      # lp-oop.38.16: scheduled_task create writes vault cron/jobs.json via CP.
+      # Empty omits the tool. Never a production SM value in this file.
+      CONTROL_PLANE_URL: ${CONTROL_PLANE_URL:-}
+      CONTROL_PLANE_SERVICE_TOKEN: ${CONTROL_PLANE_SERVICE_TOKEN:-}
+    labels:
+      lanyard.topology: mocklab-short-stack-harness
+      lanyard.bead: lp-oop.30
+      lanyard.residual: lp-oop.37.4
+      lanyard.production: "false"
+    # Image must speak POST /internal/turns (LA createHarnessTurnServer).
+    # No unauthenticated /health on LA PR 242 — rely on listen + 401 without token.
