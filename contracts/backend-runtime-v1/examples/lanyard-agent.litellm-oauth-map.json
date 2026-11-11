@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind_hint": "lanyard_agent",
+  "description": "Offline teaching fixture for Agent OAuthStore → LiteLLM model mapping (lp-645.8.5). No live tokens. Produced by the same rules as deploy/scripts/map-oauth-to-litellm.py.",
+  "oauth_enc_path": "oauth.enc",
+  "decrypt_env": "LANYARD_OAUTH_KEY",
+  "litellm_master_env": "LITELLM_MASTER_KEY",
+  "providers": [
+    {
+      "provider_id": "xai-grok",
+      "litellm_model_names": [
+        "xai/grok-3-oauth",
+        "xai/grok-build-oauth"
+      ],
+      "upstream_models": {
+        "xai/grok-3-oauth": "xai/grok-3",
+        "xai/grok-build-oauth": "xai/grok-build-0.1"
+      },
+      "configurable_clientside_auth_params": ["api_key", "api_base"],
+      "default_api_base": "https://api.x.ai/v1",
+      "hermes_peer_provider": "xai-oauth",
+      "token_field": "access_token"
+    },
+    {
+      "provider_id": "openai-codex",
+      "litellm_model_names": ["openai/codex-oauth"],
+      "upstream_models": {
+        "openai/codex-oauth": "openai/gpt-4.1"
+      },
+      "configurable_clientside_auth_params": ["api_key", "api_base"],
+      "default_api_base": "https://api.openai.com/v1",
+      "hermes_peer_provider": "openai-codex",
+      "token_field": "access_token",
+      "metadata_headers": {
+        "chatgpt_account_id": "ChatGPT-Account-Id"
+      }
+    }
+  ],
+  "custom_providers": [
+    {
+      "id": "meta",
+      "litellm_model_names": [
+        "meta/llama-3.1-405b",
+        "meta/llama-3.1-70b"
+      ],
+      "api_base": "https://api.llama.com/compat/v1",
+      "api_key_env": "META_API_KEY"
+    },
+    {
+      "id": "corp-proxy",
+      "litellm_model_names": ["corp/proxy-default"],
+      "api_base": "https://llm.example.com/v1",
+      "api_key_env": "CORP_LLM_API_KEY"
+    }
+  ],
+  "litellm_seed": "deploy/litellm/config.yaml",
+  "env_placeholder_set": "deploy/litellm/env.secrets.example",
+  "notes": "Runtime map-to-litellm is external lanyard-agent packages/providers; this JSON is monorepo contract documentation only."
+}

@@ -1,0 +1,19 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEVREAD001",
+  "ok": true,
+  "result": {
+    "path": "/Projects/Legal/memo.md",
+    "kind": "file",
+    "mime_type": "text/markdown",
+    "encoding": "utf-8",
+    "content": "# Memo\n\nPilot-only vault content for pilot UI.\n",
+    "size_bytes": 48
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 18,
+    "host_time": "2026-07-12T00:00:00.120Z"
+  }
+}

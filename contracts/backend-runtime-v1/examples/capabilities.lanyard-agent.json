@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "source": "brain_rpc",
+  "kind": "lanyard_agent",
+  "version": "v0.0.0-example",
+  "contract": {
+    "runtime_layout": 1,
+    "relay": 1,
+    "brain_rpc": 1
+  },
+  "profiles": [
+    "admin",
+    "contributor"
+  ],
+  "brain_rpc_methods": [
+    "brain.ping",
+    "brain.health",
+    "brain.capabilities",
+    "vault.list",
+    "vault.stat",
+    "vault.read",
+    "settings.snapshot",
+    "projects.list"
+  ],
+  "features": {
+    "chat": true,
+    "health": true,
+    "capabilities_discovery": true,
+    "vault_read": true,
+    "vault_write": false,
+    "settings_snapshot": true,
+    "settings_patch": false,
+    "projects_list": true,
+    "projects_create": false,
+    "models": false,
+    "cron": false,
+    "history_read": false,
+    "heads_read": false
+  },
+  "ui_affordances": {
+    "chat_panel": "supported",
+    "vault_browser": "supported",
+    "vault_editor": "unsupported",
+    "settings_page": "supported",
+    "settings_editor": "unsupported",
+    "project_picker": "supported",
+    "project_create": "unsupported",
+    "model_selector": "unsupported",
+    "cron_manager": "unsupported",
+    "host_health": "supported"
+  },
+  "limits": {
+    "vault_read_default_max_bytes": 1048576,
+    "vault_read_hard_max_bytes": 4194304,
+    "vault_list_max_entries": 500
+  },
+  "notes": "Honest baseline for Lanyard Agent when dedicated cron.list/cron.patch are not advertised (features.cron=false, cron_manager=unsupported). Product jobs still live under $BACKEND_HOME/cron/jobs.json (never ~/.hermes). Portal Settings \u2192 Crons can list/toggle when live settings.snapshot returns crons[] and settings.patch is advertised (cron.set_enabled) even if features.cron stays false. See capabilities.lanyard-agent.cron.json for the pin when dedicated cron RPCs are real (lp-uxy.3)."
+}

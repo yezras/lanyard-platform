@@ -1,0 +1,42 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLELAMCPSETTINGS1",
+  "ok": true,
+  "result": {
+    "exported_at": "2026-08-14T12:00:00.000Z",
+    "backend_home": "/var/lib/company-brain-backend",
+    "hermes_home": "/var/lib/company-brain-backend",
+    "source": "lanyard_agent",
+    "skills": [],
+    "crons": [],
+    "mcp_servers": [
+      {
+        "name": "lab_echo",
+        "transport": "stdio",
+        "enabled": true
+      }
+    ],
+    "models": [
+      {
+        "provider": "litellm",
+        "model": "poolside/laguna-s-2.1",
+        "is_active": true,
+        "connected": true
+      }
+    ],
+    "integrations": [
+      {
+        "id": "portal",
+        "name": "portal",
+        "type": "messaging"
+      }
+    ]
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 12,
+    "host_time": "2026-08-14T12:00:00.050Z",
+    "note": "Target MockLab snapshot shape after lp-vw3 (lab_echo MCP). Current LA baseline still returns mcp_servers=[] — see brain-rpc.settings-snapshot.lanyard-agent.result.json and lp-zuh.10.6 residual."
+  }
+}
