@@ -211,3 +211,8 @@ import {
   type VaultArtifactRef,
 } from "./documentPane/index.js";
 import "./chat.css";
+
+type FailureBanner = {
+  title: string;
+  description?: string;
+};
