@@ -51,7 +51,6 @@ apt-get install -y --no-install-recommends \
 rm -rf /var/lib/apt/lists/*
 
 echo "install-mempalace: creating venv at ${VENV}"
-python3 -m venv "${VENV}"
 rm -rf "${VENV}"
 python3 -m venv "${VENV}"
 
