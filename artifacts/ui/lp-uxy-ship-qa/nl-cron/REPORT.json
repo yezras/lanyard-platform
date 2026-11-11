@@ -1,0 +1,95 @@
+{
+  "bead_id": "lp-uxy.15.5",
+  "shipped_feature": "lp-uxy.4",
+  "base_url": "http://demo.localhost:3010",
+  "unique_job_marker": "shipqa-nl-cron-20260805140007",
+  "passed": true,
+  "story_create": {
+    "ok": true,
+    "detail": "story create: simulate cronjob create → Daily vault index in job names + crons-table without full page reload",
+    "assertions": {
+      "intro_visible": true,
+      "intro_mentions_agent": true,
+      "jobs_before": "(none)",
+      "jobs_after": "Daily vault index",
+      "table_has_new_job": true,
+      "no_full_reload": true,
+      "status": "Inventory refresh scheduled — Settings Crons should list Daily vault index without reload.",
+      "proof_state": {
+        "createSimulated": true,
+        "snapshotFetchCount": 3,
+        "lastToolMutating": true,
+        "mode": "create"
+      },
+      "create_simulated": true,
+      "last_tool_mutating": true,
+      "snapshot_fetch_count": 3
+    }
+  },
+  "story_capability_off": {
+    "ok": true,
+    "detail": "story capability-off: honesty notice + seeded job visible",
+    "assertions": {
+      "notice_visible": true,
+      "notice_mentions_capability": true,
+      "seeded_job_visible": true
+    }
+  },
+  "live_nl_create": {
+    "ok": false,
+    "detail": "live: agent reported scheduled jobs not configured / no cron create tool; marker shipqa-nl-cron-20260805140007 absent from Settings Crons after soft refresh and hard reload",
+    "assertions": {
+      "baseline": {
+        "ok": true,
+        "crons_nav": true,
+        "intro": true,
+        "table": true,
+        "jobs": [
+          "LA vault index refresh",
+          "LA weekly digest",
+          "LA manual start example"
+        ],
+        "has_marker": false
+      },
+      "prompt_sent": true,
+      "assistant_reply_summary": "Scheduled jobs are not configured on this Lanyard host. No cron/job scheduling tool available; cannot create shipqa-nl-cron-20260805140007.",
+      "host_no_create_tool": true,
+      "settings_after_has_marker": false,
+      "settings_after_reload_has_marker": false
+    },
+    "attempted": true,
+    "job_marker": "shipqa-nl-cron-20260805140007"
+  },
+  "screenshot_paths": [
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/01-story-create-before.png",
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/02-story-create-after-refresh.png",
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/03-story-capability-off.png",
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/10-live-settings-crons-before.png",
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/11-live-chat-ready.png",
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/12-live-prompt-sent.png",
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/13-live-chat-after-response.png",
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/14-live-settings-crons-after.png",
+    "artifacts/ui/lp-uxy-ship-qa/nl-cron/15-live-settings-crons-after-reload.png"
+  ],
+  "errors": [],
+  "notes": [
+    "login_ok",
+    "story path is portal ship proof for lp-uxy.4",
+    "live host residual: no NL cron create tool"
+  ],
+  "portal_ui_ok": true,
+  "live_host_ok": false,
+  "pass_criteria": {
+    "story_create_required": true,
+    "story_create_ok": true,
+    "story_capability_off_required": true,
+    "story_capability_off_ok": true,
+    "live_required": false,
+    "live_ok": false,
+    "live_note": "LA host: scheduled jobs not configured / no create tool; Settings list still works"
+  },
+  "fix_bead": "lp-uxy.17",
+  "related_product_pin": "lp-86d.8",
+  "verdict": "PASS_PORTAL_UI_FAIL_LIVE_HOST",
+  "summary": "Portal story create+capability-off PASS (Daily vault index after simulate; honesty notice). Live LA NL create FAIL: agent reports no cron create tool; unique job never appears in Settings. Fix bead lp-uxy.17 filed."
+}
