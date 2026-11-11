@@ -1,0 +1,19 @@
+{
+  "bead": "lp-khq.6",
+  "also_covers": "lp-khq.5",
+  "story": "composer-attach-menu",
+  "base_url": "http://127.0.0.1:3036",
+  "skill_insert": "skill:summarize",
+  "skill_composer_value": "/summarize",
+  "skill_descriptions_visible": true,
+  "name_only_skill": "plain-skill",
+  "vault_insert": "vault:/Business/Contracts/MSA.docx",
+  "final_composer_value": "/summarize /Business/Contracts/MSA.docx",
+  "root_items": [
+    "Skills",
+    "Select from vault",
+    "New workflow",
+    "Workflow wizard"
+  ],
+  "verdict": "PASS"
+}

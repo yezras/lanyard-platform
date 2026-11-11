@@ -1,0 +1,54 @@
+{
+  "exported_at": "2026-07-01T08:00:00.000Z",
+  "source": "fixture",
+  "backend_home": null,
+  "mcp_servers": [
+    {
+      "name": "lab_echo",
+      "transport": "stdio",
+      "command": "python3",
+      "enabled": true
+    },
+    {
+      "name": "gmail",
+      "transport": "stdio",
+      "command": "gws"
+    },
+    {
+      "name": "slack",
+      "transport": "stdio",
+      "command": "slack-mcp"
+    }
+  ],
+  "mcp_count": 3,
+  "skills_count": 2,
+  "integrations": [
+    {
+      "id": "gmail",
+      "name": "Gmail",
+      "type": "mcp"
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "type": "connector"
+    },
+    {
+      "id": "google-calendar",
+      "name": "Google Calendar",
+      "type": "mcp"
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "type": "connector"
+    }
+  ],
+  "skill_names": [
+    "Post-meeting triage",
+    "Company brain proposal pipeline"
+  ],
+  "model_count": 4,
+  "workflow_count": 1,
+  "cron_count": 2
+}

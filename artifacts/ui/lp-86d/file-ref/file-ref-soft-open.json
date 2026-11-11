@@ -1,0 +1,22 @@
+{
+  "bead": "lp-86d.11",
+  "title": "qa: file references soft-open document pane",
+  "story": "?story=file-ref-soft-open",
+  "mode": "soft mode A (lp-dpr.2)",
+  "office_path": "/Business/Contracts/MSA.docx",
+  "acceptance": {
+    "user_path_reference_soft_opens_pane_with_body": true,
+    "assistant_free_text_soft_opens_pane_with_body": true,
+    "path_pill_click_reopens_pane_with_body": true,
+    "pane_not_chrome_only": true
+  },
+  "screenshots": [
+    "seeded-file-ref-closed.png",
+    "user-soft-mode-a-pane-body.png",
+    "assistant-free-text-soft-open.png",
+    "path-pill-reopen-body.png",
+    "file-ref-soft-open-composite.png"
+  ],
+  "base_url": "http://127.0.0.1:3024",
+  "playwright": "portal/packages/web/ui-testing/test_file_ref_soft_open_document_pane.py"
+}
