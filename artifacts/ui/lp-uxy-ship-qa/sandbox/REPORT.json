@@ -1,0 +1,161 @@
+{
+  "bead_id": "lp-uxy.15.7",
+  "shipped_feature": "lp-uxy.6",
+  "base_url": "http://demo.localhost:3010",
+  "when": "2026-08-05T14:17:05.615797+00:00",
+  "passed": true,
+  "verdict": "PASS",
+  "brain_rpc_enabled": true,
+  "backend_kind": "lanyard_agent",
+  "hermes_profile": "admin",
+  "selected_project": {
+    "name": "Clients",
+    "path": "/home/operator/Lanyard/Clients"
+  },
+  "scope_hint": "Scoped to Clients",
+  "no_hard_jail_claims": true,
+  "omnibox_smokes": {
+    "path_escape": {
+      "ok": true,
+      "returncode": 0,
+      "stdout_tail": "PASS: project .. sibling (PROJECT_PATH_ESCAPE)\nPASS: project absolute vault sibling (PROJECT_PATH_ESCAPE)\nPASS: vault absolute outside (VAULT_PATH_ESCAPE)\nPASS: vault .. beyond root (VAULT_PATH_ESCAPE)\nPASS: vault prefix trap vault-evil (VAULT_PATH_ESCAPE)\nPASS: etc passwd absolute (VAULT_PATH_ESCAPE)\nPASS: in-tree relative -> /tmp/lp-uxy6-path-acl-xnwa6fgg/vault/proj/in.txt\nPASS: project root . -> /tmp/lp-uxy6-path-acl-xnwa6fgg/vault/proj\nPASS: vault-only sibling -> /tmp/lp-uxy6-path-acl-xnwa6fgg/vault/sib.txt\n\nAll project path-escape negative checks passed.\nResidual (documented): shell argv is not path-ACL confined by this suite.\n",
+      "stderr_tail": ""
+    },
+    "argv_self_test": {
+      "ok": true,
+      "returncode": 0,
+      "stdout_tail": "PASS: wrap true for shell_exec\nPASS: argv includes --profile contributor\nPASS: argv includes path-prefix\nPASS: argv ends with command after --\nPASS: admin \u2192 --profile admin\nPASS: disabled passthrough\nPASS: vault_read not wrapped\nPASS: missing profile \u2192 contributor\nPASS: missing profile reason\nPASS: unknown profile denied\nPASS: empty wrapper fail-closed\nself-test: all passed\n",
+      "stderr_tail": ""
+    },
+    "hook_doc": {
+      "ok": true,
+      "hook_path": "/tmp/lp-bead-lp-uxy.15.7/deploy/references/omnibox-mode-a-hermes-hook.md",
+      "security_doc": "/tmp/lp-bead-lp-uxy.15.7/docs/security/lp-uxy.6-agent-sandbox-path-acl-omnibox.md",
+      "residual_ok": true,
+      "honesty_doc_ok": true,
+      "default_off_mentioned": true,
+      "la_residual_mentioned": true,
+      "hard_jail_denied_in_sec_doc": true
+    }
+  },
+  "checks": [
+    {
+      "feature": "login",
+      "ok": true,
+      "detail": "logged in as dev@demo.local",
+      "shot": "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/01-post-login.png"
+    },
+    {
+      "feature": "brain-rpc-enabled",
+      "ok": true,
+      "detail": "brain_rpc_enabled=True kind=lanyard_agent profile=admin",
+      "shot": null
+    },
+    {
+      "feature": "backend-kind-lanyard-agent",
+      "ok": true,
+      "detail": "kind=lanyard_agent",
+      "shot": null
+    },
+    {
+      "feature": "projects-list",
+      "ok": true,
+      "detail": "status=200 count=9 names=['Workspace', 'Clients', 'demo', 'legal_work', 'QaBugWd24645', 'FixWd25140', 'k', 'dmeo']",
+      "shot": null
+    },
+    {
+      "feature": "soft-scope-hint-visible",
+      "ok": true,
+      "detail": "hint='Scoped to Clients' pick='Clients' path='/home/operator/Lanyard/Clients'",
+      "shot": "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/02-project-scope-hint.png"
+    },
+    {
+      "feature": "no-hard-jail-claims-chat",
+      "ok": true,
+      "detail": "forbidden_hits=[]",
+      "shot": "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/02-project-scope-hint.png"
+    },
+    {
+      "feature": "new-project-working-directory-language",
+      "ok": true,
+      "detail": "subtitle_ok=True label_ok=True forbidden=[]",
+      "shot": "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/03-new-project-dialog.png"
+    },
+    {
+      "feature": "no-hard-jail-claims-settings",
+      "ok": true,
+      "detail": "forbidden_hits=[]",
+      "shot": "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/04-settings-overview.png"
+    },
+    {
+      "feature": "capabilities-no-false-sandbox-jail",
+      "ok": true,
+      "detail": "project_picker=supported features.projects_list=True features.projects_create=True",
+      "shot": null
+    },
+    {
+      "feature": "omnibox-path-escape-negative",
+      "ok": true,
+      "detail": "returncode=0 tail='roj\\nPASS: vault-only sibling -> /tmp/lp-uxy6-path-acl-xnwa6fgg/vault/sib.txt\\n\\nAll project path-escape negative checks passed.\\nResidual (documented): shell argv is not path-ACL confined by this suite.\\n'",
+      "shot": null
+    },
+    {
+      "feature": "omnibox-argv-self-test-mode-a-wrap",
+      "ok": true,
+      "detail": "returncode=0 (shell_exec wrap shape when OMNIBOX_ENABLED=1; disabled=passthrough)",
+      "shot": null
+    },
+    {
+      "feature": "omnibox-mode-a-residual-honesty-docs",
+      "ok": true,
+      "detail": "default_off=True la_residual=True not_hard_jail=True",
+      "shot": null
+    },
+    {
+      "feature": "live-backend-la-omnibox-residual-acknowledged",
+      "ok": true,
+      "detail": "kind=lanyard_agent; LA has no Omnibox argv rewrite (lp-uxy.6 residual)",
+      "shot": null
+    },
+    {
+      "feature": "final-scope-hint-stable",
+      "ok": true,
+      "detail": "final_hint='Scoped to Clients'",
+      "shot": "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/05-chat-scoped-final.png"
+    }
+  ],
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/01-post-login.png",
+    "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/02-project-scope-hint.png",
+    "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/02-project-scope-hint.png",
+    "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/03-new-project-dialog.png",
+    "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/04-settings-overview.png",
+    "/tmp/lp-bead-lp-uxy.15.7/artifacts/ui/lp-uxy-ship-qa/sandbox/05-chat-scoped-final.png"
+  ],
+  "fix_bead": null,
+  "ui_affordances": {
+    "chat_panel": "supported",
+    "vault_browser": "supported",
+    "vault_editor": "unsupported",
+    "settings_page": "supported",
+    "settings_editor": "supported",
+    "project_picker": "supported",
+    "project_create": "supported",
+    "model_selector": "unsupported",
+    "cron_manager": "unsupported",
+    "host_health": "unsupported"
+  },
+  "features": {
+    "chat": true,
+    "health": false,
+    "capabilities_discovery": true,
+    "vault_read": true,
+    "vault_write": false,
+    "settings_snapshot": true,
+    "settings_patch": true,
+    "projects_list": true,
+    "projects_create": true,
+    "models": false,
+    "cron": false
+  }
+}
