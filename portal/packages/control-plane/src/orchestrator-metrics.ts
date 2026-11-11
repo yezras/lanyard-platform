@@ -116,6 +116,7 @@ export type OrchestratorMetricsSnapshot = {
    * outcome is `rate_limited`. Also counted in start_failures_*.
    */
   wake_rejected_total: number;
+  /** Rejected wakes by scope (`global` | `tenant`) or reason. */
   wake_rejected_by_reason: Record<string, number>;
   /**
    * Gauge: online Daytona sandboxes known to this process after wake/stop.
