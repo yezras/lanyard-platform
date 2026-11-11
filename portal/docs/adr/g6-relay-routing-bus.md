@@ -60,20 +60,20 @@ No secrets, account IDs, or customer parameters appear in this document.
 ```text
                     ┌──────────── Control plane ────────────┐
                     │  instance secrets (hash), revoke SoT  │
-                    └──────────────┬─────────────────────┘
+                    └───────────────┬───────────────────────┘
                                     │ validate / audit
          customer gateway           │
               │ WSS upgrade         │
               ▼                     │
-     ┌───────────────┐    ┌───────▼────────┐    ┌───────────────┐
+     ┌────────────────┐    ┌───────▼────────┐    ┌────────────────┐
      │  Relay task A  │◄──►│  Redis bus +   │◄──►│  Relay task B  │
      │  (holds WS for │    │  registry +    │    │  (no local WS  │
      │   instance X)  │    │  revoke/jti    │    │   for X)       │
-     └───────▲────────┘    └───────▲────────┘    └───────────────┘
+     └───────▲────────┘    └───────▲────────┘    └────────────────┘
              │                     │
              │         pub/sub + keyspace
              │                     │
-     ┌───────└───────────────────────────────┐
+     ┌───────┴─────────────────────┴────────┐
      │  BFF (N tasks)  RELAY_URL = internal │
      │  LB or service discovery → any relay │
      │  deliver-inbound / interrupt / SSE     │
