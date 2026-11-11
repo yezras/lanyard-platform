@@ -44,16 +44,16 @@ grep -q 'chatDelivery: "harness"' "$SEND" \
 
 # Harness variant must not declare a Relay client.
 awk '
-  /export type DeliverHarnessChatTurnInput = \\{/ {in_type=1}
+  /export type DeliverHarnessChatTurnInput = \{/ {in_type=1}
   in_type && /relayClient/ {found=1}
-  in_type && /^\\};$/ {in_type=0}
+  in_type && /^\};$/ {in_type=0}
   END { if (found) exit 1 }
 ' "$SEND" || fail "DeliverHarnessChatTurnInput must not include relayClient"
 
 awk '
-  /export type InterruptHarnessChatTurnInput = \\{/ {in_type=1}
+  /export type InterruptHarnessChatTurnInput = \{/ {in_type=1}
   in_type && /relayClient/ {found=1}
-  in_type && /^\\};$/ {in_type=0}
+  in_type && /^\};$/ {in_type=0}
   END { if (found) exit 1 }
 ' "$SEND" || fail "InterruptHarnessChatTurnInput must not include relayClient"
 
@@ -69,7 +69,7 @@ grep -Eq 'deliverInbound' "$TEST" \
   || fail "retire tests must name deliverInbound"
 grep -Eq 'EC2/guest|EC2 / guest' "$TEST" "$PHASE9" "$ADR" \
   || fail "EC2/guest dual-run must be documented"
-grep -Eq 'lp-oop\\.35' "$PHASE9" "$ADR" "$TEST" "$TESTING" "$OVERVIEW" \
+grep -Eq 'lp-oop\.35' "$PHASE9" "$ADR" "$TEST" "$TESTING" "$OVERVIEW" \
   || fail "lp-oop.35 must be named"
 
 grep -Eq 'Live AWS not flipped|does not flip live|not flipped' "$PHASE9" "$GATE" \
