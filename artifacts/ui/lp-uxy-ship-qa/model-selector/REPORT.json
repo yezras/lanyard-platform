@@ -1,0 +1,195 @@
+{
+  "bead_id": "lp-uxy.15.9",
+  "shipped_features": "lp-uxy.8 + lp-uxy.12",
+  "base_url": "http://demo.localhost:3010",
+  "when": "2026-08-05T14:37:38.918489+00:00",
+  "passed": false,
+  "portal_ui_ok": true,
+  "litellm_routing_ok": false,
+  "verdict": "PASS_UI_FAIL_LITELLM_CATALOG",
+  "routing_source": "client_fallback",
+  "brain_rpc_enabled": true,
+  "backend_kind": "lanyard_agent",
+  "catalog": {
+    "model_ids": [
+      "grok-4.5"
+    ],
+    "providers": {
+      "grok-4.5": "litellm"
+    },
+    "has_litellm_pins": false,
+    "has_lanyard_auto": false,
+    "active": {
+      "provider": "litellm",
+      "model": "grok-4.5",
+      "is_active": true,
+      "connected": true
+    },
+    "source": "lanyard_agent"
+  },
+  "tier_resolutions": {
+    "auto": {
+      "selection": "auto",
+      "model": "grok-4.5",
+      "effective_tier": "auto",
+      "label": "Auto",
+      "title": "Auto routing \u2192 grok-4.5",
+      "expected_litellm_model": "lanyard-auto",
+      "matches_litellm_pin": false
+    },
+    "simple": {
+      "selection": "simple",
+      "model": "grok-4.5",
+      "effective_tier": "simple",
+      "label": "Simple",
+      "title": "Simple \u2192 grok-4.5",
+      "expected_litellm_model": "lanyard-simple",
+      "matches_litellm_pin": false
+    },
+    "moderate": {
+      "selection": "moderate",
+      "model": "grok-4.5",
+      "effective_tier": "moderate",
+      "label": "Moderate",
+      "title": "Moderate \u2192 grok-4.5",
+      "expected_litellm_model": "lanyard-moderate",
+      "matches_litellm_pin": false
+    },
+    "complex": {
+      "selection": "complex",
+      "model": "grok-4.5",
+      "effective_tier": "complex",
+      "label": "Complex",
+      "title": "Complex \u2192 grok-4.5",
+      "expected_litellm_model": "lanyard-complex",
+      "matches_litellm_pin": false
+    }
+  },
+  "ui": {
+    "selector_visible": true,
+    "menu_tiers": [
+      "Auto",
+      "Simple",
+      "Moderate",
+      "Complex"
+    ],
+    "model_selector_affordance": "unsupported"
+  },
+  "checks": [
+    {
+      "feature": "login",
+      "ok": true,
+      "detail": "logged in as dev@demo.local",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/01-post-login.png"
+    },
+    {
+      "feature": "brain-rpc-context",
+      "ok": true,
+      "detail": "status=200 brain_rpc_enabled=True kind=lanyard_agent model_selector=unsupported",
+      "shot": null
+    },
+    {
+      "feature": "settings-snapshot-models",
+      "ok": true,
+      "detail": "status=200 count=1 ids=['grok-4.5'] active={'provider': 'litellm', 'model': 'grok-4.5', 'is_active': True, 'connected': True}",
+      "shot": null
+    },
+    {
+      "feature": "catalog-has-litellm-intelligence-pins",
+      "ok": false,
+      "detail": "expected=['lanyard-auto', 'lanyard-simple', 'lanyard-moderate', 'lanyard-complex'] catalog=['grok-4.5'] has_auto=False",
+      "shot": null
+    },
+    {
+      "feature": "composer-selector-visible",
+      "ok": true,
+      "detail": "data-testid=model-intelligence-selector visible=True selection=auto model=grok-4.5",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/02-composer-model-selector.png"
+    },
+    {
+      "feature": "tier-menu-four-options",
+      "ok": true,
+      "detail": "menu_labels=['Auto', 'Simple', 'Moderate', 'Complex'] expected=['Auto', 'Simple', 'Moderate', 'Complex']",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/03-tier-menu-open.png"
+    },
+    {
+      "feature": "select-tier-auto",
+      "ok": true,
+      "detail": "selection=auto model='grok-4.5' label='Auto' litellm_match=False",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/04-tier-auto.png"
+    },
+    {
+      "feature": "tier-auto-maps-to-litellm-pin",
+      "ok": false,
+      "detail": "model='grok-4.5' expected='lanyard-auto'",
+      "shot": null
+    },
+    {
+      "feature": "select-tier-simple",
+      "ok": true,
+      "detail": "selection=simple model='grok-4.5' label='Simple' litellm_match=False",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/05-tier-simple.png"
+    },
+    {
+      "feature": "tier-simple-maps-to-litellm-pin",
+      "ok": false,
+      "detail": "model='grok-4.5' expected='lanyard-simple'",
+      "shot": null
+    },
+    {
+      "feature": "select-tier-moderate",
+      "ok": true,
+      "detail": "selection=moderate model='grok-4.5' label='Moderate' litellm_match=False",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/06-tier-moderate.png"
+    },
+    {
+      "feature": "tier-moderate-maps-to-litellm-pin",
+      "ok": false,
+      "detail": "model='grok-4.5' expected='lanyard-moderate'",
+      "shot": null
+    },
+    {
+      "feature": "select-tier-complex",
+      "ok": true,
+      "detail": "selection=complex model='grok-4.5' label='Complex' litellm_match=False",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/07-tier-complex.png"
+    },
+    {
+      "feature": "tier-complex-maps-to-litellm-pin",
+      "ok": false,
+      "detail": "model='grok-4.5' expected='lanyard-complex'",
+      "shot": null
+    },
+    {
+      "feature": "routing-source-litellm-not-client-only",
+      "ok": false,
+      "detail": "routing_source=client_fallback catalog_pins=False resolutions={'auto': 'grok-4.5', 'simple': 'grok-4.5', 'moderate': 'grok-4.5', 'complex': 'grok-4.5'}",
+      "shot": null
+    },
+    {
+      "feature": "send-simple-set-active",
+      "ok": true,
+      "detail": "selection=simple model=grok-4.5 patch_calls=0 litellm_in_patch=False calls=[]",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/08-after-send-simple.png"
+    },
+    {
+      "feature": "settings-models-lists-intelligence-pins",
+      "ok": true,
+      "detail": "litellm_ids_listed=[] body_has_models_section=True",
+      "shot": "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/09-settings-models.png"
+    }
+  ],
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/01-post-login.png",
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/02-composer-model-selector.png",
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/03-tier-menu-open.png",
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/04-tier-auto.png",
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/05-tier-simple.png",
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/06-tier-moderate.png",
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/07-tier-complex.png",
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/08-after-send-simple.png",
+    "/tmp/lp-bead-lp-uxy.15.9/artifacts/ui/lp-uxy-ship-qa/model-selector/09-settings-models.png"
+  ],
+  "fix_bead": "lp-uxy.19",
+  "summary": "Portal UI selector PASS (lp-uxy.8). LiteLLM routing FAIL (lp-uxy.12): settings.snapshot models=['grok-4.5'] \u2014 missing lanyard-auto/simple/moderate/complex pins so Portal stays on client_fallback (resolved models=['grok-4.5', 'grok-4.5', 'grok-4.5', 'grok-4.5']). LiteLLM proxy itself may still list pins; host catalog must advertise them."
+}
