@@ -1,0 +1,85 @@
+# Example compatibility pins for company-brain-deploy.
+# PLACEHOLDER-SAFE for git: synthetic digests/SHAs/hosts only.
+# Copy to a private path and replace placeholders before real deploys.
+# Never commit live account-specific pins, secrets, or customer data.
+# Operator procedure: references/runbooks/pin-update.md
+# Release coordinates: references/product-artifact-release-contract.md
+#
+# Validate:
+#   bash scripts/validate-compatibility.sh compatibility/pins.example.yaml
+#   bash scripts/validate-compatibility.sh compatibility/pins.real-releases.yaml
+#   bash scripts/validate-compatibility.sh /path/to/private-pins.yaml
+#
+# Portal digests come from ECR (modules/product-artifact-infra) once product
+# image-release publishes. Hermes/client-core may be:
+#   - s3://$BUCKET/hermes/<version>/linux-x86_64/…  (preferred arch-labeled; instance role)
+#   - s3://$BUCKET/client-core/<version>/…          (arch-neutral seed)
+#   - https://github.com/…/releases/download/…     (private GH releases; needs
+#     GITHUB_TOKEN/GH_TOKEN at download time — never commit tokens)
+# Unlabeled s3://$BUCKET/hermes/<version>/hermes-… is DEPRECATED once labeled
+# objects exist. Set hermes.arch / hermes.target_arch = linux-x86_64 intentionally.
+# First real Hermes/client-core/Portal-web coordinates:
+#   compatibility/pins.real-releases.yaml
+# This example stays synthetic for schema CI. Do not invent digests/SHAs or live
+# account IDs here.
+
+schema_version: 1
+
+meta:
+  description: "Documentation-only example pins (RFC / placeholder digests)"
+  notes: >
+    Digests and SHAs below are synthetic placeholders for schema validation.
+    Replace with release-published coordinates. Do not use git branches as versions.
+    Product publishing is gated — see references/readiness-matrix.md.
+    Repository strings below are placeholder hostnames, not live account IDs.
+
+portal:
+  # Optional static SPA pin (preferred over a web runtime container).
+  web:
+    version: "v0.0.0-example"
+    sha256: "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    url: "s3://example-artifacts-bucket/portal-web/v0.0.0-example/portal-web.tar.gz"
+  images:
+    # Backend service keys align with product-artifact-infra ECR repos
+    bff:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/bff"
+      digest: "sha256:0000000000000000000000000000000000000000000000000000000000000002"
+      tag: "v0.0.0-example"
+    relay:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/relay"
+      digest: "sha256:0000000000000000000000000000000000000000000000000000000000000003"
+      tag: "v0.0.0-example"
+    control-plane:
+      repository: "example.dkr.ecr.example.amazonaws.com/lanyard-platform-staging/portal/control-plane"
+      digest: "sha256:0000000000000000000000000000000000000000000000000000000000000004"
+      tag: "v0.0.0-example"
+
+hermes:
+  version: "v0.0.0-example"
+  # Platform/CPU label (product TARGET_ARCH). Default product = linux-x86_64.
+  # Maps to pins v2 backend.arch / Terraform backend_artifact_arch.
+  arch: linux-x86_64
+  # 64-char hex; sha256: prefix also accepted by the validator / bootstrap
+  sha256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  # Arch-labeled object (preferred). Unlabeled hermes/<ver>/hermes-… is deprecated.
+  url: "s3://example-artifacts-bucket/hermes/v0.0.0-example/linux-x86_64/hermes-lanyard.tar.gz"
+  # Optional: base64 raw Ed25519 signature over the tarball bytes
+  # signature_b64: "REPLACE_WITH_RELEASE_SIGNATURE_B64"
+
+client_core:
+  # Arch-neutral vault seed (no linux-x86_64 path segment).
+  version: "v0.0.0-example"
+  sha256: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  url: "s3://example-artifacts-bucket/client-core/v0.0.0-example/client-core.tar.gz"
+  # signature_b64: "REPLACE_WITH_RELEASE_SIGNATURE_B64"
+
+relay_contract:
+  major: 1
+
+# Optional publisher attestation (SHA-256 remains required). Lab may omit.
+# Production: set require: true and pin the release public key + per-artifact signatures.
+# artifact_attestation:
+#   alg: ed25519
+#   signing_pubkey_b64: "REPLACE_WITH_BASE64_OF_PEM_PUBLIC_KEY"
+#   signing_identity: "lanyard-release-ed25519-example"
+#   require: true
