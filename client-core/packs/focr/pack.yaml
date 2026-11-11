@@ -1,0 +1,8 @@
+# ClientCorePack metadata — required for monorepo pack validation (lp-k7g.9.3)
+name: focr
+summary: Local OCR ingest workers
+when_to_enable: Local OCR ingest workers
+contents: franken_ocr install docs/scripts
+sources:
+  - infra/focr
+dependencies: []
