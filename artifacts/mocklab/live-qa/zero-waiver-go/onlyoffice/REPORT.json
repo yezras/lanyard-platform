@@ -1,0 +1,824 @@
+{
+  "acceptance": {
+    "editor_host_docsapi": false,
+    "mint_authenticated_422_or_201": true,
+    "mint_json_not_spa": true,
+    "mint_missing_or_success_status": 422,
+    "vault_edit": true,
+    "vite_onlyoffice_baked": false
+  },
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "bead": "lp-zuh.11.3",
+  "context_vault_edit": true,
+  "cookie_source": "/home/operator/Lanyard-Dev/lanyard-platform/artifacts/ui/.auth/mocklab-agent.json",
+  "csrf_present": true,
+  "docx_path": "/workflows/.lp-zuh113-missing.docx",
+  "probes": {
+    "auth_me": {
+      "body_len": 145,
+      "content_type": "application/json",
+      "json": {
+        "email": "agent-dev@mocklab.example.com",
+        "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1",
+        "user_id": "e6db22ee-7e00-409b-a9ca-e5f663b55e57"
+      },
+      "looks_like_spa_html": false,
+      "server": null,
+      "status": 200,
+      "x_cache": "Miss from cloudfront"
+    },
+    "context": {
+      "body_len": 2616,
+      "content_type": "application/json",
+      "json": {
+        "allowed_path_prefixes": [
+          "/"
+        ],
+        "backend_capabilities": {
+          "brain_rpc_methods": [
+            "brain.capabilities",
+            "brain.ping",
+            "cron.list",
+            "cron.patch",
+            "projects.create",
+            "projects.delete",
+            "projects.list",
+            "settings.patch",
+            "settings.snapshot",
+            "vault.list",
+            "vault.read",
+            "vault.stat"
+          ],
+          "contract": {
+            "brain_rpc": 1,
+            "relay": 1,
+            "runtime_layout": 1
+          },
+          "features": {
+            "capabilities_discovery": true,
+            "chat": true,
+            "cron": true,
+            "heads_read": false,
+            "health": false,
+            "history_read": false,
+            "models": false,
+            "projects_create": true,
+            "projects_list": true,
+            "settings_patch": true,
+            "settings_snapshot": true,
+            "vault_read": true,
+            "vault_write": false
+          },
+          "kind": "lanyard_agent",
+          "limits": {
+            "vault_list_max_entries": 500,
+            "vault_read_default_max_bytes": 1048576,
+            "vault_read_hard_max_bytes": 4194304
+          },
+          "notes": "Lanyard Agent live brain.capabilities (lac-yt3.5 / lac-6h6). Methods match the host handler registry. Skills inventory: settings.snapshot include=skills (non-stub filesystem walk). Agents/workflows not advertised for Portal composer until list surfaces ship. Not yet implemented: brain.health, models.*.",
+          "profiles": [
+            "admin",
+            "contributor"
+          ],
+          "schema_version": 1,
+          "source": "brain_rpc",
+          "ui_affordances": {
+            "chat_panel": "supported",
+            "cron_manager": "supported",
+            "host_health": "unsupported",
+            "model_selector": "unsupported",
+            "project_create": "supported",
+            "project_picker": "supported",
+            "settings_editor": "supported",
+            "settings_page": "supported",
+            "vault_browser": "supported",
+            "vault_editor": "unsupported"
+          },
+          "version": "0.0.0"
+        },
+        "brain_rpc_enabled": true,
+        "capabilities_degraded": true,
+        "capabilities_notes": "Lanyard Agent live brain.capabilities (lac-yt3.5 / lac-6h6). Methods match the host handler registry. Skills inventory: settings.snapshot include=skills (non-stub filesystem walk). Agents/workflows not advertised for Portal composer until list surfaces ship. Not yet implemented: brain.health, models.*.",
+        "capabilities_source": "brain_rpc",
+        "display_name": "MockLab",
+        "hermes_profile": "admin",
+        "host": "mocklab.withlanyard.com",
+        "role_names": [
+          "admin"
+        ],
+        "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1",
+        "tenant_slug": "mocklab",
+        "ui": {
+          "affordances": {
+            "chat_panel": "supported",
+            "cron_manager": "supported",
+            "host_health": "unsupported",
+            "model_selector": "unsupported",
+            "project_create": "supported",
+            "project_picker": "supported",
+            "settings_editor": "supported",
+            "settings_page": "supported",
+            "vault_browser": "supported",
+            "vault_editor": "unsupported"
+          },
+          "can": {
+            "chat": true,
+            "cron_manage": true,
+            "host_health": false,
+            "model_select": false,
+            "project_create": true,
+            "project_list": true,
+            "settings_edit": true,
+            "settings_view": true,
+            "vault_browse": true,
+            "vault_edit": true
+          },
+          "degraded": [],
+          "unsupported": [
+            "vault_editor",
+            "model_selector",
+            "host_health"
+          ]
+        }
+      },
+      "looks_like_spa_html": false,
+      "server": null,
+      "status": 200,
+      "x_cache": "Miss from cloudfront"
+    },
+    "mint_edit": {
+      "body_len": 32,
+      "content_type": "application/json",
+      "json": {
+        "error": "Vault file not found"
+      },
+      "looks_like_spa_html": false,
+      "server": null,
+      "status": 422,
+      "x_cache": "Error from cloudfront"
+    },
+    "mint_no_cookie": {
+      "body_len": 397,
+      "content_type": "text/html",
+      "json": null,
+      "looks_like_spa_html": true,
+      "server": "AmazonS3",
+      "status": 200,
+      "x_cache": "Error from cloudfront"
+    },
+    "mint_txt_control": {
+      "body_len": 65,
+      "content_type": "application/json",
+      "json": {
+        "error": "Unsupported or missing Office file type for this path"
+      },
+      "looks_like_spa_html": false,
+      "server": null,
+      "status": 400,
+      "x_cache": "Error from cloudfront"
+    },
+    "mint_view": {
+      "body_len": 32,
+      "content_type": "application/json",
+      "json": {
+        "error": "Vault file not found"
+      },
+      "looks_like_spa_html": false,
+      "server": null,
+      "status": 422,
+      "x_cache": "Error from cloudfront"
+    },
+    "spa_bundle": {
+      "js_bytes": 1227044,
+      "js_path": "/assets/index-Dp3vcifp.js",
+      "note": "String presence \u2260 enablement; empty wI Vite keys means editor off.",
+      "ok": true,
+      "string_presence": {
+        "DocsAPI": true,
+        "VITE_ONLYOFFICE_DS_URL": true,
+        "VITE_ONLYOFFICE_EDITOR": true,
+        "office/sessions": true
+      },
+      "wi_env_object": "wI={BASE_URL:\"/\",DEV:!1,MODE:\"production\",PROD:!0,SSR:!1}"
+    },
+    "vault_tree": {
+      "body_len": 9570,
+      "content_type": "application/json",
+      "json": {
+        "roots": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "kind": "file",
+                        "mime_type": "text/markdown",
+                        "name": "20260814T171330Z.md",
+                        "path": "/cron/output/09b7330db248/20260814T171330Z.md"
+                      }
+                    ],
+                    "kind": "directory",
+                    "name": "09b7330db248",
+                    "path": "/cron/output/09b7330db248"
+                  }
+                ],
+                "kind": "directory",
+                "name": "output",
+                "path": "/cron/output"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "jobs.json",
+                "path": "/cron/jobs.json"
+              },
+              {
+                "kind": "file",
+                "name": "jobs.json.bak-zuh96",
+                "path": "/cron/jobs.json.bak-zuh96"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "jobs2.json",
+                "path": "/cron/jobs2.json"
+              },
+              {
+                "kind": "file",
+                "name": "ticker_heartbeat",
+                "path": "/cron/ticker_heartbeat"
+              }
+            ],
+            "kind": "directory",
+            "name": "cron",
+            "path": "/cron"
+          },
+          {
+            "children": [
+              {
+                "kind": "file",
+                "mime_type": "text/markdown",
+                "name": "INDEX.md",
+                "path": "/Knowledge/INDEX.md"
+              }
+            ],
+            "kind": "directory",
+            "name": "Knowledge",
+            "path": "/Knowledge"
+          },
+          {
+            "kind": "directory",
+            "name": "lp-kng67-demo",
+            "path": "/lp-kng67-demo"
+          },
+          {
+            "kind": "directory",
+            "name": "mempalace",
+            "path": "/mempalace"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "kind": "file",
+                        "mime_type": "text/markdown",
+                        "name": "lp-zuh108-gate-20260814T172911Z.md",
+                        "path": "/Projects/Workspace/notes/lp-zuh108-gate-20260814T172911Z.md"
+                      },
+                      {
+                        "kind": "file",
+                        "mime_type": "text/markdown",
+                        "name": "lp-zuh112-zw-lp-zuh.11.2-zw-20260814T221949Z.md",
+                        "path": "/Projects/Workspace/notes/lp-zuh112-zw-lp-zuh.11.2-zw-20260814T221949Z.md"
+                      },
+                      {
+                        "kind": "file",
+                        "mime_type": "text/markdown",
+                        "name": "lp-zuh112-zw-lp-zuh.11.2-zw-20260814T224604Z.md",
+                        "path": "/Projects/Workspace/notes/lp-zuh112-zw-lp-zuh.11.2-zw-20260814T224604Z.md"
+                      },
+                      {
+                        "kind": "file",
+                        "mime_type": "text/markdown",
+                        "name": "lp-zuh112-zw-lp-zuh.11.2-zw-20260814T225759Z.md",
+                        "path": "/Projects/Workspace/notes/lp-zuh112-zw-lp-zuh.11.2-zw-20260814T225759Z.md"
+                      },
+                      {
+                        "kind": "file",
+                        "mime_type": "text/markdown",
+                        "name": "lp-zuh96-gpu-note-20260814T170823Z.md",
+                        "path": "/Projects/Workspace/notes/lp-zuh96-gpu-note-20260814T170823Z.md"
+                      },
+                      {
+                        "kind": "file",
+                        "mime_type": "text/markdown",
+                        "name": "seed-note.md",
+                        "path": "/Projects/Workspace/notes/seed-note.md"
+                      }
+                    ],
+                    "kind": "directory",
+                    "name": "notes",
+                    "path": "/Projects/Workspace/notes"
+                  },
+                  {
+                    "kind": "file",
+                    "mime_type": "text/markdown",
+                    "name": "AGENTS.md",
+                    "path": "/Projects/Workspace/AGENTS.md"
+                  },
+                  {
+                    "kind": "file",
+                    "mime_type": "text/markdown",
+                    "name": "welcome.md",
+                    "path": "/Projects/Workspace/welcome.md"
+                  }
+                ],
+                "kind": "directory",
+                "name": "Workspace",
+                "path": "/Projects/Workspace"
+              },
+              {
+                "kind": "file",
+                "mime_type": "text/plain",
+                "name": "hello-pilot.txt",
+                "path": "/Projects/hello-pilot.txt"
+              },
+              {
+                "kind": "file",
+                "mime_type": "text/markdown",
+                "name": "INDEX.md",
+                "path": "/Projects/INDEX.md"
+              }
+            ],
+            "kind": "directory",
+            "name": "Projects",
+            "path": "/Projects"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "kind": "file",
+                    "mime_type": "text/markdown",
+                    "name": "SKILL.md",
+                    "path": "/skills/mocklab-research/SKILL.md"
+                  }
+                ],
+                "kind": "directory",
+                "name": "mocklab-research",
+                "path": "/skills/mocklab-research"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "kind": "file",
+                        "mime_type": "text/markdown",
+                        "name": "SKILL.md",
+                        "path": "/skills/note-taking/obsidian/SKILL.md"
+                      }
+                    ],
+                    "kind": "directory",
+                    "name": "obsidian",
+                    "path": "/skills/note-taking/obsidian"
+                  }
+                ],
+                "kind": "directory",
+                "name": "note-taking",
+                "path": "/skills/note-taking"
+              },
+              {
+                "kind": "file",
+                "mime_type": "text/markdown",
+                "name": "pilot-fixture.md",
+                "path": "/skills/pilot-fixture.md"
+              },
+              {
+                "kind": "file",
+                "mime_type": "text/markdown",
+                "name": "README.md",
+                "path": "/skills/README.md"
+              }
+            ],
+            "kind": "directory",
+            "name": "skills",
+            "path": "/skills"
+          },
+          {
+            "children": [
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "args.json",
+                "path": "/wf_201a8d6b422d6a9c/args.json"
+              },
+              {
+                "kind": "file",
+                "name": "journal.jsonl",
+                "path": "/wf_201a8d6b422d6a9c/journal.jsonl"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "program.json",
+                "path": "/wf_201a8d6b422d6a9c/program.json"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "state.json",
+                "path": "/wf_201a8d6b422d6a9c/state.json"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_201a8d6b422d6a9c",
+            "path": "/wf_201a8d6b422d6a9c"
+          },
+          {
+            "children": [
+              {
+                "kind": "directory",
+                "name": "scratch",
+                "path": "/wf_3c7074c04166c77c/scratch"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "args.json",
+                "path": "/wf_3c7074c04166c77c/args.json"
+              },
+              {
+                "kind": "file",
+                "name": "journal.jsonl",
+                "path": "/wf_3c7074c04166c77c/journal.jsonl"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "program.json",
+                "path": "/wf_3c7074c04166c77c/program.json"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "state.json",
+                "path": "/wf_3c7074c04166c77c/state.json"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_3c7074c04166c77c",
+            "path": "/wf_3c7074c04166c77c"
+          },
+          {
+            "children": [
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "args.json",
+                "path": "/wf_4e8440b25d42613a/args.json"
+              },
+              {
+                "kind": "file",
+                "name": "journal.jsonl",
+                "path": "/wf_4e8440b25d42613a/journal.jsonl"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "program.json",
+                "path": "/wf_4e8440b25d42613a/program.json"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "state.json",
+                "path": "/wf_4e8440b25d42613a/state.json"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_4e8440b25d42613a",
+            "path": "/wf_4e8440b25d42613a"
+          },
+          {
+            "children": [
+              {
+                "kind": "directory",
+                "name": "scratch",
+                "path": "/wf_56a547dbdbd8842c/scratch"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "args.json",
+                "path": "/wf_56a547dbdbd8842c/args.json"
+              },
+              {
+                "kind": "file",
+                "name": "journal.jsonl",
+                "path": "/wf_56a547dbdbd8842c/journal.jsonl"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "program.json",
+                "path": "/wf_56a547dbdbd8842c/program.json"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "state.json",
+                "path": "/wf_56a547dbdbd8842c/state.json"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_56a547dbdbd8842c",
+            "path": "/wf_56a547dbdbd8842c"
+          },
+          {
+            "children": [
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "args.json",
+                "path": "/wf_7fad97d2e324fa00/args.json"
+              },
+              {
+                "kind": "file",
+                "name": "journal.jsonl",
+                "path": "/wf_7fad97d2e324fa00/journal.jsonl"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "program.json",
+                "path": "/wf_7fad97d2e324fa00/program.json"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "state.json",
+                "path": "/wf_7fad97d2e324fa00/state.json"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_7fad97d2e324fa00",
+            "path": "/wf_7fad97d2e324fa00"
+          },
+          {
+            "children": [
+              {
+                "kind": "directory",
+                "name": "scratch",
+                "path": "/wf_80ac44d36ec5f758/scratch"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "args.json",
+                "path": "/wf_80ac44d36ec5f758/args.json"
+              },
+              {
+                "kind": "file",
+                "name": "journal.jsonl",
+                "path": "/wf_80ac44d36ec5f758/journal.jsonl"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "program.json",
+                "path": "/wf_80ac44d36ec5f758/program.json"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "state.json",
+                "path": "/wf_80ac44d36ec5f758/state.json"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_80ac44d36ec5f758",
+            "path": "/wf_80ac44d36ec5f758"
+          },
+          {
+            "children": [
+              {
+                "kind": "file",
+                "name": "program.json.103.1786731712611.tmp",
+                "path": "/wf_84a44a85ccd25697/program.json.103.1786731712611.tmp"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_84a44a85ccd25697",
+            "path": "/wf_84a44a85ccd25697"
+          },
+          {
+            "children": [
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "args.json",
+                "path": "/wf_c479abbbd1507563/args.json"
+              },
+              {
+                "kind": "file",
+                "name": "journal.jsonl",
+                "path": "/wf_c479abbbd1507563/journal.jsonl"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "program.json",
+                "path": "/wf_c479abbbd1507563/program.json"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "state.json",
+                "path": "/wf_c479abbbd1507563/state.json"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_c479abbbd1507563",
+            "path": "/wf_c479abbbd1507563"
+          },
+          {
+            "children": [
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "args.json",
+                "path": "/wf_d20a40c5e4236d12/args.json"
+              },
+              {
+                "kind": "file",
+                "name": "journal.jsonl",
+                "path": "/wf_d20a40c5e4236d12/journal.jsonl"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "program.json",
+                "path": "/wf_d20a40c5e4236d12/program.json"
+              },
+              {
+                "kind": "file",
+                "mime_type": "application/json",
+                "name": "state.json",
+                "path": "/wf_d20a40c5e4236d12/state.json"
+              }
+            ],
+            "kind": "directory",
+            "name": "wf_d20a40c5e4236d12",
+            "path": "/wf_d20a40c5e4236d12"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "kind": "file",
+                        "mime_type": "text/plain",
+                        "name": "probe.txt",
+                        "path": "/workflows/lp-zuh108-gate-20260814T172911Z/state/probe.txt"
+                      }
+                    ],
+                    "kind": "directory",
+                    "name": "state",
+                    "path": "/workflows/lp-zuh108-gate-20260814T172911Z/state"
+                  }
+                ],
+                "kind": "directory",
+                "name": "lp-zuh108-gate-20260814T172911Z",
+                "path": "/workflows/lp-zuh108-gate-20260814T172911Z"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "kind": "file",
+                        "mime_type": "text/plain",
+                        "name": "probe.txt",
+                        "path": "/workflows/lp-zuh112-probe/state/probe.txt"
+                      }
+                    ],
+                    "kind": "directory",
+                    "name": "state",
+                    "path": "/workflows/lp-zuh112-probe/state"
+                  }
+                ],
+                "kind": "directory",
+                "name": "lp-zuh112-probe",
+                "path": "/workflows/lp-zuh112-probe"
+              },
+              {
+                "children": [
+                  {
+                    "kind": "file",
+                    "mime_type": "text/plain",
+                    "name": "nested.txt",
+                    "path": "/workflows/lp-zuh94-dir/nested.txt"
+                  }
+                ],
+                "kind": "directory",
+                "name": "lp-zuh94-dir",
+                "path": "/workflows/lp-zuh94-dir"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "kind": "file",
+                        "mime_type": "text/plain",
+                        "name": "probe.txt",
+                        "path": "/workflows/lp-zuh96-run-20260814T170823Z/state/probe.txt"
+                      }
+                    ],
+                    "kind": "directory",
+                    "name": "state",
+                    "path": "/workflows/lp-zuh96-run-20260814T170823Z/state"
+                  }
+                ],
+                "kind": "directory",
+                "name": "lp-zuh96-run-20260814T170823Z",
+                "path": "/workflows/lp-zuh96-run-20260814T170823Z"
+              },
+              {
+                "kind": "file",
+                "mime_type": "text/markdown",
+                "name": "README.md",
+                "path": "/workflows/README.md"
+              }
+            ],
+            "kind": "directory",
+            "name": "workflows",
+            "path": "/workflows"
+          },
+          {
+            "kind": "file",
+            "mime_type": "text/markdown",
+            "name": "AGENTS.md",
+            "path": "/AGENTS.md"
+          },
+          {
+            "kind": "file",
+            "mime_type": "text/markdown",
+            "name": "INDEX.md",
+            "path": "/INDEX.md"
+          },
+          {
+            "kind": "file",
+            "mime_type": "application/yaml",
+            "name": "index.yaml",
+            "path": "/index.yaml"
+          },
+          {
+            "kind": "file",
+            "mime_type": "text/markdown",
+            "name": "README.md",
+            "path": "/README.md"
+          }
+        ],
+        "source": "brain_rpc",
+        "truncated": false
+      },
+      "looks_like_spa_html": false,
+      "server": null,
+      "status": 200,
+      "x_cache": "Miss from cloudfront"
+    }
+  },
+  "residuals": [
+    "mint_json_422_missing_file",
+    "ui.can.vault_edit=true",
+    "vite_onlyoffice_editor_off"
+  ],
+  "verdict": "GO_PARTIAL_MINT_PLATFORM_HARD_RESIDUAL_EDITOR_HOST",
+  "when": "2026-08-14T23:00:59Z",
+  "bff": {
+    "task_definition": "lanyard-platform-staging-bff:26",
+    "image_digest": "sha256:94181a154aa4b0840e8f06efd726de8828791d28d8463525d985372ae40ddcc1",
+    "image_tag": "main-93b83f4-zuh113-oo-20260814",
+    "BFF_OFFICE_VAULT_EDIT": "true",
+    "mint_missing_file_status_in_image": 422
+  },
+  "cloudfront_invalidation": "I4T6XSMYNP2JT093Y6QUPNKJ6Y",
+  "evidence": [
+    "RESULT.md",
+    "logs/mint-edge-json-proof.json",
+    "logs/playwright-auth-probes.json",
+    "logs/spa-vite-analysis.json",
+    "logs/probes-sanitized.json",
+    "screenshots/"
+  ]
+}
