@@ -179,7 +179,7 @@
     {
       "feature": "send-simple-set-active",
       "ok": true,
-      "detail": "selection=simple model=lanyard-simple patch_calls=1 litellm_in_patch=True calls=[{'method': 'PATCH', 'url': 'http://demo.localhost:3010/api/settings/models/active', 'post': '{\"provider\":\"litellm\":\"model\":\"lanyard-simple\"}'}",
+      "detail": "selection=simple model=lanyard-simple patch_calls=1 litellm_in_patch=True calls=[{'method': 'PATCH', 'url': 'http://demo.localhost:3010/api/settings/models/active', 'post': '{\"provider\":\"litellm\",\"model\":\"lanyard-simple\"}'}]",
       "shot": "/tmp/lp-bead-lp-uxy.21.6/artifacts/ui/lp-uxy.21.6/08-after-send-simple.png"
     },
     {
