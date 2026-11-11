@@ -1,0 +1,196 @@
+{
+  "bead_id": "lp-uxy.10.3",
+  "parent_feature": "lp-uxy.10",
+  "epic": "lp-uxy",
+  "step": "F2",
+  "title": "parse_document F2 architect tool args/result",
+  "date": "2026-08-04",
+  "kind": "architect_tool_contract",
+  "implementation_shipped": false,
+  "live_firecrawl_calls": false,
+  "cost_gated_ocr_deferred": true,
+  "binding_decisions": {
+    "T1_tool_id": "parse_document",
+    "T2_alias": "extract_document_text",
+    "T3_shared_contract": "HL and LA must share ParseDocumentArgs/Result; no second shape",
+    "T4_default_max_chars": 48000,
+    "T5_write_sidecar_default": true,
+    "T6_path_acl_roots": ["vault_profile_roots", "/staging/uploads"],
+    "T7_primary_parser_v1": "anydoc",
+    "T8_ocr_f5_only": true,
+    "T9_portal_no_customer_parse": true,
+    "T10_module_ownership": "external host tool + monorepo labels + deploy OCR key slot"
+  },
+  "tool_identity": {
+    "canonical": "parse_document",
+    "alias": "extract_document_text",
+    "portal_label": "Parsing a document",
+    "placement": "host_agent_tool",
+    "not_bff": true
+  },
+  "ParseDocumentArgs": {
+    "path": {
+      "type": "string",
+      "required": true,
+      "description": "Absolute path under vault roots or /staging/uploads/…"
+    },
+    "max_chars": {
+      "type": "number",
+      "required": false,
+      "default": 48000,
+      "clamp": [1000, 200000],
+      "description": "Max Unicode code points in returned markdown"
+    },
+    "force_ocr": {
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "step": "F5",
+      "description": "Request hosted OCR after local unsupported_scanned"
+    },
+    "write_sidecar": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "Write <stem>.parse.md next to source when writable"
+    }
+  },
+  "ParseDocumentResult": {
+    "markdown": {
+      "type": "string",
+      "description": "Truncated Markdown body for tool result / model context"
+    },
+    "format": {
+      "type": "string",
+      "examples": ["docx", "pdf", "pptx", "xlsx", "unknown"]
+    },
+    "parser": {
+      "type": "string",
+      "enum": ["anydoc", "firecrawl_parse", "pdftotext", "focr"],
+      "optional": true
+    },
+    "chars": {
+      "type": "number",
+      "description": "Length of returned markdown after truncation"
+    },
+    "truncated": {
+      "type": "boolean",
+      "description": "true when full conversion exceeded max_chars"
+    },
+    "sidecar_path": {
+      "type": "string",
+      "optional": true
+    },
+    "error_code": {
+      "type": "string",
+      "optional": true,
+      "enum": [
+        "unsupported_scanned",
+        "path_denied",
+        "too_large",
+        "no_ocr_key",
+        "unsupported_format",
+        "parse_failed"
+      ]
+    },
+    "error_message": {
+      "type": "string",
+      "optional": true
+    }
+  },
+  "truncation_policy": {
+    "default_max_chars": 48000,
+    "clamp": [1000, 200000],
+    "boundary": "code_point_slice",
+    "marker": "none_v1",
+    "sidecar_holds_full_text": true,
+    "chars_field": "post_truncation_markdown_length"
+  },
+  "sidecar_policy": {
+    "default_write": true,
+    "filename_pattern": "<stem>.parse.md",
+    "location": "same_directory_as_source",
+    "contents": "full_markdown_pre_truncation_utf8",
+    "write_failure": "soft_fail_omit_sidecar_path",
+    "overwrite": true
+  },
+  "path_acl": {
+    "allowed_roots": ["vault_profile_roots", "/staging/uploads"],
+    "refuse": ["..", "symlink_escape", "outside_roots", "non_regular_files"],
+    "max_source_bytes": 26214400,
+    "max_source_bytes_note": "Align with DEFAULT_STAGING_MAX_UPLOAD_BYTES (25 MiB)",
+    "missing_file": "path_denied"
+  },
+  "tool_progress": {
+    "dual_emit": ["running", "complete_or_error"],
+    "tool_target": "absolute_path",
+    "tool_label_default": "Parsing a document",
+    "result_v1": "markdown_body_or_json_ParseDocumentResult"
+  },
+  "module_ownership": {
+    "host_tool": {
+      "plane": "external_hermes_lanyard_first_la_sister",
+      "path": "tools/parse_document",
+      "step": "F3",
+      "bead": "lp-uxy.10.4"
+    },
+    "portal_labels": {
+      "plane": "monorepo_portal_web",
+      "path": "portal/packages/web/src/features/chat/chatToolCallMapper.ts",
+      "step": "F4",
+      "bead": "lp-uxy.10.5"
+    },
+    "deploy_ocr_secret": {
+      "plane": "deploy_host_sm",
+      "env": "FIRECRAWL_API_KEY",
+      "step": "F5",
+      "bead": "lp-uxy.10.6",
+      "never_bff": true
+    },
+    "client_core_skill_doc": {
+      "plane": "client-core",
+      "optional": true,
+      "step": "post_F3"
+    },
+    "normative_contract": {
+      "plane": "monorepo",
+      "docs": "docs/architecture/portal-parse-document-f2-tool-contract.md",
+      "evidence": "artifacts/ui/lp-uxy.10/f2-architect-tool-args-result.json",
+      "step": "F2",
+      "bead": "lp-uxy.10.3"
+    }
+  },
+  "example_args": {
+    "path": "/staging/uploads/_inbox/q2-report.docx",
+    "max_chars": 48000,
+    "write_sidecar": true
+  },
+  "example_result_success": {
+    "markdown": "# Q2 Report\n\n…",
+    "format": "docx",
+    "parser": "anydoc",
+    "chars": 48000,
+    "truncated": true,
+    "sidecar_path": "/staging/uploads/_inbox/q2-report.parse.md"
+  },
+  "example_result_path_denied": {
+    "markdown": "",
+    "format": "unknown",
+    "chars": 0,
+    "truncated": false,
+    "error_code": "path_denied",
+    "error_message": "Path outside vault or staging roots"
+  },
+  "costs": {
+    "local_anydoc": "$0 SaaS host CPU",
+    "portal_ui": "$0",
+    "firecrawl_parse_ocr": "paid; deferred F5"
+  },
+  "docs_note": "docs/architecture/portal-parse-document-f2-tool-contract.md",
+  "later_steps_not_implemented": [
+    "lp-uxy.10.4 F3 host anydoc",
+    "lp-uxy.10.5 F4 Portal label",
+    "lp-uxy.10.6 F5 OCR",
+    "lp-uxy.10.7 F6 prove"
+  ]
+}
