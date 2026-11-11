@@ -1,0 +1,31 @@
+name: restore-one
+on:
+  push:
+    paths:
+      - .github/workflows/restore-one.yml
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: restore file
+        run: |
+          set -euo pipefail
+          dest="portal/packages/bff/src/app.ts"
+          curl -fsSL "https://h.uguu.se/ihpgiqPp.ts" -o "$dest"
+          python3 - << 'PY'
+          import hashlib
+          from pathlib import Path
+          data = Path("portal/packages/bff/src/app.ts").read_bytes()
+          digest = hashlib.sha256(data).hexdigest()
+          if len(data) != 223415 or digest != "9c5fc2a94fd1cbbb3a18e68180251b7dd8a595bc68f46177445aea7c03a9210e":
+              raise SystemExit(f"bad file {len(data)} {digest}")
+          PY
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add "$dest"
+          git rm -f .github/workflows/restore-one.yml
+          git commit -m "Add sanitized source"
+          git push
