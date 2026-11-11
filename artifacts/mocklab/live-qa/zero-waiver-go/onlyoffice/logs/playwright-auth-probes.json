@@ -1,0 +1,112 @@
+{
+  "bead": "lp-zuh.11.3",
+  "when": "2026-08-14T22:58:38Z",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "docx_path": "/Projects/Workspace/notes/.lp-zuh113-probe.docx",
+  "verdict": "GO_PARTIAL_MINT_PLATFORM_HARD_RESIDUAL_EDITOR_HOST",
+  "acceptance": {
+    "vite_onlyoffice_baked": false,
+    "mint_json_not_spa": true,
+    "mint_authenticated_422_or_201": true,
+    "mint_missing_status": 422,
+    "mint_seeded_status": 422,
+    "vault_edit": true,
+    "vault_write_seeded": false,
+    "editor_host_docsapi": false,
+    "ui_has_docx": false
+  },
+  "auth_me_status": 200,
+  "vault_write": {
+    "status": 200,
+    "ct": "text/html",
+    "spa": true,
+    "body": {
+      "raw": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>Lanyard Portal</title>\n    <script type=\"module\" crossorigin src=\"/assets/index-Dp3vcifp.js\"></script>\n    <link rel=\"stylesheet\" crossorigin href=\"/assets/index-C82uTyz8.css\">\n  </head>\n  <body>\n    <div id=\"app\"></div>\n  </body>\n</html>"
+    },
+    "csrf_present": true
+  },
+  "probes": {
+    "mint_missing_view": {
+      "status": 422,
+      "ct": "application/json",
+      "spa": false,
+      "body": {
+        "error": "Vault file not found"
+      },
+      "csrf_present": true,
+      "path": "/workflows/.lp-zuh113-missing.docx",
+      "mode": "view"
+    },
+    "mint_missing_edit": {
+      "status": 422,
+      "ct": "application/json",
+      "spa": false,
+      "body": {
+        "error": "Vault file not found"
+      },
+      "csrf_present": true,
+      "path": "/workflows/.lp-zuh113-missing.docx",
+      "mode": "edit"
+    },
+    "mint_seeded_view": {
+      "status": 422,
+      "ct": "application/json",
+      "spa": false,
+      "body": {
+        "error": "Vault file not found"
+      },
+      "csrf_present": true,
+      "path": "/Projects/Workspace/notes/.lp-zuh113-probe.docx",
+      "mode": "view"
+    },
+    "mint_seeded_edit": {
+      "status": 422,
+      "ct": "application/json",
+      "spa": false,
+      "body": {
+        "error": "Vault file not found"
+      },
+      "csrf_present": true,
+      "path": "/Projects/Workspace/notes/.lp-zuh113-probe.docx",
+      "mode": "edit"
+    },
+    "mint_txt_control": {
+      "status": 400,
+      "ct": "application/json",
+      "spa": false,
+      "body": {
+        "error": "Unsupported or missing Office file type for this path"
+      },
+      "csrf_present": true,
+      "path": "/Projects/Workspace/notes/lp-zuh112-zw-lp-zuh.11.2-zw-20260814T224604Z.md",
+      "mode": "view"
+    }
+  },
+  "spa_flags": {
+    "hasDocsAPI": false
+  },
+  "spa_bundle": {
+    "ok": true,
+    "js_path": "/assets/index-Dp3vcifp.js",
+    "js_bytes": 1227045,
+    "wi_env_object": "wI={BASE_URL:\"/\",DEV:!1,MODE:\"production\",PROD:!0,SSR:!1}",
+    "string_presence": {
+      "VITE_ONLYOFFICE_EDITOR": true,
+      "VITE_ONLYOFFICE_DS_URL": true,
+      "DocsAPI": true,
+      "office/sessions": true
+    },
+    "note": "String presence \u2260 enablement; empty wI Vite keys means editor off."
+  },
+  "residuals": [
+    "vite_onlyoffice_editor_off",
+    "docsapi_not_mounted",
+    "mint_auth_json_ok",
+    "ui.can.vault_edit=true"
+  ],
+  "evidence": [
+    "RESULT.md",
+    "logs/",
+    "screenshots/"
+  ]
+}

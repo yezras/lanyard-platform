@@ -1,0 +1,61 @@
+=== PS ===
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+brain          1  0.0  0.0 1275516 60672 ?       Ssl  21:13   0:07 /usr/local/bin/daytona /usr/bin/tini -- /usr/local/lib/lanyard/entrypoint.sh
+brain         85  0.0  0.0   4448  2720 ?        S    21:13   0:00 /usr/bin/bash
+brain         88  0.0  0.0  15752 10036 ?        S    21:13   0:00 python3 /tmp/daytona_repl_worker.py
+brain        111  0.0  0.0 4221176 13200 ?       Sl   21:13   0:00 mount-s3 --prefix tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/ --region us-east-1 --allow-delete --allow-overwrite --allow-other lanyard-mocklab-vault-123456789012 /mnt/vault
+brain        255  0.0  0.0   3932  2320 ?        S    21:21   0:00 /usr/bin/bash
+brain        256  0.0  0.0   8096  3864 ?        R    21:21   0:00 ps aux
+brain        257  0.0  0.0   2500  1164 ?        S    21:21   0:00 head -40
+=== FINDMNT ===
+TARGET     SOURCE        FSTYPE OPTIONS
+/mnt/vault mountpoint-s3 fuse   rw,nosuid,nodev,noatime,user_id=990,group_id=990,default_permissions,allow_other
+=== VAULT LS ===
+total 6
+drwxr-xr-x 2 brain brain    0 Aug 19 21:13 .
+drwxr-xr-x 1 root  root    27 Aug 14 17:31 ..
+drwxr-xr-x 2 brain brain    0 Aug 19 21:13 .agent-runtime
+-rw-r--r-- 1 brain brain   18 Aug  6 00:51 .lanyard-daytona-pilot-seed
+drwxr-xr-x 2 brain brain    0 Aug 19 21:13 .lanyard-platform
+-rw-r--r-- 1 brain brain    0 Aug 14 17:51 .lanyard-vault-write-probe.100
+-rw-r--r-- 1 brain brain    0 Aug 14 17:29 .lanyard-vault-write-probe.101
+-rw-r--r-- 1 brain brain    0 Aug 14 17:18 .lanyard-vault-write-probe.102
+-rw-r--r-- 1 brain brain    0 Aug 14 18:15 .lanyard-vault-write-probe.103
+-rw-r--r-- 1 brain brain    0 Aug 14 18:39 .lanyard-vault-write-probe.106
+-rw-r--r-- 1 brain brain    0 Aug 14 17:40 .lanyard-vault-write-probe.21
+-rw-r--r-- 1 brain brain    0 Aug 14 16:45 .lanyard-vault-write-probe.22
+-rw-r--r-- 1 brain brain    0 Aug 17 14:36 .lanyard-vault-write-probe.351
+-rw-r--r-- 1 brain brain    0 Aug 14 16:46 .lanyard-vault-write-probe.89
+-rw-r--r-- 1 brain brain    0 Aug 14 18:01 .lanyard-vault-write-probe.90
+-rw-r--r-- 1 brain brain    0 Aug 14 18:23 .lanyard-vault-write-probe.91
+-rw-r--r-- 1 brain brain    0 Aug 14 20:57 .lanyard-vault-write-probe.92
+-rw-r--r-- 1 brain brain    0 Aug 14 20:42 .lanyard-vault-write-probe.93
+-rw-r--r-- 1 brain brain    0 Aug 14 17:07 .lanyard-vault-write-probe.94
+=== BACKEND_HOME ===
+total 0
+drwxr-xr-x 1 brain brain  30 Aug 19 21:13 .
+drwxr-xr-x 1 root  root  156 Aug 19 21:13 ..
+drwxr-xr-x 3 brain brain  30 Aug 19 21:13 .daytona
+=== DMESG/JOURNAL? ===
+total 40
+drwxr-xr-x 1 root root    45 Aug 13 11:51 .
+drwxr-xr-x 1 root root    25 Aug  3 00:00 ..
+-rw-r--r-- 1 root root  1434 Aug 13 11:51 alternatives.log
+drwxr-xr-x 1 root root    76 Aug 14 21:25 apt
+-rw-rw---- 1 root utmp     0 Aug  3 00:00 btmp
+-rw-r--r-- 1 root root 35008 Aug 14 21:25 dpkg.log
+-rw-r--r-- 1 root root     0 Aug  3 00:00 faillog
+-rw-rw-r-- 1 root utmp     0 Aug  3 00:00 lastlog
+-rw-rw-r-- 1 root utmp     0 Aug  3 00:00 wtmp
+=== ENTRYPOINT SCRIPT ===
+#!/usr/bin/env bash
+# Agent gateway guest entrypoint — Daytona sandbox (Bucket A image).
+#
+# Bead: lp-b7w (entrypoint: wait vault mount, start gateway foreground)
+# Bead: lp-zuh.6 / lp-zuh.9.3 (ensure_vault_mount + mount-s3 prebake; kitchen-sink seed)
+=== TRY MANUAL SEED CHECK ===
+419:ensure_agent_config() {
+615:  ensure_agent_config
+=== CONTAINER CMD ===
+/usr/local/bin/daytona /usr/bin/tini -- /usr/local/lib/lanyard/entrypoint.sh 
+DONE

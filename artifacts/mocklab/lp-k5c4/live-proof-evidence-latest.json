@@ -1,0 +1,117 @@
+{
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "bead_id": "lp-k5c4.10",
+  "checks": {
+    "cron.enqueue_or_ops_fire": true,
+    "evidence.no_secrets": true,
+    "hold.lifted_for_proof_only": true,
+    "hold.no_restage": true,
+    "hold.no_terraform_apply": true,
+    "hop.deliverInbound_zero": true,
+    "persist.harness": true,
+    "spineEnabled.predicate": true,
+    "taste.http_200": true,
+    "taste.sse_not_hang": true,
+    "toolbox.path_not_cold_create_when_bound": true
+  },
+  "cron": {
+    "create_preview": {
+      "code": null,
+      "error": null,
+      "id": null,
+      "job_id": null,
+      "name": null
+    },
+    "create_status": 201,
+    "evaluator": "off_or_unknown",
+    "listed": [
+      {
+        "enabled": true,
+        "id": "09b7330db248",
+        "name": "GPU capacity brief lp-zuh.10.4-20260814170905"
+      }
+    ],
+    "live_ops_fire": true,
+    "snapshot_status": 200,
+    "via": "ops_fire_create"
+  },
+  "hold": {
+    "lifted_at": "2026-08-27",
+    "restage": false,
+    "scope": "Taste send, toolbox turn, cron fire (ops fire if evaluator off)",
+    "status": "lifted_for_proof_only",
+    "terraform_apply": false
+  },
+  "hop": {
+    "bff_deliver_inbound_log_hits": 0,
+    "deliverInbound_calls": 0,
+    "harness_marker_hits": 0,
+    "path": "harness",
+    "relay_deliver_inbound_log_hits": 0
+  },
+  "live_pins": {
+    "bff_image_tag": "portal-v2026.08.26-v62i8",
+    "bff_task_family": "lanyard-platform-staging-bff:52",
+    "cp_task_family": "lanyard-platform-staging-cp:37",
+    "harness_task_family": "lanyard-platform-staging-harness:14",
+    "instance_id": "452b1348-772a-49d0-8038-a410eda8accf",
+    "sandbox_id_bound": true
+  },
+  "persist": {
+    "chat_delivery": "harness",
+    "context_http_status": 200,
+    "harness_url_wired": true,
+    "process_env_chat_delivery": "relay",
+    "spine_enabled": true,
+    "tenant_slug": "mocklab"
+  },
+  "residuals": [
+    "Live BFF image pin is v62i.8 (task :52). Spine enqueue + CONTROL_PLANE_DATABASE_URL are on main, not this pin. Live hop is persist-harness startTurn, not Postgres enqueue.",
+    "Live BFF has no CONTROL_PLANE_DATABASE_URL secret; inboundQueue is unset.",
+    "SCHEDULE_EVALUATOR_ENABLED is not on live CP env; cron live path is ops create + offline enqueue proof."
+  ],
+  "result": "PASS",
+  "stamp": "20260827T132818Z",
+  "taste": {
+    "http_status": 200,
+    "send_ok": true,
+    "send_preview": {
+      "error": null,
+      "ok": true,
+      "status": null,
+      "thread_id": "63f7854c-19e6-444a-b888-10615057958b"
+    },
+    "sse": {
+      "completed": true,
+      "history_status": 200,
+      "hung": false,
+      "outcome": "completed",
+      "preview": "pong lp-k5c4.10-taste",
+      "stalled": false
+    },
+    "thread_id": "63f7854c-19e6-444a-b888-10615057958b"
+  },
+  "toolbox": {
+    "cloudwatch_cold_create_hits": 0,
+    "cold_create": false,
+    "http_status": 200,
+    "path": "already_online",
+    "sandbox_id_bound": true,
+    "send_ok": true,
+    "send_preview": {
+      "error": null,
+      "ok": true,
+      "status": null,
+      "thread_id": "63f7854c-19e6-444a-b888-10615057958b"
+    },
+    "sse": {
+      "completed": true,
+      "history_status": 200,
+      "hung": false,
+      "outcome": "completed",
+      "preview": "pong lp-k5c4.10-toolbox",
+      "stalled": false
+    },
+    "thread_id": "63f7854c-19e6-444a-b888-10615057958b"
+  }
+}

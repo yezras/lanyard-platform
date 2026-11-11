@@ -1,0 +1,28 @@
+{
+  "attempted": true,
+  "sandbox_id": "c5306e38-fe05-445d-9ec0-ba3b3f7d94fd",
+  "snapshot": "lanyard-la-main-9bcada6780d2-seed-zuh111-20260814",
+  "checks": {
+    "writable_vault": true,
+    "projects_primary_under_vault": true,
+    "vault_write": true,
+    "workflow_state_dir_vault": true,
+    "workflow_mkdir": true,
+    "cron_state_dir_vault": true,
+    "cron_jobs_json": true,
+    "vault_root_config": true,
+    "hybrid_residual": false
+  },
+  "notes": [],
+  "state": "started",
+  "note_path": "/mnt/vault/Projects/Workspace/notes/lp-zuh112-zw-lp-zuh.11.2-zw-20260814T225759Z.md",
+  "raw": {
+    "mount": "uid=990(brain) gid=990(brain) groups=990(brain)\nTARGET     SOURCE        FSTYPE OPTIONS\n/mnt/vault mountpoint-s3 fuse   rw,nosuid,nodev,noatime,user_id=990,group_id=990,default_permissions,allow_other\nWRITABLE_YES\n",
+    "projects_db": "PROJECTS [('p_b0f00f9e', 'Workspace', 'workspace', '/mnt/vault/Projects/Workspace')]\nPRIMARY_UNDER_VAULT_YES\n",
+    "vault_write": "-rw-r--r-- 1 brain brain 103 Aug 14  2026 /mnt/vault/Projects/Workspace/notes/lp-zuh112-zw-lp-zuh.11.2-zw-20260814T225759Z.md\nWRITE_OK\n",
+    "workflow_state": "53:  state_dir: /mnt/vault\n65:# Explicit state_dir IS the workflowsDir: runs at {state_dir}/wf_*/ (program,\n66:# args, state, journal). Do not confuse with definition_roots (IR *.json).\n68:workflow:\n72:  state_dir: /mnt/vault\n73:  definition_roots:\nworkflow:\n  enabled: true\n  agent_budget: 128\n  max_active_runs: 16\n  state_dir: /mnt/vault\n  definition_roots:\n    - /mnt/vault/workflows\ntotal 1\ndrwxr-xr-x 2 brain brain  0 Aug 14 22:45 .\ndrwxr-xr-x 2 brain brain  0 Aug 14 22:45 ..\n-rw-r--r-- 1 brain brain 38 Aug 14  2026 probe.txt\nWORKFLOW_STATE_DIR_VAULT_YES\nWORKFLOW_MKDIR_OK\n",
+    "cron_state": "cron:\n  enabled: true\n  state_dir: /mnt/vault\n# Stable tools[] = builtins + search_tool + use_tool (hidden/MCP via search).\ntools:\n  catalog_search:\n    enabled: true\n# Nested subagents for Portal chips / activity pane (shared cwd \u2014 single-writer lab).\nsubagents:\ntotal 5\ndrwxr-xr-x 2 brain brain    0 Aug 14 22:45 .\ndrwxr-xr-x 2 brain brain    0 Aug 14 22:45 ..\n-rw-r--r-- 1 brain brain    0 Aug 14 16:58 .keep\n-rw-r--r-- 1 brain brain    1 Aug 14 16:48 .lp-zuh9-keep\n-rw-r--r-- 1 brain brain   23 Aug 14 17:08 .lp-zuh96-probe\n-rw-r--r-- 1 brain brain    1 Aug 14 17:05 .t\n-rw-r--r-- 1 brain brain 1156 Aug 14 17:14 jobs.json\n-rw-r--r-- 1 brain brain   29 Aug 14 17:08 jobs.json.bak-zuh96\n-rw-r--r-- 1 brain brain    1 Aug 14 17:06 jobs2.json\ndrwxr-xr-x 2 brain brain    0 Aug 14 22:45 output\n-rw-r-",
+    "config_hybrid": "11:vault_root: /mnt/vault\n13:skills_roots:\n44:mempalace:\n46:  path: /mnt/vault/mempalace\n53:  state_dir: /mnt/vault\n65:# Explicit state_dir IS the workflowsDir: runs at {state_dir}/wf_*/ (program,\n66:# args, state, journal). Do not confuse with definition_roots (IR *.json).\n72:  state_dir: /mnt/vault\n73:  definition_roots:\nVAULT_ROOT_YES\nHYBRID_RESIDUAL_NO\n",
+    "wf_run_dirs": "/mnt/vault/wf_201a8d6b422d6a9c\n/mnt/vault/wf_3c7074c04166c77c\n/mnt/vault/wf_4e8440b25d42613a\n/mnt/vault/wf_56a547dbdbd8842c\n/mnt/vault/wf_7fad97d2e324fa00\n/mnt/vault/wf_84a44a85ccd25697\n/mnt/vault/wf_c479abbbd1507563\n/mnt/vault/wf_d20a40c5e4236d12\nREADME.md\nlp-zuh108-gate-20260814T172911Z\nlp-zuh112-probe\nlp-zuh94-dir\nlp-zuh96-run-20260814T170823Z\nWF_DIRS_DONE\n"
+  }
+}
