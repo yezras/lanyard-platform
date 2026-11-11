@@ -1,0 +1,61 @@
+{
+  "bead": "lp-zuh.11.4",
+  "parent": "lp-zuh.11",
+  "when_utc": "2026-08-14T23:25:00Z",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1",
+  "instance_id": "452b1348-772a-49d0-8038-a410eda8accf",
+  "sandbox_id": "c5306e38-fe05-445d-9ec0-ba3b3f7d94fd",
+  "snapshot": "lanyard-la-main-9bcada6780d2-seed-zuh111-20260814",
+  "verdict": "GO",
+  "root_cause": "LA memory defaultWhich spawn('command',['-v',name]) without shell → ENOENT on Linux builtin; binary was already on PATH from lp-zuh.10.2/11.1 bake",
+  "live_clearance": {
+    "command_shim_path": "/opt/company-brain-backend/current/bin/command",
+    "mempalace_binary": "/usr/local/bin/mempalace",
+    "mempalace_version": "MemPalace 3.7.0",
+    "palace_path": "/mnt/vault/mempalace"
+  },
+  "acceptance": {
+    "guest_ready_enabled_ok": true,
+    "not_binary_missing": true,
+    "bin_on_path": true,
+    "path_under_vault": true,
+    "search_empty_or_hits_no_binary_missing": true,
+    "search_hits_after_mine": true,
+    "screenshots_present": true
+  },
+  "ready_mempalace": {
+    "enabled": true,
+    "ok": true,
+    "reason": "ok",
+    "binaryPath": "/usr/local/bin/mempalace",
+    "version": "MemPalace 3.7.0",
+    "path": "/mnt/vault/mempalace",
+    "wing": "mocklab",
+    "detail": "MemPalace available: MemPalace 3.7.0 (/usr/local/bin/mempalace); path=/mnt/vault/mempalace; wing=mocklab"
+  },
+  "search": {
+    "pre_mine_exit": 1,
+    "pre_mine_note": "palace dir exists but has no chroma.sqlite3 yet",
+    "post_mine_exit": 0,
+    "post_mine_query": "MockLab zero-waiver",
+    "post_mine_hit": true,
+    "binary_missing": false
+  },
+  "durable_fix": {
+    "install_mempalace_command_shim": true,
+    "entrypoint_ensure_mempalace_runtime": true,
+    "smoke_checks": true,
+    "next_image_repin_recommended": true
+  },
+  "screenshots": [
+    "screenshots/01-home.png",
+    "screenshots/02-agents.png",
+    "screenshots/03-tools.png",
+    "screenshots/04-vault.png"
+  ],
+  "logs": [
+    "logs/03-guest-mempalace.txt",
+    "logs/03-ready.json"
+  ]
+}

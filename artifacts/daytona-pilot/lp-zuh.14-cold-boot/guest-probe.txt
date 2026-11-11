@@ -1,0 +1,52 @@
+exit_code=None
+--- stdout ---
+=== VERSION ===
+company-brain-backend (lanyard-agent) 0.0.0-main.9bcada6780d2
+=== CONFIG ===
+CONFIG_PRESENT
+1:# Auto-seeded by agent-gateway entrypoint — MockLab kitchen-sink (lp-zuh.4/5).
+11:vault_root: /mnt/vault
+17:default_model: "poolside/laguna-s-2.1"
+18:litellm:
+23:session:
+31:channels:
+44:mempalace:
+51:cron:
+68:workflow:
+vault_root: /mnt/vault
+default_model: "poolside/laguna-s-2.1"
+    relay_url_env: GATEWAY_RELAY_URL
+    relay_id_env: GATEWAY_RELAY_ID
+    relay_secret_env: GATEWAY_RELAY_SECRET
+    relay_instance_id_env: GATEWAY_RELAY_INSTANCE_ID
+  state_dir: /mnt/vault
+  state_dir: /mnt/vault
+--- kitchen-sink markers ---
+1
+1
+1
+1
+=== PROCESSES ===
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+brain          1  0.0  0.0 1274492 59636 ?       Ssl  20:49   0:00 /usr/local/bin/daytona /usr/bin/tini -- /usr/local/lib/lanyard/entrypoint.sh
+brain         82  0.0  0.0   3932  3020 ?        S    20:49   0:00 /usr/bin/bash
+brain         85  0.0  0.0  15748 10176 ?        S    20:49   0:00 python3 /tmp/daytona_repl_worker.py
+brain         91  0.0  0.0   3932  1876 ?        S    20:49   0:00 /usr/bin/bash
+brain         94  0.0  0.0   3932  1856 ?        S    20:49   0:00 /usr/bin/bash
+brain         96  0.0  0.0   2524  1456 ?        S    20:49   0:00 tail -f /dev/null
+brain         97  0.0  0.0   2480  1544 ?        S    20:49   0:00 /usr/bin/tini -- /usr/local/lib/lanyard/entrypoint.sh
+brain         98  0.0  0.0 11891148 184508 ?     Sl   20:49   0:01 node /opt/company-brain-backend/current/lanyard-agent/apps/gateway/dist/main.js --config /var/lib/company-brain-backend/config.yaml
+brain        153  0.0  0.0   3932  2964 ?        S    20:49   0:00 /usr/bin/bash
+brain        165  0.0  0.0   8096  4348 ?        R    20:49   0:00 ps aux
+brain        166  0.0  0.0   2500  1468 ?        S    20:49   0:00 head -30
+=== GATEWAY ===
+GATEWAY_PROCESS_PRESENT
+98 node /opt/company-brain-backend/current/lanyard-agent/apps/gateway/dist/main.js --config /var/lib/company-brain-backend/config.yaml
+=== NO_SSH_SEED ===
+mtime=2026-08-19 20:49:13.412956970 +0000 size=2618
+PROBE_DONE
+
+--- stderr ---
+
+--- raw_keys ---
+['exitCode', 'result']

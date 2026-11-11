@@ -1,0 +1,40 @@
+  PASS  projects.db Workspace primary_path under VAULT_ROOT (lp-zuh.10.7)
+  PASS  entrypoint logged default projects seed
+  PASS  LANYARD_ENTRY_SEED_MCP=1 merges lab_echo into config.yaml
+  PASS  entrypoint logged lab MCP merge
+  PASS  gateway env file written at BACKEND_HOME/gateway.env
+  PASS  gateway env file mode 0600
+  PASS  gateway env file contains Bucket C parity keys
+  PASS  vault not ready → timeout fail
+  PASS  vault marker missing → timeout fail
+  PASS  gateway death exits process non-zero (42)
+  PASS  missing GATEWAY_RELAY_* → fail closed
+  PASS  rejects instance_id == sandbox_id
+  PASS  LANYARD_ENTRY_ALLOW_PACKAGE_INSTALL rejected
+  PASS  empty LANYARD_ENTRY_ENV_FILE skips env file write
+  PASS  install-agent-runtime keeps stub without tarball
+  PASS  Dockerfile has named target tool-only
+  PASS  Dockerfile has named target agent-gateway (default last stage)
+  PASS  Dockerfile has shared toolbox stage
+  PASS  tool-only stage skips install-agent-runtime / AGENT_TARBALL
+  PASS  tool-only stage does not COPY agent-release
+  PASS  tool-only stage asserts no lanyard-agent tree
+  PASS  agent-gateway stage still installs optional AGENT_TARBALL
+  PASS  Dockerfile + README document tool-only recipe and live-pin hold
+  PASS  build-local.sh exposes --tool-only
+  PASS  smoke-no-lanyard-agent-tree.sh present
+  PASS  README documents lp-oop.22 smoke
+  PASS  build-local.sh --tool-only invokes lp-oop.22 smoke
+  PASS  smoke-no-lanyard-agent-tree.sh offline fixture proof
+  PASS  live pin file still present (recipe does not rewrite it)
+  PASS  default (last) Dockerfile stage is agent-gateway (live recipe)
+  PASS  LANYARD_IMAGE_KIND=tool-only: vault wait + exec args, no gateway
+  PASS  tool-only mode does not require GATEWAY_RELAY_*
+  PASS  Dockerfile prebakes Node + corepack/pnpm (LA product bake)
+  PASS  install-agent-runtime accepts LA source+dist-v1 layout
+  PASS  README documents LA product path (not Hermes)
+  PASS  repack-notes.md present
+  PASS  install-agent-runtime installs backend-runtime-v1 tarball
+  PASS  install-agent-runtime wraps LA product tarball as company-brain-backend
+  PASS  README documents vault wait + gateway foreground + no install-on-boot
+RESULT: all entrypoint/image contract smoke checks passed (lp-b7w / lp-kng.9)

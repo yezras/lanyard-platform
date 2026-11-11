@@ -1,0 +1,82 @@
+[
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/auth/me",
+    "status": 200,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/context",
+    "status": 200,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/context",
+    "status": 200,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/context",
+    "status": 200,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/auth/me",
+    "status": 200,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/context",
+    "status": 200,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/vault/content",
+    "status": 200,
+    "ct": "text/html"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/vault/content",
+    "status": 200,
+    "ct": "text/html"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/vault/content?path=/Projects/Workspace/notes/.lp-zuh113-probe.docx",
+    "status": 200,
+    "ct": "text/html"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/office/sessions",
+    "status": 422,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/office/sessions",
+    "status": 422,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/vault/tree",
+    "status": 200,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/office/sessions",
+    "status": 422,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/office/sessions",
+    "status": 422,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/office/sessions",
+    "status": 400,
+    "ct": "application/json"
+  },
+  {
+    "url": "https://app.withlanyard.com/mocklab/api/vault/tree",
+    "status": 200,
+    "ct": "application/json"
+  }
+]
