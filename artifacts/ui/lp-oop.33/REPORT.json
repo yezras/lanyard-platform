@@ -1,0 +1,319 @@
+{
+  "bead_id": "lp-oop.33",
+  "acceptance": "REPORT.json + screenshots. Vault tree did not 502 wake.",
+  "base_url": "http://127.0.0.1:3137/mocklab",
+  "login": "agent-dev@mocklab.local",
+  "started_at": "2026-08-17T17:32:21.492836+00:00",
+  "prompt_marker": "lp-oop.33-ui-harness-ping",
+  "vault_marker": "short-stack-no-wake.md",
+  "checks": {
+    "login": {
+      "ok": true,
+      "detail": "url=http://127.0.0.1:3137/mocklab/",
+      "screenshot": "01-login-home.png"
+    },
+    "agents-tab": {
+      "ok": true,
+      "detail": "url=http://127.0.0.1:3137/mocklab/",
+      "screenshot": "02-agents.png"
+    },
+    "composer": {
+      "ok": true,
+      "detail": "visible=True url=http://127.0.0.1:3137/mocklab/",
+      "screenshot": "03-new-chat-composer.png"
+    },
+    "prompt-sent": {
+      "ok": true,
+      "detail": "marker=lp-oop.33-ui-harness-ping",
+      "screenshot": "04-prompt-sent.png"
+    },
+    "send": {
+      "ok": true,
+      "detail": "marker=lp-oop.33-ui-harness-ping",
+      "screenshot": "04-prompt-sent.png"
+    },
+    "user-prompt-visible": {
+      "ok": true,
+      "detail": "marker=lp-oop.33-ui-harness-ping",
+      "screenshot": "04-prompt-sent.png"
+    },
+    "assistant-reply": {
+      "ok": true,
+      "detail": "len=169 excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.33-ui-harness-ping\\n1:32 PM\\n\\u00b7\\ngrok-3'",
+      "screenshot": "05-assistant-reply.png"
+    },
+    "echo-or-pong": {
+      "ok": true,
+      "detail": "excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.33-ui-harness-ping\\n1:32 PM\\n\\u00b7\\ngrok-3'",
+      "screenshot": null
+    },
+    "stream": {
+      "ok": true,
+      "detail": "{\"browser_sse\": 1, \"hop_sse_count\": 2, \"event_types\": [\"message_send\"]}",
+      "screenshot": "05-assistant-reply.png"
+    },
+    "vault-tree-visible": {
+      "ok": true,
+      "detail": "marker=True roots=['/Projects', '/AGENTS.md', '/short-stack-no-wake.md']",
+      "screenshot": "06-vault-tree.png"
+    },
+    "vault-tree-did-not-502-wake": {
+      "ok": true,
+      "detail": "{\"last_status\": 200, \"browser_502\": false, \"did_not_502_wake\": true, \"ensure_online_during_tree\": 0, \"wake\": {\"bff_ensureOnline\": 0, \"bff_ensureOnlineByUser\": 1, \"cp_ensureOnline\": 0, \"getPrimaryGatewayInstance\": 2}}",
+      "screenshot": "06-vault-tree.png"
+    },
+    "relay-not-on-hop": {
+      "ok": true,
+      "detail": "{\"relay\": {\"deliverInbound\": 0, \"interruptInbound\": 0, \"openChatEventStream\": 0, \"fetchChatHistory\": 0}, \"harness_kind\": \"real-harness\", \"vault_plane\": \"cp_s3\"}",
+      "screenshot": null
+    }
+  },
+  "screenshots": [
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/01-login-home.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/02-agents.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/03-new-chat-composer.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/04-prompt-sent.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/04-prompt-sent.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/04-prompt-sent.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/05-assistant-reply.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/05-assistant-reply.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/06-vault-tree.png",
+    "/tmp/lp-bead-lp-oop.33/artifacts/ui/lp-oop.33/06-vault-tree.png"
+  ],
+  "errors": [],
+  "url": "http://127.0.0.1:3137/mocklab/",
+  "assistant_excerpt": "echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.33-ui-harness-ping\n1:32 PM\n\u00b7\ngrok-3",
+  "stream": {
+    "browser_sse": [
+      {
+        "url": "http://127.0.0.1:3137/mocklab/api/chat/threads/d5049335-d114-4e35-a140-1de4b21d8971/events",
+        "status": 200,
+        "content_type": "text/event-stream"
+      }
+    ],
+    "hop_sse_count": 2,
+    "hop_event_types": [
+      "message_send"
+    ]
+  },
+  "vault_tree": {
+    "browser": [
+      {
+        "url": "http://127.0.0.1:3137/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3137/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3137/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3137/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      },
+      {
+        "url": "http://127.0.0.1:3137/mocklab/api/vault/tree",
+        "status": 200,
+        "content_type": "application/json"
+      }
+    ],
+    "wake_502": [],
+    "last_status": 200,
+    "last_roots": [
+      "/Projects",
+      "/AGENTS.md",
+      "/short-stack-no-wake.md"
+    ],
+    "marker_visible": true
+  },
+  "hop": {
+    "bead_id": "lp-oop.33",
+    "chat_delivery": "harness",
+    "vault_plane": "cp_s3",
+    "harness_kind": "real-harness",
+    "harness_url": "in-process",
+    "fake_harness_http": true,
+    "tenant_slug": "mocklab",
+    "vault_marker": "short-stack-no-wake.md",
+    "relay": {
+      "deliverInbound": 0,
+      "interruptInbound": 0,
+      "openChatEventStream": 0,
+      "fetchChatHistory": 0
+    },
+    "wake": {
+      "bff_ensureOnline": 0,
+      "bff_ensureOnlineByUser": 1,
+      "cp_ensureOnline": 0,
+      "getPrimaryGatewayInstance": 2
+    },
+    "stream": {
+      "requests": [
+        {
+          "path": "/mocklab/api/chat/threads/0c9ce196-fea6-407b-b700-dca8525e2940/events",
+          "status": 200,
+          "content_type": "text/event-stream"
+        },
+        {
+          "path": "/mocklab/api/chat/threads/d5049335-d114-4e35-a140-1de4b21d8971/events",
+          "status": 200,
+          "content_type": "text/event-stream"
+        }
+      ],
+      "sse_count": 2
+    },
+    "vault_tree": {
+      "requests": [
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/Projects",
+            "/AGENTS.md",
+            "/short-stack-no-wake.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/Projects",
+            "/AGENTS.md",
+            "/short-stack-no-wake.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/Projects",
+            "/AGENTS.md",
+            "/short-stack-no-wake.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 0,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 0
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/Projects",
+            "/AGENTS.md",
+            "/short-stack-no-wake.md"
+          ],
+          "source": null
+        },
+        {
+          "status": 200,
+          "path": "/mocklab/api/vault/tree",
+          "wake_before": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 1,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 2
+          },
+          "wake_after": {
+            "bff_ensureOnline": 0,
+            "bff_ensureOnlineByUser": 1,
+            "cp_ensureOnline": 0,
+            "getPrimaryGatewayInstance": 2
+          },
+          "called_ensure_online": false,
+          "roots": [
+            "/Projects",
+            "/AGENTS.md",
+            "/short-stack-no-wake.md"
+          ],
+          "source": null
+        }
+      ],
+      "last_status": 200,
+      "last_roots": [
+        "/Projects",
+        "/AGENTS.md",
+        "/short-stack-no-wake.md"
+      ],
+      "last_source": null,
+      "ensure_online_during_tree": 0,
+      "did_not_502_wake": true
+    },
+    "turns": [
+      {
+        "turn_id": "turn_1",
+        "message": "Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.33-ui-harness-ping",
+        "interrupted": false,
+        "event_types": [
+          "message_send"
+        ]
+      }
+    ],
+    "checks": {
+      "relay.not_on_hop": true,
+      "vault_tree.did_not_502_wake": true,
+      "stream.sse": true
+    }
+  },
+  "honesty": "Browser proof against branch-local BFF ChatDelivery=harness and VaultPlane=cp_s3. Live AWS MockLab chat_delivery stays default relay (OPERATOR HOLD; no terraform apply / no flip).",
+  "finished_at": "2026-08-17T17:32:33.255336+00:00",
+  "passed": true
+}
