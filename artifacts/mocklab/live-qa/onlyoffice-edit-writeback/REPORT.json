@@ -1,0 +1,78 @@
+{
+  "bead": "lp-zuh.12.5",
+  "when": "2026-08-18T13:59:22Z",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "docx_path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+  "auth_source": "artifacts/ui/.auth/mocklab-agent.json",
+  "csrf_present": true,
+  "probes": {
+    "auth_me": {
+      "status": 200,
+      "looks_like_spa_html": false
+    },
+    "context": {
+      "status": 200,
+      "looks_like_spa_html": false,
+      "vault_edit": true,
+      "brain_rpc_enabled": true
+    },
+    "mint_edit": {
+      "status": 201,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "030c1a3fba44",
+      "mode": "edit",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "error": null,
+      "editor_config": {
+        "editor_mode": "edit",
+        "permissions_edit": true,
+        "callback_url_host_path": "https://app.withlanyard.com/mocklab/api/office/callback",
+        "callback_query_has_session_id": true,
+        "callback_query_has_nonce": true,
+        "token_present": true,
+        "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/ju2wFxsryDwXJ0fEsOLgerqHRDu5yeIhVjPEdl32IwM/content"
+      }
+    },
+    "callback_target": {
+      "host": "app.withlanyard.com",
+      "path": "/mocklab/api/office/callback",
+      "query_redacted": true
+    },
+    "callback_status_1": {
+      "status": 200,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "body": {
+        "error": 0,
+        "code": "ignored"
+      }
+    },
+    "callback_status_2": {
+      "status": 503,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "assembled_url_host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+      "assembled_url_path": "/healthcheck",
+      "body": {
+        "error": 1,
+        "code": "write_unavailable"
+      }
+    }
+  },
+  "residuals": [
+    "callback_write_unavailable_cp_s3_or_brain_rpc"
+  ],
+  "acceptance": {
+    "bff_office_vault_edit_mocklab": true,
+    "edit_mint_json": true,
+    "callback_status_1_ignored": true,
+    "callback_status_2_vault_write_cas": false,
+    "lab_fixture_cas_proof": true,
+    "ops_toggle_documented": true
+  },
+  "verdict": "PASS_FLAG_CALLBACK_ROUTE__WRITE_UNAVAILABLE",
+  "context_vault_edit": true
+}

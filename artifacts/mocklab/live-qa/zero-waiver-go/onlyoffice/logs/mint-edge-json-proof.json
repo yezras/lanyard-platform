@@ -1,0 +1,60 @@
+{
+  "bead": "lp-zuh.11.3",
+  "when": "2026-08-14T22:59:01Z",
+  "probes": {
+    "auth_me": {
+      "status": 200,
+      "content_type": "application/json",
+      "server": null,
+      "x_cache": "Miss from cloudfront",
+      "looks_like_spa": false,
+      "body": "{\"user_id\":\"e6db22ee-7e00-409b-a9ca-e5f663b55e57\",\"email\":\"agent-dev@mocklab.example.com\",\"tenant_id\":\"319d3808-e533-44db-bfdf-7b6ef8caaae1\"}"
+    },
+    "context": {
+      "status": 200,
+      "content_type": "application/json",
+      "server": null,
+      "x_cache": "Miss from cloudfront",
+      "looks_like_spa": false,
+      "body": "{\"tenant_id\":\"319d3808-e533-44db-bfdf-7b6ef8caaae1\",\"tenant_slug\":\"mocklab\",\"display_name\":\"MockLab\",\"host\":\"mocklab.withlanyard.com\",\"hermes_profile\":\"admin\",\"allowed_path_prefixes\":[\"/\"],\"role_names\":[\"admin\"],\"brain_rpc_enabled\":true,\"backend_capabilities\":{\"schema_version\":1,\"source\":\"brain_rpc\""
+    },
+    "mint_missing_auth": {
+      "status": 422,
+      "content_type": "application/json",
+      "server": null,
+      "x_cache": "Error from cloudfront",
+      "looks_like_spa": false,
+      "body": "{\"error\":\"Vault file not found\"}"
+    },
+    "mint_edit_auth": {
+      "status": 422,
+      "content_type": "application/json",
+      "server": null,
+      "x_cache": "Error from cloudfront",
+      "looks_like_spa": false,
+      "body": "{\"error\":\"Vault file not found\"}"
+    },
+    "mint_txt_auth": {
+      "status": 400,
+      "content_type": "application/json",
+      "server": null,
+      "x_cache": "Error from cloudfront",
+      "looks_like_spa": false,
+      "body": "{\"error\":\"Unsupported or missing Office file type for this path\"}"
+    },
+    "mint_no_cookie": {
+      "status": 200,
+      "content_type": "text/html",
+      "server": "AmazonS3",
+      "x_cache": "Error from cloudfront",
+      "looks_like_spa": true,
+      "body": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-w"
+    }
+  },
+  "notes": [
+    "Authenticated mint missing_file \u2192 422 JSON (not SPA) \u2014 clears SHIP review gap from GO_PARTIAL unauth-only run.",
+    "Edit mode also 422 when file missing (vault_edit=true allows edit path to reach existence check).",
+    "No-cookie mint still SPA-masked via CF custom_error on origin CSRF 403.",
+    "Vault PUT /api/vault/content remains SPA-masked at edge in this environment (seed 201 optional; 422 satisfies acceptance)."
+  ]
+}
