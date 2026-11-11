@@ -1,0 +1,20 @@
+{
+  "distribution_id": "E1OQ5SAD1WR60T",
+  "domain_name": "d3sqcebajd6ueb.cloudfront.net",
+  "status": "Deployed",
+  "comment": "lp-zuh.13.3 Docs HTTPS edge: ORP AllViewer+CF headers (CloudFront-Forwarded-Proto) for OO scheme",
+  "origin": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+  "custom_headers": [
+    {
+      "HeaderName": "X-Forwarded-Proto",
+      "HeaderValue": "https"
+    }
+  ],
+  "origin_request_policy_id": "33f36d7e-f396-46d9-90e0-52428a34d9dc",
+  "origin_request_policy_name": "Managed-AllViewerAndCloudFrontHeaders-2022-06",
+  "cache_policy_id": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+  "viewer": "HTTPS (CloudFront default cert)",
+  "origin_protocol": "http-only",
+  "bead": "lp-zuh.13.3",
+  "note": "OnlyOffice 9.4 maps CloudFront-Forwarded-Proto for $the_scheme; CF strips X-Forwarded-Proto custom header."
+}

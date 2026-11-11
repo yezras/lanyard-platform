@@ -1,0 +1,101 @@
+[
+  {
+    "timestamp": "2026-08-19T13:52:10.133Z",
+    "event": "office_config_mint",
+    "outcome": "success",
+    "status": null,
+    "onlyoffice_status": null,
+    "size_bytes": null,
+    "file_type": "docx",
+    "mode": "edit",
+    "office_session_id_present": true
+  },
+  {
+    "timestamp": "2026-08-19T13:56:47.306Z",
+    "event": "office_config_mint",
+    "outcome": "success",
+    "status": null,
+    "onlyoffice_status": null,
+    "size_bytes": null,
+    "file_type": "docx",
+    "mode": "edit",
+    "office_session_id_present": true
+  },
+  {
+    "timestamp": "2026-08-19T13:56:48.298Z",
+    "event": "office_callback",
+    "outcome": "ignored",
+    "status": 200,
+    "onlyoffice_status": 1,
+    "size_bytes": null,
+    "file_type": null,
+    "mode": null,
+    "office_session_id_present": true
+  },
+  {
+    "timestamp": "2026-08-19T13:57:14.048Z",
+    "event": "office_config_mint",
+    "outcome": "success",
+    "status": null,
+    "onlyoffice_status": null,
+    "size_bytes": null,
+    "file_type": "docx",
+    "mode": "edit",
+    "office_session_id_present": true
+  },
+  {
+    "timestamp": "2026-08-19T13:57:14.105Z",
+    "event": "office_callback",
+    "outcome": "ignored",
+    "status": 200,
+    "onlyoffice_status": 4,
+    "size_bytes": null,
+    "file_type": null,
+    "mode": null,
+    "office_session_id_present": true
+  },
+  {
+    "timestamp": "2026-08-19T14:04:52.362Z",
+    "event": "office_config_mint",
+    "outcome": "success",
+    "status": null,
+    "onlyoffice_status": null,
+    "size_bytes": null,
+    "file_type": "docx",
+    "mode": "edit",
+    "office_session_id_present": true
+  },
+  {
+    "timestamp": "2026-08-19T14:04:53.496Z",
+    "event": "office_callback",
+    "outcome": "ignored",
+    "status": 200,
+    "onlyoffice_status": 1,
+    "size_bytes": null,
+    "file_type": null,
+    "mode": null,
+    "office_session_id_present": true
+  },
+  {
+    "timestamp": "2026-08-19T14:04:53.559Z",
+    "event": "office_download",
+    "outcome": "success",
+    "status": 200,
+    "onlyoffice_status": null,
+    "size_bytes": 1368,
+    "file_type": "docx",
+    "mode": "edit",
+    "office_session_id_present": true
+  },
+  {
+    "timestamp": "2026-08-19T14:05:34.299Z",
+    "event": "office_config_mint",
+    "outcome": "success",
+    "status": null,
+    "onlyoffice_status": null,
+    "size_bytes": null,
+    "file_type": "docx",
+    "mode": "edit",
+    "office_session_id_present": true
+  }
+]
