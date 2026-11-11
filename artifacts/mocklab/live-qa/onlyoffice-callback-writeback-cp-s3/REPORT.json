@@ -1,0 +1,45 @@
+{
+  "bead": "lp-zuh.12.7",
+  "title": "MockLab office callback writeback: CP vault put + BFF cp_s3 writer",
+  "when_utc": "2026-08-18T14:32:00Z",
+  "verdict": "PASS_LOCAL_CAS__LIVE_NEEDS_REDEPLOY",
+  "acceptance": {
+    "cp_vault_put_cas_no_bff_aws_sdk": "GO",
+    "bff_wires_cp_s3_office_callback_writer": "GO",
+    "live_mocklab_status_2_new_revision": "BLOCKED_OPERATOR_REDEPLOY",
+    "fail_closed_bff_office_vault_edit_false": "GO",
+    "evidence_under_artifacts": "GO"
+  },
+  "local_proof": {
+    "cp_vault_http_vitest": {
+      "file": "test/vault-http.test.ts",
+      "passed": 25,
+      "log": "logs/cp-vault-http-vitest.txt"
+    },
+    "bff_office_cp_s3_writer_vitest": {
+      "files": [
+        "test/office-cp-s3-callback-writer.test.ts",
+        "test/office-callback.test.ts",
+        "test/office-lab-roundtrip.integration.test.ts"
+      ],
+      "passed": 50,
+      "log": "logs/bff-office-cp-s3-writer-vitest.txt"
+    }
+  },
+  "implementation": {
+    "cp_put_route": "PUT /internal/tenants/:tenantId/vault/put",
+    "cas_tokens": ["content_hash", "etag"],
+    "bff_factory": "createCpS3OfficeCallbackVaultWriter",
+    "vault_plane": "cp_s3",
+    "source_field": "cp_s3"
+  },
+  "live_residual": {
+    "reason": "Merged code not yet on live MockLab ECS; pre-deploy status 2 remains write_unavailable",
+    "operator": [
+      "Merge PR and redeploy control-plane + BFF",
+      "Keep BFF_OFFICE_VAULT_EDIT=true on MockLab lab only",
+      "Re-run onlyoffice-edit-writeback probe; expect status 2 saved + new DocumentRevision"
+    ]
+  },
+  "secret_hygiene": "no passwords/JWT/CSRF/nonce/SM values in this package"
+}

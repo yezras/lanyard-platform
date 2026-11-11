@@ -1,0 +1,78 @@
+{
+  "entitlements": [
+    {
+      "connector_id": "github",
+      "enabled": true
+    },
+    {
+      "connector_id": "google",
+      "enabled": true
+    },
+    {
+      "connector_id": "hubspot",
+      "enabled": true
+    },
+    {
+      "connector_id": "whatsapp",
+      "enabled": true
+    }
+  ],
+  "roles": [
+    {
+      "name": "admin",
+      "role_id": "44a3c963-773f-49e5-9b6b-934a673712d1"
+    },
+    {
+      "name": "member",
+      "role_id": "afcf8abb-098f-4ff2-8299-38a138e0798a"
+    }
+  ],
+  "grants": [
+    {
+      "role_name": "admin",
+      "role_id": "44a3c963-773f-49e5-9b6b-934a673712d1",
+      "status": 200,
+      "grants": [
+        {
+          "connector_id": "github",
+          "enabled": true
+        },
+        {
+          "connector_id": "google",
+          "enabled": true
+        },
+        {
+          "connector_id": "hubspot",
+          "enabled": true
+        },
+        {
+          "connector_id": "whatsapp",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "role_name": "member",
+      "role_id": "afcf8abb-098f-4ff2-8299-38a138e0798a",
+      "status": 200,
+      "grants": [
+        {
+          "connector_id": "github",
+          "enabled": true
+        },
+        {
+          "connector_id": "google",
+          "enabled": true
+        },
+        {
+          "connector_id": "hubspot",
+          "enabled": true
+        },
+        {
+          "connector_id": "whatsapp",
+          "enabled": true
+        }
+      ]
+    }
+  ]
+}

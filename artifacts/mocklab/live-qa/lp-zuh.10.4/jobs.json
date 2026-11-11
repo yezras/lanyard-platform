@@ -1,0 +1,38 @@
+{
+  "jobs": [
+    {
+      "id": "09b7330db248",
+      "name": "GPU capacity brief lp-zuh.10.4-20260814170905",
+      "prompt": "Write a one-page GPU capacity brief for MockLab (marker lp-zuh.10.4-gpu-cron-capacity). Cover: H100/B200 inventory assumptions, free rack kW headroom, cooling alerts. Keep under 400 words. Output the brief body only.",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "display": "0 9 * * *"
+      },
+      "schedule_display": "0 9 * * *",
+      "deliver": "local",
+      "origin": null,
+      "skills": [],
+      "context_from": [],
+      "state": "scheduled",
+      "enabled": true,
+      "next_run_at": "2026-08-15T09:00:00.000Z",
+      "last_run_at": "2026-08-14T17:14:47.327Z",
+      "last_status": "ok",
+      "last_error": null,
+      "repeat": {
+        "times": null,
+        "completed": 1
+      },
+      "model": null,
+      "model_snapshot": null,
+      "no_agent": false,
+      "script": null,
+      "attach_to_session": null,
+      "created_at": "2026-08-14T17:09:05.513Z",
+      "paused_at": null,
+      "paused_reason": null
+    }
+  ],
+  "updated_at": "2026-08-14T17:14:47.705Z"
+}

@@ -1,0 +1,8 @@
+# Playwright session cookies — never commit
+.auth/
+**/.auth/
+storage_state.json
+*.storage_state.json
+__pycache__/
+*.pyc
+.venv/

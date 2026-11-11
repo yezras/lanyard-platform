@@ -1,0 +1,10 @@
+
+ RUN  v3.2.7 /tmp/lp-bead-lp-zuh.12.7/portal/packages/control-plane
+
+ ✓ test/vault-http.test.ts (25 tests) 24ms
+
+ Test Files  1 passed (1)
+      Tests  25 passed (25)
+   Start at  10:32:35
+   Duration  583ms (transform 263ms, setup 0ms, collect 414ms, tests 24ms, environment 0ms, prepare 30ms)
+
