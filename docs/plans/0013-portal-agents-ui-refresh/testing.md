@@ -97,7 +97,6 @@ artifacts/ui/portal-agents-refresh/
 
 Session storage (gitignored): `artifacts/ui/.auth/demo-localhost-lp-fn5.7.1.json` (mode 0600 via `secure_paths`).
 
-
 ## Unit tests (already on main)
 
 Product logic is covered by Vitest under `portal/packages/web/src`:
