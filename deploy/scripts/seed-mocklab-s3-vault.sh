@@ -185,10 +185,10 @@ install_local_file() {
 # List regular files under SOURCE as relative paths (no leading ./).
 # Skip only the pack-root deploy README.md (docs); nested README.md files seed.
 list_seed_files() {
-  (cd "$SOURCE" && find . -type f -print | sed 's|^\\./||' | sort | while read -r rel; do
+  (cd "$SOURCE" && find . -type f -print | sed 's|^\./||' | sort | while read -r rel; do
     case "$rel" in
       README.md) continue ;;
-      *) printf '%s\\n' "$rel" ;;
+      *) printf '%s\n' "$rel" ;;
     esac
   done)
 }
@@ -350,7 +350,7 @@ EOF
 
   # Platform bootstrap marker (outside mount root) — best-effort
   local tenant_id platform_key platform_body
-  tenant_id="$(printf '%s' "$PREFIX" | sed -n 's|^tenants/\\([^/]*\\)/vault/$|\\1|p')"
+  tenant_id="$(printf '%s' "$PREFIX" | sed -n 's|^tenants/\([^/]*\)/vault/$|\1|p')"
   if [ -n "$tenant_id" ]; then
     platform_key="tenants/${tenant_id}/_platform/bootstrap.json"
     platform_body="$(mktemp "${TMPDIR:-/tmp}/mocklab-bootstrap.XXXXXX.json")"
