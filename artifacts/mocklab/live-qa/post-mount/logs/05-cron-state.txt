@@ -1,0 +1,15 @@
+EXISTING_JOBS_JSON
+{"jobs":[],"updated_at":"x"}
+
+total 3
+drwxr-xr-x 2 brain brain  0 Aug 14 17:07 .
+drwxr-xr-x 2 brain brain  0 Aug 14 17:07 ..
+-rw-r--r-- 1 brain brain  0 Aug 14 16:58 .keep
+-rw-r--r-- 1 brain brain  1 Aug 14 16:48 .lp-zuh9-keep
+-rw-r--r-- 1 brain brain 23 Aug 14  2026 .lp-zuh96-probe
+-rw-r--r-- 1 brain brain  1 Aug 14 17:05 .t
+-rw-r--r-- 1 brain brain 29 Aug 14 17:06 jobs.json
+-rw-r--r-- 1 brain brain 29 Aug 14 17:08 jobs.json.bak-zuh96
+-rw-r--r-- 1 brain brain  1 Aug 14 17:06 jobs2.json
+drwxr-xr-x 2 brain brain  0 Aug 14 17:07 output
+CRON_STATE_OK

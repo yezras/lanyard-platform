@@ -1,0 +1,11 @@
+6:# session sqlite, gateway.env, logs under BACKEND_HOME.
+8:vault_root: /mnt/vault
+10:skills_roots:
+22:  sqlite_path: /var/lib/company-brain-backend/state/sessions.db
+43:  path: /mnt/vault/mempalace
+50:  state_dir: /mnt/vault
+66:  state_dir: /mnt/vault
+67:  definition_roots:
+---
+non_vault_path_candidates []
+

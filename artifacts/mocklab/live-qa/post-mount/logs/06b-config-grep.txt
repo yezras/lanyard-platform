@@ -1,0 +1,18 @@
+5:# Durable FS under VAULT_ROOT (/mnt/vault → S3). Process-local only:
+6:# session sqlite, gateway.env, logs under BACKEND_HOME.
+8:vault_root: /mnt/vault
+10:skills_roots:
+11:  - /mnt/vault/skills
+20:session:
+22:  sqlite_path: /var/lib/company-brain-backend/state/sessions.db
+41:mempalace:
+43:  path: /mnt/vault/mempalace
+48:cron:
+50:  state_dir: /mnt/vault
+62:workflow:
+66:  state_dir: /mnt/vault
+67:  definition_roots:
+68:    - /mnt/vault/workflows
+---
+68 /var/lib/company-brain-backend/config.yaml
+

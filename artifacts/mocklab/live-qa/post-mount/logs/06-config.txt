@@ -1,0 +1,37 @@
+CONFIG_PATH=/var/lib/company-brain-backend/config.yaml
+--- grep durable keys ---
+8:vault_root: /mnt/vault
+10:skills_roots:
+41:mempalace:
+43:  path: /mnt/vault/mempalace
+48:cron:
+50:  state_dir: /mnt/vault
+62:workflow:
+66:  state_dir: /mnt/vault
+67:  definition_roots:
+--- full relevant sections ---
+vault_root: /mnt/vault
+skills_roots:
+  - /mnt/vault/skills
+mempalace:
+  enabled: true
+  path: /mnt/vault/mempalace
+  wing: mocklab
+  write_policy:
+    mode: disabled
+# Portal NL create (cronjob tool) + Settings Crons — durable job store on vault.
+cron:
+  enabled: true
+  state_dir: /mnt/vault
+# Stable tools[] = builtins + search_tool + use_tool (hidden/MCP via search).
+workflow:
+  enabled: true
+  agent_budget: 128
+  max_active_runs: 16
+  state_dir: /mnt/vault
+  definition_roots:
+    - /mnt/vault/workflows
+--- hybrid scan (BACKEND_HOME durable?) ---
+HYBRID_RESIDUAL_NO
+STATE_DIR_VAULT_YES
+VAULT_ROOT_YES
