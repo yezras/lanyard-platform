@@ -1,0 +1,48 @@
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+brain          1  0.0  0.0 1276788 71640 ?       Ssl  17:15   0:10 /usr/local/bin/daytona /usr/bin/tini -- /usr/local/lib/lanyard/entrypoint.sh
+brain         83  0.0  0.0   4448  3748 ?        S    17:15   0:00 /usr/bin/bash
+brain         86  0.0  0.0  15744 10404 ?        S    17:15   0:00 python3 /tmp/daytona_repl_worker.py
+brain        113  0.0  0.0 5484912 20420 ?       Sl   17:15   0:00 mount-s3 --prefix tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/ --region us-east-1 --allow-delete --allow-overwrite --allow-other lanyard-mocklab-vault-123456789012 /mnt/vault
+brain        382  0.0  0.0   3932  3016 ?        S    17:31   0:00 /usr/bin/bash
+brain        383  0.0  0.0   8096  4292 ?        R    17:31   0:00 ps auxww
+brain        384  0.0  0.0   2500  1508 ?        S    17:31   0:00 head -50
+===
+total 4
+drwx------ 2 brain brain   10 Aug 14 16:56 .
+drwxr-xr-x 1 brain brain 4096 Aug 14 17:13 ..
+===
+config
+cron
+===
+1 /usr/local/bin/daytona /usr/bin/tini -- /usr/local/lib/lanyard/entrypoint.sh
+113 mount-s3 --prefix tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/ --region us-east-1 --allow-delete --allow-overwrite --allow-other lanyard-mocklab-vault-123456789012 /mnt/vault
+===
+lrwxrwxrwx 1 root root   4 Aug  3 00:00 /var/run -> /run
+
+/tmp:
+total 480
+drwxrwxrwt 1 root  root     155 Aug 14 17:11 .
+drwxr-xr-x 1 root  root      70 Aug 14 17:15 ..
+-rw-r--r-- 1 brain brain 442434 Aug 14 17:31 daytona-daemon.log
+-rwx------ 1 brain brain   6261 Aug 14 16:56 daytona_repl_worker.py
+-rw-r--r-- 1 brain brain      0 Aug 14 17:08 eerr
+-rw-r--r-- 1 brain brain      0 Aug 14 17:12 h.json
+-rw-r--r-- 1 brain brain  29276 Aug 14 17:08 lp-zuh104-store.js
+drwxr-xr-x 3 root  root      45 Aug 13 11:52 node-compile-cache
+-rw-r--r-- 1 brain brain      0 Aug 14 17:08 wtest
+===
+/var/lib/company-brain-backend/.daytona/sessions/entrypoint/entrypoint_command/output.log
+/var/lib/company-brain-backend/la-zuh104/gateway-restart.log
+===
+total 4
+drwxr-xr-x 4 brain brain   44 Aug 14 17:08 .
+drwxr-xr-x 1 brain brain 4096 Aug 14 17:13 ..
+drwxrwxr-x 5 brain brain  114 Aug 14 15:18 config
+drwxrwxr-x 4 brain brain  114 Aug 14 17:09 cron
+apps
+gateway-restart.log
+gateway.env.bin
+gateway.pid
+node_modules
+package.json
+packages
