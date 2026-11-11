@@ -1,0 +1,83 @@
+{
+  "context": {
+    "brain_rpc_enabled": true,
+    "kind": "lanyard_agent",
+    "profile": "admin",
+    "capabilities_source": "brain_rpc",
+    "methods_sample": [
+      "brain.capabilities",
+      "brain.ping",
+      "projects.create",
+      "projects.delete",
+      "projects.list",
+      "settings.patch",
+      "settings.snapshot",
+      "vault.list",
+      "vault.read",
+      "vault.stat"
+    ]
+  },
+  "ping": {
+    "status": 200,
+    "pong": true,
+    "instance_id": "1555e820-2eba-4e83-80bd-a93f3ae09e7c"
+  },
+  "health": {
+    "status": 404,
+    "unknown_expected": true,
+    "body_snip": "{\"error\": \"unknown method brain.health\"}"
+  },
+  "projects": {
+    "status": 200,
+    "count": 8,
+    "names": [
+      "Workspace",
+      "Clients",
+      "demo",
+      "legal_work",
+      "QaBugWd24645",
+      "FixWd25140",
+      "k",
+      "dmeo"
+    ]
+  },
+  "settings": {
+    "status": 200,
+    "source": "lanyard_agent",
+    "backend_home": "/home/operator/.lanyard-agent",
+    "hermes_home": "/home/operator/.lanyard-agent",
+    "cron_count": 3
+  },
+  "vault": {
+    "status": 200,
+    "root_count": 21,
+    "root_names": [
+      "__pycache__",
+      "Archive",
+      "Business",
+      "Clients",
+      "dev",
+      "Education",
+      "lp-uxy-15-6-soft-archive-qa",
+      "Relationships",
+      "skills",
+      "_count_sessions.py",
+      "Acme_Ops_Q1_Fake_Stats.xlsx",
+      "AGENTS.md",
+      "clients_crm.db",
+      "entities.json",
+      "evals.db",
+      "mempalace.yaml",
+      "qa-fix-office.docx",
+      "qa-open-test.docx",
+      "self-improve-last-report.json",
+      "self-improve-run-latest.log"
+    ],
+    "entries_sample": {
+      "path": "/__pycache__",
+      "status": 200,
+      "count": 0,
+      "names": []
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "bead": "lp-fn5.7.1",
+  "suite": "portal-agents-refresh",
+  "base_url": "http://demo.localhost:3010",
+  "login": "dev@demo.local",
+  "when": "2026-08-12T12:30:40.851464+00:00",
+  "verdict": "PASS",
+  "passed": true,
+  "checks": [
+    {
+      "feature": "login",
+      "ok": true,
+      "detail": "logged in as dev@demo.local",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/01-post-login-agents.png"
+    },
+    {
+      "feature": "nav-agents-vault-tools",
+      "ok": true,
+      "detail": "agents=1 vault=1 tools=1 legacy_chat=0 legacy_settings=0",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/01-post-login-agents.png"
+    },
+    {
+      "feature": "create-menu-testid",
+      "ok": true,
+      "detail": "create-menu count=2",
+      "shot": null
+    },
+    {
+      "feature": "plus-menu-items",
+      "ok": true,
+      "detail": "menu lists New Chat, New Project, New Scheduled Task",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/02-create-menu-open.png"
+    },
+    {
+      "feature": "scheduled-tasks-folder",
+      "ok": true,
+      "detail": "folder=2 icon=2 label=4",
+      "shot": null
+    },
+    {
+      "feature": "scheduled-tasks-folder-content",
+      "ok": true,
+      "detail": "job_streams=0 empty_label=2",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/03-scheduled-tasks-folder.png"
+    },
+    {
+      "feature": "agent-title-present",
+      "ok": true,
+      "detail": "title='Workspace' testid=agent-side-nav-title-218292ab-2303-41a7-968c-589f6a9012bc",
+      "shot": null
+    },
+    {
+      "feature": "agent-rename-edit-mode",
+      "ok": true,
+      "detail": "editing testid=agent-side-nav-title-218292ab-2303-41a7-968c-589f6a9012bc-editing",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/04-agent-rename-editing.png"
+    },
+    {
+      "feature": "agent-rename",
+      "ok": true,
+      "detail": "edit closed; renamed='QA Agent 123034' display='QA Agent 123034' persisted=True",
+      "shot": null
+    },
+    {
+      "feature": "agent-rename-persisted",
+      "ok": true,
+      "detail": "body/display contains 'QA Agent 123034': True",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/05-agent-renamed.png"
+    },
+    {
+      "feature": "tools-tab-no-overview",
+      "ok": true,
+      "detail": "overview=0 tools_nav=1 skills_surface=2",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/06-tools-tab-skills.png"
+    },
+    {
+      "feature": "tools-section-selectors",
+      "ok": true,
+      "detail": "all type selectors present",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/06-tools-tab-skills.png"
+    },
+    {
+      "feature": "tools-scheduled-tasks-section",
+      "ok": true,
+      "detail": "cron_surface=3",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/07-tools-scheduled-tasks.png"
+    },
+    {
+      "feature": "no-scoped-to-hint",
+      "ok": true,
+      "detail": "scoped_hits=0",
+      "shot": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/08-agents-no-scope-hint.png"
+    }
+  ],
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/01-post-login-agents.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/01-post-login-agents.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/02-create-menu-open.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/03-scheduled-tasks-folder.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/04-agent-rename-editing.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/05-agent-renamed.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/06-tools-tab-skills.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/06-tools-tab-skills.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/07-tools-scheduled-tasks.png",
+    "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh/08-agents-no-scope-hint.png"
+  ],
+  "selectors_map": "portal/packages/web/ui-testing/selectors.yaml",
+  "artifacts_dir": "/tmp/lp-bead-lp-fn5.7.1/artifacts/ui/portal-agents-refresh"
+}
