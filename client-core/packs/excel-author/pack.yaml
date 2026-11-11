@@ -1,0 +1,8 @@
+# ClientCorePack metadata — required for monorepo pack validation (lp-k7g.9.3)
+name: excel-author
+summary: Spreadsheet authoring workflows
+when_to_enable: Spreadsheet authoring workflows
+contents: excel-author skill
+sources:
+  - skills/excel-author
+dependencies: []

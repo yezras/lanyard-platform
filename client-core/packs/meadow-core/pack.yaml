@@ -1,0 +1,9 @@
+# ClientCorePack metadata — required for monorepo pack validation (lp-k7g.9.3)
+name: meadow-core
+summary: First group-room persona pack (Skip, Lev, Bana)
+when_to_enable: Group agent rooms (one-to-many + agent-to-agent)
+contents: Three personas plus shared room instructions
+sources:
+  - agents
+  - instructions.md
+dependencies: []
