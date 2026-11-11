@@ -1,0 +1,10 @@
+# Optional backend-runtime-v1 release archives for local/CI image bake.
+# Most product tarballs stay gitignored (never commit secrets here).
+# lp-na7d: live pin needs one real lanyard-agent tarball baked into the
+# agent-gateway image so cold create is not a fake-gateway stub. Allow only
+# the mailbox-era tarball (lanyard-agent origin/main 8835654 / lac-r9w).
+*
+!.gitignore
+!.gitkeep
+!lanyard-agent-0.0.0-main.8835654f4ecd.tar.gz
+!lanyard-agent-0.0.0-main.8835654f4ecd.tar.gz.sha256
