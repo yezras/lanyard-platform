@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/group-rooms-v1/group-rooms.schema.json",
+  "title": "group-rooms-v1",
+  "description": "Shared inbound/outbound/speaker contract for group agent rooms (lac-bx3 P2). Wire names are snake_case. Parse at the repo boundary; do not fork this shape in agent or Portal. Consumers validate a payload against one $defs entry (speaker, wakeDecision, groupInbound, inboundFrame, groupOutboundMetadata, outboundFrame, groupThread, fakeGatewayFixture).",
+  "$comment": "Bead lac-bx3.9 / epic lac-bx3. Type sketch: lanyard-agent docs/plans/09-group-agent-rooms/phase-0-docs-and-types.md. Relay chat_type stays dm; ChatThread.kind=group is the product kind.",
+  "$defs": {
+    "idNoColon": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^:\\s]+$",
+      "description": "Branded id. Colon is illegal (session-key delimiter). Whitespace is illegal."
+    },
+    "personaId": {
+      "$ref": "#/$defs/idNoColon",
+      "description": "PersonaId. Used as the session-key segment agent:<personaId>:relay:dm:<threadId>."
+    },
+    "threadId": {
+      "$ref": "#/$defs/idNoColon",
+      "description": "Portal ChatThread id. Must not contain ':'."
+    },
+    "userId": {
+      "$ref": "#/$defs/idNoColon",
+      "description": "Human participant / author id. Must not contain ':'."
+    },
+    "humanSpeaker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "user_id"],
+      "description": "Human speaker. user_id is the durable identity.",
+      "properties": {
+        "kind": { "type": "string", "const": "human" },
+        "user_id": { "$ref": "#/$defs/userId" },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional UI label. Not an identity key."
+        }
+      }
+    },
+    "personaSpeaker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "persona_id"],
+      "description": "Persona speaker. persona_id is the durable identity and session-key segment.",
+      "properties": {
+        "kind": { "type": "string", "const": "persona" },
+        "persona_id": { "$ref": "#/$defs/personaId" },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional UI label. Not an identity key."
+        }
+      }
+    },
+    "speaker": {
+      "oneOf": [
+        { "$ref": "#/$defs/humanSpeaker" },
+        { "$ref": "#/$defs/personaSpeaker" }
+      ],
+      "description": "Room participant or message author. Discriminated on kind."
+    },
+    "historySpeaker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id", "display_name"],
+      "description": "Persisted/UI speaker stamp on history and outbound. id is user_id or persona_id according to kind. A persona id MUST be a participant (enforced by scripts/validate-group-rooms.py, not JSON Schema).",
+      "properties": {
+        "kind": { "type": "string", "enum": ["human", "persona"] },
+        "id": { "$ref": "#/$defs/idNoColon" },
+        "display_name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "wakeReason": {
+      "type": "string",
+      "enum": ["orchestrator", "mention", "keyword", "hop"],
+      "description": "Why these personas were selected. loop_notice is a WakeDecision reason only, never a delivered inbound wake_reason."
+    },
+    "wakeDecision": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["target_persona_ids", "reason"],
+          "properties": {
+            "target_persona_ids": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "$ref": "#/$defs/personaId" }
+            },
+            "reason": { "$ref": "#/$defs/wakeReason" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["target_persona_ids", "reason"],
+          "properties": {
+            "target_persona_ids": {
+              "type": "array",
+              "maxItems": 0,
+              "items": { "$ref": "#/$defs/personaId" }
+            },
+            "reason": { "type": "string", "const": "loop_notice" }
+          }
+        }
+      ],
+      "description": "Pure wake result. Non-loop decisions require ≥1 target. loop_notice requires an empty target list."
+    },
+    "groupInboundMetadata": {
+      "type": "object",
+      "description": "Group-room fields on MessageEvent.metadata. Additional Portal keys (cwd, mcq, …) remain allowed. Group inbound without target_persona_ids is refused at the adapter (P5).",
+      "additionalProperties": true,
+      "required": ["target_persona_ids", "wake_reason", "lead_persona_id"],
+      "properties": {
+        "target_persona_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/personaId" },
+          "description": "Wake fan-out. BFF stamps this from WakeDecision before deliver-inbound. Unmentioned channel mail is [lead_persona_id] (lp-cxhb.7)."
+        },
+        "lead_persona_id": {
+          "$ref": "#/$defs/personaId",
+          "description": "Channel lead. First member at create; user-changeable. Unmentioned inbound stamps target_persona_ids=[lead_persona_id]. Same id as ChatThread.orchestrator_persona_id / Channel.lead_agent_id."
+        },
+        "target_persona_id": {
+          "$ref": "#/$defs/personaId",
+          "description": "This delivery's session persona. Must be a member of target_persona_ids (validator). Required at the adapter for group inbound (P5)."
+        },
+        "persona_id": {
+          "$ref": "#/$defs/personaId",
+          "description": "Optional inbound echo of the session persona. Outbound uses this as the speaker stamp source."
+        },
+        "wake_reason": { "$ref": "#/$defs/wakeReason" },
+        "mentioned_persona_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/personaId" }
+        },
+        "mentioned_user_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/userId" }
+        }
+      }
+    },
+    "groupOutboundMetadata": {
+      "type": "object",
+      "description": "Outbound action.metadata for a persona turn. speaker comes from the session, never from model text. additionalProperties allowed for existing portal_event keys.",
+      "additionalProperties": true,
+      "required": ["persona_id", "speaker"],
+      "properties": {
+        "persona_id": { "$ref": "#/$defs/personaId" },
+        "speaker": { "$ref": "#/$defs/historySpeaker" },
+        "wake_reason": { "$ref": "#/$defs/wakeReason" }
+      }
+    },
+    "sessionSource": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "platform",
+        "chat_id",
+        "chat_type",
+        "chat_name",
+        "user_id",
+        "user_name",
+        "thread_id",
+        "chat_topic"
+      ],
+      "properties": {
+        "platform": { "type": "string", "minLength": 1 },
+        "chat_id": { "type": "string", "minLength": 1 },
+        "chat_type": {
+          "type": "string",
+          "enum": ["dm", "group", "channel", "thread", "forum"],
+          "description": "Relay SessionSource chat_type. Portal group rooms keep dm; product kind lives on ChatThread.kind."
+        },
+        "chat_name": { "type": ["string", "null"] },
+        "user_id": { "type": ["string", "null"] },
+        "user_name": { "type": ["string", "null"] },
+        "thread_id": { "type": ["string", "null"] },
+        "chat_topic": { "type": ["string", "null"] },
+        "profile": { "type": "string" },
+        "user_id_alt": { "type": "string" },
+        "chat_id_alt": { "type": "string" },
+        "scope_id": { "type": "string" },
+        "guild_id": { "type": "string" },
+        "parent_chat_id": { "type": "string" },
+        "message_id": { "type": "string" }
+      }
+    },
+    "groupInbound": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["text", "message_type", "source", "metadata"],
+      "description": "MessageEvent with group-room metadata required.",
+      "properties": {
+        "text": { "type": "string" },
+        "message_type": { "type": "string", "minLength": 1 },
+        "source": { "$ref": "#/$defs/sessionSource" },
+        "message_id": { "type": "string", "minLength": 1 },
+        "reply_to_message_id": { "type": "string" },
+        "media_urls": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "metadata": { "$ref": "#/$defs/groupInboundMetadata" }
+      }
+    },
+    "inboundFrame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "event"],
+      "properties": {
+        "type": { "type": "string", "const": "inbound" },
+        "event": { "$ref": "#/$defs/groupInbound" },
+        "bufferId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "outboundFrame": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["type", "requestId", "action"],
+      "properties": {
+        "type": { "type": "string", "const": "outbound" },
+        "requestId": { "type": "string", "minLength": 1 },
+        "platform": { "type": "string" },
+        "botId": { "type": "string" },
+        "action": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["op", "metadata"],
+          "properties": {
+            "op": {
+              "type": "string",
+              "enum": ["send", "edit", "typing", "follow_up", "get_chat_info"]
+            },
+            "chat_id": { "type": "string" },
+            "content": { "type": "string" },
+            "message_id": { "type": "string" },
+            "reply_to": { "type": "string" },
+            "session_key": { "type": "string" },
+            "kind": { "type": "string" },
+            "metadata": { "$ref": "#/$defs/groupOutboundMetadata" }
+          }
+        }
+      }
+    },
+    "groupThread": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "thread_id", "participants", "lead_persona_id"],
+      "description": "ChatThread.kind=group. Must include ≥1 human and ≥1 persona. Zero-persona groups are illegal. lead_persona_id is the unmentioned-wake persona (lp-cxhb.7); orchestrator_persona_id is the same id when both are set.",
+      "properties": {
+        "kind": { "type": "string", "const": "group" },
+        "thread_id": { "$ref": "#/$defs/threadId" },
+        "tenant_id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string" },
+        "lead_persona_id": {
+          "$ref": "#/$defs/personaId",
+          "description": "Channel lead. Must be a persona participant. Unmentioned inbound wakes only this persona."
+        },
+        "orchestrator_persona_id": {
+          "$ref": "#/$defs/personaId",
+          "description": "Wake-policy name for the lead. Must equal lead_persona_id when both are set."
+        },
+        "participants": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/speaker" },
+          "allOf": [
+            {
+              "contains": { "$ref": "#/$defs/personaSpeaker" }
+            },
+            {
+              "contains": { "$ref": "#/$defs/humanSpeaker" }
+            }
+          ]
+        }
+      }
+    },
+    "fakeGatewayFixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_type",
+        "thread",
+        "wake",
+        "inbound",
+        "outbound"
+      ],
+      "description": "Offline fake-gateway load document. Inbound/outbound frames must parse as relay NDJSON frames.",
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "record_type": {
+          "type": "string",
+          "const": "group_rooms_fake_gateway"
+        },
+        "thread": { "$ref": "#/$defs/groupThread" },
+        "wake": { "$ref": "#/$defs/wakeDecision" },
+        "inbound": { "$ref": "#/$defs/inboundFrame" },
+        "outbound": { "$ref": "#/$defs/outboundFrame" }
+      }
+    }
+  }
+}
