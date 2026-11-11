@@ -582,7 +582,7 @@
   },
   "residuals": [
     "mint_spa_html_fallback: POST office/sessions returned SPA HTML (likely CF 403/404 rewrite of missing_file, or edge miss)",
-    "ui.can.vault_edit=false \\u2014 set BFF_OFFICE_VAULT_EDIT=true for lab writeback",
+    "ui.can.vault_edit=false \u2014 set BFF_OFFICE_VAULT_EDIT=true for lab writeback",
     "vault_content_spa_html: GET vault/content for docx path returned SPA (404 missing file masked by CF SPA routing)",
     "control_ok: mint of .txt path returns BFF JSON (route live)"
   ],
