@@ -1,0 +1,41 @@
+{
+  "schema_comment": "BFF signed Office download metadata example (no file body). Implements lp-5q6.17 + lp-5q6.22 contract intent.",
+  "method": "GET",
+  "path_template": "/api/office/sessions/{session_id}/content",
+  "request": {
+    "session_id": "ods_01JEXAMPLESESSION01",
+    "token_fingerprint": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+    "token_ttl_seconds": 120,
+    "note": "Full token never logged; only fingerprint/expiry."
+  },
+  "response_headers": {
+    "Content-Type": "application/octet-stream",
+    "Cache-Control": "no-store",
+    "Content-Length": "184320",
+    "X-Lanyard-Revision-Kind": "content_hash",
+    "X-Lanyard-Revision-Token-Fingerprint": "sha256:4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
+  },
+  "response_body": {
+    "encoding": "raw_octet_stream",
+    "logged": false,
+    "source": "BFF streams vault.read_chunk decoded bytes; never vault.read full JSON for production Office"
+  },
+  "validation_order": [
+    "signed_token",
+    "session_lifecycle",
+    "tenant_match",
+    "path_acl",
+    "extension_and_mime",
+    "content_sniff_prefix",
+    "revision_match_base_revision",
+    "size_within_office_max"
+  ],
+  "errors": {
+    "expired_token": 401,
+    "forbidden": 403,
+    "not_found": 404,
+    "revision_mismatch": 409,
+    "payload_too_large": 413,
+    "unsupported_type": 415
+  }
+}

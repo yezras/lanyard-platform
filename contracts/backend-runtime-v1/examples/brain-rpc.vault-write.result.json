@@ -1,0 +1,35 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEVWRITE001",
+  "ok": true,
+  "result": {
+    "path": "/Projects/Legal/memo.md",
+    "revision": {
+      "token": "sha256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+      "kind": "content_hash",
+      "size_bytes": 48,
+      "modified_at": "2026-07-12T00:00:01.200Z"
+    },
+    "etag": "sha256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+    "size_bytes": 48,
+    "mime_type": "text/markdown",
+    "written_at": "2026-07-12T00:00:01.200Z",
+    "created": false,
+    "idempotent_replay": false,
+    "commit": {
+      "operation_id": "op_01HUMANWRITE0001",
+      "kind": "file_replace",
+      "workspace_id": "default",
+      "tree_root_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "advances_artifact_head": true,
+      "advances_workspace_head": true
+    }
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 42,
+    "backend_profile": "contributor",
+    "host_time": "2026-07-12T00:00:01.210Z"
+  }
+}

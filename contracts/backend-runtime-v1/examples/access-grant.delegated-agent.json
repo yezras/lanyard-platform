@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "record_type": "access_grant",
+  "grant_id": "grant_01DELEGATEDAGENT001",
+  "tenant_id": "ten_example",
+  "instance_id": "inst_example",
+  "session_id": "sess_portal_example",
+  "subject": {
+    "kind": "delegated_agent",
+    "subject_id": "run:unknown-agent-42",
+    "portal_user_id": "user_alice",
+    "agent_id": "agent:unknown-external",
+    "run_id": "run-42",
+    "display_name": "Delegated unknown agent run"
+  },
+  "path_prefixes": [
+    "/Projects/Acme",
+    "/Projects/Acme/.lanyard/checkpoints"
+  ],
+  "capabilities": [
+    "vault.read",
+    "vault.stat",
+    "vault.write",
+    "history.list"
+  ],
+  "issued_at": "2026-07-12T00:00:00.000Z",
+  "not_before": "2026-07-12T00:00:00.000Z",
+  "expires_at": "2026-07-12T12:00:00.000Z",
+  "issuer": "control-plane",
+  "backend_profile": "contributor",
+  "signature": {
+    "alg": "ed25519",
+    "key_id": "fixture-grant-key-v1",
+    "value": "Zml4dHVyZS1zaWduYXR1cmUtZ3JhbnQtZGVsZWdhdGVkLXYx",
+    "signed_at": "2026-07-12T00:00:00.010Z",
+    "signed_fields": [
+      "grant_id",
+      "tenant_id",
+      "session_id",
+      "subject",
+      "path_prefixes",
+      "capabilities",
+      "expires_at"
+    ]
+  },
+  "meta": {
+    "request_id": "01JEXAMPLEGRANTDELEG001",
+    "tool_call_id": "tool_write_proposal_42",
+    "notes": "Unknown agent acting under human-delegated scoped grant"
+  }
+}

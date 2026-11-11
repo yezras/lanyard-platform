@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "record_type": "access_grant",
+  "grant_id": "grant_01HUMANSESSION0001",
+  "tenant_id": "ten_example",
+  "instance_id": "inst_example",
+  "session_id": "sess_portal_example",
+  "subject": {
+    "kind": "human",
+    "subject_id": "user_alice",
+    "portal_user_id": "user_alice",
+    "display_name": "Alice"
+  },
+  "path_prefixes": [
+    "/Projects/Acme"
+  ],
+  "capabilities": [
+    "vault.read",
+    "vault.list",
+    "vault.stat",
+    "vault.write",
+    "history.list",
+    "heads.artifact",
+    "heads.workspace"
+  ],
+  "issued_at": "2026-07-12T00:00:00.000Z",
+  "expires_at": "2026-07-13T00:00:00.000Z",
+  "issuer": "portal-session",
+  "backend_profile": "contributor",
+  "signature": {
+    "alg": "ed25519",
+    "key_id": "fixture-grant-key-v1",
+    "value": "Zml4dHVyZS1zaWduYXR1cmUtZ3JhbnQtaHVtYW4tdjE",
+    "signed_at": "2026-07-12T00:00:00.010Z",
+    "signed_fields": [
+      "grant_id",
+      "tenant_id",
+      "session_id",
+      "subject",
+      "path_prefixes",
+      "capabilities",
+      "expires_at"
+    ]
+  }
+}
