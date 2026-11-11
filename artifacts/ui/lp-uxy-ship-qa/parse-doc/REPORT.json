@@ -1,0 +1,143 @@
+{
+  "bead_id": "lp-uxy.15.10",
+  "shipped_feature": "lp-uxy.10",
+  "base_url": "http://demo.localhost:3010",
+  "login": "dev@demo.local",
+  "when": "2026-08-05T14:39:46.942851+00:00",
+  "passed": true,
+  "portal_ui_ok": true,
+  "live_host_tool_ok": false,
+  "live_path_exercised": true,
+  "verdict": "PASS_FIXTURE_PATH_HOST_TOOL_RESIDUAL",
+  "fix_bead": "lp-uxy.20",
+  "story_parse_document": {
+    "ok": true,
+    "detail": "story parse-document: label=Parsing a document markers+md previews+negatives; data-bff-parse=false cost-gated=true",
+    "assertions": {
+      "data_parse_document_live": "false",
+      "data_cost_gated": "true",
+      "data_bff_parse": "false",
+      "data_friendly_label": "Parsing a document",
+      "attach_panel": true,
+      "tool_panel": true,
+      "answer_panel": true,
+      "negatives_panel": true,
+      "staging_stamp": true,
+      "tool_row_count": 5,
+      "friendly_label_visible": true,
+      "docx_marker": true,
+      "pdf_marker": true,
+      "path_denied": true,
+      "unsupported_scanned": true,
+      "markdown_result_docx": true,
+      "markdown_result_pdf": true
+    }
+  },
+  "live_parse_document": {
+    "ok": true,
+    "detail": "live host residual: agent replied NO_PARSE_DOCUMENT_TOOL; no Parsing a document tool rows. Fixture story is normative Portal proof.",
+    "host_tool_observed": false,
+    "host_tool_success": false,
+    "host_refused_no_tools": true,
+    "assertions": {
+      "brain_rpc_enabled": true,
+      "backend_kind": "lanyard_agent",
+      "context_status": 200,
+      "attach_ok": true,
+      "saw_parsing_label": false,
+      "saw_parse_tool_id": true,
+      "saw_marker_in_answer": false,
+      "saw_no_tool_message": true,
+      "final_text_preview": "NO_PARSE_DOCUMENT_TOOL\n10:38 AM\n\u00b7\ngrok-4.5",
+      "tool_row_count": 0
+    }
+  },
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/01-story-attach-panel.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/02-story-tool-lifecycle.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/03-story-markdown-results.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/04-story-negatives-answer.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/05-story-full-page.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/10-live-home.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/11-live-attached.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/12-live-prompt-sent.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/13-live-chat-after-response.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/14-live-tools-expanded.png",
+    "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/15-live-final.png"
+  ],
+  "checks": [
+    {
+      "feature": "story-attach-stamp",
+      "ok": true,
+      "detail": "staging uploads sample.docx + sample.pdf",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/01-story-attach-panel.png"
+    },
+    {
+      "feature": "story-tool-lifecycle-labels",
+      "ok": true,
+      "detail": "Parsing a document rows running/complete/error; 5 tool calls",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/02-story-tool-lifecycle.png"
+    },
+    {
+      "feature": "story-markdown-results",
+      "ok": true,
+      "detail": "docx+pdf markers in markdown previews and answer",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/03-story-markdown-results.png"
+    },
+    {
+      "feature": "story-negatives",
+      "ok": true,
+      "detail": "path_denied + unsupported_scanned",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/04-story-negatives-answer.png"
+    },
+    {
+      "feature": "story-boundary-no-bff-parse",
+      "ok": true,
+      "detail": "data-bff-parse=false data-cost-gated=true",
+      "shot": null
+    },
+    {
+      "feature": "live-login-home",
+      "ok": true,
+      "detail": "logged in / session",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/10-live-home.png"
+    },
+    {
+      "feature": "live-brain-rpc",
+      "ok": true,
+      "detail": "brain_rpc_enabled=True kind=lanyard_agent",
+      "shot": null
+    },
+    {
+      "feature": "live-attach-file",
+      "ok": true,
+      "detail": "sample-shipqa.docx attached",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/11-live-attached.png"
+    },
+    {
+      "feature": "live-prompt-sent",
+      "ok": true,
+      "detail": "parse prompt sent",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/12-live-prompt-sent.png"
+    },
+    {
+      "feature": "live-parse-tool-lifecycle",
+      "ok": false,
+      "detail": "NO_PARSE_DOCUMENT_TOOL \u2014 host missing parse_document; fix bead lp-uxy.20",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/13-live-chat-after-response.png"
+    },
+    {
+      "feature": "live-response-captured",
+      "ok": true,
+      "detail": "assistant replied NO_PARSE_DOCUMENT_TOOL",
+      "shot": "/tmp/lp-bead-lp-uxy.15.10/artifacts/ui/lp-uxy-ship-qa/parse-doc/15-live-final.png"
+    }
+  ],
+  "errors": [],
+  "notes": [
+    "Portal story PASS is acceptance for Portal consumer ship-qa",
+    "Host residual F7/product pin: lp-uxy.20",
+    "Offline F6 prove remains artifacts/ui/lp-uxy.10/"
+  ],
+  "summary": "Portal story parse-document PASS; live LA parse_document tool not on host (NO_PARSE_DOCUMENT_TOOL). Verdict=PASS_FIXTURE_PATH_HOST_TOOL_RESIDUAL. Fix bead lp-uxy.20."
+}
