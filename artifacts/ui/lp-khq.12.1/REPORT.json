@@ -1,0 +1,14 @@
+{
+  "bead": "lp-khq.12.1",
+  "story": "workflow-chat-wizard",
+  "verdict": "PASS",
+  "stages": 2,
+  "name": "research-report",
+  "banned_jargon": false,
+  "screenshots": [
+    "01-intent.png",
+    "02-describe-prompt.png",
+    "03-confirm-multi-phase.png",
+    "04-created-inventory.png"
+  ]
+}

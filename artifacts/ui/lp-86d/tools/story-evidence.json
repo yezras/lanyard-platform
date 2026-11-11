@@ -1,0 +1,18 @@
+{
+  "bead_id": "lp-86d.3",
+  "surface": "story",
+  "phase": "tools",
+  "scan": {
+    "chat_tool_calls_roots": 1,
+    "humanized_button_count": 2,
+    "labels_in_tool_roots": [
+      "Reading documents",
+      "Searching files",
+      "Running a command"
+    ],
+    "duration_markers": 2,
+    "collapsed_tool_pill": 0,
+    "toolish_count": 3
+  },
+  "screenshot": "00-story-phase-tools.png"
+}
