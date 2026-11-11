@@ -1,0 +1,17 @@
+{
+  "url": "http://127.0.0.1:5179/?story=vault-lazy-proof",
+  "hasRoot": true,
+  "hasHugeFolder": true,
+  "hasFirstPage": true,
+  "hasSecondPage": true,
+  "hasOpenedContent": true,
+  "treeItemCount": 503,
+  "fetches": [
+    "GET /api/vault/tree",
+    "GET /api/vault/tree",
+    "GET /api/vault/entries?path=%2FVault+proof%2FHuge+folder",
+    "GET /api/vault/entries?path=%2FVault+proof%2FHuge+folder&cursor=page-2",
+    "GET /api/vault/content?path=%2FVault%20proof%2FHuge%20folder%2Fnote-501.md"
+  ],
+  "screenshot": "/home/operator/Lanyard-Dev/lanyard-platform/artifacts/ui/lp-ypx13-vault-lazy-proof.png"
+}
