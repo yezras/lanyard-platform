@@ -1,0 +1,45 @@
+{
+  "exported_at": "2026-08-05T14:34:54.580Z",
+  "source": "lanyard_agent",
+  "backend_home": "/home/operator/.lanyard-agent",
+  "hermes_home": "/home/operator/.lanyard-agent",
+  "crons": [
+    {
+      "id": "la-vault-index",
+      "name": "LA vault index refresh",
+      "schedule": "Daily at 3:00 AM",
+      "enabled": true,
+      "path": "cron/jobs.json",
+      "last_run_at": "2026-08-04T03:00:11.000Z",
+      "next_run_at": "2026-08-05T03:00:00.000Z"
+    },
+    {
+      "id": "la-weekly-digest",
+      "name": "LA weekly digest",
+      "schedule": "Weekly on Monday at 9:00 AM",
+      "enabled": false,
+      "path": "cron/jobs.json",
+      "last_run_at": null,
+      "next_run_at": null
+    },
+    {
+      "id": "la-manual-start",
+      "name": "LA manual start example",
+      "schedule": "One-shot (manual start)",
+      "enabled": true,
+      "path": "cron/jobs.json",
+      "last_run_at": "2026-08-04T15:00:01.000Z",
+      "next_run_at": null
+    }
+  ],
+  "models": [
+    {
+      "provider": "litellm",
+      "model": "grok-4.5",
+      "is_active": true,
+      "connected": true
+    }
+  ],
+  "workflows": [],
+  "skills_count": 11
+}

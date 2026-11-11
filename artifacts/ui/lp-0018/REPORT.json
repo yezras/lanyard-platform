@@ -1,0 +1,19 @@
+{
+  "bead": "lp-hdzm.30",
+  "story": "fakeops-admin",
+  "flows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "shots": [
+    "01-superadmin-tenants.png",
+    "02-mocklab-connectors.png",
+    "03-connector-detail.png"
+  ],
+  "at": "2026-08-27T13:17:36.114669+00:00"
+}

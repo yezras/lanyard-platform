@@ -1,0 +1,45 @@
+{
+  "suite": "lp-cxhb.15.1",
+  "base_url": "http://demo.localhost:3012",
+  "checks": [
+    {
+      "feature": "channel-row-data-channel",
+      "ok": true,
+      "detail": "data-channel=true"
+    },
+    {
+      "feature": "channel-row-hash-prefix",
+      "ok": true,
+      "detail": "text='#QA Hash 1787531919'"
+    },
+    {
+      "feature": "channel-row-no-avatar",
+      "ok": true,
+      "detail": "dither=0 share_icon=0"
+    },
+    {
+      "feature": "channel-row-no-subtitle",
+      "ok": true,
+      "detail": "subtitles=0"
+    },
+    {
+      "feature": "all-channel-rows-hash-only",
+      "ok": true,
+      "detail": "count=2 violations=[]"
+    },
+    {
+      "feature": "agent-rows-keep-avatar-glyph",
+      "ok": true,
+      "detail": "checked=5 problems=[]"
+    },
+    {
+      "feature": "agent-rows-present",
+      "ok": true,
+      "detail": "agent_rows=6"
+    }
+  ],
+  "shots": [
+    "/home/operator/Lanyard-Dev/lp-cxhb-15/artifacts/ui/lp-cxhb.15.1/01-sidenav-channel-rows-hash-only.png",
+    "/home/operator/Lanyard-Dev/lp-cxhb-15/artifacts/ui/lp-cxhb.15.1/02-sidenav-agent-rows-unchanged.png"
+  ]
+}

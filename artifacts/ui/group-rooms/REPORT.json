@@ -1,0 +1,13 @@
+{
+  "bead": "lac-bx3.16",
+  "story": "group-rooms",
+  "base_url": "http://demo.localhost:3010",
+  "u1_roster": true,
+  "u2_three_speakers": true,
+  "u3_at_complete": true,
+  "u4_nested_subagent": true,
+  "narrow_viewport": {
+    "width": 390,
+    "height": 844
+  }
+}
