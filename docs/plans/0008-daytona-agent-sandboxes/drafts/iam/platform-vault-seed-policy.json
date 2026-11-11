@@ -1,0 +1,48 @@
+{
+  "_comment": "TEMPLATE lp-t86 / lp-kng.2.5 — platform seed/admin policy (NOT for sandbox guest inject). Allows seed under tenants/{tenant_id}/vault/* and optional tenants/{tenant_id}/_platform/* markers. Separate principal from mount session. Never wake-inject into guest.",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListTenantScopedPrefixes",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "arn:aws:s3:::${LANYARD_VAULT_BUCKET}",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "tenants/${TENANT_ID}/",
+            "tenants/${TENANT_ID}/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "SeedVaultObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:AbortMultipartUpload",
+        "s3:ListMultipartUploadParts"
+      ],
+      "Resource": "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/tenants/${TENANT_ID}/vault/*"
+    },
+    {
+      "Sid": "PlatformBootstrapMarkers",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/tenants/${TENANT_ID}/_platform",
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/tenants/${TENANT_ID}/_platform/*"
+      ]
+    }
+  ]
+}
