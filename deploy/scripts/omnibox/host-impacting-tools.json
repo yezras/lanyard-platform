@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "description": "Deploy-owned registry: which Hermes agent tools must run under run-under-omnibox when OMNIBOX_ENABLED=1 (Mode A / cbd-o9s.11).",
+  "contract": "references/omnibox-mode-a-hermes-hook.md",
+  "omnibox_required_when_enabled": true,
+  "host_impacting_tools": [
+    "shell_exec",
+    "terminal",
+    "system_ops",
+    "gateway_config",
+    "profile_manage",
+    "beads_admin"
+  ],
+  "vault_only_tools": [
+    "vault_read",
+    "vault_write",
+    "vault_search",
+    "vault_delete",
+    "chat"
+  ],
+  "notes": [
+    "Vault-only tools need not go through Omnibox unless their implementation shells out.",
+    "Contributor allowlist still denies shell_exec; Omnibox does not elevate contributor.",
+    "Product Hermes must honor this registry (or an equivalent hard-coded set) when OMNIBOX_ENABLED=1.",
+    "Missing session profile fails closed to contributor grants for wrap profile resolution."
+  ],
+  "seed_path": "/etc/company-brain/omnibox/host-impacting-tools.json",
+  "enforced_by": "hermes-product-hook + company-brain-deploy-contract"
+}

@@ -1,0 +1,18 @@
+# Static processor host list for Omnibox Mode A egress render (cbd-o9s.12).
+# Format: <processor_id> <hostname>
+# - Public documentation hostnames only (not customer endpoints, not secrets).
+# - Tenant-specific FQDNs (relay, Azure OpenAI private, corporate proxies) come
+#   from env / CLI at render time — never commit live customer hostnames here.
+# - Empty host column is invalid; omit the line if no stable public host exists.
+# Catalog IDs: references/approved-data-processors.md
+#
+# model providers (public API shapes)
+model-openai api.openai.com
+model-anthropic api.anthropic.com
+model-google generativelanguage.googleapis.com
+model-xai api.x.ai
+# Platform / AWS often via VPC endpoints or tenant-only FQDNs — no static public host.
+# lanyard-portal-relay  → OMNIBOX_RELAY_HOST or RELAY_WSS_URL host at render
+# aws-s3-artifacts       → private S3 / gateway endpoint (not L7 HTTPS host list)
+# aws-ssm / aws-logs-kms-sts / aws-ec2-metadata → not agent egress allowlist targets
+# dns-resolver / ntp-time → not HTTPS allowlist hosts
