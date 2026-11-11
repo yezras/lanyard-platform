@@ -1,0 +1,96 @@
+# Documentation-only example inputs for modules/portal-bff-service.
+# Copy to a *private* terraform.tfvars — never commit live account IDs, digests from real accounts, or secrets.
+# NOT auto-applied from git examples.
+
+name_prefix = "lanyard-portal-staging"
+environment = "staging"
+
+# Replace with real IDs from *your* account (shapes only — not live).
+vpc_id = "vpc-00000000000000000"
+public_subnet_ids = [
+  "subnet-00000000000000001",
+  "subnet-00000000000000002",
+]
+private_subnet_ids = [
+  "subnet-00000000000000003",
+  "subnet-00000000000000004",
+]
+
+# Digest pin from private compatibility file (portal.images.bff) — never :latest alone.
+image_repository = "000000000000.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/bff"
+image_digest     = "sha256:0000000000000000000000000000000000000000000000000000000000000002"
+image_tag_hint   = "v0.0.0-example"
+
+container_port    = 8080
+health_check_path = "/health"
+desired_count     = 1
+# acknowledge_g5_scale_beyond_one = false  # required true only if desired_count > 1
+
+create_ecs_cluster = true
+assign_public_ip   = false
+enable_https       = false
+# acm_certificate_arn = "arn:aws:acm:REGION:ACCOUNT:certificate/…"
+
+# Non-secret env only. Production-like / staging environments reject known secret
+# names here (including REDIS_URL, service tokens). OIDC client secrets are rejected
+# in plain env for EVERY environment label — always use secrets map.
+# Session TTLs and backend flags are plain config, not secrets.
+# environment_variables = {
+#   NODE_ENV                = "production"
+#   GOOGLE_CLIENT_ID        = "REPLACE.apps.googleusercontent.com" # public OAuth client id
+#   # GOOGLE_REDIRECT_PATH = "/api/auth/google/callback"           # product default segment
+#   BFF_SESSION_BACKEND     = "redis"       # memory (single-task default) or redis
+#   # BFF_MULTI_INSTANCE    = "true"        # only with redis + desired_count > 1 + G5 ack
+#   # SESSION_TTL_SECONDS   = "604800"      # 7d sliding (product default)
+#   # SESSION_MAX_AGE_SECONDS = "2592000"   # 30d absolute (product default)
+# }
+
+# Generic SM/SSM injection (ARNs only — never secret values).
+# Keys = container env names; value_from = Secrets Manager or SSM parameter ARN.
+#
+# OIDC + service auth (cbd-mta.3.2) — required for production Google sign-in:
+#   Google Console Authorized redirect URIs (path-first):
+#     https://app.withlanyard.com/<tenant_slug>/api/auth/google/callback
+#   Legacy subdomain:
+#     https://<tenant_slug>.withlanyard.com/api/auth/google/callback
+#   App logout (not a Google Console URI): POST /<tenant_slug>/api/auth/logout
+#
+# Preferred REDIS_URL path (G5 shared sessions) — modules/portal-valkey:
+#   secrets = {
+#     REDIS_URL = {
+#       value_from = "${module.portal_valkey.redis_url_secret_arn}:REDIS_URL::"
+#     }
+#   }
+# Standalone placeholder shape (when pasting ARNs into private tfvars):
+# secrets = {
+#   GOOGLE_CLIENT_SECRET = {
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/google-client-secret-AbCdEf"
+#   }
+#   SESSION_SECRET = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/session-secret"
+#   }
+#   # Shared service token — same SSM path as control-plane task (example shape only).
+#   CONTROL_PLANE_SERVICE_TOKEN = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/service-token"
+#   }
+#   REDIS_URL = {
+#     # Prefer: "${module.portal_valkey.redis_url_secret_arn}:REDIS_URL::"
+#     value_from  = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/redis-url-XyZ123:REDIS_URL::"
+#     kms_key_arn = "arn:aws:kms:us-east-1:000000000000:key/00000000-0000-0000-0000-000000000000" # optional CMK
+#   }
+# }
+#
+# IAM-only extra GetSecretValue (not injected into the BFF container).
+# Live residual (lp-oop.38.20): while the harness task reuses this exec role,
+# list harness-litellm and daytona so IAM reconcile does not strip placement.
+# Prefer modules/harness-exec-iam + switch executionRoleArn, then leave empty.
+# execution_extra_secret_arns = [
+#   "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/portal/harness-litellm-*",
+#   "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/portal/daytona-*",
+# ]
+
+acknowledge_not_auto_applied = true
+
+tags = {
+  Owner = "platform"
+}
