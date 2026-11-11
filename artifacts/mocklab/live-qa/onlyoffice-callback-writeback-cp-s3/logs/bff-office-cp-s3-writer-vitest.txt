@@ -1,0 +1,84 @@
+
+ RUN  v3.2.7 /tmp/lp-bead-lp-zuh.12.7/portal/packages/bff
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > success status 2 returns { error: 0 } without Portal cookie
+{"timestamp":"2026-08-18T14:32:37.479Z","level":"info","service":"bff","msg":"office callback","request_id":"87c7eb9c-fe19-4bc4-9de1-4de60a34db60","tenant_id":"tenant-a","office_session_id":"Ewl6A4VrW6j26BvI5QE4mqy8R2tZx8QYCjwSgVAx2rA","route":"/api/office/callback","status":200,"latency_ms":1,"operator_class":"ok","outcome":"success","onlyoffice_status":2,"idempotent_replay":false,"event":"office_callback"}
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > success status 2 without tenant Host (Document Server public base URL)
+{"timestamp":"2026-08-18T14:32:37.482Z","level":"info","service":"bff","msg":"office callback","request_id":"0cc48715-be90-4b95-815b-1bf2f5ee3e19","tenant_id":"tenant-a","office_session_id":"0wCL_8MxYTz3mxhlsE1_O8AoycfFzKEg5maB7fr7400","route":"/api/office/callback","status":200,"latency_ms":0,"operator_class":"ok","outcome":"success","onlyoffice_status":2,"idempotent_replay":false,"event":"office_callback"}
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > force save status 6
+{"timestamp":"2026-08-18T14:32:37.483Z","level":"info","service":"bff","msg":"office callback","request_id":"70ca7c68-06df-4929-ac55-2cd2dadd8c5e","tenant_id":"tenant-a","office_session_id":"3RWMkPeCTQUqvv2Xy_btMX1gzMVIv1tZVyMulxVNGUs","route":"/api/office/callback","status":200,"latency_ms":0,"operator_class":"ok","outcome":"success","onlyoffice_status":6,"idempotent_replay":false,"event":"office_callback"}
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > save error status 3
+{"timestamp":"2026-08-18T14:32:37.484Z","level":"info","service":"bff","msg":"office callback","request_id":"cd87dda9-c1c9-4fd1-ad3f-45d214dd9506","tenant_id":"tenant-a","office_session_id":"Uv3kkIOuajTGLuNTDyr-BOCbGIpI9vkesdVicimv0f4","route":"/api/office/callback","status":200,"latency_ms":0,"error_code":"write_failed","operator_class":"write_failed","outcome":"error","onlyoffice_status":3,"event":"office_callback"}
+
+stdout | test/office-cp-s3-callback-writer.test.ts > office callback pipeline with cp_s3 writer (lp-zuh.12.7) > createApp uses cp_s3 writer when vaultPlane=cp_s3 (not Brain RPC)
+{"timestamp":"2026-08-18T14:32:37.484Z","level":"info","service":"bff","msg":"office callback","request_id":"f4c381c0-b3d6-4a4b-8313-397ced6789be","tenant_id":"bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb","office_session_id":"Pnb27hO7Dlx81FwsJ4fzBJYq87vi-SY5E1qlVgRVcb4","route":"/api/office/callback","status":200,"latency_ms":3,"operator_class":"ok","outcome":"success","onlyoffice_status":2,"idempotent_replay":false,"event":"office_callback"}
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > duplicate callback returns error 0 once
+{"timestamp":"2026-08-18T14:32:37.485Z","level":"info","service":"bff","msg":"office callback","request_id":"d532cf3b-1932-4bd2-b4fe-e937d8c1dfdb","tenant_id":"tenant-a","office_session_id":"G2H8ymd7F8Myz4fh19t7-_GJ06Fqxq4PjQdKbT7jHww","route":"/api/office/callback","status":200,"latency_ms":0,"operator_class":"ok","outcome":"success","onlyoffice_status":2,"idempotent_replay":false,"event":"office_callback"}
+
+ ✓ test/office-cp-s3-callback-writer.test.ts (6 tests) 20ms
+stdout | test/office-callback.test.ts > POST /api/office/callback > duplicate callback returns error 0 once
+{"timestamp":"2026-08-18T14:32:37.485Z","level":"info","service":"bff","msg":"office callback","request_id":"f36ce333-f082-4aba-8b7e-4c30d7ecc869","tenant_id":"tenant-a","office_session_id":"G2H8ymd7F8Myz4fh19t7-_GJ06Fqxq4PjQdKbT7jHww","route":"/api/office/callback","status":200,"latency_ms":0,"operator_class":"duplicate","outcome":"duplicate","onlyoffice_status":2,"idempotent_replay":true,"event":"office_callback"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > DOCX: open (signed download) → edit callback → changed bytes + new revision
+{"timestamp":"2026-08-18T14:32:37.483Z","level":"info","service":"bff","msg":"office config mint","request_id":"lab-mint-docx","tenant_id":"tenant-lab","office_session_id":"mpeje4TRDZ6xezeXDcUB3OVs_g_h4pB2ag-_U11ZmCs","route":"/api/office/sessions","latency_ms":4,"operator_class":"ok","outcome":"success","file_type":"docx","mode":"edit","event":"office_config_mint"}
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > forbidden session (bad nonce) returns non-zero error
+{"timestamp":"2026-08-18T14:32:37.487Z","level":"info","service":"bff","msg":"office callback","request_id":"1fa00ba5-611d-412a-a804-87c8dab33ea7","tenant_id":"tenant-a","office_session_id":"WC4Kg8LR5wliPvD6wqNk9FOfkxbbLuJPqzCpg_6mNJE","route":"/api/office/callback","status":403,"latency_ms":0,"error_code":"invalid_nonce","operator_class":"bff_callback_rejected","outcome":"denied","onlyoffice_status":2,"event":"office_callback"}
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > conflict returns error 0 with conflict code
+{"timestamp":"2026-08-18T14:32:37.488Z","level":"info","service":"bff","msg":"office callback","request_id":"3224f304-89f9-4d7a-97fc-6d7620ae7353","tenant_id":"tenant-a","office_session_id":"1wuXlhWxuCAtxRjaQooCi26umzEBFUdpdcJRDsLSy3A","route":"/api/office/callback","status":200,"latency_ms":0,"error_code":"write_conflict","operator_class":"host_write_conflict","outcome":"conflict","onlyoffice_status":2,"event":"office_callback"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > DOCX: open (signed download) → edit callback → changed bytes + new revision
+{"timestamp":"2026-08-18T14:32:37.489Z","level":"info","service":"bff","msg":"office download ok","request_id":"lab-dl-docx","tenant_id":"tenant-lab","office_session_id":"mpeje4TRDZ6xezeXDcUB3OVs_g_h4pB2ag-_U11ZmCs","route":"/api/office/sessions/:id/content","status":200,"latency_ms":1,"size_bucket":"lt_1kb","size_bytes":36,"outcome":"success","file_type":"docx","mode":"edit","event":"office_download"}
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > bad URL host returns non-zero error
+{"timestamp":"2026-08-18T14:32:37.490Z","level":"info","service":"bff","msg":"office callback","request_id":"225f8495-5ab8-4cdc-9a2c-116a12cb182b","tenant_id":"tenant-a","office_session_id":"7SrLCKxuf1Uemxl9UTHzu_kyacjAG9F5nZUhx6TBEIc","route":"/api/office/callback","status":403,"latency_ms":0,"error_code":"bad_url","operator_class":"bff_callback_rejected","outcome":"denied","onlyoffice_status":2,"event":"office_callback"}
+
+stdout | test/office-callback.test.ts > POST /api/office/callback > wrong tenant host is forbidden
+{"timestamp":"2026-08-18T14:32:37.491Z","level":"info","service":"bff","msg":"office callback","request_id":"02de67eb-d9a3-4473-9477-e182f6db15ed","tenant_id":"tenant-b","office_session_id":"ePrwrFVcIz-K5VdQtSd44D3iwphKQPd3kNkGcdDXA5w","route":"/api/office/callback","status":403,"latency_ms":0,"error_code":"tenant_mismatch","operator_class":"bff_callback_rejected","outcome":"denied","onlyoffice_status":2,"event":"office_callback"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > DOCX: open (signed download) → edit callback → changed bytes + new revision
+{"timestamp":"2026-08-18T14:32:37.494Z","level":"info","service":"bff","msg":"office callback","request_id":"lab-cb-docx","tenant_id":"tenant-lab","office_session_id":"mpeje4TRDZ6xezeXDcUB3OVs_g_h4pB2ag-_U11ZmCs","route":"/api/office/callback","status":200,"latency_ms":4,"operator_class":"ok","outcome":"success","onlyoffice_status":2,"idempotent_replay":false,"event":"office_callback"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > XLSX: open (signed download) → edit callback → changed bytes + new revision
+{"timestamp":"2026-08-18T14:32:37.496Z","level":"info","service":"bff","msg":"office config mint","request_id":"lab-mint-xlsx","tenant_id":"tenant-lab","office_session_id":"xuD-kt0v7eoeqf_Qk_yJcpIPJf8ZOA21-KKVkMK3huU","route":"/api/office/sessions","latency_ms":0,"operator_class":"ok","outcome":"success","file_type":"xlsx","mode":"edit","event":"office_config_mint"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > XLSX: open (signed download) → edit callback → changed bytes + new revision
+{"timestamp":"2026-08-18T14:32:37.497Z","level":"info","service":"bff","msg":"office download ok","request_id":"lab-dl-xlsx","tenant_id":"tenant-lab","office_session_id":"xuD-kt0v7eoeqf_Qk_yJcpIPJf8ZOA21-KKVkMK3huU","route":"/api/office/sessions/:id/content","status":200,"latency_ms":0,"size_bucket":"lt_1kb","size_bytes":36,"outcome":"success","file_type":"xlsx","mode":"edit","event":"office_download"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > XLSX: open (signed download) → edit callback → changed bytes + new revision
+{"timestamp":"2026-08-18T14:32:37.499Z","level":"info","service":"bff","msg":"office callback","request_id":"lab-cb-xlsx","tenant_id":"tenant-lab","office_session_id":"xuD-kt0v7eoeqf_Qk_yJcpIPJf8ZOA21-KKVkMK3huU","route":"/api/office/callback","status":200,"latency_ms":2,"operator_class":"ok","outcome":"success","onlyoffice_status":2,"idempotent_replay":false,"event":"office_callback"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > records callback status codes and latency on metrics path
+{"timestamp":"2026-08-18T14:32:37.500Z","level":"info","service":"bff","msg":"office config mint","request_id":"lab-mint-docx","tenant_id":"tenant-lab","office_session_id":"9GZYa3snWhNG1ioJoYAUgRgwojpIIJWLvPJ5Lm0WyUE","route":"/api/office/sessions","latency_ms":0,"operator_class":"ok","outcome":"success","file_type":"docx","mode":"edit","event":"office_config_mint"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > records callback status codes and latency on metrics path
+{"timestamp":"2026-08-18T14:32:37.501Z","level":"info","service":"bff","msg":"office download ok","request_id":"lab-dl-docx","tenant_id":"tenant-lab","office_session_id":"9GZYa3snWhNG1ioJoYAUgRgwojpIIJWLvPJ5Lm0WyUE","route":"/api/office/sessions/:id/content","status":200,"latency_ms":0,"size_bucket":"lt_1kb","size_bytes":36,"outcome":"success","file_type":"docx","mode":"edit","event":"office_download"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > records callback status codes and latency on metrics path
+{"timestamp":"2026-08-18T14:32:37.501Z","level":"info","service":"bff","msg":"office callback","request_id":"lab-cb-docx","tenant_id":"tenant-lab","office_session_id":"9GZYa3snWhNG1ioJoYAUgRgwojpIIJWLvPJ5Lm0WyUE","route":"/api/office/callback","status":200,"latency_ms":0,"operator_class":"ok","outcome":"success","onlyoffice_status":2,"idempotent_replay":false,"event":"office_callback"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > failed callback (status 3) records failed save and user-facing error
+{"timestamp":"2026-08-18T14:32:37.503Z","level":"info","service":"bff","msg":"office config mint","request_id":"803b9e58-30c3-4b36-a2a7-3728bb1a632a","tenant_id":"tenant-lab","office_session_id":"cah1J8wpqyDRuWQui06bpUmW517sgpHTVXaH4UacSOI","route":"/api/office/sessions","latency_ms":1,"operator_class":"ok","outcome":"success","file_type":"docx","mode":"edit","event":"office_config_mint"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > failed callback (status 3) records failed save and user-facing error
+{"timestamp":"2026-08-18T14:32:37.503Z","level":"info","service":"bff","msg":"office callback","request_id":"fa7e5144-7863-463b-b405-a0031035c1ed","tenant_id":"tenant-lab","office_session_id":"cah1J8wpqyDRuWQui06bpUmW517sgpHTVXaH4UacSOI","route":"/api/office/callback","status":200,"latency_ms":0,"error_code":"write_failed","operator_class":"write_failed","outcome":"error","onlyoffice_status":3,"event":"office_callback"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > failed callback (bad nonce) returns non-zero error with clear code
+{"timestamp":"2026-08-18T14:32:37.504Z","level":"info","service":"bff","msg":"office config mint","request_id":"34312999-f993-4e68-89ec-3ad0963a782f","tenant_id":"tenant-lab","office_session_id":"EhRQF4Hb6xLb1_bFHrAXgFcnfJUg0VLjhIVk4cvPWrg","route":"/api/office/sessions","latency_ms":0,"operator_class":"ok","outcome":"success","file_type":"docx","mode":"edit","event":"office_config_mint"}
+
+stdout | test/office-lab-roundtrip.integration.test.ts > lp-5q6.28 lab ONLYOFFICE open/edit/save/callback round trip > failed callback (bad nonce) returns non-zero error with clear code
+{"timestamp":"2026-08-18T14:32:37.504Z","level":"info","service":"bff","msg":"office callback","request_id":"60d082e0-30a3-4dc8-a7c1-d4f2e361db99","tenant_id":"tenant-lab","office_session_id":"EhRQF4Hb6xLb1_bFHrAXgFcnfJUg0VLjhIVk4cvPWrg","route":"/api/office/callback","status":403,"latency_ms":0,"error_code":"invalid_nonce","operator_class":"bff_callback_rejected","outcome":"denied","onlyoffice_status":2,"event":"office_callback"}
+
+ ✓ test/office-lab-roundtrip.integration.test.ts (5 tests) 39ms
+ ✓ test/office-callback.test.ts (39 tests) 102ms
+
+ Test Files  3 passed (3)
+      Tests  50 passed (50)
+   Start at  10:32:36
+   Duration  988ms (transform 736ms, setup 0ms, collect 2.20s, tests 161ms, environment 0ms, prepare 116ms)
+
