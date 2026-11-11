@@ -1,0 +1,89 @@
+# Documentation-only example inputs for modules/portal-control-plane-service.
+# Copy to a *private* terraform.tfvars — never commit live account IDs or secrets.
+# NOT auto-applied from git examples.
+#
+# G1 doctrine: this module forces an INTERNAL ALB only. Public control-plane ALB is rejected.
+
+name_prefix = "lanyard-portal-staging"
+environment = "staging"
+
+vpc_id = "vpc-00000000000000000"
+private_subnet_ids = [
+  "subnet-00000000000000003",
+  "subnet-00000000000000004",
+]
+
+# MUST stay true (default). Public ALB is rejected.
+internal = true
+
+# Prefer BFF (and relay) task security groups as consumers.
+allowed_ingress_security_group_ids = [
+  "sg-00000000000000001",
+]
+# Optional private CIDRs only — 0.0.0.0/0 rejected:
+# allowed_ingress_cidr_blocks = ["10.0.0.0/16"]
+
+image_repository = "000000000000.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/portal/control-plane"
+image_digest     = "sha256:0000000000000000000000000000000000000000000000000000000000000004"
+image_tag_hint   = "v0.0.0-example"
+
+container_port    = 8080
+health_check_path = "/health"
+desired_count     = 1
+create_ecs_cluster = true
+
+# Non-secret env only. Production-like / staging environments reject known secret names
+# here. OIDC client secrets (GOOGLE_CLIENT_SECRET / OIDC_CLIENT_SECRET) are rejected in
+# plain env for EVERY environment label — always use the secrets map.
+# environment_variables = {
+#   NODE_ENV                 = "production"
+#   CONTROL_PLANE_AUTH_MODE  = "production"
+#   GOOGLE_CLIENT_ID         = "REPLACE.apps.googleusercontent.com" # public OAuth client id
+# }
+
+# Legacy G4.3 path: RDS module secret ARN → injects CONTROL_PLANE_DATABASE_URL *and*
+# DATABASE_URL. control-plane-rds stores a JSON secret; default format is json_keys
+# so ECS valueFrom becomes …:CONTROL_PLANE_DATABASE_URL:: and …:DATABASE_URL::.
+# Bare ARN of a JSON secret injects the whole JSON blob and breaks Postgres URL parsing.
+# database_url_secret_arn    = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/cp-db-url-AbCdEf"
+# database_url_secret_format = "json_keys" # or "plain" if the SM secret string is only the URL
+
+# Generic SM/SSM injection (preferred for additional secrets). Merges with
+# database_url_secret_arn; secrets map wins on key conflict. ARNs only — never secret values.
+#
+# OIDC (cbd-mta.3.2): client secret + service/ops tokens via secrets map only.
+# Google Console redirect URIs are registered against the *BFF* path-first hosts
+# (see portal-bff-service README / staging-secrets-checklist) — not the private CP ALB.
+# Memberships are CP DB grants after verified google_sub — not Google group claims.
+# secrets = {
+#   # When wiring DB URL via the map (instead of database_url_secret_arn), include the
+#   # JSON key suffix for control-plane-rds JSON secrets:
+#   CONTROL_PLANE_DATABASE_URL = {
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/cp-db-url-AbCdEf:CONTROL_PLANE_DATABASE_URL::"
+#   }
+#   DATABASE_URL = {
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/cp-db-url-AbCdEf:DATABASE_URL::"
+#   }
+#   GOOGLE_CLIENT_SECRET = {
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/google-client-secret-AbCdEf"
+#   }
+#   CONTROL_PLANE_SERVICE_TOKEN = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/service-token"
+#   }
+#   INTERNAL_OPS_TOKEN = {
+#     value_from = "arn:aws:ssm:us-east-1:000000000000:parameter/lanyard/staging/portal/internal-ops-token"
+#   }
+#   INSTANCE_SECRET_MATERIAL_KEY = {
+#     value_from = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/portal/cp-instance-secret-material-key-AbCdEf"
+#   }
+# }
+#
+# Durable instance secret material envelope (lp-oop.37.6). Create the secret
+# outside Terraform (empty JSON object). Unset INSTANCE_SECRET_MATERIAL_PATH.
+# instance_secret_material_sm_secret_arn = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/portal/control-plane/instance-secret-material-AbCdEf"
+
+acknowledge_not_auto_applied = true
+
+tags = {
+  Owner = "platform"
+}
