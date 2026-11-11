@@ -39,12 +39,12 @@
     },
     "assistant-reply": {
       "ok": true,
-      "detail": "len=169 excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.33-ui-harness-ping\\n1:32 PM\\n\\u00b7\\ngrok-3'",
+      "detail": "len=169 excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.33-ui-harness-ping\\n1:32 PM\\n\u00b7\\ngrok-3'",
       "screenshot": "05-assistant-reply.png"
     },
     "echo-or-pong": {
       "ok": true,
-      "detail": "excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.33-ui-harness-ping\\n1:32 PM\\n\\u00b7\\ngrok-3'",
+      "detail": "excerpt='echo: Do not use any tools, skills, web search, vault, bash, or files. Reply with exactly this one line and nothing else: pong lp-oop.33-ui-harness-ping\\n1:32 PM\\n\u00b7\\ngrok-3'",
       "screenshot": null
     },
     "stream": {
