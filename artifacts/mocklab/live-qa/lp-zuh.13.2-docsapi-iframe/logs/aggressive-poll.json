@@ -1,0 +1,152 @@
+{
+  "hit": {
+    "docsapi": true,
+    "host": true,
+    "loading": false,
+    "loadingText": false,
+    "err": null,
+    "iframe_count": 1,
+    "iframe_src": [
+      "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+    ],
+    "t": 0.31
+  },
+  "samples": [
+    {
+      "docsapi": false,
+      "host": false,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 0,
+      "iframe_src": [],
+      "t": 0.0
+    },
+    {
+      "docsapi": false,
+      "host": false,
+      "loading": false,
+      "loadingText": true,
+      "err": null,
+      "iframe_count": 0,
+      "iframe_src": [],
+      "t": 0.11
+    },
+    {
+      "docsapi": false,
+      "host": true,
+      "loading": true,
+      "loadingText": true,
+      "err": null,
+      "iframe_count": 0,
+      "iframe_src": [],
+      "t": 0.21
+    },
+    {
+      "docsapi": true,
+      "host": true,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 1,
+      "iframe_src": [
+        "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+      ],
+      "t": 0.31
+    },
+    {
+      "docsapi": true,
+      "host": true,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 1,
+      "iframe_src": [
+        "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+      ],
+      "t": 0.47
+    },
+    {
+      "docsapi": true,
+      "host": true,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 1,
+      "iframe_src": [
+        "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+      ],
+      "t": 0.58
+    },
+    {
+      "docsapi": true,
+      "host": true,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 1,
+      "iframe_src": [
+        "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+      ],
+      "t": 0.68
+    },
+    {
+      "docsapi": true,
+      "host": true,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 1,
+      "iframe_src": [
+        "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+      ],
+      "t": 0.79
+    },
+    {
+      "docsapi": true,
+      "host": true,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 1,
+      "iframe_src": [
+        "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+      ],
+      "t": 0.9
+    },
+    {
+      "docsapi": true,
+      "host": true,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 1,
+      "iframe_src": [
+        "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+      ],
+      "t": 1.0
+    },
+    {
+      "docsapi": true,
+      "host": true,
+      "loading": false,
+      "loadingText": false,
+      "err": null,
+      "iframe_count": 1,
+      "iframe_src": [
+        "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+      ],
+      "t": 1.14
+    },
+    {
+      "docsapi": true,
+      "host": false,
+      "loading": false,
+      "loadingText": false,
+      "err": "Editor failed to load\nCould not load the Office editor. Check that Document Server is reachable and try again. (DocsAPI onError)",
+      "iframe_count": 0,
+      "iframe_src": [],
+      "t": 1.24
+    }
+  ]
+}
