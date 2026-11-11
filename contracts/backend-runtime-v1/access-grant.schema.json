@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/backend-runtime-v1/access-grant.schema.json",
+  "title": "Access grant (backend-runtime-v1 / lp-ye4.9)",
+  "description": "Signed, scoped authority for humans and unknown agents operating on vault paths. BFF validates grants at the boundary and stamps BackendRuntimeContext + ledger actor provenance. Never trust browser-supplied ACL, agent path claims, or unsigned identity bags as authority. Grant identity is separate from DocumentRevision and operation_id.",
+  "$comment": "Bead lp-ye4.9 / epic lp-ye4. Phase 5 of multiplayer versioning and access ledger.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_type",
+    "grant_id",
+    "tenant_id",
+    "subject",
+    "path_prefixes",
+    "capabilities",
+    "issued_at",
+    "expires_at",
+    "signature"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Access-grant domain schema major. Bump only with breaking shape changes."
+    },
+    "record_type": {
+      "type": "string",
+      "const": "access_grant",
+      "description": "Discriminator for multi-type auth objects."
+    },
+    "grant_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^grant_[A-Za-z0-9._:-]+$",
+      "description": "Stable grant id. Prefixed grant_. Stored on ledger actor.grant_id; never a secret."
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Tenant this grant authorizes. BFF rejects grants whose tenant_id does not match the request tenant."
+    },
+    "instance_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Optional backend instance binding. When set, BFF may reject cross-instance use."
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Optional Portal/Office session binding. When set, the grant is only valid for that session: BFF fail-closes (wrong_session) if the request omits sessionId or supplies a different value. Unbound grants (no session_id) may be used without a request session."
+    },
+    "subject": {
+      "$ref": "#/$defs/grantSubject"
+    },
+    "path_prefixes": {
+      "type": "array",
+      "description": "Vault-root-relative absolute path prefixes this grant authorizes. Empty array denies all paths. BFF uses these prefixes as the effective ACL after validation — never browser/agent pathPrefixes claims.",
+      "items": {
+        "$ref": "#/$defs/vaultPath"
+      },
+      "minItems": 0,
+      "maxItems": 64,
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "Capability names this grant authorizes (Brain RPC methods and/or feature-like names). BFF checks the operation capability is listed before stamping context.",
+      "items": {
+        "$ref": "#/$defs/grantCapability"
+      },
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true
+    },
+    "issued_at": {
+      "$ref": "#/$defs/isoDateTime",
+      "description": "When the grant was issued (issuer clock)."
+    },
+    "not_before": {
+      "$ref": "#/$defs/isoDateTime",
+      "description": "Optional earliest acceptance time. Defaults to issued_at when omitted."
+    },
+    "expires_at": {
+      "$ref": "#/$defs/isoDateTime",
+      "description": "Hard expiry. BFF rejects grants with expires_at <= now."
+    },
+    "issuer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Optional issuer label (control-plane, host, lab fixture)."
+    },
+    "backend_profile": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Optional backend profile name to stamp on context (admin, contributor, agent_run, …)."
+    },
+    "signature": {
+      "$ref": "#/$defs/grantSignature"
+    },
+    "meta": {
+      "type": "object",
+      "description": "Optional non-authoritative tags (request correlation). Never secrets or raw tokens.",
+      "additionalProperties": true,
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tool_call_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 512
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "isoDateTime": {
+      "type": "string",
+      "minLength": 1,
+      "description": "RFC3339 / ISO-8601 timestamp. Prefer UTC with Z."
+    },
+    "vaultPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "^/",
+      "description": "Vault-root-relative absolute path starting with /."
+    },
+    "actorKind": {
+      "type": "string",
+      "enum": ["human", "agent", "system", "delegated_agent"],
+      "description": "Who the grant authorizes. human = Portal user. agent = known backend agent subject. system = host-internal. delegated_agent = agent run under a human/parent grant (unknown or short-lived agent identity)."
+    },
+    "grantSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "subject_id"],
+      "description": "Safe subject identity bound by the grant. Mirrors signed-operation actor fields that may be stamped into ledger events. Never secrets or browser ACL claims.",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/actorKind"
+        },
+        "subject_id": {
+          "$ref": "#/$defs/nonEmptyString",
+          "description": "Stable subject id for this actor kind."
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "portal_user_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Portal end-user id when kind is human or when a human delegated the run."
+        },
+        "agent_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Agent product/instance subject when kind is agent or delegated_agent."
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Agent run / tool-call correlation id when kind is delegated_agent or agent."
+        }
+      }
+    },
+    "grantCapability": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.*:-]*$",
+      "description": "Capability or method name. Common values: vault.read, vault.write, vault.list, vault.stat, history.list, heads.artifact, heads.workspace. Wildcard forms (vault.*) are issuer convention — BFF may match exactly or by documented prefix rules."
+    },
+    "signatureAlgorithm": {
+      "type": "string",
+      "enum": ["ed25519", "hmac-sha256", "none"],
+      "description": "Grant signing algorithm. Production issuers use ed25519. none is offline/fake only — BFF must require allowUnsigned in trust config."
+    },
+    "grantSignature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alg", "key_id", "value", "signed_at"],
+      "description": "Issuer signature over the canonical unsigned grant envelope. key_id identifies the signing key for rotation and trust lookup. BFF never accepts browser-forged signatures as authority.",
+      "properties": {
+        "alg": {
+          "$ref": "#/$defs/signatureAlgorithm"
+        },
+        "key_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Signing key identifier. Must be in BFF trusted key set."
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Signature bytes as unpadded base64 (or the literal 'unsigned' when alg is none)."
+        },
+        "signed_at": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "signed_fields": {
+          "type": "array",
+          "description": "Optional explicit field list included in the signature payload.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
