@@ -1,0 +1,28 @@
+
+============================================================
+  Results for: "MockLab zero-waiver"
+============================================================
+
+  [1] mocklab / general
+      Source: lp-zuh117-probe.md
+      Match:  cosine_sim=0.443  bm25=0.863
+
+      lp-zuh.11.7 probe note MockLab zero-waiver kitchen sink
+
+  --------------------------------------------------------
+
+EXIT:0
+
+============================================================
+  Results for: "lp-zuh.11.7"
+============================================================
+
+  [1] mocklab / general
+      Source: lp-zuh117-probe.md
+      Match:  cosine_sim=0.396  bm25=0.863
+
+      lp-zuh.11.7 probe note MockLab zero-waiver kitchen sink
+
+  --------------------------------------------------------
+
+EXIT2:0
