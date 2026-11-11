@@ -1,0 +1,169 @@
+{
+  "bead_id": "lp-oop.38.14",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "login": "agent-dev@mocklab.example.com",
+  "started_at": "2026-08-21T01:46:56.577256+00:00",
+  "prompt_marker": "lp-oop.38.14-20260821T014656Z",
+  "prompt": "Marker lp-oop.38.14-20260821T014656Z. First list every tool name you can call, one per line. Then, if spawn_subagent is in that list, you MUST call spawn_subagent exactly once: name='qa-helper', description='lp-oop.38.14 harness spawn QA', prompt='Reply with exactly: SUBAGENT_OK lp-oop.38.14-20260821T014656Z. Do not use other tools.' After the subagent finishes, briefly report its reply and isolation (expect isolation none). If spawn_subagent is NOT in your tool list, reply with exactly SPAWN_TOOL_MISSING and stop. Do not use bash, echo, read, or grep as a substitute for spawn_subagent. Do not refuse: subagents.enabled is true and isolation is none.",
+  "chip_wait_s": 180,
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "selector_map": null,
+  "proof_notes": "Live thread ba85bef3. 2-agents chip, qa-helper activity detail, isolationEffective none, SUBAGENT_OK. wait.spawn_tool_missing and wait.tool_not_available match those strings in the user prompt, not the assistant reply.",
+  "checks": {
+    "shell_auth": {
+      "ok": true,
+      "detail": "agents=1 vault=1 tools=1 url=https://app.withlanyard.com/mocklab/chat",
+      "screenshot": null
+    },
+    "nav_agents": {
+      "ok": true,
+      "detail": "https://app.withlanyard.com/mocklab/chat",
+      "screenshot": null
+    },
+    "nav_vault_regression": {
+      "ok": true,
+      "detail": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nSearch\ncron\nKnowledge\nlp-kng67-demo\nmempalace\nProjects\nskills\nwf_201a8d6b422d6a9c\nwf_3c7074c04166c77c\nwf_4e8440b25d42613a\nwf_56a547dbdbd8842c\nwf_7fad97d2e",
+      "screenshot": null
+    },
+    "nav_tools_regression": {
+      "ok": true,
+      "detail": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nSkills\nWorkflows\nMCP\nModels\nIntegrations\nRefresh\nNo skills in this snapshot.",
+      "screenshot": null
+    },
+    "new_chat_composer": {
+      "ok": true,
+      "detail": "https://app.withlanyard.com/mocklab/chat",
+      "screenshot": null
+    },
+    "prompt_sent": {
+      "ok": true,
+      "detail": "lp-oop.38.14-20260821T014656Z",
+      "screenshot": null
+    },
+    "subagent_row": {
+      "ok": true,
+      "detail": "chips=2 helper=0 hist_spawn=0 disabled=False reason=ui_row chip={'testid': 'dither-avatar-call-52831773-995b-4de9-92aa-47de5960e281-0', 'run_id': 'call-52831773-995b-4de9-92aa-47de5960e281-0', 'status': 'done'}",
+      "screenshot": "08-subagent-row.png"
+    },
+    "not_subagents_disabled": {
+      "ok": true,
+      "detail": "no SUBAGENTS_DISABLED",
+      "screenshot": null
+    },
+    "chip_click_activity": {
+      "ok": true,
+      "detail": "detail=True",
+      "screenshot": "09-activity-detail.png"
+    },
+    "subagent_roster": {
+      "ok": true,
+      "detail": "roster=True",
+      "screenshot": "10-roster.png"
+    },
+    "final": {
+      "ok": true,
+      "detail": "https://app.withlanyard.com/mocklab/chat",
+      "screenshot": null
+    }
+  },
+  "screenshots": [
+    "artifacts/ui/lp-oop.38.14/08-subagent-row.png",
+    "artifacts/ui/lp-oop.38.14/09-activity-detail.png",
+    "artifacts/ui/lp-oop.38.14/10-roster.png"
+  ],
+  "errors": [],
+  "network": {
+    "thread_message_posts": [
+      {
+        "method": "POST",
+        "url": "https://app.withlanyard.com/mocklab/api/chat/threads/ba85bef3-a0e9-42ac-98e1-3e92f38cd3ec/messages",
+        "status": 200
+      }
+    ],
+    "status_401": [
+      {
+        "method": "GET",
+        "url": "https://app.withlanyard.com/mocklab/api/auth/me",
+        "status": 401
+      }
+    ],
+    "status_5xx": []
+  },
+  "passed": true,
+  "skipped": false,
+  "spa_entry": {
+    "requested": "https://app.withlanyard.com/mocklab/",
+    "url": "https://app.withlanyard.com/mocklab/chat",
+    "mocklab_spa_not_found": false,
+    "not_found": false,
+    "sign_in_visible": true,
+    "shell_ready": false
+  },
+  "thread_id": "ba85bef3-a0e9-42ac-98e1-3e92f38cd3ec",
+  "history": {
+    "ok": true,
+    "status": 200,
+    "url": "/mocklab/api/chat/threads/ba85bef3-a0e9-42ac-98e1-3e92f38cd3ec/history",
+    "event_count": 1,
+    "event_types": [
+      "user_message"
+    ],
+    "spawn_rows": [],
+    "spawn_count": 0,
+    "disabled": false,
+    "subagent_ok": true,
+    "isolation_none": false
+  },
+  "history_events_redacted": [
+    {
+      "type": "user_message",
+      "message_id": "6bea55e8-a71a-4e9a-8103-8626f907be0c",
+      "content": "Marker lp-oop.38.14-20260821T014656Z. First list every tool name you can call, one per line. Then, if spawn_subagent is in that list, you MUST call spawn_subagent exactly once: name='qa-helper', description='lp-oop.38.14 harness spawn QA', prompt='Reply with exactly: SUBAGENT_OK lp-oop.38.14-20260821T014656Z. Do not use other tools.' After the subagent finishes, briefly report its reply and isolation (expect isolation none). If spawn_subagent is NOT in your tool list, reply with exactly SPAWN_TO\u2026",
+      "created_at": "2026-08-21T01:47:11.017Z",
+      "chat_id": "ba85bef3-a0e9-42ac-98e1-3e92f38cd3ec"
+    }
+  ],
+  "wait": {
+    "chip_count": 2,
+    "helper_label_count": 0,
+    "disabled_in_body": false,
+    "first_chip": {
+      "testid": "dither-avatar-call-52831773-995b-4de9-92aa-47de5960e281-0",
+      "run_id": "call-52831773-995b-4de9-92aa-47de5960e281-0",
+      "status": "done"
+    },
+    "body_has_subagent_ok": true,
+    "tool_not_available": true,
+    "spawn_tool_missing": true,
+    "agent_starting": false,
+    "closed": false,
+    "wait_s": 61.5,
+    "reason": "ui_row"
+  },
+  "wait_body_excerpt": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nDemo\nNo chats yet\nDemo2\nNo chats yet\nGeneral\nDrift\nSUBAGENT_OK lp-oop.38.14-20260821T014656Z (isol\u2026\nNew agent\nAug 21\nScheduled Tasks\nGPU capacity brief lp-zuh.10.4-20260814170905\nAug 21\nDrift\nMarker lp-oop.38.14-20260821T014656Z. First list every tool name you can call, one per line. Then, if spawn_subagent is in that list, you MUST call spawn_subagent exactly once: name='qa-helper', description='lp-oop.38.14 harness spawn QA', prompt='Reply with exactly: SUBAGENT_OK lp-oop.38.14-20260821T014656Z. Do not use other tools.' After the subagent finishes, briefly report its reply and isolation (expect isolation none). If spawn_subagent is NOT in your tool list, reply with exactly SPAWN_TOOL_MISSING and stop. Do not use bash, echo, read, or grep as a substitute for spawn_subagent. Do not refuse: subagents.enabled is true and isolation is none.\n9:47 PM\n\u00b7\ngrok-4.20-0309-non-reasoning\n2 agents\nSUBAGENT_OK lp-oop.38.14-20260821T014656Z (isolation: none)\n9:48 PM\n\u00b7\ngrok-4.20-0309-non-reasoning\nScroll to bottom\nHello, agent-dev.\nNo project\nAuto \u00b7 Complex",
+  "activity_pane_open": true,
+  "detail_run_id": "call-52831773-995b-4de9-92aa-47de5960e281-0",
+  "detail_status": "done",
+  "roster_row_count": 2,
+  "live": {
+    "login_ok": true,
+    "prompt_sent": true,
+    "chip_visible": true,
+    "helper_label": false,
+    "history_spawn": false,
+    "disabled": false,
+    "clicked_chip": true,
+    "detail_visible": true,
+    "roster_visible": true,
+    "subagent_ok_text": true,
+    "isolation_none": false,
+    "tool_not_available": false,
+    "bash_instead_of_spawn": false
+  },
+  "summary": "live_ok=True row_ok=True chips=2 helper=0 hist_spawn=0 disabled=False clicked=True thread=ba85bef3-a0e9-42ac-98e1-3e92f38cd3ec tool_not_available=False bash=False",
+  "finished_at": "2026-08-21T01:48:14.836835+00:00",
+  "url": "https://app.withlanyard.com/mocklab/chat"
+}
