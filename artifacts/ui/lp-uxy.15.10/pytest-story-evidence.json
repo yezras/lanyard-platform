@@ -1,0 +1,14 @@
+{
+  "bead_id": "lp-uxy.15.10",
+  "story": "parse-document",
+  "cost_gated": true,
+  "parse_document_live": false,
+  "bff_parse": false,
+  "friendly_label": "Parsing a document",
+  "docx_marker": true,
+  "pdf_marker": true,
+  "negatives": {
+    "path_denied": true,
+    "unsupported_scanned": true
+  }
+}

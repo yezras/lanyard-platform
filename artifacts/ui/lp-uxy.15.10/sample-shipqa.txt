@@ -1,0 +1,2 @@
+LANYARD_SHIPQA_PARSE_DOC_MARKER
+Plain text ship QA for parse_document path.

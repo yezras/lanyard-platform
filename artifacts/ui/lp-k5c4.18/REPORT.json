@@ -1,0 +1,19 @@
+{
+  "bead": "lp-k5c4.18",
+  "title": "Mailbox icon without target inbound (tools runner + prove Drift 1:1)",
+  "branch": "beads/lp-k5c4.18-mailbox-runner",
+  "checks": [
+    {"ok": true, "detail": "Tools-capable runner: POST /internal/mailbox/send with x-harness-service-token succeeds"},
+    {"ok": true, "detail": "Origin Messaged @Drift notice painted via applyMailboxHop (1:1 system_notice)"},
+    {"ok": true, "detail": "Target Drift 1:1 enqueued via harness startTurn with hidden_instruction + room_tail (lac-r9w contract)"},
+    {"ok": true, "detail": "No nested startTurn on caller: only target thread gets turn"},
+    {"ok": true, "detail": "No raw /api HTTP from model: 401 without harness token"},
+    {"ok": true, "detail": "Nonce dedupe idempotent: replay returns same message_id, no second wake"},
+    {"ok": true, "detail": "Fuse 40/hour and 8 consecutive without human trips to 429 fuse_tripped, human resets consecutive"},
+    {"ok": true, "detail": "Halt freeze returns 423 frozen"},
+    {"ok": true, "detail": "Playwright both-rooms placeholder + harness-token gate verified"}
+  ],
+  "shots": ["01-after-login.png", "02-both-rooms-placeholder.png"],
+  "offline_proof": "portal/packages/bff/test/mailbox-send.test.ts (4 tests PASS)",
+  "playwright_proof": "portal/apps/web/ui-testing/test_lp_k5c4_18_mailbox_runner.py (harness-token gate + both-rooms artifact)"
+}

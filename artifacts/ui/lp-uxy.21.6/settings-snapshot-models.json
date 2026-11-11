@@ -1,0 +1,44 @@
+{
+  "source": "lanyard_agent",
+  "backend_home": "/home/operator/.lanyard-agent",
+  "models": [
+    {
+      "provider": "litellm",
+      "model": "grok-4.5",
+      "is_active": true,
+      "connected": true
+    },
+    {
+      "provider": "litellm",
+      "model": "lanyard-simple",
+      "is_active": false,
+      "connected": true
+    },
+    {
+      "provider": "litellm",
+      "model": "lanyard-moderate",
+      "is_active": false,
+      "connected": true
+    },
+    {
+      "provider": "litellm",
+      "model": "lanyard-complex",
+      "is_active": false,
+      "connected": true
+    },
+    {
+      "provider": "litellm",
+      "model": "lanyard-reasoning",
+      "is_active": false,
+      "connected": true
+    },
+    {
+      "provider": "litellm",
+      "model": "lanyard-auto",
+      "is_active": false,
+      "connected": true
+    }
+  ],
+  "skills_count": 11,
+  "crons_count": 4
+}
