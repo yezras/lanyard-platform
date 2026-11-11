@@ -1,0 +1,51 @@
+# ---------------------------------------------------------------------------
+# EXAMPLE ONLY (lp-k7g.7.6) — target outputs for multi-backend landing zones
+#
+# Merge into modules/product-artifact-infra/outputs.tf at phase 6.
+# Replace $BUCKET with aws_s3_bucket.artifacts.id in the real module.
+# Design: docs/architecture/deploy-artifact-landing-zones.md
+# ---------------------------------------------------------------------------
+
+# output "artifact_prefixes" {
+#   description = "Normalized product object key prefixes (trailing slash)."
+#   value = {
+#     hermes_lanyard  = local.hermes_lanyard_prefix   # backends/hermes-lanyard/
+#     lanyard_agent   = local.lanyard_agent_prefix    # backends/lanyard-agent/
+#     hermes_upstream = local.hermes_upstream_prefix  # backends/hermes-upstream/
+#     client_core     = local.client_core_prefix      # client-core/  UNCHANGED
+#     portal_web      = local.portal_web_prefix       # portal-web/   UNCHANGED
+#     hermes          = local.hermes_prefix           # hermes/ TEMPORARY
+#   }
+# }
+
+# output "backend_artifact_url_template" {
+#   description = "Generic backend pin URL (replace KIND_SLUG, VERSION, ARCH, FILENAME). Default ARCH=linux-x86_64."
+#   value       = "s3://${aws_s3_bucket.artifacts.id}/backends/<KIND_SLUG>/<VERSION>/<ARCH>/<FILENAME>"
+# }
+
+# output "hermes_lanyard_artifact_url_template" {
+#   description = "Hermes-Lanyard pin URL template under backends/ (arch-labeled)."
+#   value       = "s3://${aws_s3_bucket.artifacts.id}/backends/hermes-lanyard/<VERSION>/<ARCH>/<FILENAME>"
+# }
+
+# output "lanyard_agent_artifact_url_template" {
+#   description = "Lanyard Agent pin URL template under backends/ (arch-labeled)."
+#   value       = "s3://${aws_s3_bucket.artifacts.id}/backends/lanyard-agent/<VERSION>/<ARCH>/<FILENAME>"
+# }
+
+# Product hermes/ prefix — prefer arch-labeled; unlabeled is DEPRECATED.
+# output "hermes_artifact_url_template" {
+#   description = "Hermes product template (arch-labeled). Default ARCH=linux-x86_64."
+#   value       = "s3://${aws_s3_bucket.artifacts.id}/hermes/<VERSION>/<ARCH>/<FILENAME>"
+# }
+
+# UNCHANGED (arch-neutral seed — no <ARCH> segment):
+# output "client_core_artifact_url_template" {
+#   value = "s3://${aws_s3_bucket.artifacts.id}/client-core/<VERSION>/<FILENAME>"
+# }
+# output "portal_web_artifact_url_template" {
+#   value = "s3://${aws_s3_bucket.artifacts.id}/portal-web/<VERSION>/portal-web.tar.gz"
+# }
+
+# release_contract_summary.deploy_pins_require should list backend.* (not hermes.*)
+# after pins v2 cutover; keep hermes.* only as a temporary note during dual-write.
