@@ -1,0 +1,203 @@
+{
+  "bead": "lp-zuh.12.3",
+  "when": "2026-08-18T12:46:03Z",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "docx_path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+  "cookie_source": "artifacts/ui/.auth/mocklab-agent.json",
+  "csrf_present": true,
+  "probes": {
+    "auth_me": {
+      "status": 200,
+      "looks_like_spa_html": false
+    },
+    "context_vault_edit": true,
+    "mint_view": {
+      "status": 201,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "e373388df74c",
+      "mode": "view",
+      "file_type": "docx",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "idempotent_replay": false,
+      "editor_config": {
+        "documentType": "word",
+        "document_fileType": "docx",
+        "document_title": "lp-zuh123-mint-proof.docx",
+        "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/TdCazN942GAb1AYSLO6qO544SMOeDkcuYL6BN7Vo890/content",
+        "permissions_edit": false,
+        "editor_mode": "view",
+        "callback_url_path_present": true,
+        "token_present": true
+      }
+    },
+    "mint_view_replay": {
+      "status": 200,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "e373388df74c",
+      "mode": "view",
+      "file_type": "docx",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "idempotent_replay": true,
+      "editor_config": {
+        "documentType": "word",
+        "document_fileType": "docx",
+        "document_title": "lp-zuh123-mint-proof.docx",
+        "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/TdCazN942GAb1AYSLO6qO544SMOeDkcuYL6BN7Vo890/content",
+        "permissions_edit": false,
+        "editor_mode": "view",
+        "callback_url_path_present": true,
+        "token_present": true
+      }
+    },
+    "mint_edit": {
+      "status": 201,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "030c1a3fba44",
+      "mode": "edit",
+      "file_type": "docx",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "idempotent_replay": false,
+      "editor_config": {
+        "documentType": "word",
+        "document_fileType": "docx",
+        "document_title": "lp-zuh123-mint-proof.docx",
+        "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/VSzw-N45qadSUpyWeczq_u229-unjpzwo2txXZVRdbM/content",
+        "permissions_edit": true,
+        "editor_mode": "edit",
+        "callback_url_path_present": true,
+        "token_present": true
+      }
+    },
+    "mint_missing": {
+      "status": 422,
+      "looks_like_spa_html": false,
+      "json": {
+        "error": "Vault file not found"
+      }
+    },
+    "vault_content_get": {
+      "status": 200,
+      "looks_like_spa_html": false,
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "size_bytes": 1368
+    }
+  },
+  "verdict": "GO_MINT_HAPPY_PATH",
+  "acceptance": {
+    "mint_view_success_json": true,
+    "mint_view_status": 201,
+    "mint_replay_200": true,
+    "mint_edit_when_vault_edit": true,
+    "vault_edit": true,
+    "not_spa": true,
+    "missing_still_422_json": true
+  },
+  "context_vault_edit": true,
+  "vault_seed": {
+    "s3_key": "tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "bucket": "lanyard-mocklab-vault-123456789012",
+    "size_bytes": 1322
+  },
+  "cp_deploy": {
+    "task_definition": "lanyard-platform-staging-cp:25",
+    "image_tag": "lp-zuh123-cp-s3-store-202608181240",
+    "image_digest": "sha256:48a80a87c3d192ffed0c2ccad0d271d560defdde5463f3b197edbe922b6f367c",
+    "vault_object_store_configured": true
+  },
+  "notes": [
+    "New mint HTTP 201; idempotent replay with same caller_key HTTP 200.",
+    "CP task def :25 (lp-oop.37.1 S3 VaultObjectStore image) unblocked vault get/mint.",
+    "Tokens/JWTs/download query params redacted.",
+    "DocsAPI browser host not claimed (lp-zuh.12.4)."
+  ],
+  "probe_summaries": {
+    "mint_view": {
+      "status": 201,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "e373388df74c",
+      "mode": "view",
+      "file_type": "docx",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "idempotent_replay": false,
+      "editor_config": {
+        "documentType": "word",
+        "document_fileType": "docx",
+        "document_title": "lp-zuh123-mint-proof.docx",
+        "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/TdCazN942GAb1AYSLO6qO544SMOeDkcuYL6BN7Vo890/content",
+        "permissions_edit": false,
+        "editor_mode": "view",
+        "callback_url_path_present": true,
+        "token_present": true
+      }
+    },
+    "mint_view_replay": {
+      "status": 200,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "e373388df74c",
+      "mode": "view",
+      "file_type": "docx",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "idempotent_replay": true,
+      "editor_config": {
+        "documentType": "word",
+        "document_fileType": "docx",
+        "document_title": "lp-zuh123-mint-proof.docx",
+        "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/TdCazN942GAb1AYSLO6qO544SMOeDkcuYL6BN7Vo890/content",
+        "permissions_edit": false,
+        "editor_mode": "view",
+        "callback_url_path_present": true,
+        "token_present": true
+      }
+    },
+    "mint_edit": {
+      "status": 201,
+      "content_type": "application/json",
+      "looks_like_spa_html": false,
+      "session_id_present": true,
+      "document_key_present": true,
+      "document_key_prefix": "030c1a3fba44",
+      "mode": "edit",
+      "file_type": "docx",
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "idempotent_replay": false,
+      "editor_config": {
+        "documentType": "word",
+        "document_fileType": "docx",
+        "document_title": "lp-zuh123-mint-proof.docx",
+        "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/VSzw-N45qadSUpyWeczq_u229-unjpzwo2txXZVRdbM/content",
+        "permissions_edit": true,
+        "editor_mode": "edit",
+        "callback_url_path_present": true,
+        "token_present": true
+      }
+    },
+    "mint_missing": {
+      "status": 422,
+      "looks_like_spa_html": false,
+      "json": {
+        "error": "Vault file not found"
+      }
+    },
+    "vault_content_get": {
+      "status": 200,
+      "looks_like_spa_html": false,
+      "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+      "size_bytes": 1368
+    }
+  }
+}
