@@ -1,0 +1,3 @@
+name_prefix                   = "lanyard-portal-example"
+environment                   = "staging"
+acknowledge_not_auto_applied  = true

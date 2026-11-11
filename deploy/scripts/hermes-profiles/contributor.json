@@ -1,0 +1,14 @@
+{
+  "name": "contributor",
+  "role": "contributor",
+  "description": "Day-to-day authoring within allowed path prefixes (no ops elevation)",
+  "workdir": "",
+  "path_prefixes": [],
+  "capabilities": [
+    "vault_read",
+    "vault_write",
+    "chat"
+  ],
+  "enforced_by": "company-brain-bootstrap",
+  "schema_version": 1
+}

@@ -1,0 +1,20 @@
+{
+  "name": "admin",
+  "role": "admin",
+  "description": "Full vault and ops capabilities for tenant administrators",
+  "workdir": "",
+  "path_prefixes": ["/"],
+  "capabilities": [
+    "vault_full",
+    "vault_read",
+    "vault_write",
+    "chat",
+    "profile_manage",
+    "system_ops",
+    "shell_exec",
+    "gateway_config",
+    "beads_admin"
+  ],
+  "enforced_by": "company-brain-bootstrap",
+  "schema_version": 1
+}
