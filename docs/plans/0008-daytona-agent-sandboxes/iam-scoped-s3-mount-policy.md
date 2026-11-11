@@ -63,7 +63,7 @@ Sandbox guest process default: use Mountpoint with injected creds so the **agent
 ## Placeholders (templates)
 
 | Placeholder | Meaning |
-|-------------|---------| 
+|-------------|---------|
 | `${AWS_ACCOUNT_ID}` | Platform AWS account |
 | `${AWS_REGION}` | Region of the vault bucket |
 | `${LANYARD_VAULT_BUCKET}` | e.g. `lanyard-vault-staging` or lab `lanyard-mocklab-vault-123456789012` |
