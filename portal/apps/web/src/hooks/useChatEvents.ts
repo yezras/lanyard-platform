@@ -1606,7 +1606,7 @@ function isSelfImproveSkillSegment(segment: string): boolean {
 function isSelfImproveSkillName(name: string | undefined | null): boolean {
   if (!name) return false;
   if (isSelfImproveSkillSegment(name)) return true;
-  for (const segment of name.split(/[\/:]/)) {
+  for (const segment of name.split(/[/:]/)) {
     if (segment && isSelfImproveSkillSegment(segment)) return true;
   }
   return false;
