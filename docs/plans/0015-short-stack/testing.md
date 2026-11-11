@@ -1,0 +1,42 @@
+# 0015 testing
+
+Back: [overview](./overview.md).
+
+## Offline (every code leaf)
+
+- `bash scripts/validate.sh` when docs or contracts change.
+- `pnpm` / package vitest in `portal/packages/bff` and `portal/packages/control-plane` for touched packages.
+- Fake harness and FakeS3 only. No Daytona API. No live bucket.
+
+## Surfaces
+
+| Plane | How to prove |
+|---|---|
+| BFF chat flag off | Existing `chat.integration.test.ts` still passes |
+| BFF chat flag on | New tests vs fake harness. POST does not call `deliverInbound` |
+| Vault `cp_s3` | Tree/entries/content vs fake CP. No `ensureOnline` |
+| Office | Signed GET streams bytes from fake CP getObject |
+| Resolver | CP unit tests for primary fallback and two-user fixtures |
+| Tool image | Script asserts agent tree absent |
+| Live MockLab | Phase 8 only. Playwright via `web-ui-testing`. Evidence in `artifacts/mocklab/short-stack/` |
+| Harness deploy notes | Offline `bash deploy/scripts/smoke-mocklab-short-stack-harness.sh` (`lp-oop.30`). No AWS apply |
+| Live no-tool turn (`lp-oop.31`) | Real LA harness process + BFF `CHAT_DELIVERY=harness`. `bash deploy/scripts/prove-mocklab-short-stack-no-tool-turn.sh`. Relay spies stay 0. Offline: `bash deploy/scripts/smoke-mocklab-short-stack-no-tool-turn.sh`. Not real harness. |
+| No-tool **browser** proof (`lp-oop.36`) | Playwright against a **local** BFF with `ChatDelivery=harness` (`bash deploy/scripts/prove-mocklab-short-stack-no-tool-ui.sh`). Screenshots `artifacts/ui/lp-oop.36/`. Do **not** use `https://app.withlanyard.com/mocklab` — live AWS stays default relay. Offline: `bash deploy/scripts/smoke-mocklab-short-stack-no-tool-ui.sh`. |
+| Playwright harness path (`lp-oop.33`) | Send, stream, vault tree without wake. `bash deploy/scripts/prove-mocklab-short-stack-harness-ui.sh`. Screenshots + `REPORT.json` under `artifacts/ui/lp-oop.33/`. `GET /api/vault/tree` on `VaultPlane=cp_s3` must be 200 (not 502 wake). Do **not** use live AWS — OPERATOR HOLD; `chat_delivery` stays default relay. Offline: `bash deploy/scripts/smoke-mocklab-short-stack-harness-ui.sh`. |
+| Live tool + invariants (`lp-oop.32`) | `bash deploy/scripts/prove-mocklab-short-stack-invariants.sh`. Offline: `bash deploy/scripts/smoke-mocklab-short-stack-invariants.sh`. Fail closed. Do not flip live snapshot unless a human says so. |
+| Kitchen-sink re-QA (`lp-oop.34`) | Playwright kitchen-sink matrix on a **local** BFF (`ChatDelivery=harness`, `VaultPlane=cp_s3`). `bash deploy/scripts/prove-mocklab-short-stack-kitchen-sink.sh`. Screenshots `artifacts/ui/lp-oop.34/`. Gate `artifacts/mocklab/short-stack/kitchen-sink/RESULT.md` must be `GO` or `GO_WITH_WAIVERS` with waivers named. Guest path stays default relay. Offline: `bash deploy/scripts/smoke-mocklab-short-stack-kitchen-sink.sh`. Do **not** use `https://app.withlanyard.com/mocklab`. |
+| Relay retire (`lp-oop.35`) | Daytona harness hop has no `deliverInbound`. EC2/guest dual-run stays Relay. Offline: `bash deploy/scripts/smoke-mocklab-short-stack-relay-retire.sh`. BFF: `pnpm --filter @lanyard/bff test test/chat-relay-retire.test.ts`. Does **not** flip live AWS. |
+| Replace echo harness (`lp-oop.37.4`) | In-repo pin + start wrapper that binds optional `createEnvLiteLlmTurnRunner` from harness/index exports. Offline: `bash deploy/scripts/smoke-mocklab-replace-echo-harness-la.sh`. [LA PR 242](https://github.com/LanyardBrain/lanyard-agent/pull/242) **MERGED** (`52f5e4d`); live `:3` / `la-52f5e4d` is `createHarnessTurnServer`. Live reply still `echo:` until LA runner + operator roll. Does **not** terraform apply / `ecs update-service` / ECR push. Guest snapshot still has no agent-core tree requirement. |
+| Scheduled-task harness fire (`lp-oop.38.8`) | Offline: `pnpm --filter @lanyard/control-plane test test/scheduled-task-harness-fire.test.ts test/vault-scheduled-job-store.test.ts` and `pnpm --filter @lanyard/bff test test/settings-scheduled-tasks-harness.test.ts`. Create writes vault `cron/jobs.json` (no `ensure_online`). Fire is `fireScheduledTaskHarnessTurn` (tool_only wake + POST `/internal/turns` with tenant/user/instance). **Residual:** live `SCHEDULE_EVALUATOR_ENABLED` ticker is not rolled this wave. |
+| Kitchen-sink vault config (`lp-oop.38.18`) | Offline: `bash deploy/scripts/smoke-mocklab-harness-backend-home.sh` and `bash deploy/scripts/smoke-seed-mocklab-s3-vault.sh`. `config.yaml` has `subagents.enabled` / `mempalace.enabled` / `workflow.enabled`; harness `BACKEND_HOME` is that document plus `skills/` and `workflows/`. Guest smoke `smoke-no-lanyard-agent-tree.sh` still applies. Does **not** restore a fat snapshot or hit live AWS. |
+| Chat `scheduled_task` create (`lp-oop.38.16`) | Offline: `pnpm --filter @lanyard/control-plane test test/harness-scheduled-task-create.test.ts`. Chat-tool create maps onto the same vault `cron/jobs.json` (no guest tree, no ticker). Fire remains `fireScheduledTaskHarnessTurn`. LA runner bind: `createEnvToolsTurnRunner` registers `scheduled_task` when `CONTROL_PLANE_URL` + `CONTROL_PLANE_SERVICE_TOKEN` are set. |
+| Harness spawn_subagent (`lp-oop.38.14`) | Offline: LA `pnpm --filter @lanyard-agent/adapters-portal test` (`test/harness-subagents.test.ts`). Platform: `node --test deploy/dev/mocklab-short-stack-harness/ensure-subagents-config.test.mjs` plus `bash deploy/scripts/smoke-mocklab-replace-echo-harness-la.sh`. Vault `subagents.enabled` advertises spawn/get/kill; child file tools reuse parent toolbox `sandbox_id`; isolation `none`; max_depth 1. Image pin is LA `2477b22` (PR 253). Live `:10` / `la-2477b22` boots `spawn_schemas=present` + `subagents=enabled`. Live thread `0f2b339d` and follow-up `ba85bef3` showed the 2-agents chip, `qa-helper`, `SUBAGENT_OK`, `isolationEffective: none` (not `SUBAGENTS_DISABLED`). Screenshots under `artifacts/ui/lp-oop.38.14/`. Start wrapper seeds `$BACKEND_HOME/config.yaml`, passes `{ backendHome }` into `createEnvToolsTurnRunner`, and `HARNESS_REQUIRE_SPAWN=1` fails boot when schemas are missing. Portal already maps `tool_kind=subagent` (`lp-oop.38.7`). Kitchen-sink trees stay `lp-oop.38.18`. Track: [la-harness-subagents.md](./la-harness-subagents.md). |
+| Memory toolbox MemPalace (`lp-oop.38.13`) | Offline: LA `pnpm --filter @lanyard-agent/memory test` and `pnpm --filter @lanyard-agent/adapters-portal test -- test/harness-mempalace-toolbox.test.ts`. Platform: `bash deploy/scripts/smoke-harness-mempalace-placement.sh`. `MemoryClient.spawn = ToolboxClient.execute` against `/usr/local/bin/mempalace` and `/mnt/vault/mempalace`. Missing `sandbox_id` fail-closes (not `BINARY_MISSING`). `write_policy` disabled omits `memory_write`. Absent Fargate `config.yaml` still registers `memory_read`. Bake `HARNESS_REQUIRE_MEMORY=1` fails boot when `MEMORY_READ_TOOL_NAME` is missing. Companion LA `c41aca0` stacked on spawn `2477b22`. Live `:11` / `la-c41aca0` boot `memory_read=present`; turn `turn_3` returned `No memory hits.` (not `BINARY_MISSING`). |
+| Harness workflow (`lp-oop.38.15`) | Offline: LA `pnpm --filter @lanyard-agent/adapters-portal test test/harness-workflow.test.ts`. `workflow` is advertised when `config.workflow.enabled`. Launch `research-lite` (builtin) emits `workflow_progress`. Run `state.json` is mirrored to `/mnt/vault/workflows/runs/{run_id}/` via toolbox. Image copies `@lanyard-agent/workflow`. Guest stays tool-only. Live MockLab still needs the LA pin + image roll. |
+| Workflow run `state.json` citation (`lp-oop.38.22`) | Offline: `pnpm --filter @lanyard/shared test src/rbac/path-project.test.ts src/workflow/run-vault.test.ts`, `pnpm --filter @lanyard/bff test test/workflow-run-vault-persist.test.ts test/vault-office-cp-s3.integration.test.ts`, `pnpm --filter @lanyard/web test src/features/chat/ChatMessageContent.test.tsx src/features/chat/documentPane/pathResolution.test.ts src/api/vault.test.ts`. Guest `/mnt/vault/workflows/runs/{id}/state.json` projects to `/workflows/runs/{id}/state.json`. GET `/api/vault/content` for a missing run path create-if-absent CP-puts then returns JSON (not 404/SPA HTML). Citation paths and `workflow_progress` also persist. Persist failure is logged, not swallowed. |
+
+## Invariants (phase 8 script)
+
+Listed in overview § Verification. Fail closed. Do not waive silently.
+
+Script: `deploy/scripts/prove-mocklab-short-stack-invariants.sh` (`lp-oop.32`). Evidence: `artifacts/mocklab/short-stack/RESULT.md`. Live MockLab snapshot stays `staging-pilot.pins.yaml` until a human pin decision.
