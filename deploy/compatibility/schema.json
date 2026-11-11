@@ -46,7 +46,7 @@
             },
             "sha256": {
               "type": "string",
-              "pattern": "^([a-fA-F0-9]{64}|sha256:[a-f0-9]{64})$"
+              "pattern": "^([a-fA-F0-9]{64}|sha256:[a-fA-F0-9]{64})$"
             },
             "url": {
               "type": "string",
