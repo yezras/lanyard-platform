@@ -1,0 +1,1 @@
+Remove project “SoftArchiveQA” from Directory? This only archives the project registry entry — it leaves the list. Workspace and vault files stay on the agent disk (not deleted).
