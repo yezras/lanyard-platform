@@ -1,0 +1,60 @@
+{
+  "bead": "lp-zuh.10.1",
+  "when": "2026-08-14T16:47:03Z",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "marker": "lp-zuh.10.1-gpu-web-search-residual",
+  "verdict": "PASS",
+  "notes": [
+    "web_search returned non-error results after allowlist expand"
+  ],
+  "create_thread": {
+    "status": 201,
+    "ok": true
+  },
+  "thread_id": "15e8c6c3-4061-42e6-94ea-7049a472b88d",
+  "send": {
+    "status": 200,
+    "ok": true,
+    "at": "2026-08-14T16:47:09Z",
+    "body_preview": "{'ok': True, 'thread_id': '15e8c6c3-4061-42e6-94ea-7049a472b88d'}"
+  },
+  "analysis": {
+    "tool_events": [
+      {
+        "status": null,
+        "preview": "MARKER lp-zuh.10.1-gpu-web-search-residual\nResearch current best practices for liquid cooling an NVIDIA H100/B200 GPU cluster.\nUse the web_search tool (required"
+      },
+      {
+        "status": "running",
+        "preview": "NVIDIA H100 B200 GPU cluster liquid cooling best practices rack power kW 2024\u2026"
+      },
+      {
+        "status": "running",
+        "preview": "NVIDIA B200 H100 rack power density kW liquid cooling immersion cooling"
+      },
+      {
+        "status": "running",
+        "preview": "GPU cluster liquid cooling coolant options water glycol immersion cooling die\u2026"
+      },
+      {
+        "status": "complete",
+        "preview": "Finished web_search"
+      },
+      {
+        "status": "complete",
+        "preview": "Finished web_search"
+      },
+      {
+        "status": "complete",
+        "preview": "Finished web_search"
+      }
+    ],
+    "web_errors": 0,
+    "web_ok": 9,
+    "web_running": 3,
+    "fetch_failed": false,
+    "final_preview": "",
+    "event_count": 7
+  },
+  "history_http_status": 200
+}

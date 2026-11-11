@@ -1,0 +1,51 @@
+[
+  {
+    "type": "user_message",
+    "created_at": "2026-08-14T16:47:09.949Z",
+    "tool_name": null,
+    "tool_status": null,
+    "content_preview": "MARKER lp-zuh.10.1-gpu-web-search-residual\nResearch current best practices for liquid cooling an NVIDIA H100/B200 GPU cluster.\nUse the web_search tool (required). Summarize rack power (kW) and coolant options with sources.\nDo not ask clarif"
+  },
+  {
+    "type": "tool_progress",
+    "created_at": "2026-08-14T16:47:27.617Z",
+    "tool_name": "web_search",
+    "tool_status": "running",
+    "content_preview": "NVIDIA H100 B200 GPU cluster liquid cooling best practices rack power kW 2024\u2026"
+  },
+  {
+    "type": "tool_progress",
+    "created_at": "2026-08-14T16:47:27.684Z",
+    "tool_name": "web_search",
+    "tool_status": "running",
+    "content_preview": "NVIDIA B200 H100 rack power density kW liquid cooling immersion cooling"
+  },
+  {
+    "type": "tool_progress",
+    "created_at": "2026-08-14T16:47:28.016Z",
+    "tool_name": "web_search",
+    "tool_status": "running",
+    "content_preview": "GPU cluster liquid cooling coolant options water glycol immersion cooling die\u2026"
+  },
+  {
+    "type": "tool_progress",
+    "created_at": "2026-08-14T16:47:29.010Z",
+    "tool_name": "web_search",
+    "tool_status": "complete",
+    "content_preview": "Finished web_search"
+  },
+  {
+    "type": "tool_progress",
+    "created_at": "2026-08-14T16:47:29.501Z",
+    "tool_name": "web_search",
+    "tool_status": "complete",
+    "content_preview": "Finished web_search"
+  },
+  {
+    "type": "tool_progress",
+    "created_at": "2026-08-14T16:47:29.571Z",
+    "tool_name": "web_search",
+    "tool_status": "complete",
+    "content_preview": "Finished web_search"
+  }
+]

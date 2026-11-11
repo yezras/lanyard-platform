@@ -1,0 +1,45 @@
+=== BEFORE ===
+/mnt/vault/wf_7fad97d2e324fa00
+/mnt/vault/wf_84a44a85ccd25697
+exit=0
+Launched workflow: research-lite
+[running] research-lite id=wf_4e8440b25d42613a workflow=research-lite agents=0/8
+=== AFTER ===
+/mnt/vault/wf_4e8440b25d42613a
+/mnt/vault/wf_7fad97d2e324fa00
+/mnt/vault/wf_84a44a85ccd25697
+2026-08-14T19:37:16Z /mnt/vault/wf_4e8440b25d42613a files= ['args.json', 'journal.jsonl', 'program.json', 'scratch', 'state.json'] q= lp-zuh.10.10 stock pin no hot-patch vault admit
+2026-08-14T18:14:33Z /mnt/vault/wf_7fad97d2e324fa00 files= ['args.json', 'journal.jsonl', 'program.json', 'state.json'] q= GPU cluster planning residual lp-zuh.10.5 durable state_dir on vault
+HIT_COUNT 1
+HIT /mnt/vault/wf_4e8440b25d42613a ['args.json', 'journal.jsonl', 'program.json', 'scratch', 'state.json']
+{
+  "run_id": "wf_4e8440b25d42613a",
+  "display_name": "research-lite",
+  "workflow_name": "research-lite",
+  "status": "failed",
+  "phases": [
+    "plan"
+  ],
+  "current_phase": "plan",
+  "agents_used": 0,
+  "agents": [],
+  "budget_total": 8,
+  "created_at_ms": 1786736234548,
+  "updated_at_ms": 1786736238834,
+  "outcome": {
+    "kind": "failed",
+    "error": "journal io: EPERM: operation not permitted, open '/mnt/vault/wf_4e8440b25d42613a/journal.jsonl'",
+    "cause": {
+      "code": "io",
+      "name": "JournalError"
+    }
+  },
+  "source_kind": "builtin",
+  "pause_requested": false,
+  "error": "journal io: EPERM: operation not permitted, open '/mnt/vault/wf_4e8440b25d42613a/journal.jsonl'"
+}
+
+STOCK_DIST_MTime 
+2026-08-14 18:27:47.000000000 +0000 /opt/company-brain-backend/current/lanyard-agent/packages/workflow/dist/run-store.js
+
+DIST_WRITABLE False
