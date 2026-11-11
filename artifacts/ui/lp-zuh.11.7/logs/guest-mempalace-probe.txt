@@ -1,0 +1,36 @@
+=== ready ===
+{"ok":true,"status":"ready","shuttingDown":false,"inFlightSessions":0,"activeSessionKeys":0,"channels":[{"channel":"portal","ok":true,"detail":"connected platform=lanyard_web"}],"cron":{"enabled":true,"tickerAlive":true,"lastTickAt":"2026-08-17T14:41:53.422Z"},"mempalace":{"enabled":true,"ok":true,"detail":"MemPalace available: MemPalace 3.7.0 (/usr/local/bin/mempalace); path=/mnt/vault/mempalace; wing=mocklab","reason":"ok","binaryPath":"/usr/local/bin/mempalace","version":"MemPalace 3.7.0","path":"/mnt/vault/mempalace","wing":"mocklab"}}
+=== which mempalace ===
+/usr/local/bin/mempalace
+MemPalace 3.7.0
+=== search empty ===
+usage: mempalace [-h] [--version] [--palace PALACE] [--backend GLOBAL_BACKEND]
+                 {init,mine,sweep,sync,search,compress,wake-up,split,hook,instructions,repair,repair-status,daemon,mcp,serve,migrate,migrate-wings,hallways,status,logstream,artifact,palace}
+                 ...
+mempalace: error: unrecognized arguments: --path /mnt/vault/mempalace
+=== mine+search ===
+  Files:   1
+  Palace:  /var/lib/company-brain-backend/.mempalace/palace
+  Device:  cpu
+-------------------------------------------------------
+
+/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:   0%|          | 0.00/79.3M [00:00<?, ?iB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  15%|█▌        | 12.1M/79.3M [00:00<00:00, 127MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  31%|███       | 24.2M/79.3M [00:00<00:00, 109MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  44%|████▍     | 34.8M/79.3M [00:00<00:00, 103MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  57%|█████▋    | 44.8M/79.3M [00:00<00:00, 104MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  69%|██████▉   | 54.8M/79.3M [00:00<00:00, 96.6MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  83%|████████▎ | 65.5M/79.3M [00:00<00:00, 101MiB/s] /var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz:  96%|█████████▌| 75.9M/79.3M [00:00<00:00, 103MiB/s]/var/lib/company-brain-backend/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz: 100%|██████████| 79.3M/79.3M [00:00<00:00, 103MiB/s]
+  + [   1/1] lp-zuh117-probe.md                                 +1
+
+=======================================================
+  Done.
+  Files processed: 1
+  Files skipped (already filed or other): 0
+  Drawers filed: 1
+
+  By room:
+    general              1 files
+
+  Next: mempalace search "what you're looking for"
+=======================================================
+
+usage: mempalace [-h] [--version] [--palace PALACE] [--backend GLOBAL_BACKEND]
+                 {init,mine,sweep,sync,search,compress,wake-up,split,hook,instructions,repair,repair-status,daemon,mcp,serve,migrate,migrate-wings,hallways,status,logstream,artifact,palace}
+                 ...
+mempalace: error: unrecognized arguments: --path /mnt/vault/mempalace
+488 node /opt/company-brain-backend/current/lanyard-agent/apps/gateway/dist/main.js
