@@ -1,0 +1,69 @@
+{
+  "_comment": "TEMPLATE lp-t86 / lp-kng.2.5 — identity/managed-policy body for sandbox vault mount (per-tenant role or shared base + session policy). Same allow/deny as session policy. Layout: tenants/{tenant_id}/vault/. Do not attach without human review; no secrets in git.",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListOnlyBoundVaultPrefix",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "arn:aws:s3:::${LANYARD_VAULT_BUCKET}",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "tenants/${TENANT_ID}/vault/",
+            "tenants/${TENANT_ID}/vault/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "ObjectRWBoundVaultPrefix",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:AbortMultipartUpload",
+        "s3:ListMultipartUploadParts"
+      ],
+      "Resource": "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/tenants/${TENANT_ID}/vault/*"
+    },
+    {
+      "Sid": "DenyListBucketWithoutPrefix",
+      "Effect": "Deny",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::${LANYARD_VAULT_BUCKET}",
+      "Condition": {
+        "Null": {
+          "s3:prefix": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyListBucketOutsideBoundVaultPrefix",
+      "Effect": "Deny",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::${LANYARD_VAULT_BUCKET}",
+      "Condition": {
+        "StringNotLike": {
+          "s3:prefix": [
+            "tenants/${TENANT_ID}/vault/",
+            "tenants/${TENANT_ID}/vault/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyPlatformSiblingUnderTenant",
+      "Effect": "Deny",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/tenants/${TENANT_ID}/_platform",
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/tenants/${TENANT_ID}/_platform/*"
+      ]
+    }
+  ]
+}
