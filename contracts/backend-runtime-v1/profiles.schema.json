@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/backend-runtime-v1/profiles.schema.json",
+  "title": "Backend profile capability seed (backend-runtime-v1)",
+  "description": "Shape of a single named profile JSON file under BACKEND_HOME/profiles/<name>.json (or BRAIN_PROFILES_DIR). Profiles are backend-neutral capability bundles consumed by Brain RPC host authorization. Version 1 requires seeds for admin and contributor. Hermes-Lanyard is the reference implementation; seed files are not Hermes product-private formats. Portal must display and model these as backend profiles (never Hermes-only labels).",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "name", "capabilities"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Profile document schema major. Bump only with breaking changes to this file's shape."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Stable profile identifier. File basename without .json must match name (e.g. profiles/admin.json → name admin). v1 required names: admin, contributor. Additional names are allowed for multi-pipeline SOWs but must be declared on the artifact manifest capabilities.profiles list."
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional role label (often identical to name). Informational for operators; authorization uses name + capabilities."
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable summary for operators and deploy docs."
+    },
+    "workdir": {
+      "type": "string",
+      "description": "Optional default working directory for agent file tools when the profile is active. Empty string means use backend defaults. Relative paths are backend-defined; not a vault ACL."
+    },
+    "path_prefixes": {
+      "type": "array",
+      "description": "Optional vault-root-relative path prefix defaults for this seed. See x-lanyard-path-acl for normative runtime behavior. Empty array in a contributor seed means Portal (or control-plane roles) supplies path_prefixes on the auth subject at request time. Admin seeds typically use [\"/\"] or empty with vault_full for full vault.",
+      "items": {
+        "$ref": "#/$defs/vaultPathPrefix"
+      },
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Capability strings granted when a request subject selects this profile. Host loads the seed for the named profile and intersects method requirements (any-of). Unknown profile names with no seed fail closed.",
+      "items": {
+        "$ref": "#/$defs/capabilityString"
+      }
+    },
+    "enforced_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional provenance tag for who wrote/enforced the seed (e.g. platform-bootstrap, backend-builtin). Not used for authorization."
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional Portal-facing label. Prefer backend-neutral wording (e.g. \"Administrator\", \"Contributor\"). Do not use product-branded labels such as \"Hermes admin\"."
+    }
+  },
+  "$defs": {
+    "capabilityString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Snake_case capability token. v1 catalog is documented under x-lanyard-capability-catalog; additional tokens may be used by a backend but Portal feature gates should only rely on catalogued ones."
+    },
+    "vaultPathPrefix": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^/",
+      "description": "Vault-root-relative POSIX prefix starting with /. No .. segments. Examples: /, /Projects/Legal, /Knowledge."
+    }
+  },
+  "x-lanyard-v1-required-profiles": ["admin", "contributor"],
+  "x-lanyard-capability-catalog": {
+    "description": "v1 capability tokens used by host profile seeds and Brain RPC method gates. Artifact-level method lists remain on the manifest; this catalog is the profile authorization vocabulary.",
+    "tokens": {
+      "vault_read": "Read vault metadata and file bodies via Brain RPC vault.* (list/stat/read) and related read paths.",
+      "vault_write": "Write vault content when vault.write (or equivalent) is implemented and allowed for the subject path.",
+      "vault_full": "Unrestricted vault path ACL when auth subject path_prefixes is empty; implies admin-class vault access. Admin only in the baseline matrix.",
+      "chat": "Participate in relay chat sessions under this profile.",
+      "profile_manage": "Manage host profiles / RBAC seeds. Admin only.",
+      "system_ops": "Host system operations tools. Admin only.",
+      "shell_exec": "Execute shell/tool children with elevated host impact. Admin only.",
+      "gateway_config": "Mutate gateway/runtime configuration surfaces. Admin only.",
+      "beads_admin": "Administrative issue-tracker / beads operations. Admin only."
+    },
+    "admin_only": [
+      "vault_full",
+      "profile_manage",
+      "system_ops",
+      "shell_exec",
+      "gateway_config",
+      "beads_admin"
+    ],
+    "baseline": {
+      "admin": [
+        "vault_full",
+        "vault_read",
+        "vault_write",
+        "chat",
+        "profile_manage",
+        "system_ops",
+        "shell_exec",
+        "gateway_config",
+        "beads_admin"
+      ],
+      "contributor": ["vault_read", "vault_write", "chat"]
+    }
+  },
+  "x-lanyard-path-acl": {
+    "description": "Normative vault path prefix ACL for Brain RPC vault path methods (vault.list, vault.stat, vault.read, vault.write, …). Paths are always vault-root-relative (relative to VAULT_ROOT), not absolute host paths.",
+    "path_shape": [
+      "Must be a non-empty string starting with /",
+      "Reject null bytes and .. segments",
+      "Collapse . and duplicate slashes",
+      "Strip trailing slash except for root /",
+      "Result looks absolute (leading /) but is resolved under VAULT_ROOT only"
+    ],
+    "runtime_sources": {
+      "host_seed": "BACKEND_HOME/profiles/<name>.json (or BRAIN_PROFILES_DIR). Supplies capabilities for the named profile and optional default path_prefixes.",
+      "auth_subject": "Brain RPC auth.subject carries the active profile name and the effective path_prefixes for the session. Portal/control-plane roles stamp path_prefixes; the host re-checks fail-closed."
+    },
+    "path_allowed_rules": [
+      "If the loaded profile capabilities include vault_full AND the subject path_prefixes list is empty → allow every vault path (admin full-vault shortcut).",
+      "If subject path_prefixes is empty and vault_full is absent → deny all vault path operations (contributor must receive prefixes from Portal).",
+      "If any subject prefix is / → allow every vault path.",
+      "Otherwise allow when the normalized vault path equals a prefix or starts with prefix + \"/\".",
+      "Directory listings must filter child entries that fail path_allowed.",
+      "Methods without path ACL (e.g. brain.ping, brain.health, settings.snapshot) still require valid auth but skip path_allowed."
+    ],
+    "seed_vs_session": "Host seed path_prefixes document defaults and may be used by deploy tooling; session enforcement uses auth.subject.path_prefixes after capability load. Portal cannot elevate a session beyond the host profile capability matrix; host seeds cannot invent Portal role membership.",
+    "examples": [
+      {
+        "profile": "admin",
+        "subject_path_prefixes": [],
+        "capabilities_include": ["vault_full"],
+        "result": "full vault"
+      },
+      {
+        "profile": "contributor",
+        "subject_path_prefixes": ["/Projects/Legal"],
+        "capabilities_include": ["vault_read"],
+        "allowed": ["/Projects/Legal", "/Projects/Legal/memo.md"],
+        "denied": ["/Projects/Finance", "/Secrets"]
+      },
+      {
+        "profile": "contributor",
+        "subject_path_prefixes": [],
+        "capabilities_include": ["vault_read"],
+        "result": "deny all vault path methods"
+      }
+    ]
+  },
+  "x-lanyard-terminology": {
+    "description": "Portal-facing and platform field names must stay backend-neutral.",
+    "preferred": {
+      "profile": "Backend profile (named capability bundle: admin, contributor, …)",
+      "backend_profile": "Preferred control-plane / auth field for the profile name",
+      "path_prefixes": "Vault-root-relative ACL prefixes on the role or auth subject",
+      "BACKEND_HOME/profiles/": "Canonical on-disk seed directory"
+    },
+    "legacy_aliases": {
+      "hermes_profile": "Historical Portal/control-plane field and Hermes-Lanyard auth.subject key. Accept as alias of backend_profile during migration; new Portal UI copy and APIs must not say Hermes profile.",
+      "HERMES_HOME/profiles/": "Hermes-compatible alias of BACKEND_HOME/profiles when HERMES_HOME=$BACKEND_HOME."
+    },
+    "portal_rules": [
+      "Display profiles as backend profiles, not Hermes profiles.",
+      "Do not hard-code Hermes-only profile product names in UI strings.",
+      "Map tenant roles → backend_profile + path_prefixes; stamp both on Brain RPC auth.",
+      "Feature-gate ops UI on host capabilities (e.g. profile_manage), not on backend kind."
+    ]
+  },
+  "x-lanyard-file-layout": {
+    "directory": "$BACKEND_HOME/profiles/ (override: BRAIN_PROFILES_DIR)",
+    "files": {
+      "admin.json": "Required v1 seed (or documented builtin equivalent)",
+      "contributor.json": "Required v1 seed (or documented builtin equivalent)"
+    },
+    "resolution_order": [
+      "BRAIN_PROFILES_DIR if set",
+      "$BACKEND_HOME/profiles",
+      "Builtin admin/contributor capability map packaged with the backend (fallback only)"
+    ]
+  }
+}
