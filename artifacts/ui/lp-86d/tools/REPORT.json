@@ -1,0 +1,82 @@
+{
+  "bead_id": "lp-86d.3",
+  "base_url": "http://demo.localhost:3010",
+  "login": "dev@demo.local",
+  "started_at": "2026-08-13T12:11:55.523193+00:00",
+  "checks": {
+    "story-tool-rows": {
+      "ok": true,
+      "detail": "{\"reading\": true, \"searching\": true, \"running\": true, \"raw\": 0, \"scan\": {\"chat_tool_calls_roots\": 1, \"humanized_button_count\": 2, \"labels_in_tool_roots\": [\"Reading documents\", \"Searching files\", \"Running a command\"], \"duration_markers\": 2, \"collapsed_tool_pill\": 0, \"toolish_count\": 3}}",
+      "screenshot": "00-story-phase-tools.png"
+    },
+    "login": {
+      "ok": true,
+      "detail": "dev@demo.local",
+      "screenshot": "01-live-home.png"
+    },
+    "prompt-sent": {
+      "ok": true,
+      "detail": "lp86d3-tool-ui-marker",
+      "screenshot": "02-live-prompt-sent.png"
+    },
+    "chat-tool-calls-present": {
+      "ok": true,
+      "detail": "{\"chat_tool_calls_roots\": 3, \"humanized_button_count\": 2, \"labels_in_tool_roots\": [], \"duration_markers\": 1, \"collapsed_tool_pill\": 0, \"toolish_count\": 5}",
+      "screenshot": "tools-after-prompt.png"
+    },
+    "stricter-not-user-text": {
+      "ok": true,
+      "detail": "roots=3 buttons=2 labels=[]",
+      "screenshot": "04-live-tools-expanded.png"
+    },
+    "running-or-complete-lifecycle": {
+      "ok": true,
+      "detail": "running=False complete=True duration=1",
+      "screenshot": "03-live-tools-lifecycle.png"
+    },
+    "assistant-reply": {
+      "ok": true,
+      "detail": "2 tool calls\nError in ls\nError in ls\nError in read\nError in read\nthinking\u2026",
+      "screenshot": null
+    }
+  },
+  "screenshots": [
+    "00-story-phase-tools.png",
+    "01-live-home.png",
+    "02-live-prompt-sent.png",
+    "tools-after-prompt.png",
+    "04-live-tools-expanded.png",
+    "03-live-tools-lifecycle.png"
+  ],
+  "errors": [],
+  "story": {
+    "ok": true,
+    "scan": {
+      "chat_tool_calls_roots": 1,
+      "humanized_button_count": 2,
+      "labels_in_tool_roots": [
+        "Reading documents",
+        "Searching files",
+        "Running a command"
+      ],
+      "duration_markers": 2,
+      "collapsed_tool_pill": 0,
+      "toolish_count": 3
+    }
+  },
+  "scan": {
+    "chat_tool_calls_roots": 3,
+    "humanized_button_count": 2,
+    "labels_in_tool_roots": [],
+    "duration_markers": 1,
+    "collapsed_tool_pill": 0,
+    "toolish_count": 5
+  },
+  "saw_running": false,
+  "saw_complete": true,
+  "assistant_preview": "2 tool calls\nError in ls\nError in ls\nError in read\nError in read\nthinking\u2026",
+  "passed": true,
+  "verdict": "PASS",
+  "finished_at": "2026-08-13T12:12:12.152962+00:00",
+  "unblocked_by": "lp-cav"
+}
