@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "source": "artifact_manifest",
+  "kind": "hermes_upstream",
+  "version": "v0.0.0-example",
+  "contract": {
+    "runtime_layout": 1,
+    "relay": 1,
+    "brain_rpc": 1
+  },
+  "profiles": [
+    "admin",
+    "contributor"
+  ],
+  "brain_rpc_methods": [
+    "brain.ping",
+    "brain.health",
+    "vault.list",
+    "vault.stat",
+    "vault.read",
+    "settings.snapshot",
+    "projects.list"
+  ],
+  "features": {
+    "chat": true,
+    "health": true,
+    "capabilities_discovery": false,
+    "vault_read": true,
+    "vault_write": false,
+    "settings_snapshot": true,
+    "settings_patch": false,
+    "projects_list": true,
+    "projects_create": false,
+    "models": true,
+    "cron": true,
+    "history_read": false,
+    "heads_read": false
+  },
+  "ui_affordances": {
+    "chat_panel": "supported",
+    "vault_browser": "supported",
+    "vault_editor": "unsupported",
+    "settings_page": "supported",
+    "settings_editor": "unsupported",
+    "project_picker": "supported",
+    "project_create": "unsupported",
+    "model_selector": "unsupported",
+    "cron_manager": "unsupported",
+    "host_health": "supported"
+  },
+  "notes": "Static fallback built from artifact manifest when brain.capabilities is method_not_found. models/cron flags true on the pin but methods not listed \\u2192 UI derives model_selector and cron_manager as unsupported until methods are advertised."
+}

@@ -1,0 +1,25 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEVSTAT001",
+  "ok": true,
+  "result": {
+    "name": "memo.md",
+    "path": "/Projects/Legal/memo.md",
+    "kind": "file",
+    "mime_type": "text/markdown",
+    "size_bytes": 1024,
+    "mtime": "2026-07-12T00:00:00.000Z",
+    "revision": {
+      "token": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "content_hash",
+      "size_bytes": 1024,
+      "modified_at": "2026-07-12T00:00:00.000Z"
+    }
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 5,
+    "host_time": "2026-07-12T00:00:00.060Z"
+  }
+}
