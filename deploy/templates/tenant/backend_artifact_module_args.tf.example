@@ -1,0 +1,41 @@
+# Example module arguments for deploy/templates/tenant/main.tf → module.company_brain
+# (lp-k7g.7.3 / paths rewired lp-k7g.10.2). Replace the hermes_artifact_* block with
+# backend_* + temporary aliases (full user_data dual-write: lp-k7g.10.3).
+#
+# Live wiring today still passes hermes_* (product names); add backend_* when ready:
+#   hermes_artifact_url          = var.hermes_artifact_url
+#   hermes_artifact_version      = var.hermes_artifact_version
+#   hermes_artifact_sha256       = var.hermes_artifact_sha256
+#   relay_contract_major         = var.relay_contract_major
+
+# module "company_brain" {
+#   source = "../../modules/company-brain-ec2"  # relative under deploy/
+#   # ... region, project_name, network, relay, etc. ...
+#
+#   client_core_artifact_url     = var.client_core_artifact_url
+#   client_core_artifact_version = var.client_core_artifact_version
+#   client_core_artifact_sha256  = var.client_core_artifact_sha256
+#
+#   # Primary generic backend pins
+#   backend_artifact_url              = var.backend_artifact_url
+#   backend_artifact_version          = var.backend_artifact_version
+#   backend_artifact_sha256           = var.backend_artifact_sha256
+#   backend_artifact_kind             = var.backend_artifact_kind
+#   backend_artifact_arch             = var.backend_artifact_arch  # default linux-x86_64
+#   backend_artifact_signature_b64    = var.backend_artifact_signature_b64
+#   backend_contract_runtime_layout   = var.backend_contract_runtime_layout
+#   backend_contract_relay            = var.backend_contract_relay
+#   backend_contract_brain_rpc        = var.backend_contract_brain_rpc
+#   backend_install_path              = var.backend_install_path
+#
+#   # TEMPORARY legacy aliases (pass through so module locals can resolve)
+#   hermes_artifact_url     = var.hermes_artifact_url
+#   hermes_artifact_version = var.hermes_artifact_version
+#   hermes_artifact_sha256  = var.hermes_artifact_sha256
+#   relay_contract_major    = var.relay_contract_major
+#   hermes_install_path     = var.hermes_install_path
+#
+#   artifact_s3_bucket_arns   = var.artifact_s3_bucket_arns
+#   artifact_s3_object_arns   = var.artifact_s3_object_arns
+#   artifact_s3_list_prefixes = var.artifact_s3_list_prefixes
+# }

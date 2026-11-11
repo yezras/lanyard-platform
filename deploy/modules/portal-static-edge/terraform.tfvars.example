@@ -1,0 +1,50 @@
+# Documentation-only example inputs for modules/portal-static-edge.
+# Copy to a *private* terraform.tfvars (never commit live values, account IDs, or secrets).
+# This module is NOT auto-applied from git examples.
+#
+# Prerequisites:
+#   - G7 static web artifact published (URL/version/SHA) — optional for first empty-origin apply
+#   - ACM cert in us-east-1 if using custom aliases
+#   - AWS credentials / backend configured outside this repository
+
+name_prefix = "lanyard-portal-staging"
+environment = "staging"
+
+# Globally unique bucket name (replace REPLACE with a unique operator suffix in private tfvars).
+origin_bucket_name           = "lanyard-portal-staging-web-origin-REPLACE"
+force_destroy_origin_bucket  = false
+
+# Optional versioned prefix inside the origin after operator sync:
+# origin_path = "/v0.0.0-example"
+
+default_root_object      = "index.html"
+enable_spa_error_routing = true
+price_class              = "PriceClass_100"
+
+# Custom domain (optional). Requires us-east-1 ACM ARN in private tfvars.
+# aliases             = ["app.withlanyard.com"]
+# acm_certificate_arn = "arn:aws:acm:us-east-1:000000000000:certificate/00000000-0000-0000-0000-000000000000"
+
+# Optional BFF origin for dual API routing (/*/api/* + /api/* → BFF ALB, not S3).
+# Leave empty for static-only plans / example validate. In private roots, pass the
+# portal-bff-service ALB DNS name (no scheme), e.g.:
+#   bff_origin_domain_name = "my-bff-alb-xxxxxxxx.us-east-1.elb.amazonaws.com"
+# Defaults: api_path_pattern = "/*/api/*", bare_api_path_pattern = "/api/*",
+# CachingDisabled + AllViewerExceptHostHeader. Staging roots may omit both path vars.
+bff_origin_domain_name = ""
+# api_path_pattern      = "/*/api/*"
+# bare_api_path_pattern = "/api/*"
+# bff_origin_protocol_policy = "https-only"
+
+# Pin metadata only — operators sync objects into the origin (module does not download).
+# Leave empty until G7 publish lands real coordinates in a *private* pin file.
+static_web_artifact_url     = ""
+static_web_artifact_version = ""
+static_web_artifact_sha256  = ""
+
+# Required honesty gate
+acknowledge_not_auto_applied = true
+
+tags = {
+  Owner = "platform"
+}
