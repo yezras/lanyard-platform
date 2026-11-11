@@ -1,0 +1,29 @@
+project_name = "acme-brain"
+
+# Real VPC from the tenant account — never invent live IDs in git.
+vpc_id = "vpc-REPLACE_ME"
+
+enable_vpc_flow_logs       = true
+flow_logs_destination_type = "cloud-watch-logs"
+# flow_logs_log_group_name  = "/company-brain/acme-brain/vpc-flow-logs"
+flow_logs_retention_days   = 30
+flow_logs_traffic_type     = "ALL"
+
+# S3 destination alternative (bucket created outside this module):
+# flow_logs_destination_type = "s3"
+# flow_logs_s3_bucket_arn     = "arn:aws:s3:::example-vpc-flow-logs"
+
+enable_security_sns_topic       = true
+enable_guardduty_finding_alerts = true
+# Confirm email subscriptions out-of-band (private tfvars only):
+# security_alert_email_endpoints = ["ops@example.com"]
+
+# Optional: reuse an existing topic instead of creating one
+# alarm_sns_topic_arn = "arn:aws:sns:us-east-1:123456789012:existing-security-alerts"
+
+snapshot_age_monitor_enabled = true
+
+# extra_tags = {
+#   Tenant = "acme"
+#   Env    = "prod"
+# }

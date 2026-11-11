@@ -1,0 +1,38 @@
+{
+  "profile": "admin",
+  "schema_version": 1,
+  "description": "Agent tool allowlist for admin Hermes profile — ops + full vault",
+  "aligns_with_capabilities": [
+    "vault_full",
+    "vault_read",
+    "vault_write",
+    "chat",
+    "profile_manage",
+    "system_ops",
+    "shell_exec",
+    "gateway_config",
+    "beads_admin"
+  ],
+  "tools": {
+    "allow": [
+      "chat",
+      "vault_read",
+      "vault_write",
+      "vault_search",
+      "vault_delete",
+      "shell_exec",
+      "system_ops",
+      "profile_manage",
+      "gateway_config",
+      "beads",
+      "beads_admin",
+      "http_fetch",
+      "model_config"
+    ],
+    "deny": []
+  },
+  "path_prefixes": ["/"],
+  "notes": "Host seed only — Hermes product must honor this file when tool policy is loaded. See references/runbooks/host-runtime-hardening.md and references/hermes-profile-rbac.md.",
+  "enforced_by": "company-brain-runtime-hardening",
+  "seed_path": "/etc/company-brain/tool-allowlists/admin.json"
+}
