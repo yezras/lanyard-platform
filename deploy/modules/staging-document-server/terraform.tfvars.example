@@ -1,0 +1,63 @@
+# Documentation-only example inputs for modules/staging-document-server.
+# Copy to a *private* terraform.tfvars — never commit live account IDs, digests, or JWT values.
+# Topology: staging-platform-shared-ds (lp-5q6.34). NOT production. NOT auto-applied.
+
+name_prefix = "lanyard-platform-staging"
+environment = "staging"
+
+# Replace with real IDs from *your* staging account (shapes only — not live).
+vpc_id = "vpc-00000000000000000"
+public_subnet_ids = [
+  "subnet-00000000000000001",
+  "subnet-00000000000000002",
+]
+private_subnet_ids = [
+  "subnet-00000000000000003",
+  "subnet-00000000000000004",
+]
+
+# Community free-track image — digest pin required (never :latest alone).
+# Resolve digest privately before apply; never commit live production digests.
+image_repository = "onlyoffice/documentserver"
+image_digest     = "sha256:00000000000000000000000000000000000000000000000000000000000000d5"
+image_tag_hint   = "latest-example-not-authority"
+
+container_port    = 80
+health_check_path = "/healthcheck"
+desired_count     = 1
+cpu               = 2048
+memory            = 4096
+cpu_architecture  = "X86_64"
+
+create_ecs_cluster = true
+assign_public_ip   = false
+enable_https       = false
+# acm_certificate_arn = "arn:aws:acm:REGION:ACCOUNT:certificate/…"
+
+# MockLab HTTPS without custom Docs hostname (lp-zuh.12.9 Option B):
+# CloudFront HTTPS viewer → HTTP Docs ALB. Prefer when Route53/ACM for docs.* is blocked.
+# enable_cloudfront_https = true
+# cloudfront_price_class  = "PriceClass_100"
+# Optional custom alias (needs us-east-1 ACM + DNS):
+# cloudfront_aliases              = ["docs.staging.example.com"]
+# cloudfront_acm_certificate_arn  = "arn:aws:acm:us-east-1:ACCOUNT:certificate/…"
+
+# JWT from Secrets Manager (module creates secret + random value by default).
+create_jwt_secret = true
+# jwt_secret_name   = "lanyard-platform-staging/portal/office-jwt"
+# Or supply an existing SM ARN (create_jwt_secret = false):
+# jwt_secret_arn = "arn:aws:secretsmanager:us-east-1:000000000000:secret:lanyard/staging/office-jwt-AbCdEf"
+
+# Free track: no license file. Optional empty SM shell for future paid path:
+create_license_secret_shell = false
+
+# DS→BFF on private RFC1918 only if BFF is not public HTTPS:
+allow_private_ip_address = false
+allow_meta_ip_address    = false
+
+acknowledge_not_auto_applied       = true
+acknowledge_staging_shared_residual = true
+
+tags = {
+  Owner = "platform"
+}
