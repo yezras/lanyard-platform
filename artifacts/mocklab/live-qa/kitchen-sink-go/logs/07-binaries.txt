@@ -1,0 +1,12 @@
+total 0
+drwxr-xr-x 2 brain brain 0 Aug 14 17:15 .
+drwxr-xr-x 2 brain brain 0 Aug 14 17:15 ..
+-rw-r--r-- 1 brain brain 0 Aug 14 16:59 .keep
+-rw-r--r-- 1 brain brain 0 Aug 14 16:38 .lp-zuh9-keep
+BIN_MISSING rg
+BIN_MISSING file
+BIN_OK bash
+BIN_OK mount-s3
+BIN_MISSING mempalace
+BIN_OK company-brain-backend
+

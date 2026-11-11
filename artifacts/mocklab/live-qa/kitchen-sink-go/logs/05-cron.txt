@@ -1,0 +1,17 @@
+cron:
+  enabled: true
+  state_dir: /mnt/vault
+# Stable tools[] = builtins + search_tool + use_tool (hidden/MCP via search).
+tools:
+  catalog_search:
+--
+  state_dir: /mnt/vault
+  definition_roots:
+    - /mnt/vault/workflows
+---
+JOBS_JSON_YES
+job_count 1
+09b7330db248 ok GPU capacity brief lp-zuh.10.4-20260814170905
+09b7330db248
+CRON_STATE_OK
+

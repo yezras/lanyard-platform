@@ -1,0 +1,5 @@
+uid=990(brain) gid=990(brain) groups=990(brain)
+TARGET     SOURCE        FSTYPE OPTIONS
+/mnt/vault mountpoint-s3 fuse   rw,nosuid,nodev,noatime,user_id=990,group_id=990,default_permissions,allow_other
+WRITABLE_YES
+

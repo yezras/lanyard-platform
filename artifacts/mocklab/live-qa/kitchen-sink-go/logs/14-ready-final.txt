@@ -1,0 +1,7 @@
+{"ok":true,"status":"ready","shuttingDown":false,"inFlightSessions":0,"activeSessionKeys":0,"channels":[{"channel":"portal","ok":true,"detail":"connected platform=lanyard_web"}],"cron":{"enabled":true,"tickerAlive":true},"mempalace":{"enabled":true,"ok":false,"detail":"MemPalace binary not found: 'mempalace' is not on PATH. Install with `uv tool install mempalace` (or pipx/pip) and ensure it is on PATH, or set the binary path when constructing the memory client.","reason":"binary_missing","path":"/mnt/vault/mempalace","wing":"mocklab"}}
+ready_ok True cron_ticker True mempalace {'enabled': True, 'ok': False, 'detail': "MemPalace binary not found: 'mempalace' is not on PATH. Install with `uv tool install mempalace` (or pipx/pip) and ensure it is on PATH, or set the binary path when constructing the memory client.", 'reason': 'binary_missing', 'path': '/mnt/vault/mempalace', 'wing': 'mocklab'}
+jobs [('09b7330db248', 'ok')]
+lp-zuh108-gate-20260814T172911Z.md
+lp-zuh96-gpu-note-20260814T170823Z.md
+seed-note.md
+
