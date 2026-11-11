@@ -1,0 +1,164 @@
+{
+  "bead": "lp-86d.14",
+  "epic": "lp-86d",
+  "title": "qa: close-out — evidence summary + remaining fix beads",
+  "recorded_at": "2026-08-13T13:01:39Z",
+  "verdict": "CLOSEOUT_COMPLETE",
+  "acceptance": {
+    "aggregate_pass_fail_per_feature": true,
+    "every_failure_has_fix_bead": true,
+    "secure_local_secrets": true,
+    "playwright_browsers_killed_or_absent": true,
+    "stack_state_documented": true
+  },
+  "summary_counts": {
+    "feature_children": 13,
+    "closed_children": 11,
+    "pass_evidence_bead_still_open": 2,
+    "pass": 11,
+    "pass_partial_gap": 1,
+    "fail_without_fix_bead": 0,
+    "open_fix_beads": 1
+  },
+  "features": [
+    {
+      "id": "lp-86d.1",
+      "feature": "env_stack",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "fix_beads": []
+    },
+    {
+      "id": "lp-86d.2",
+      "feature": "basic_chat",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "fix_beads": []
+    },
+    {
+      "id": "lp-86d.3",
+      "feature": "tool_calls_ChatToolCalls",
+      "verdict": "PASS",
+      "bead_status": "in_progress",
+      "evidence": "artifacts/ui/lp-86d/tools/RESULT.md",
+      "pr": "https://github.com/LanyardBrain/lanyard-platform/pull/398",
+      "fix_beads": ["lp-cav"]
+    },
+    {
+      "id": "lp-86d.4",
+      "feature": "skills",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "fix_beads": []
+    },
+    {
+      "id": "lp-86d.5",
+      "feature": "subagents",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "evidence": "artifacts/ui/lp-86d/subagents/RESULT.md",
+      "pr": "https://github.com/LanyardBrain/lanyard-platform/pull/396",
+      "fix_beads": ["lp-63i"]
+    },
+    {
+      "id": "lp-86d.6",
+      "feature": "workflows",
+      "verdict": "PASS",
+      "bead_status": "in_progress",
+      "evidence": "artifacts/ui/lp-86d/workflows/RESULT.md",
+      "pr": "https://github.com/LanyardBrain/lanyard-platform/pull/400",
+      "fix_beads": ["lp-ypu"]
+    },
+    {
+      "id": "lp-86d.7",
+      "feature": "mcp_servers",
+      "verdict": "PASS_PARTIAL_GAP",
+      "bead_status": "closed",
+      "evidence": "artifacts/ui/lp-86d/mcp/RESULT.md",
+      "pr": "https://github.com/LanyardBrain/lanyard-platform/pull/401",
+      "gap": "Chat MCP tool-row indicator unproven (mcp_servers=[])",
+      "fix_beads": ["lp-vw3"],
+      "open_fix_beads": ["lp-vw3"]
+    },
+    {
+      "id": "lp-86d.8",
+      "feature": "jobs_cron",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "fix_beads": ["lp-su0"]
+    },
+    {
+      "id": "lp-86d.9",
+      "feature": "document_markdown_preview",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "evidence": "artifacts/ui/lp-86d/doc-preview/RESULT.md",
+      "pr": "https://github.com/LanyardBrain/lanyard-platform/pull/402",
+      "fix_beads": []
+    },
+    {
+      "id": "lp-86d.10",
+      "feature": "document_office_preview",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "fix_beads": []
+    },
+    {
+      "id": "lp-86d.11",
+      "feature": "file_ref_soft_open",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "evidence": "artifacts/ui/lp-86d/file-ref/file-ref-soft-open.json",
+      "pr": "https://github.com/LanyardBrain/lanyard-platform/pull/403",
+      "fix_beads": []
+    },
+    {
+      "id": "lp-86d.12",
+      "feature": "citations_document_pane",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "evidence": "artifacts/ui/lp-86d/citations/",
+      "fix_beads": ["lp-53n"],
+      "related": ["lp-75r.6"]
+    },
+    {
+      "id": "lp-86d.13",
+      "feature": "settings_projects_honesty",
+      "verdict": "PASS",
+      "bead_status": "closed",
+      "notes": "Skills/MCP load; crons honest; Directory top-nav absent",
+      "fix_beads": []
+    }
+  ],
+  "fix_beads": {
+    "closed": ["lp-cav", "lp-63i", "lp-ypu", "lp-su0", "lp-53n"],
+    "open": [
+      {
+        "id": "lp-vw3",
+        "priority": 2,
+        "parent_qa": "lp-86d.7",
+        "title": "fix: LA MCP product surface — config mcp_servers + chat tool rows"
+      }
+    ]
+  },
+  "hygiene": {
+    "secure_local_secrets_check": "ok",
+    "playwright_browsers": "none_running",
+    "stack_left_up": true
+  },
+  "stack_at_closeout": {
+    "portal_web": "http://demo.localhost:3010",
+    "portal_bff": ":4000",
+    "control_plane": ":3100",
+    "relay": ":8787",
+    "lanyard_agent_gateway": "http://127.0.0.1:9100",
+    "la_pid_file": "~/.lanyard-agent/gateway.pid",
+    "la_pid": 660648,
+    "tmux_session": "lanyard-portal",
+    "la_portal_channel": "connected platform=lanyard_web"
+  },
+  "docs": {
+    "closeout": "artifacts/ui/lp-86d/CLOSEOUT.md",
+    "handoff": "artifacts/ui/lp-86d/HANDOFF.md"
+  }
+}
