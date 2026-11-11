@@ -1,0 +1,47 @@
+total 4
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 .
+drwxr-xr-x 1 root  root    27 Aug 14 15:17 ..
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 .agent-runtime
+-rw-r--r-- 1 brain brain   18 Aug  6 00:51 .lanyard-daytona-pilot-seed
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 .lanyard-platform
+-rw-r--r-- 1 brain brain    0 Aug 14 16:45 .lanyard-vault-write-probe.22
+-rw-r--r-- 1 brain brain    0 Aug 14 16:46 .lanyard-vault-write-probe.89
+-rw-r--r-- 1 brain brain    0 Aug 14 17:07 .lanyard-vault-write-probe.94
+-rw-r--r-- 1 brain brain    0 Aug 14 16:56 .lanyard-vault-write-probe.96
+-rw-r--r-- 1 brain brain    0 Aug 14 16:45 .lanyard-vault-write-probe.97
+-rw-r--r-- 1 brain brain    0 Aug 14 17:07 .lanyard-vault-write-probe.98
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 .seed
+-rw-r--r-- 1 brain brain 1344 Aug 14 16:58 AGENTS.md
+-rw-r--r-- 1 brain brain  444 Aug 14 16:58 INDEX.md
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 Knowledge
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 Projects
+-rw-r--r-- 1 brain brain   97 Aug  6 00:51 README.md
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 cron
+-rw-r--r-- 1 brain brain  293 Aug 14 16:58 index.yaml
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 lp-kng67-demo
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 mempalace
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 skills
+drwxr-xr-x 2 brain brain    0 Aug 14 17:07 workflows
+---
+AGENTS_YES
+WELCOME_YES
+# Welcome to MockLab Workspace
+
+<!-- mocklab-vault-seed:lp-zuh.9.5 -->
+
+This file is the **seeded read target** for vault / chat QA (`lp-zuh.9.5`).
+
+If you can open this path via Vault UI or agent `read`, the durable S3 vault
+seed is mounted and non-empty:
+---
+README.md
+mocklab-research
+note-taking
+pilot-fixture.md
+---
+README.md
+lp-zuh94-dir
+---
+jobs.json
+jobs2.json
+output
