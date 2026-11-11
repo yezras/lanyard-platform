@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/mailbox-v1/mailbox.schema.json",
+  "title": "mailbox-v1",
+  "description": "Canonical mailbox.send / mailbox_halt contract (lp-v62i.1.1). Platform owns this shape. Agent dual-write (lac-r9w.1.1) copies field-for-field. SoT: wayfinder/agent-mailbox-v1.md. nonce IS externalMessageId. from is a gateway stamp, never model-settable. Consumers validate a payload against one $defs entry.",
+  "$comment": "Bead lp-v62i.1.1 / parent lp-v62i.1 / epic lp-v62i. Schema version 1. Do not invent fields the wayfinder map does not name. Do not import BFF chat-store types.",
+  "$defs": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1,
+      "description": "mailbox-v1. Additive; do not fork fields."
+    },
+    "idNoColon": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^:\\\\s]+$",
+      "description": "Branded id. Colon is illegal (session-key delimiter). Whitespace is illegal."
+    },
+    "personaId": {
+      "$ref": "#/$defs/idNoColon",
+      "description": "PersonaId. One mailbox address. Not a user id. Not Jack. Not a connector mark."
+    },
+    "threadId": {
+      "$ref": "#/$defs/idNoColon",
+      "description": "BFF thread_id. Not a channel name."
+    },
+    "nonce": {
+      "type": "string",
+      "minLength": 1,
+      "description": "This IS externalMessageId on the wire. Dedupe key is nonce only. Tool path: UUID per send. Prose @ path: prose:{turnId}:{to}:{room}. Same nonce is an idempotent no-op (no second bubble, no second wake). Do not dedupe on (from,to,room,text)."
+    },
+    "connectorMark": {
+      "type": "string",
+      "enum": ["google", "hubspot", "whatsapp", "github"],
+      "description": "Composer @ connector mark. Not a persona. Not a mailbox to. Parser leaf uses this; no wake."
+    },
+    "mailboxTo": {
+      "allOf": [
+        { "$ref": "#/$defs/personaId" },
+        {
+          "not": {
+            "enum": ["Jack", "jack", "google", "hubspot", "whatsapp", "github"]
+          }
+        }
+      ],
+      "description": "Exactly one persona id. Not a list. bad_to when Jack, empty, self (runtime), or a connector id mistaken as a persona."
+    },
+    "mailboxSendInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["to", "room", "text", "nonce"],
+      "description": "Model-visible mailbox.send tool input. Gateway stamps from and tenant_id; they are absent here. nonce IS externalMessageId on the wire. One to (persona id). room is BFF thread_id. No attachments in v1.",
+      "properties": {
+        "to": { "$ref": "#/$defs/mailboxTo" },
+        "room": { "$ref": "#/$defs/threadId" },
+        "text": {
+          "type": "string",
+          "description": "Message body. Extra @ in a tool-call body is text only. Only to wakes. No attachments in v1."
+        },
+        "nonce": { "$ref": "#/$defs/nonce" }
+      }
+    },
+    "mailboxSendStamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "tenant_id"],
+      "description": "Gateway stamps. Not model-settable. from is the session persona, never spoofed.",
+      "properties": {
+        "from": { "$ref": "#/$defs/personaId" },
+        "tenant_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "mailboxAppendRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["to", "room", "text", "nonce", "from", "tenant_id"],
+      "description": "Internal POST body the gateway sends to BFF append. Send input plus from/tenant_id stamps. Types only in this package; BFF leaf implements the route.",
+      "properties": {
+        "to": { "$ref": "#/$defs/mailboxTo" },
+        "room": { "$ref": "#/$defs/threadId" },
+        "text": { "type": "string" },
+        "nonce": { "$ref": "#/$defs/nonce" },
+        "from": { "$ref": "#/$defs/personaId" },
+        "tenant_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "mailboxHaltInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["room"],
+      "description": "mailbox_halt input. Only lead tool + Jack's button. Non-lead persona calling halt is forbidden. from is absent.",
+      "properties": {
+        "room": { "$ref": "#/$defs/threadId" }
+      }
+    },
+    "mailboxErrorCode": {
+      "type": "string",
+      "enum": [
+        "not_found",
+        "forbidden",
+        "frozen",
+        "fuse_tripped",
+        "bad_to",
+        "dead_room"
+      ],
+      "description": "Fail-closed send/halt errors. not_found: unknown room or unknown to. forbidden: from not on channel roster; guest write to someone else's 1:1; non-lead halt. frozen: halt or fuse freeze in effect. fuse_tripped: send that would exceed 40/hour or 8 consecutive a2a. bad_to: Jack, self, empty, connector id mistaken as persona. dead_room: scheduled fire into a deleted thread."
+    },
+    "mailboxAppendResult": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ok", "message_id"],
+          "properties": {
+            "ok": { "type": "boolean", "const": true },
+            "message_id": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ok", "error"],
+          "properties": {
+            "ok": { "type": "boolean", "const": false },
+            "error": { "$ref": "#/$defs/mailboxErrorCode" }
+          }
+        }
+      ],
+      "description": "BFF append response: ok + message_id, or a locked error code."
+    }
+  }
+}
