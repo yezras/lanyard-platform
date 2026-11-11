@@ -1,0 +1,89 @@
+{
+  "_config_version": 1,
+  "model": {
+    "default": "anthropic/claude-sonnet-4.6",
+    "provider": "openrouter",
+    "base_url": "https://openrouter.ai/api/v1"
+  },
+  "providers": {
+    "openrouter": {
+      "base_url": "https://openrouter.ai/api/v1",
+      "key_env": "OPENROUTER_API_KEY",
+      "request_timeout_seconds": 1800
+    },
+    "ollama-local": {
+      "base_url": "http://127.0.0.1:11434/v1",
+      "key_env": "OLLAMA_API_KEY",
+      "model": "llama3.2",
+      "request_timeout_seconds": 300,
+      "stale_timeout_seconds": 900
+    }
+  },
+  "fallback_providers": [
+    {
+      "provider": "openrouter",
+      "model": "google/gemini-2.5-flash"
+    }
+  ],
+  "provider_routing": {
+    "sort": "throughput"
+  },
+  "skills": {
+    "creation_nudge_interval": 15,
+    "external_dirs": [],
+    "template_vars": true,
+    "inline_shell": false,
+    "guard_agent_created": false,
+    "write_approval": false
+  },
+  "cron": {
+    "provider": "",
+    "wrap_response": true,
+    "mirror_delivery": false,
+    "max_parallel_jobs": null,
+    "output_retention": 50
+  },
+  "agent": {
+    "max_turns": 60,
+    "verbose": false,
+    "reasoning_effort": "medium"
+  },
+  "terminal": {
+    "backend": "local",
+    "cwd": ".",
+    "timeout": 180,
+    "home_mode": "auto"
+  },
+  "platform_toolsets": {
+    "cli": ["hermes-cli"]
+  },
+  "compression": {
+    "enabled": true,
+    "threshold": 0.5,
+    "target_ratio": 0.2,
+    "protect_last_n": 20,
+    "protect_first_n": 3
+  },
+  "memory": {
+    "memory_enabled": true,
+    "user_profile_enabled": true,
+    "memory_char_limit": 2200,
+    "user_char_limit": 1375,
+    "nudge_interval": 10,
+    "flush_min_turns": 6
+  },
+  "session_reset": {
+    "mode": "both",
+    "idle_minutes": 1440,
+    "at_hour": 4
+  },
+  "streaming": {
+    "enabled": false
+  },
+  "tool_loop_guardrails": {
+    "warnings_enabled": true,
+    "hard_stop_enabled": false
+  },
+  "max_concurrent_sessions": null,
+  "group_sessions_per_user": true
+}
