@@ -1,0 +1,764 @@
+# Machine-readable map of company-brain-deploy (canonical client deployment surface).
+# Core is employee-vault only and must not be required at deploy time.
+
+name: company-brain-deploy
+purpose: Canonical client deployment for Lanyard Company Brain hosts
+version: 0.2.0
+milestone: 2
+
+doctrine:
+  core_dependency: none
+  bootstrap: artifact_contract
+  vault_durability: ebs_dlm
+  portal_posture: egress_only_relay
+  portal_canonical_url: https://app.withlanyard.com/<tenant_slug>
+  portal_canonical_api_path: /<tenant_slug>/api/*
+  portal_tenant_subdomains: legacy_compatibility_only
+  default_roles:
+    - admin
+    - contributor
+  customer_git_workflow: false
+  floating_git_refs: false
+  oidc_provider: require_existing_arn
+
+paths:
+  modules:
+    company-brain-ec2:
+      path: modules/company-brain-ec2
+      purpose: EC2 + encrypted EBS + DLM (opt-in cross-region copy / DR-account share default off) + optional snapshot-age alarm + SSM-first + controlled egress + optional Tailscale secondary + golden AMI + optional host log shipping + hermes-gateway systemd sandbox + artifact-aware user_data
+    customer-gateway-relay:
+      path: modules/customer-gateway-relay
+      purpose: GATEWAY_RELAY_* env wiring from control-plane provision; production secrets via SSM/Secrets Manager references only
+    tier3-dedicated-relay:
+      path: modules/tier3-dedicated-relay
+      purpose: Per-tenant dedicated relay (public ALB + private Fargate via portal-relay-service); hostname/WSS contract; secrets map; optional Route53/WAF; digest pin
+      status: infra_ready_not_auto_applied
+      smoke: scripts/smoke-tier3-dedicated-relay.sh
+      runbook: references/runbooks/tier3-dedicated-relay-apply.md
+    product-artifact-infra:
+      path: modules/product-artifact-infra
+      purpose: Private S3 product artifacts (versioning + Object Lock), Portal ECR (immutable), optional GHA OIDC publishers
+    chat-corpus-infra:
+      path: modules/chat-corpus-infra
+      purpose: L10 chat corpus dedicated S3 + KMS/SSE + lifecycle TTL + writer/reader IAM; Deny vault paths (lp-gkh.3)
+      status: infra_ready_not_auto_applied
+      smoke: scripts/smoke-chat-corpus-infra.sh
+      design: ../docs/plans/0011-tenant-chat-corpus/infra-bucket-iam-lifecycle.md
+    sandbox-vault-mount-iam:
+      path: modules/sandbox-vault-mount-iam
+      purpose: Shared base IAM role for Daytona sandbox vault Mountpoint; CP task AssumeRole; per-tenant STS session policy template (lp-zuh.9.1)
+      status: lab_applied_infra_ready
+      smoke: scripts/smoke-sandbox-vault-mount-iam.sh
+      design: ../docs/plans/0008-daytona-agent-sandboxes/iam-scoped-s3-mount-policy.md
+      lab_root: deployments/lab-sandbox-vault-mount-iam
+    harness-exec-iam:
+      path: modules/harness-exec-iam
+      purpose: ECS task execution role for the shared Fargate harness; GetSecretValue on harness-service-token, harness-litellm, daytona (lp-oop.38.20)
+      status: infra_ready_not_auto_applied
+      smoke: scripts/smoke-harness-exec-iam.sh
+    control-plane-rds:
+      path: modules/control-plane-rds
+      purpose: Private encrypted RDS Postgres for control plane; Secrets Manager CONTROL_PLANE_DATABASE_URL; fail-closed no public access
+      status: infra_ready_not_auto_applied
+    platform-vpc:
+      path: modules/platform-vpc
+      purpose: Two-AZ public/private platform VPC for Portal compute; NAT and/or VPC endpoints (ECR, Logs, Secrets Manager, SSM, S3); fail-closed private map_public_ip
+    portal-valkey:
+      path: modules/portal-valkey
+      purpose: Private encrypted ElastiCache Valkey for Portal shared state; Secrets Manager REDIS_URL (TLS); BFF/relay secrets map consumers via redis_url_secret_arn; fail-closed no public access
+      status: infra_ready_not_auto_applied
+    portal-dns-tls:
+      path: modules/portal-dns-tls
+      purpose: Route53 aliases + ACM certificates for Portal web (us-east-1 CloudFront) and BFF/relay (regional); consume existing zone/certs; HTTP→HTTPS / wss-only posture
+      status: infra_ready_not_auto_applied
+    portal-waf:
+      path: modules/portal-waf
+      purpose: WAFv2 baseline WebACLs for Portal CloudFront (us-east-1) and public BFF/relay ALBs; CommonRuleSet + KnownBadInputs + optional rate-based
+      status: infra_ready_not_auto_applied
+    portal-static-edge:
+      path: modules/portal-static-edge
+      purpose: CloudFront OAC + private S3 static web origin; path-first SPA; pin metadata URL/version/SHA
+      status: infra_ready_not_auto_applied
+    portal-bff-service:
+      path: modules/portal-bff-service
+      purpose: Public BFF ALB + Fargate; image digest pin; /health; REDIS_URL via secrets map from portal-valkey; desired_count=1 until G5
+      status: infra_ready_not_auto_applied
+    portal-relay-service:
+      path: modules/portal-relay-service
+      purpose: Public relay ALB + Fargate; image digest pin; /health; REDIS_URL via secrets map for bus/jti/leases; desired_count=1 until G6
+      status: infra_ready_not_auto_applied
+    portal-control-plane-service:
+      path: modules/portal-control-plane-service
+      purpose: Internal ALB + Fargate control-plane only (G1 private); image digest pin; /health; never public
+      status: infra_ready_not_auto_applied
+    staging-document-server:
+      path: modules/staging-document-server
+      purpose: "Staging shared ONLYOFFICE Document Server (topology staging-platform-shared-ds, lp-5q6.34); public Docs ALB + Fargate; SM JWT; Community free-track; not production"
+      topology: staging-platform-shared-ds
+      status: infra_ready_not_auto_applied
+      smoke: scripts/smoke-staging-document-server.sh
+      runbook: references/runbooks/staging-document-server.md
+      production: false
+    account-factory:
+      path: modules/account-factory
+      purpose: Lanyard-hosted account-per-tenant factory contract (CT/AFT request, SCP JSON, optional in-account baseline KMS/state/roles/budget); no live Organizations API
+      status: infra_ready_not_auto_applied
+    customer-account-access:
+      path: modules/customer-account-access
+      purpose: Track B customer-account assume-role + ExternalId + artifact read scope; no long-lived access keys
+      status: infra_ready_not_auto_applied
+    security-observability:
+      path: modules/security-observability
+      purpose: Tenant VPC Flow Logs, security SNS, GuardDuty findings bridge; snapshot-age SNS/tag interface + EventBridge SNS policy
+  templates:
+    tenant:
+      path: templates/tenant
+      purpose: Per-tenant root module (copy to deployments/<slug>/); optional assume_role (deploy_role_arn/ExternalId), Track A/B backend docs, artifact cross-account modes
+      module_sources: relative_local
+      track_a_wiring: modules/account-factory
+      track_b_wiring: modules/customer-account-access
+      smoke: scripts/smoke-tenant-template-wiring.sh
+  environments:
+    platform-staging:
+      path: environments/platform-staging
+      purpose: Platform staging compose (VPC, artifacts, RDS, BFF/relay/CP, static edge, optional Valkey + DNS/TLS + WAF + staging Document Server); end-to-end wiring; infra_ready examples only; not apply-ready
+      module_sources: relative_local
+      status: infra_ready_not_auto_applied
+      smoke: scripts/smoke-platform-staging-compose.sh
+      runbook: references/runbooks/platform-staging-compose.md
+      layers:
+        - product-artifact-infra
+        - platform-vpc
+        - control-plane-rds
+        - portal-valkey
+        - portal-control-plane-service
+        - portal-bff-service
+        - portal-relay-service
+        - portal-static-edge
+        - portal-dns-tls
+        - staging-document-server
+  deployments:
+    example:
+      path: deployments/_example-tenant
+      purpose: Documentation-only placeholders
+  litellm:
+    seed:
+      path: litellm
+      purpose: "LiteLLM multi-slot model_list seed + env.secrets.example for Lanyard Agent (lp-645.8.5)"
+  dev:
+    lab-shared-compose-ds:
+      path: dev/lab-shared-compose-ds
+      purpose: "Lab-only ONLYOFFICE Document Server Compose (topology lab-shared-compose-ds, lp-5q6.25); JWT; not production TF"
+      topology: lab-shared-compose-ds
+      smoke: scripts/smoke-lab-onlyoffice-compose.sh
+      runbook: references/runbooks/lab-onlyoffice-document-server.md
+      production: false
+    mocklab-short-stack-harness:
+      path: dev/mocklab-short-stack-harness
+      purpose: "Lab-only short-stack harness compose/host runner (lp-oop.30); live form is another Fargate task on existing portal-cp cluster; no new AWS product"
+      topology: mocklab-short-stack-harness
+      smoke: scripts/smoke-mocklab-short-stack-harness.sh
+      runbook: references/runbooks/mocklab-short-stack-harness.md
+      production: false
+  scripts:
+    smoke-customer-account-access:
+      path: scripts/smoke-customer-account-access.sh
+      purpose: Track B customer-account-access offline smoke
+    smoke-account-factory:
+      path: scripts/smoke-account-factory.sh
+      purpose: Track A account-factory offline smoke (request contract, SCP JSON, baseline honesty)
+    smoke-tenant-template-wiring:
+      path: scripts/smoke-tenant-template-wiring.sh
+      purpose: templates/tenant Track A/B assume_role, ExternalId, backend, artifact wiring offline smoke
+    bootstrap-host:
+      path: scripts/bootstrap-host.sh
+      purpose: Canonical bootstrap (download/verify artifacts; Hermes then client-core; enforce hermes profiles); injected onto hosts
+      host_install_path: /usr/local/sbin/company-brain-bootstrap
+    ensure-hermes-profiles:
+      path: scripts/ensure-hermes-profiles.sh
+      purpose: Write/verify admin + contributor Hermes profile seeds (host RBAC enforce path)
+    ensure-runtime-hardening:
+      path: scripts/ensure-runtime-hardening.sh
+      purpose: Unprivileged hermes user, systemd sandbox install, secrets 0600, tool allowlist seeds
+    hermes-profiles:
+      path: scripts/hermes-profiles
+      purpose: Checked-in admin/contributor capability seed templates
+    tool-allowlists:
+      path: scripts/tool-allowlists
+      purpose: Agent tool allowlist seeds aligned with admin/contributor profiles
+    omnibox:
+      path: scripts/omnibox
+      purpose: Mode A Omnibox policy seeds + run-under-omnibox + argv builder + egress render (bwrap_inrepo; no Omnigent server)
+    run-under-omnibox:
+      path: scripts/omnibox/run-under-omnibox.sh
+      purpose: Profile sandbox wrapper for Hermes tool children; OMNIBOX_WRAPPER=/usr/local/sbin/run-under-omnibox
+      host_install_path: /usr/local/sbin/run-under-omnibox
+      backend: bwrap_inrepo
+    build-shell-exec-argv:
+      path: scripts/omnibox/build-shell-exec-argv.py
+      purpose: Phase 5 Hermes hook argv builder (session profile → run-under-omnibox --profile …); offline --self-test
+      host_install_path: /usr/local/sbin/omnibox-build-shell-exec-argv
+    host-impacting-tools:
+      path: scripts/omnibox/host-impacting-tools.json
+      purpose: Registry of host-impacting vs vault-only tools for Omnibox wrap when OMNIBOX_ENABLED=1
+      host_install_path: /etc/company-brain/omnibox/host-impacting-tools.json
+    render-egress-allowlist:
+      path: scripts/omnibox/render-egress-allowlist.sh
+      purpose: Phase 6 runtime egress allowlist generator (dry-run safe; output /etc/company-brain/omnibox/runtime/)
+      host_install_path: /etc/company-brain/omnibox/runtime/egress.yaml
+    ensure-omnibox:
+      path: scripts/ensure-omnibox.sh
+      purpose: Idempotent Mode A Omnibox host install (bubblewrap, policies, wrapper, hook registry, argv builder, workspaces); --dry-run offline-safe; ENABLE_OMNIBOX / OMNIBOX_REQUIRED
+      host_install_paths:
+        - /etc/company-brain/omnibox/
+        - /var/lib/company-brain/omnibox/
+        - /usr/local/sbin/run-under-omnibox
+        - /usr/local/sbin/omnibox-build-shell-exec-argv
+    smoke-omnibox:
+      path: scripts/smoke-omnibox.sh
+      purpose: Offline Omnibox Mode A smoke (policy seeds, never_grant .env, ensure --dry-run, phase-5 contributor --profile argv, fail-closed missing seeds)
+    seed-demo-vault:
+      path: scripts/seed-demo-vault.sh
+      purpose: Lab/mocklab synthetic vault seed from artifacts/demo-vault (idempotent; refuses employee vault; default VAULT_ROOT=/opt/company-brain)
+    smoke-seed-demo-vault:
+      path: scripts/smoke-seed-demo-vault.sh
+      purpose: Offline smoke for seed-demo-vault (tmpdir; employee-vault refuse; non-demo preserve; --force)
+    seed-mocklab-s3-vault:
+      path: scripts/seed-mocklab-s3-vault.sh
+      purpose: MockLab Daytona S3 vault seed (skills/AGENTS/Projects/Workspace; AGENTS.md gate; lp-zuh.9.5)
+    smoke-seed-mocklab-s3-vault:
+      path: scripts/smoke-seed-mocklab-s3-vault.sh
+      purpose: Offline smoke for MockLab S3 vault seed (tmpdir; gate; force; employee-vault refuse)
+    seed-demo-hermes-projects:
+      path: scripts/seed-demo-hermes-projects.sh
+      purpose: Lab/mocklab Hermes projects.db seed (legal + operations; idempotent; runs as hermes when root)
+    seed-mocklab-agent-projects:
+      path: scripts/seed-mocklab-agent-projects.sh
+      purpose: MockLab LA projects.db default Workspace under /mnt/vault (lp-zuh.10.7; idempotent)
+    smoke-seed-mocklab-agent-projects:
+      path: scripts/smoke-seed-mocklab-agent-projects.sh
+      purpose: Offline smoke for MockLab agent projects.db seed (tmpdir; primary_path under vault)
+    smoke-bootstrap-extract:
+      path: scripts/smoke-bootstrap-extract.sh
+      purpose: Local smoke test for archive format resolution and extract (+ insecure URL rejection)
+    smoke-bootstrap-inject:
+      path: scripts/smoke-bootstrap-inject.sh
+      purpose: Local smoke for base64gzip injection + user_data install contract
+    smoke-artifact-attestation:
+      path: scripts/smoke-artifact-attestation.sh
+      purpose: Offline Ed25519 signature accept/reject + REQUIRE_ARTIFACT_ATTESTATION fail-closed
+    smoke-hermes-profiles:
+      path: scripts/smoke-hermes-profiles.sh
+      purpose: Offline smoke for profile seeds and contributor elevation block
+    smoke-host-runtime-hardening:
+      path: scripts/smoke-host-runtime-hardening.sh
+      purpose: Offline unit sandbox directives + ensure-runtime-hardening dry-run
+    validate-compatibility:
+      path: scripts/validate-compatibility.sh
+      purpose: Offline validation of compatibility pin manifests (secure URL schemes only)
+    validate-production-gates:
+      path: scripts/validate-production-gates.sh
+      purpose: Fail-closed production security honesty (G1/G2/G3 blocked; live proofs residual lp-t7q.7; no false ready; isolation docs; pen-test/sign-off NOT SIGNED)
+    smoke-readiness-live-proofs-residual:
+      path: scripts/smoke-readiness-live-proofs-residual.sh
+      purpose: Offline residual ledger honesty for G1.4/G1a/G2/G3 (pass/fail/blocked); harness fail-closed; no ready without evidence (lp-t7q.7)
+    policy-as-code-security:
+      path: scripts/policy-as-code-security.sh
+      purpose: Offline policy-as-code security gates (public IP, egress, SSH, URLs, IMDS, S3 TLS, secrets, Tier3, snapshot BPA, reject public control-plane ALB / G1.3)
+    security-acceptance-checklist:
+      path: scripts/security-acceptance-checklist.sh
+      purpose: Offline private-by-default acceptance checklist (LOCAL); staging items documented in security-e2e-acceptance
+    ensure-hermes-profiles:
+      path: scripts/ensure-hermes-profiles.sh
+      purpose: Enforce admin/contributor Hermes profiles on host
+    smoke-hermes-profiles:
+      path: scripts/smoke-hermes-profiles.sh
+      purpose: Offline RBAC profile elevation smoke
+    smoke-product-artifact-iam:
+      path: scripts/smoke-product-artifact-iam.sh
+      purpose: Offline IAM trust/prefix + Object Lock guardrails for product-artifact-infra
+    smoke-chat-corpus-infra:
+      path: scripts/smoke-chat-corpus-infra.sh
+      purpose: Offline layout/IAM/lifecycle/vault-deny guardrails for chat-corpus-infra (lp-gkh.3)
+    smoke-sandbox-vault-mount-iam:
+      path: scripts/smoke-sandbox-vault-mount-iam.sh
+      purpose: Offline (+ optional live) sandbox vault mount IAM drafts + TF module (lp-t86 / lp-zuh.9.1)
+    archive-unused-daytona-sandboxes:
+      path: scripts/archive-unused-daytona-sandboxes.py
+      purpose: Recurring unused Daytona sandbox archive (lp-oop.37.7); dry-run default; keep CP-bound sandbox_id; no secrets in logs
+      runbook: ../docs/runbooks/daytona-sandbox-archive-hygiene.md
+    smoke-archive-unused-daytona-sandboxes:
+      path: scripts/smoke-archive-unused-daytona-sandboxes.sh
+      purpose: Offline smoke for unused-sandbox keep-set + dry-run + --apply refuse (no live Daytona)
+    prove-mocklab-chat-corpus:
+      path: scripts/prove-mocklab-chat-corpus.sh
+      purpose: MockLab live proof chat→corpus object full I/O + BFF restart durability (lp-gkh.9); evidence artifacts/mocklab/lp-gkh.9/
+    verify-product-artifact-staging:
+      path: scripts/verify-product-artifact-staging.sh
+      purpose: Live post-apply S3/ECR/OIDC + denied-prefix verifier (env-driven; operator-only; not CI)
+    smoke-portal-compute:
+      path: scripts/smoke-portal-compute.sh
+      purpose: Offline smoke for G8 portal compute (OAC static edge, digest pins, /health, private CP ALB)
+    smoke-platform-staging-compose:
+      path: scripts/smoke-platform-staging-compose.sh
+      purpose: Offline smoke for platform-staging compose + wiring + indexes + CI coverage + apply/rollback runbook honesty (no apply)
+    smoke-pilot-cost-profile:
+      path: scripts/smoke-pilot-cost-profile.sh
+      purpose: Offline smoke locking platform-staging pilot cost defaults (RDS small/single-AZ/20GiB; Valkey/WAF/DNS-TLS default off; Valkey 1-node enable-path)
+    smoke-platform-vpc:
+      path: scripts/smoke-platform-vpc.sh
+      purpose: Offline smoke for platform-vpc two-AZ public/private foundation + private egress (NAT/endpoints)
+    smoke-portal-valkey:
+      path: scripts/smoke-portal-valkey.sh
+      purpose: Offline smoke for portal-valkey private TLS + at-rest encryption + Secrets Manager REDIS_URL
+    smoke-portal-dns-tls:
+      path: scripts/smoke-portal-dns-tls.sh
+      purpose: Offline smoke for portal-dns-tls us-east-1 CloudFront ACM + regional ALB certs + Route53 aliases
+    smoke-portal-waf:
+      path: scripts/smoke-portal-waf.sh
+      purpose: Offline smoke for portal-waf CloudFront + regional ALB WebACLs (managed rules + rate-based)
+    check-staging-secrets-checklist:
+      path: scripts/check-staging-secrets-checklist.sh
+      purpose: Offline check that staging secrets checklist runbook exists, is complete, and is wired
+    smoke-controlled-egress:
+      path: scripts/smoke-controlled-egress.sh
+      purpose: Offline smoke for controlled egress, SSM-first access, and golden AMI contracts
+    map-oauth-to-litellm:
+      path: scripts/map-oauth-to-litellm.py
+      purpose: Offline OAuthStore provider → LiteLLM model mapping (lp-645.8.5; no live keys)
+    smoke-litellm-multi-slot:
+      path: scripts/smoke-litellm-multi-slot.sh
+      purpose: Offline smoke for LiteLLM multi-slot model_list + env placeholders + OAuth parity (lp-645.8.5)
+    materialize-backend-secrets:
+      path: scripts/materialize-backend-secrets.py
+      purpose: Materialize BackendRuntimeSecretsEnvelope from SM or --from-file into BACKEND_HOME secrets files
+    smoke-materialize-backend-secrets:
+      path: scripts/smoke-materialize-backend-secrets.sh
+      purpose: Offline smoke for materialize-backend-secrets (env, oauth, custom_providers)
+    check-snapshot-age:
+      path: scripts/check-snapshot-age.sh
+      purpose: Operator DLM snapshot age check + optional CloudWatch NewestSnapshotAgeHours metric
+    restore-from-snapshot:
+      path: scripts/restore-from-snapshot.sh
+      purpose: Operator volume/AMI restore from DLM snapshot (dry-run default; SSM-first)
+    smoke-dlm-dr-snapshot-copy:
+      path: scripts/smoke-dlm-dr-snapshot-copy.sh
+      purpose: Offline smoke for opt-in DLM cross-region copy / DR-account share fail-closed defaults (cbd-mta.7.4)
+    smoke-tier3-dedicated-relay:
+      path: scripts/smoke-tier3-dedicated-relay.sh
+      purpose: Offline smoke for Tier 3 dedicated relay (compose portal-relay-service, digest pin, optional DNS/WAF, honesty)
+    smoke-lab-onlyoffice-compose:
+      path: scripts/smoke-lab-onlyoffice-compose.sh
+      purpose: Offline smoke for lab ONLYOFFICE Document Server compose/runbook (lp-5q6.25; optional LIVE=1 api.js)
+    smoke-mocklab-short-stack-harness:
+      path: scripts/smoke-mocklab-short-stack-harness.sh
+      purpose: Offline smoke for MockLab short-stack harness runbook + lab compose (lp-oop.30; existing ECS; no new AWS product)
+    smoke-harness-exec-iam:
+      path: scripts/smoke-harness-exec-iam.sh
+      purpose: Offline smoke for harness exec GetSecretValue catalog + task secrets[] + BFF extra ARNs (lp-oop.38.20; no AWS apply)
+    smoke-mocklab-replace-echo-harness-la:
+      path: scripts/smoke-mocklab-replace-echo-harness-la.sh
+      purpose: Offline smoke for echo → LA harness pin + image recipe (lp-oop.37.4; no AWS apply; live cutover blocked)
+    prove-mocklab-short-stack-no-tool-turn:
+      path: scripts/prove-mocklab-short-stack-no-tool-turn.sh
+      purpose: Live no-tool turn BFF → real LA harness (lp-oop.31). Relay not on the hop. Evidence artifacts/mocklab/short-stack/
+    smoke-mocklab-short-stack-no-tool-turn:
+      path: scripts/smoke-mocklab-short-stack-no-tool-turn.sh
+      purpose: Offline smoke for lp-oop.31 evidence + prove script (no AWS; Relay-zero; no secrets)
+    prove-mocklab-short-stack-no-tool-ui:
+      path: scripts/prove-mocklab-short-stack-no-tool-ui.sh
+      purpose: Browser no-tool turn on local harness-path BFF (lp-oop.36). Relay not on the hop. Screenshots artifacts/ui/lp-oop.36/
+    smoke-mocklab-short-stack-no-tool-ui:
+      path: scripts/smoke-mocklab-short-stack-no-tool-ui.sh
+      purpose: Offline smoke for lp-oop.36 UI prove/runner files (no AWS)
+    prove-mocklab-short-stack-invariants:
+      path: scripts/prove-mocklab-short-stack-invariants.sh
+      purpose: Script 0015 overview invariants + lab tool exec (lp-oop.32). Does not flip live MockLab snapshot unless a human pin decision.
+    smoke-mocklab-short-stack-invariants:
+      path: scripts/smoke-mocklab-short-stack-invariants.sh
+      purpose: Offline smoke for lp-oop.32 evidence + live-snapshot hold (no AWS; no secrets)
+    prove-mocklab-short-stack-kitchen-sink:
+      path: scripts/prove-mocklab-short-stack-kitchen-sink.sh
+      purpose: Kitchen-sink re-QA on local harness-path BFF (lp-oop.34). Guest path stays default relay. Waivers named. No AWS apply.
+    smoke-mocklab-short-stack-kitchen-sink:
+      path: scripts/smoke-mocklab-short-stack-kitchen-sink.sh
+      purpose: Offline smoke for lp-oop.34 kitchen-sink prove/runner files (no AWS)
+    smoke-mocklab-short-stack-relay-retire:
+      path: scripts/smoke-mocklab-short-stack-relay-retire.sh
+      purpose: Offline smoke for lp-oop.35 Daytona harness hop has no deliverInbound; EC2/guest stay Relay (no AWS flip)
+    smoke-staging-document-server:
+      path: scripts/smoke-staging-document-server.sh
+      purpose: Offline smoke for staging Document Server module + platform-staging wiring (lp-5q6.34; staging-platform-shared-ds)
+  references:
+    provision-runbook:
+      path: references/provision-runbook.md
+      purpose: Control-plane register → Terraform → bootstrap; lifecycle-first relay secrets; pin cross-links
+    hermes-profile-rbac:
+      path: references/hermes-profile-rbac.md
+      purpose: Portal roles ↔ Hermes profiles; host bootstrap enforce path
+    migration-phases:
+      path: references/migration-phases.md
+    readiness-matrix:
+      path: references/readiness-matrix.md
+      purpose: Source-of-truth blockers + production security gates (private-by-default); pen-test/sign-off blocked; links backend compatibility matrix
+    backend-compatibility-matrix:
+      path: ../docs/architecture/backend-compatibility-matrix.md
+      purpose: Published backend kind/version/contract/capabilities/conformance/deploy-readiness matrix (lp-k7g.11.7)
+    threat-model-private-by-default:
+      path: references/threat-model-private-by-default.md
+      purpose: STRIDE threat model for deploy surface, host, relay, artifacts, multi-tenant isolation, supply chain
+    production-security-signoff:
+      path: references/production-security-signoff.md
+      purpose: Production security sign-off template; status NOT SIGNED until external pen test or residual-risk acceptance
+    tenant-isolation-decision:
+      path: references/tenant-isolation-decision.md
+      purpose: Isolation model for lanyard_hosted vs customer_account (accounts/VPC/KMS/logs/backups/snapshot copy)
+    security-observability:
+      path: references/security-observability.md
+      purpose: Tenant Flow Logs/host logs/SNS vs account CloudTrail+GuardDuty checklist; snapshot-age interface
+    approved-data-processors:
+      path: references/approved-data-processors.md
+      purpose: Catalog of approved data processors, data categories, control mapping (cbd-zzx.13); Omnibox Mode A egress render consumer (cbd-o9s.12)
+    client-data-handling-policy-template:
+      path: references/templates/client-data-handling-policy.md
+      purpose: Per-client egress/retention/DLP/zero-retention policy template
+    product-artifact-release-contract:
+      path: references/product-artifact-release-contract.md
+    brain-rpc-contract:
+      path: references/brain-rpc-contract.md
+      purpose: G3.1 brain RPC methods/auth/errors (contract defined; G3 matrix blocked until G3.4 staging E2E)
+    deployment-resource-registry:
+      path: references/deployment-resource-registry.md
+      purpose: cbd-mta.3.3 central tenant deployment/resource registry + audit boundary (not tfstate; not vault bodies)
+    runbooks:
+      upgrade-rollback:
+        path: references/runbooks/upgrade-rollback.md
+      dlm-restore-drill:
+        path: references/runbooks/dlm-restore-drill.md
+        purpose: Quarterly restore drill, RTO/RPO targets, snapshot-age alarms, opt-in cross-region/DR-account copy implications, SSM restore path
+      track-a-b-e2e:
+        path: references/runbooks/track-a-b-e2e.md
+      relay-secret-lifecycle:
+        path: references/runbooks/relay-secret-lifecycle.md
+        purpose: Production register/rotate/revoke + SSM/SM storage; lab inline labeled non-prod; IAM/state/CI guidance
+      pin-update:
+        path: references/runbooks/pin-update.md
+        purpose: Operator compatibility pin update after product publish; private pin validation path; hermes-lanyard only on customer hosts (never raw Nous); hermes-gateway ExecStart /opt/hermes-lanyard/bin/hermes gateway
+      product-artifact-staging-apply:
+        path: references/runbooks/product-artifact-staging-apply.md
+        purpose: Phase 2 product-artifact S3/ECR/OIDC staging apply; account gate; OIDC reuse; live verify; no live IDs in git
+      portal-compute-staging-apply:
+        path: references/runbooks/portal-compute-staging-apply.md
+        purpose: G8.3 ordered staging apply for static edge + BFF/relay/CP digest services; pin map; rollback; security honesty
+      portal-valkey-g5-enable:
+        path: references/runbooks/portal-valkey-g5-enable.md
+        purpose: G5 Valkey enable path (compose or private root); pilot often off; dual-BFF live proof deferred with reason (lp-t7q.8); infra_ready ≠ production cert
+      readiness-live-proofs-residual:
+        path: references/runbooks/readiness-live-proofs-residual.md
+        purpose: G1.4/G1a/G2/G3 live proof residual ledger (pass/fail/blocked); monorepo smokes never flip ready (lp-t7q.7 / cbd-mta.6.*)
+      platform-staging-compose:
+        path: references/runbooks/platform-staging-compose.md
+        purpose: Composed platform root apply/rollback; backend and secret handling; CI offline gates; infra_ready honesty (not production-applied)
+      lab-onlyoffice-document-server:
+        path: references/runbooks/lab-onlyoffice-document-server.md
+        purpose: Lab-only ONLYOFFICE Document Server (lab-shared-compose-ds) start/JWT/api.js/DS→BFF reachability/teardown (lp-5q6.25); not production
+      mocklab-short-stack-harness:
+        path: references/runbooks/mocklab-short-stack-harness.md
+        purpose: MockLab short-stack harness on existing ECS cluster (lp-oop.30); lab compose alternative; no new AWS product; guest/relay default
+      mocklab-replace-echo-harness-la:
+        path: references/runbooks/mocklab-replace-echo-harness-la.md
+        purpose: Echo → LA createHarnessTurnServer on existing Fargate harness (lp-oop.37.4); PR 242 MERGED / live :3; real-reply still echo until runner bind
+      staging-document-server:
+        path: references/runbooks/staging-document-server.md
+        purpose: Staging platform shared Document Server (staging-platform-shared-ds) topology/secrets/reachability/health/rollback (lp-5q6.34); not production
+      tier3-dedicated-relay-apply:
+        path: references/runbooks/tier3-dedicated-relay-apply.md
+        purpose: Per-tenant Tier 3 dedicated relay apply (ALB/ECS digest pin, optional DNS/WAF); operator-owned; infra_ready not production-certified
+      staging-secrets-checklist:
+        path: references/runbooks/staging-secrets-checklist.md
+        purpose: Staging GitHub Actions/env secrets, AWS SM/SSM, and Portal task runtime env checklist (names only)
+      production-security-gate:
+        path: references/runbooks/production-security-gate.md
+      tenant-isolation:
+        path: references/runbooks/tenant-isolation.md
+      account-factory:
+        path: references/runbooks/account-factory.md
+        purpose: Lanyard-hosted account-per-tenant CT/AFT contract, SCP attach, baseline, quarantine/decommission, templates/tenant consume
+      track-b-customer-account-access:
+        path: references/runbooks/track-b-customer-account-access.md
+        purpose: Track B assume-role ExternalId, tenant template wiring, artifact grant, rotate/revoke
+      ssm-break-glass:
+        path: references/runbooks/ssm-break-glass.md
+        purpose: SSM Session Manager primary access and MFA SSH break-glass
+      tailscale-operator-access:
+        path: references/runbooks/tailscale-operator-access.md
+        purpose: Optional Tailscale secondary mesh; SSM/SM auth keys; ACL default-deny; DERP vs UDP 41641
+      controlled-egress:
+        path: references/runbooks/controlled-egress.md
+        purpose: Production port-restricted egress, VPC endpoints, and policy→control mapping
+      data-processor-onboarding:
+        path: references/runbooks/data-processor-onboarding.md
+        purpose: Security review required before enabling a new data processor / egress destination
+      golden-ami-supply-chain:
+        path: references/runbooks/golden-ami-supply-chain.md
+        purpose: Pinned golden AMI, reduced package installs, patch/SBOM policy
+      security-alert-triage:
+        path: references/runbooks/security-alert-triage.md
+        purpose: Operator response for status check, GuardDuty, SG drift, snapshot-age interface
+      host-runtime-hardening:
+        path: references/runbooks/host-runtime-hardening.md
+        purpose: Unprivileged hermes user, systemd sandbox, tool allowlists, SELinux AL2023 notes; Omnibox Mode A pointer
+      omnibox-mode-a:
+        path: references/runbooks/omnibox-mode-a.md
+        purpose: Mode A Omnibox operator enable/verify/break-glass (OMNIBOX_ENABLED=0); isolation commands; residual shared-kernel risk (not microVM)
+      omnibox-mode-a-spike:
+        path: references/runbooks/omnibox-mode-a-spike.md
+        purpose: Mode A Omnibox phase-0 spike notes; pass/fail isolation; locked tool bwrap_inrepo (no Mode B)
+      security-e2e-acceptance:
+        path: references/runbooks/security-e2e-acceptance.md
+        purpose: LOCAL vs STAGING security E2E acceptance matrix (offline CI vs live AWS)
+      penetration-test-and-signoff:
+        path: references/runbooks/penetration-test-and-signoff.md
+        purpose: Commission independent pen test, triage findings, residual risk, sign-off process
+    omnibox-mode-a-hermes-hook:
+      path: references/omnibox-mode-a-hermes-hook.md
+      purpose: Phase 5 Hermes shell/host-tool hook contract (OMNIBOX_ENABLED → run-under-omnibox with session profile; residual product PR)
+  artifacts:
+    contract:
+      path: artifacts/README.md
+      purpose: URL + version + SHA-256 pin documentation
+  compatibility:
+    schema:
+      path: compatibility/schema.json
+    example:
+      path: compatibility/pins.example.yaml
+      purpose: Placeholder-only pins for schema CI (never live digests/account IDs)
+    real_releases:
+      path: compatibility/pins.real-releases.yaml
+      purpose: First real Hermes/client-core private GitHub release pins (coordinates only; no tokens; Portal digests still placeholder)
+    readme:
+      path: compatibility/README.md
+      purpose: Pin field reference + private validation path; links pin-update runbook and release contract
+  ci:
+    workflow:
+      path: .github/workflows/ci.yml
+
+bootstrap:
+  hermes_install_path: /opt/hermes-lanyard
+  client_core_install_path: /opt/company-brain
+  host_script_path: /usr/local/sbin/company-brain-bootstrap
+  injection: base64gzip of scripts/bootstrap-host.sh via bootstrap_script_b64
+  seed_gate: AGENTS.md must be absent before extract
+  provenance_dir: /opt/company-brain/.seed
+  required_vars:
+    - client_core_artifact_url
+    - client_core_artifact_version
+    - client_core_artifact_sha256
+    - hermes_artifact_url
+    - hermes_artifact_version
+    - hermes_artifact_sha256
+    - relay_contract_major
+  forbidden_version_refs:
+    - main
+    - master
+    - HEAD
+    - develop
+    - latest
+
+product_artifact_infra:
+  s3_prefixes:
+    hermes: hermes/
+    client_core: client-core/
+    portal_web: portal-web/
+  portal_ecr_services:
+    - web
+    - bff
+    - relay
+    - control-plane
+  portal_web_static_target:
+    status: infra_ready_s3_oidc
+    prefix: portal-web/
+    object_shape: portal-web/<version>/portal-web.tar.gz
+    pin_fields:
+      - portal.web.url
+      - portal.web.version
+      - portal.web.sha256
+    note: Deploy-owned S3 prefix + Portal OIDC S3 write implemented; product packaging/publish workflows exist — real pin coordinates still unpublished.
+  ecr_tag_mutability: IMMUTABLE
+  oidc_default_trust: release_tags_only
+  oidc_publisher_repos:
+    - LanyardBrain/Portal
+    - LanyardBrain/hermes-lanyard
+    - LanyardBrain/client-core
+
+validation:
+  shell:
+    - bash -n scripts/bootstrap-host.sh
+    - bash -n scripts/omnibox/run-under-omnibox.sh
+    - bash -n scripts/ensure-omnibox.sh
+    - bash -n scripts/smoke-omnibox.sh
+    - bash -n scripts/seed-demo-vault.sh
+    - bash -n scripts/smoke-seed-demo-vault.sh
+    - bash -n scripts/seed-mocklab-s3-vault.sh
+    - bash -n scripts/smoke-seed-mocklab-s3-vault.sh
+    - bash -n scripts/seed-demo-hermes-projects.sh
+    - bash -n scripts/seed-mocklab-agent-projects.sh
+    - bash -n scripts/smoke-seed-mocklab-agent-projects.sh
+    - bash -n scripts/smoke-bootstrap-extract.sh
+    - bash -n scripts/smoke-bootstrap-inject.sh
+    - bash -n scripts/smoke-artifact-attestation.sh
+    - bash -n scripts/validate-compatibility.sh
+    - bash -n scripts/validate-production-gates.sh
+    - bash -n scripts/smoke-readiness-live-proofs-residual.sh
+    - bash -n scripts/policy-as-code-security.sh
+    - bash -n scripts/security-acceptance-checklist.sh
+    - bash -n scripts/smoke-product-artifact-iam.sh
+    - bash -n scripts/smoke-chat-corpus-infra.sh
+    - bash -n scripts/verify-product-artifact-staging.sh
+    - bash -n scripts/smoke-control-plane-rds.sh
+    - bash -n scripts/smoke-portal-compute.sh
+    - bash -n scripts/smoke-platform-vpc.sh
+    - bash -n scripts/smoke-portal-valkey.sh
+    - bash -n scripts/smoke-portal-dns-tls.sh
+    - bash -n scripts/smoke-portal-waf.sh
+    - bash -n scripts/smoke-controlled-egress.sh
+    - bash -n scripts/smoke-account-factory.sh
+    - bash -n scripts/smoke-tenant-template-wiring.sh
+    - bash -n scripts/smoke-tier3-dedicated-relay.sh
+    - bash -n scripts/smoke-lab-onlyoffice-compose.sh
+    - bash -n scripts/smoke-mocklab-short-stack-harness.sh
+    - bash -n scripts/smoke-harness-exec-iam.sh
+    - bash -n scripts/smoke-mocklab-replace-echo-harness-la.sh
+    - bash -n scripts/prove-mocklab-short-stack-no-tool-turn.sh
+    - bash -n scripts/smoke-mocklab-short-stack-no-tool-turn.sh
+    - bash -n scripts/prove-mocklab-short-stack-no-tool-ui.sh
+    - bash -n scripts/smoke-mocklab-short-stack-no-tool-ui.sh
+    - bash -n scripts/prove-mocklab-short-stack-invariants.sh
+    - bash -n scripts/smoke-mocklab-short-stack-invariants.sh
+    - bash -n scripts/prove-mocklab-short-stack-kitchen-sink.sh
+    - bash -n scripts/smoke-mocklab-short-stack-kitchen-sink.sh
+    - bash -n scripts/smoke-mocklab-short-stack-relay-retire.sh
+    - bash -n scripts/smoke-staging-document-server.sh
+    - bash -n modules/company-brain-ec2/setup.sh
+    - bash scripts/smoke-omnibox.sh
+    - bash scripts/ensure-omnibox.sh --dry-run
+    - bash scripts/smoke-seed-demo-vault.sh
+    - bash scripts/smoke-seed-mocklab-s3-vault.sh
+    - bash scripts/smoke-seed-mocklab-agent-projects.sh
+    - bash scripts/smoke-bootstrap-extract.sh
+    - bash scripts/smoke-bootstrap-inject.sh
+    - bash scripts/smoke-artifact-attestation.sh
+    - bash scripts/validate-compatibility.sh
+    - bash scripts/validate-production-gates.sh
+    - bash scripts/smoke-readiness-live-proofs-residual.sh
+    - bash scripts/policy-as-code-security.sh
+    - bash scripts/security-acceptance-checklist.sh
+    - bash scripts/smoke-product-artifact-iam.sh
+    - bash scripts/smoke-chat-corpus-infra.sh
+    - bash scripts/smoke-control-plane-rds.sh
+    - bash scripts/smoke-portal-compute.sh
+    - bash scripts/smoke-platform-vpc.sh
+    - bash scripts/smoke-portal-valkey.sh
+    - bash scripts/smoke-portal-dns-tls.sh
+    - bash scripts/smoke-portal-waf.sh
+    - bash scripts/smoke-controlled-egress.sh
+    - bash scripts/smoke-account-factory.sh
+    - bash scripts/smoke-tenant-template-wiring.sh
+    - bash scripts/smoke-tier3-dedicated-relay.sh
+    - bash scripts/smoke-lab-onlyoffice-compose.sh
+    - bash scripts/smoke-mocklab-short-stack-harness.sh
+    - bash scripts/smoke-harness-exec-iam.sh
+    - bash scripts/smoke-mocklab-replace-echo-harness-la.sh
+    - bash scripts/smoke-mocklab-short-stack-no-tool-turn.sh
+    - bash scripts/smoke-mocklab-short-stack-no-tool-ui.sh
+    - bash scripts/smoke-mocklab-short-stack-invariants.sh
+    - bash scripts/smoke-mocklab-short-stack-kitchen-sink.sh
+    - bash scripts/smoke-mocklab-short-stack-relay-retire.sh
+    - bash scripts/smoke-staging-document-server.sh
+  terraform:
+    - terraform fmt -check -recursive
+    - terraform init -backend=false && terraform validate  # per module/template/environment
+  ci_only:
+    - shellcheck  # installed in GitHub Actions; not required locally
+
+out_of_scope:
+  - Portal application/control-plane source
+  - Employee Core vault content
+  - Live secrets, tfvars, state, account IDs
+  - Portal cloud compute production-certified apply (modules infra_ready; operator private root; needs pins + G1/G2/G7)
+  - Control-plane RDS live apply (module infra_ready; not auto-applied; operator private root)
+  - Platform VPC live apply (module infra_ready; not auto-applied; operator private root)
+  - Portal Valkey live apply (module infra_ready; not production certified; operator private root)
+  - Live product publish pin coordinates (workflows may exist; do not invent digests)
+
+completed_migration_phases:
+  - milestone_1_client_data_plane_baseline
+  - phase_2_product_release_foundation
+  - g4_product_postgres_and_deploy_rds_module
+  - g8_portal_compute_modules_infra_ready
+  - platform_vpc_module_infra_ready
+
+next_migration_phases:
+  - portal_compute_operator_staging_apply
+  - control_plane_rds_operator_apply
+  - portal_valkey_operator_apply
+  - shared_runtime_state_after_product_consumers
+  - track_b_iam
+  - account_factory_live_ct_aft_ops
+  - automated_e2e
+
+portal_topology_gates:
+  g0_architecture_freeze: ready_documented
+  g1_control_plane_security: blocked_staging_proof_g1_4_pending
+  g2_relay_credentials: blocked_product_impl_landed_staging_e2e_pending
+  g3_brain_rpc: blocked_staging_e2e_g3_4_pending
+  g4_control_plane_postgres: product_ready_rds_module_infra_ready_not_applied
+  g5_bff_shared_state: blocked_before_desired_count_gt_one
+  g6_relay_bus: blocked_before_desired_count_gt_one
+  g7_immutable_releases: blocked_no_published_pins_yet
+  g8_thin_staging: infra_ready_modules_not_production_certified_without_staging
+  production_portal_relay_security: blocked_while_g1_g2_unmet
+  customer_gateway_relay: ready_wiring_only_not_production_security
+  tier3_dedicated_relay: infra_ready_not_auto_applied
+
+tenant_isolation:
+  decision: references/tenant-isolation-decision.md
+  customer_account: full_account_boundary
+  lanyard_hosted_production_target: account_per_tenant
+  lanyard_hosted_interim: vpc_per_tenant_plus_kms_logs_dlm
+  shared_unpartitioned_production_account: forbidden
+  account_factory:
+    module: modules/account-factory
+    status: infra_ready_not_auto_applied
+    runbook: references/runbooks/account-factory.md
+    smoke: scripts/smoke-account-factory.sh
+    live_organizations_api: false
+  customer_account_access:
+    module: modules/customer-account-access
+    status: infra_ready_not_auto_applied
+    runbook: references/runbooks/track-b-customer-account-access.md
+    smoke: scripts/smoke-customer-account-access.sh
+  tenant_template_wiring:
+    path: templates/tenant
+    smoke: scripts/smoke-tenant-template-wiring.sh
+    deploy_role_arn: optional_provider_assume_role
+    track_b_external_id: required_when_assume_role_and_customer_account
+    backend: backend.tf.example_track_a_and_b
+  template_enforcements:
+    - production_intent
+    - isolation_mode
+    - project_name_unique_style
+    - dedicated_kms_key_arn
+    - log_group_prefix
+    - aws_account_id
+    - track_b_deploy_role_external_id
+
+gated_product_publish:
+  portal_static_web: blocked_workflow_exists_no_published_pin_yet
+  portal_backend_images: blocked_dockerfiles_and_release_workflow_exist_no_published_digest_yet
+  hermes_lanyard_runtime: ready_private_gh_release_v0_1_0_g7h2_s3_mirror_optional
+  client_core_tarball: ready_private_gh_release_v0_1_0_g7c2_s3_mirror_optional
+  control_plane_postgres: product_ready_rds_module_infra_ready_not_applied
+  pin_update_runbook: references/runbooks/pin-update.md
+  real_release_pins: compatibility/pins.real-releases.yaml
+  private_gh_download_auth: GITHUB_TOKEN_or_GH_TOKEN_env_never_commit
