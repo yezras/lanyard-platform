@@ -1,0 +1,81 @@
+=== VERSION ===
+company-brain-backend (lanyard-agent) 0.0.0-main.9bcada6780d2
+=== MOUNT-S3 ===
+/usr/bin/mount-s3
+mount-s3 1.23.0
+/usr/bin/fusermount
+=== SEED PY ===
+-rwxr-xr-x 1 root root 11222 Aug 14 21:17 /usr/local/lib/lanyard/seed-default-projects.py
+536:ensure_default_projects() {
+618:  ensure_default_projects
+=== ENOSYS ===
+2
+3
+=== VAULT FS ===
+total 0
+drwxr-xr-x 1 brain brain 132 Aug 14 22:05 .
+drwxr-xr-x 1 root  root   27 Aug 14 17:31 ..
+drwx------ 2 brain brain  10 Aug 14 22:05 .agent-runtime
+drwx------ 3 brain brain  31 Aug 14 22:05 Projects
+drwx------ 3 brain brain  28 Aug 14 22:05 cron
+drwx------ 2 brain brain  10 Aug 14 22:05 mempalace
+drwx------ 2 brain brain  10 Aug 14 22:05 skills
+drwx------ 2 brain brain  10 Aug 14 22:05 workflows
+=== WRITE PROBE ===
+VAULT_WRITABLE
+=== PROJECTS DB ===
+/var/lib/company-brain-backend/projects.db
+FOUND /var/lib/company-brain-backend/projects.db
+[('p_a5036a91', 'Workspace', 'workspace', '/mnt/vault/Projects/Workspace')]
+=== PROCESSES ===
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+brain          1  0.0  0.0 1274484 58764 ?       Ssl  22:05   0:00 /usr/local/bin/daytona /usr/bin/tini -- /usr/local/lib/lanyard/entrypoint.sh
+brain         84  0.0  0.0   3932  3008 ?        S    22:05   0:00 /usr/bin/bash
+brain         87  0.0  0.0  15748 10524 ?        S    22:05   0:00 python3 /tmp/daytona_repl_worker.py
+brain         95  0.0  0.0   3932  1936 ?        S    22:05   0:00 /usr/bin/bash
+brain         97  0.0  0.0   3932  1912 ?        S    22:05   0:00 /usr/bin/bash
+brain         98  0.0  0.0   2524  1420 ?        S    22:05   0:00 tail -f /dev/null
+brain         99  0.0  0.0   2480  1624 ?        S    22:05   0:00 /usr/bin/tini -- /usr/local/lib/lanyard/entrypoint.sh
+brain        100  0.0  0.0 11881756 172728 ?     Sl   22:05   0:01 node /opt/company-brain-backend/current/lanyard-agent/apps/gateway/dist/main.js --config /var/lib/company-brain-backend/config.yaml
+brain        156  0.0  0.0   3932  3092 ?        S    22:05   0:00 /usr/bin/bash
+brain        174  0.0  0.0   8096  4256 ?        R    22:05   0:00 ps aux
+brain        175  0.0  0.0   2500  1504 ?        S    22:05   0:00 head -25
+=== BACKEND_HOME ===
+total 40
+drwxr-xr-x 1 brain brain  4096 Aug 14 22:05 .
+drwxr-xr-x 1 root  root    156 Aug 14 22:05 ..
+drwxr-xr-x 3 brain brain    30 Aug 14 22:05 .daytona
+-rw-r----- 1 brain brain  2618 Aug 14 22:05 config.yaml
+drwx------ 2 brain brain    10 Aug 14 22:05 cron
+-rw------- 1 brain brain   406 Aug 14 22:05 gateway.env
+drwx------ 2 brain brain    10 Aug 14 22:05 litellm
+drwx------ 2 brain brain    10 Aug 14 22:05 logs
+drwx------ 2 brain brain    60 Aug 14 22:05 profiles
+-rw------- 1 brain brain 28672 Aug 14 22:05 projects.db
+drwx------ 2 brain brain    10 Aug 14 22:05 sessions
+drwx------ 2 brain brain    10 Aug 14 22:05 skills
+drwx------ 2 brain brain    87 Aug 14 22:05 state
+drwx------ 2 brain brain    10 Aug 14 22:05 workspace
+PROBE_DONE
+[seed-default-projects] BACKEND_HOME=/var/lib/company-brain-backend
+[seed-default-projects] projects.db=/var/lib/company-brain-backend/projects.db
+[seed-default-projects] VAULT_ROOT=/mnt/vault
+[seed-default-projects] ok (exists): workspace → /mnt/vault/Projects/Workspace
+{
+  "result": "ok",
+  "projects_db": "/var/lib/company-brain-backend/projects.db",
+  "actions": {
+    "workspace": "ok"
+  },
+  "projects": [
+    {
+      "id": "p_a5036a91",
+      "slug": "workspace",
+      "name": "Workspace",
+      "primary_path": "/mnt/vault/Projects/Workspace"
+    }
+  ]
+}
+SEED_EXIT:0
+[('p_a5036a91', 'Workspace', 'workspace', '/mnt/vault/Projects/Workspace')]
+STOCK_VAULT_WRITE_OK

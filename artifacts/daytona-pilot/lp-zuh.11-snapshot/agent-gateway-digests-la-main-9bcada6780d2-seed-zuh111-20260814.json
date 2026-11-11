@@ -1,0 +1,25 @@
+{
+  "mode": "publish",
+  "version": "la-main-9bcada6780d2-seed-zuh111-20260814",
+  "bead": "lp-zuh.11.1",
+  "platform": "linux/amd64",
+  "image": {
+    "repository": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway",
+    "tag": "la-main-9bcada6780d2-seed-zuh111-20260814",
+    "digest": "sha256:42b41ea5125fdec4958c2d566b8006df6943fc773737026112fb839ef9fcd39d",
+    "pin_ref": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway@sha256:42b41ea5125fdec4958c2d566b8006df6943fc773737026112fb839ef9fcd39d"
+  },
+  "local_image_id": "sha256:2f388f8ca7e6c46e95c91b4ddee9e01dbdd0c70aafc69c08ba3b2a2d01e0f7a5",
+  "lanyard_agent": {
+    "version": "0.0.0-main.9bcada6780d2",
+    "git_commit": "9bcada6780d2c32471aaf2e9bfa6dc17a1966b1b",
+    "sha256": "6acbc8aa8825165d0f86ddbf3b7ac0511d36b5184e2eef63c2df380539a7e8b8"
+  },
+  "daytona_snapshot": {
+    "id": "f4d947f3-bd03-4f6c-b8a2-b2034872feba",
+    "name": "lanyard-la-main-9bcada6780d2-seed-zuh111-20260814",
+    "state": "active",
+    "class": "container"
+  },
+  "platform_git": "6597246"
+}
