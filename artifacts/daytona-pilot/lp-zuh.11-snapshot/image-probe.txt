@@ -1,0 +1,29 @@
+=== VERSION ===
+company-brain-backend (lanyard-agent) 0.0.0-main.9bcada6780d2
+=== MOUNT-S3 ===
+/usr/bin/mount-s3
+mount-s3 1.23.0
+/usr/bin/fusermount
+fusermount version: 2.9.9
+=== MEMPALACE ===
+/usr/local/bin/mempalace
+MemPalace 3.7.0
+=== SEED PROJECTS ===
+-rwxr-xr-x 1 root root 11222 Aug 14 21:17 /usr/local/lib/lanyard/seed-default-projects.py
+536:ensure_default_projects() {
+618:  ensure_default_projects
+=== ENOSYS workflow ===
+138: * Mountpoint-S3 (and some FUSE) return ENOSYS for rename — fall back to
+151:        if (code !== "ENOSYS" && code !== "EXDEV" && code !== "EPERM") {
+=== ENOSYS cron ===
+19: *   (Mountpoint-S3 ENOSYS), fall back to overwrite of the canonical path.
+528:                // Mountpoint-S3 (and some FUSE) return ENOSYS for rename. Fall back to
+532:                if (code !== "ENOSYS" && code !== "EXDEV" && code !== "EPERM") {
+=== VAULT OWNERSHIP ===
+990:990
+=== ensure_vault_mount ===
+5:# Bead: lp-zuh.6 / lp-zuh.9.3 (ensure_vault_mount + mount-s3 prebake; kitchen-sink seed)
+12:#   1. ensure_vault_mount: idempotent Mountpoint at VAULT_ROOT when wake inject present
+131:ensure_vault_mount() {
+259:  ensure_vault_mount || true
+PROBE_OK
