@@ -1,0 +1,35 @@
+{
+  "type": "brain_rpc_request",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLECRONCREATE001",
+  "method": "settings.patch",
+  "timeout_ms": 15000,
+  "auth": {
+    "tenant_id": "ten_example",
+    "instance_id": "inst_example",
+    "subject": {
+      "portal_user_id": "usr_admin",
+      "backend_profile": "admin",
+      "hermes_profile": "admin",
+      "roles": ["admin"],
+      "path_prefixes": []
+    },
+    "session_id": "sess_example",
+    "issued_at": "2026-08-09T12:00:00.000Z",
+    "expires_at": "2026-08-09T12:05:00.000Z"
+  },
+  "params": {
+    "op": "cron.create",
+    "name": "Weekly digest",
+    "prompt": "Summarize last week's vault changes for the team.",
+    "enabled": true,
+    "schedule": {
+      "kind": "cron",
+      "expr": "0 9 * * 1-5",
+      "display": "Weekdays at 9:00 AM (America/New_York)",
+      "timezone": "America/New_York"
+    },
+    "skills": ["post-meeting-triage"]
+  },
+  "idempotency_key": null
+}

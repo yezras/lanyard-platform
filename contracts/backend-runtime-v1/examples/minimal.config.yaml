@@ -1,0 +1,16 @@
+# Minimal backend config covering model/provider, skills, and cron.
+# Suitable as a seed sketch for config/defaults.yaml (no secrets).
+
+model:
+  default: openrouter/auto
+  provider: auto
+
+providers: {}
+
+skills:
+  creation_nudge_interval: 0
+  external_dirs: []
+
+cron:
+  provider: ""
+  wrap_response: true

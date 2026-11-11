@@ -1,0 +1,33 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLECRONCREATE001",
+  "ok": true,
+  "result": {
+    "op": "cron.create",
+    "source": "lanyard_agent",
+    "cron": {
+      "id": "st-weekly-digest",
+      "name": "Weekly digest",
+      "enabled": true,
+      "path": "cron/jobs.json",
+      "prompt": "Summarize last week's vault changes for the team.",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1-5",
+        "display": "Weekdays at 9:00 AM (America/New_York)",
+        "timezone": "America/New_York"
+      },
+      "skills": ["post-meeting-triage"],
+      "state": "scheduled",
+      "last_run_at": null,
+      "next_run_at": null,
+      "last_status": null
+    }
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 18,
+    "host_time": "2026-08-09T12:00:00.050Z"
+  }
+}

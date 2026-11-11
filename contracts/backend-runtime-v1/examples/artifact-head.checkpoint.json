@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "record_type": "artifact_head",
+  "tenant_id": "ten_example",
+  "path": "/Projects/Acme/.lanyard/checkpoints/proposal.docx/run-42.docx",
+  "operation_id": "op_01AGENTCHKPT0001",
+  "revision": {
+    "token": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "kind": "content_hash",
+    "size_bytes": 64,
+    "modified_at": "2026-07-12T00:00:04.000Z"
+  },
+  "updated_at": "2026-07-12T00:00:04.000Z",
+  "head_kind": "checkpoint",
+  "source_path": "/Projects/Acme/proposal.docx",
+  "actor": {
+    "kind": "agent",
+    "subject_id": "agent:main",
+    "agent_id": "agent:main",
+    "run_id": "run-42",
+    "backend_profile": "contributor"
+  },
+  "workspace_id": "default"
+}
