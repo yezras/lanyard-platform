@@ -1,0 +1,49 @@
+# Local runtime state
+Clients/clients_crm.db
+Clients/clients_crm.db-*
+evals.db
+.env
+.env.*
+!.env.example
+.seed/enabled-packs.txt
+
+# Memory indexes and caches
+.mempalace/
+chroma/
+*.chroma
+*.sqlite
+*.sqlite3
+*.db
+!Clients/schema.sql
+
+# Python / JS caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+.cache/
+dist/
+build/
+out/
+
+# Terraform local state (lock files under infra/** are committed)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# Never commit live customer values into Core
+terraform.tfvars
+*.auto.tfvars
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
