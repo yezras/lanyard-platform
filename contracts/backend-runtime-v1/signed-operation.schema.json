@@ -1,0 +1,550 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/backend-runtime-v1/signed-operation.schema.json",
+  "title": "Signed operation ledger domain (backend-runtime-v1 / lp-ye4.5)",
+  "description": "Authoritative shapes for multiplayer signed operation history, actor identity, and current-head materialization. Operation ids and history heads are SEPARATE from DocumentRevision (vault content CAS). Additive Brain RPC history/head methods (phase 3+) must not replace vault.write CAS or write_checkpoint policy. Phase 1 defines schemas, fixtures, and shared types only — no durable host store and no new RPC methods.",
+  "$comment": "Bead lp-ye4.5 / epic lp-ye4. Compatible with brain-rpc documentRevision and vault.write modes (create_new, replace_if_match, replace_if_absent, write_checkpoint).",
+  "oneOf": [
+    { "$ref": "#/$defs/signedOperationEvent" },
+    { "$ref": "#/$defs/artifactHead" },
+    { "$ref": "#/$defs/workspaceHead" }
+  ],
+  "$defs": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1,
+      "description": "Signed-operation domain schema major. Bump only with breaking shape changes."
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "operationId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^op_[A-Za-z0-9._:-]+$",
+      "description": "Stable unique id for one ledger event. Prefixed op_. NEVER equal to DocumentRevision.token and never used as vault.write CAS token."
+    },
+    "vaultPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "^/",
+      "description": "Vault-root-relative absolute path starting with /. Same path form as vault.write path / source_path."
+    },
+    "isoDateTime": {
+      "type": "string",
+      "minLength": 1,
+      "description": "RFC3339 / ISO-8601 timestamp. Prefer UTC with Z."
+    },
+    "sha256Hex": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Lowercase hex SHA-256 digest (no sha256: prefix)."
+    },
+    "documentRevisionKind": {
+      "type": "string",
+      "enum": [
+        "etag",
+        "content_hash",
+        "host_revision",
+        "mtime_size_fallback"
+      ],
+      "description": "Mirrors brain-rpc documentRevisionKind. Production Office writeback prefers etag|content_hash|host_revision."
+    },
+    "documentRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["token", "kind"],
+      "description": "Host-owned identity of specific bytes at a vault path. Wire-compatible with brain-rpc $defs/documentRevision. Used for vault.write CAS and Office document.key material. Opaque token — never a file body. Distinct from operation_id.",
+      "properties": {
+        "token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Opaque revision token (e.g. sha256:… with kind content_hash, strong etag, or host UUID)."
+        },
+        "kind": {
+          "$ref": "#/$defs/documentRevisionKind"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Content length at this revision when known."
+        },
+        "modified_at": {
+          "$ref": "#/$defs/isoDateTime",
+          "description": "ISO-8601 timestamp for UI only — never sole CAS key."
+        }
+      }
+    },
+    "bodyHash": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alg", "hex"],
+      "description": "Cryptographic fingerprint of the written body bytes for this operation. Independent of DocumentRevision.token formatting (even when revision.kind is content_hash). Null body ops omit this field entirely (delete, pure reject without body).",
+      "properties": {
+        "alg": {
+          "type": "string",
+          "const": "sha256",
+          "description": "Hash algorithm. v1 only supports sha256."
+        },
+        "hex": {
+          "$ref": "#/$defs/sha256Hex"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Decoded byte length of the hashed body when known."
+        }
+      }
+    },
+    "actorKind": {
+      "type": "string",
+      "enum": ["human", "agent", "system", "delegated_agent"],
+      "description": "Who initiated the observed commit or rejection. human = Portal user (Office callback / human write UI). agent = backend agent tool subject. system = host-internal maintenance. delegated_agent = agent run acting under a human or parent agent grant (phase 5)."
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "subject_id"],
+      "description": "Safe actor provenance stored on ledger events. Never secrets, raw tokens, or browser-supplied ACL claims. Phase 5 binds grants; phase 1 freezes identity fields.",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/actorKind"
+        },
+        "subject_id": {
+          "$ref": "#/$defs/nonEmptyString",
+          "description": "Stable subject id for this actor kind (portal user id, agent id, system, or run subject)."
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Optional UI label. Not authoritative for ACL."
+        },
+        "portal_user_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Portal end-user id when kind is human or when a human delegated the run."
+        },
+        "agent_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Agent product/instance subject when kind is agent or delegated_agent."
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Agent run / tool-call correlation id when kind is delegated_agent or agent."
+        },
+        "session_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Portal or Office session id when known (audit only)."
+        },
+        "backend_profile": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "Backend profile name stamped by BFF (admin, contributor, …)."
+        },
+        "grant_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Optional access-grant id (phase 5). Omitted until grants exist."
+        }
+      }
+    },
+    "operationTargetScope": {
+      "type": "string",
+      "enum": ["file", "workspace"],
+      "description": "file = single vault path. workspace = tree/workspace-level event (rare; most tree advances are side effects of file ops)."
+    },
+    "operationTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "path"],
+      "description": "What the operation attempted to mutate. Path is always present for v1 (workspace events use workspace root path or logical workspace path).",
+      "properties": {
+        "scope": {
+          "$ref": "#/$defs/operationTargetScope"
+        },
+        "path": {
+          "$ref": "#/$defs/vaultPath",
+          "description": "Primary path: write destination for file ops; checkpoint destination for file_checkpoint; workspace root or logical path for workspace scope."
+        },
+        "source_path": {
+          "$ref": "#/$defs/vaultPath",
+          "description": "Canonical vault path when kind is file_checkpoint (mirrors vault.write source_path). Must differ from path."
+        },
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Workspace partition when multi-workspace is enabled. Default workspace may omit or use 'default'."
+        }
+      }
+    },
+    "operationKind": {
+      "type": "string",
+      "enum": [
+        "file_create",
+        "file_replace",
+        "file_checkpoint",
+        "file_delete",
+        "file_rename",
+        "workspace_tree_advance",
+        "operation_rejected"
+      ],
+      "description": "Ledger operation kind. Maps from vault.write modes: create_new→file_create; replace_if_match→file_replace; replace_if_absent→file_create|file_replace by outcome; write_checkpoint→file_checkpoint. CAS/policy failures → operation_rejected without advancing heads. workspace_tree_advance records explicit tree-only mutations or is used as a derived label when fixtures document tree root advance (phase 2 materializes heads from committed file ops)."
+    },
+    "vaultWriteMode": {
+      "type": "string",
+      "enum": [
+        "create_new",
+        "replace_if_match",
+        "replace_if_absent",
+        "write_checkpoint"
+      ],
+      "description": "Mirrors brain-rpc vaultWriteMode. Present when the ledger event was produced by vault.write."
+    },
+    "vaultWriteKind": {
+      "type": "string",
+      "enum": ["create", "replace", "checkpoint", "conflict_copy"],
+      "description": "Mirrors brain-rpc result_vault_write.write_kind when known."
+    },
+    "operationResultStatus": {
+      "type": "string",
+      "enum": ["committed", "rejected"],
+      "description": "committed advances heads (when applicable). rejected is append-only audit of a failed attempt and MUST NOT advance artifact or workspace heads."
+    },
+    "operationResultReason": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "revision_mismatch",
+        "path_exists",
+        "path_missing",
+        "human_edit_active",
+        "forbidden",
+        "invalid_argument",
+        "idempotent_replay",
+        "other"
+      ],
+      "description": "Machine reason. Aligns with vault.write conflict details.reason and error codes where applicable."
+    },
+    "operationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason"],
+      "description": "Outcome of the attempted mutation. On committed file writes, revision is the new DocumentRevision (CAS-compatible). On rejected, optional prior/actual revision tokens explain the conflict without claiming a new head.",
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/operationResultStatus"
+        },
+        "reason": {
+          "$ref": "#/$defs/operationResultReason"
+        },
+        "revision": {
+          "$ref": "#/$defs/documentRevision",
+          "description": "New host revision after durable commit. Required when status=committed and kind is a file body write. Absent on pure reject / tree-only labels that do not change file bytes."
+        },
+        "prior_revision": {
+          "$ref": "#/$defs/documentRevision",
+          "description": "Revision observed before the attempt (expected base for CAS)."
+        },
+        "actual_revision": {
+          "$ref": "#/$defs/documentRevision",
+          "description": "Host current revision when status=rejected for revision_mismatch."
+        },
+        "write_kind": {
+          "$ref": "#/$defs/vaultWriteKind"
+        },
+        "created": {
+          "type": "boolean",
+          "description": "True when the path was newly created."
+        },
+        "idempotent_replay": {
+          "type": "boolean",
+          "description": "True when this event is the replay of a prior successful idempotency_key (same operation_id and heads)."
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 1024,
+          "description": "Optional human-readable detail. Never secrets."
+        }
+      }
+    },
+    "signatureAlgorithm": {
+      "type": "string",
+      "enum": ["ed25519", "hmac-sha256", "none"],
+      "description": "Host signing algorithm. Production hosts use ed25519 (phase 7). none is allowed only for offline fixtures and unsigned fake harnesses — never for durable production ledger entries that advertise signed history."
+    },
+    "operationSignature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alg", "key_id", "value", "signed_at"],
+      "description": "Host signature over the canonicalized unsigned event envelope (phase 7 defines canonicalization). Fixtures use shape-valid placeholder values. BFF and clients MUST treat signature as host-produced; never accept browser-forged signatures as authority.",
+      "properties": {
+        "alg": {
+          "$ref": "#/$defs/signatureAlgorithm"
+        },
+        "key_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Signing key identifier for rotation."
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Signature bytes as unpadded base64 (or the literal 'unsigned' when alg is none)."
+        },
+        "signed_at": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "signed_fields": {
+          "type": "array",
+          "description": "Optional explicit field list included in the signature payload. When omitted, host default canonical set applies (phase 7).",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "parents": {
+      "type": "array",
+      "description": "Causal parent operation_id values. Empty array for the first event in a chain. Concurrent writers may produce multi-parent merges later; v1 fixtures are mostly single-parent linear chains. Parents do not replace DocumentRevision CAS.",
+      "items": {
+        "$ref": "#/$defs/operationId"
+      },
+      "uniqueItems": true,
+      "maxItems": 32
+    },
+    "signedOperationEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_type",
+        "operation_id",
+        "tenant_id",
+        "instance_id",
+        "occurred_at",
+        "kind",
+        "actor",
+        "target",
+        "parents",
+        "result",
+        "signature"
+      ],
+      "description": "Append-only signed ledger event. Authoritative history unit. Does not replace vault.write request/result frames; those remain the mutation API. Hosts append this after ACL/CAS verification (phase 4/7).",
+      "properties": {
+        "schema_version": {
+          "$ref": "#/$defs/schemaVersion"
+        },
+        "record_type": {
+          "type": "string",
+          "const": "signed_operation",
+          "description": "Discriminator for multi-type ledger objects."
+        },
+        "operation_id": {
+          "$ref": "#/$defs/operationId"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "instance_id": {
+          "$ref": "#/$defs/nonEmptyString",
+          "description": "Backend instance that observed/committed the operation."
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/isoDateTime",
+          "description": "Host time when the operation was committed or rejected."
+        },
+        "kind": {
+          "$ref": "#/$defs/operationKind"
+        },
+        "actor": {
+          "$ref": "#/$defs/actor"
+        },
+        "target": {
+          "$ref": "#/$defs/operationTarget"
+        },
+        "parents": {
+          "$ref": "#/$defs/parents"
+        },
+        "body_hash": {
+          "$ref": "#/$defs/bodyHash",
+          "description": "Present when the operation carried body bytes (committed write or rejected attempt that hashed a body). Omitted for body-less rejects and pure metadata events."
+        },
+        "result": {
+          "$ref": "#/$defs/operationResult"
+        },
+        "signature": {
+          "$ref": "#/$defs/operationSignature"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Caller vault.write idempotency_key when this event was produced by vault.write. Replays MUST return the same operation_id and heads."
+        },
+        "vault_write_mode": {
+          "$ref": "#/$defs/vaultWriteMode",
+          "description": "vault.write mode that produced this event, when applicable."
+        },
+        "advances_artifact_head": {
+          "type": "boolean",
+          "description": "Explicit head-advance flag. true only when status=committed and the file head for target.path should move. Rejected events MUST be false."
+        },
+        "advances_workspace_head": {
+          "type": "boolean",
+          "description": "true when committed mutation changes the workspace tree root hash (path set or content map). Rejected events MUST be false."
+        },
+        "meta": {
+          "type": "object",
+          "description": "Optional non-authoritative tags (tool_call_id, request_id). additionalProperties allowed for forward-compatible host tags; never secrets.",
+          "additionalProperties": true,
+          "properties": {
+            "request_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tool_call_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "office_session_id": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "artifactHead": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_type",
+        "tenant_id",
+        "path",
+        "operation_id",
+        "revision",
+        "updated_at",
+        "head_kind"
+      ],
+      "description": "Materialized current head for one vault path. Points at the latest committed signed operation and its DocumentRevision. Separate from operation history: heads move only on committed events with advances_artifact_head=true.",
+      "properties": {
+        "schema_version": {
+          "$ref": "#/$defs/schemaVersion"
+        },
+        "record_type": {
+          "type": "string",
+          "const": "artifact_head"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "path": {
+          "$ref": "#/$defs/vaultPath"
+        },
+        "operation_id": {
+          "$ref": "#/$defs/operationId",
+          "description": "Latest committed operation that advanced this path head."
+        },
+        "revision": {
+          "$ref": "#/$defs/documentRevision",
+          "description": "Current DocumentRevision for path — same object vault.stat / vault.write CAS use."
+        },
+        "updated_at": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "head_kind": {
+          "type": "string",
+          "enum": ["canonical", "checkpoint"],
+          "description": "canonical = normal vault path head. checkpoint = head of a checkpoint destination path (agent staged write)."
+        },
+        "source_path": {
+          "$ref": "#/$defs/vaultPath",
+          "description": "When head_kind=checkpoint, the canonical path the agent intended."
+        },
+        "actor": {
+          "$ref": "#/$defs/actor",
+          "description": "Optional last-writer actor summary for UI currentness."
+        },
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "workspaceHead": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "record_type",
+        "tenant_id",
+        "workspace_id",
+        "tree_root_hash",
+        "operation_id",
+        "updated_at"
+      ],
+      "description": "Materialized workspace currentness. tree_root_hash digests the ACL-visible path→revision map (exact canonicalization in phase 2/7). Advances when committed file create/replace/checkpoint/delete/rename change the map; rejected ops do not advance.",
+      "properties": {
+        "schema_version": {
+          "$ref": "#/$defs/schemaVersion"
+        },
+        "record_type": {
+          "type": "string",
+          "const": "workspace_head"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Workspace partition id. Use 'default' for single-workspace tenants."
+        },
+        "tree_root_hash": {
+          "$ref": "#/$defs/sha256Hex",
+          "description": "Lowercase hex SHA-256 of the canonical workspace tree fingerprint."
+        },
+        "operation_id": {
+          "$ref": "#/$defs/operationId",
+          "description": "Latest committed operation that advanced this workspace head."
+        },
+        "updated_at": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "entry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of file entries in the fingerprint when known."
+        },
+        "root_path": {
+          "$ref": "#/$defs/vaultPath",
+          "description": "Optional workspace root path (e.g. /Projects)."
+        }
+      }
+    }
+  }
+}
