@@ -1,0 +1,105 @@
+# Staging / pilot snapshot pin fragment (secret-free).
+# Bead: lp-na7d (mailbox-era real lanyard-agent; not fake-gateway, not tool-only)
+# Prior live pin: lanyard-agent-gateway-v2026.08.25 / 52bf79ab (pre-mailbox 09a4df)
+# Prior tool-only: lp-oop.37.5 / b13c2b8d / lanyard-tool-only-f63beffd-20260819c
+# Plan: docs/plans/0008-daytona-agent-sandboxes/agent-snapshot-live-pin.md
+# Bump: docs/plans/0008-daytona-agent-sandboxes/agent-snapshot-bump-runbook.md
+# Product agent: Lanyard Agent only (not Hermes). Mailbox lac-r9w.2.* / .3.* / .4.1.
+
+agent_snapshot:
+  env: staging-pilot
+  status: active
+  bead: lp-na7d
+  prior_pin_bead: lp-na7d-09a4df
+  isolation_class: container
+  product_backend: lanyard_agent
+  image_kind: agent-gateway
+  dockerfile_target: agent-gateway
+  daytona_default_snapshot: "f2095c1b-fbb0-4d8d-b357-9eeab3d3ab4f"
+  daytona_snapshot_name: "lanyard-agent-gateway-v2026.08.26-mailbox"
+  daytona_snapshot_id: "f2095c1b-fbb0-4d8d-b357-9eeab3d3ab4f"
+  previous_daytona_default_snapshot: "52bf79ab-6f50-41f1-9c6e-7f2a4e287564"
+  previous_daytona_snapshot_name: "lanyard-agent-gateway-v2026.08.25"
+  require_real_agent: true
+  mount_s3:
+    version: "1.23.0"
+    fuse: true
+    fusermount: true
+    install_on_boot: false
+    bead: lp-zuh.9.3
+    live_proof_bead: lp-zuh.9.4
+    user_allow_other: true
+  mempalace:
+    version: "3.7.0"
+    install_on_boot: false
+    path_in_image: "/usr/local/bin/mempalace"
+    venv: "/opt/mempalace"
+    kitchen_sink_path: "/mnt/vault/mempalace"
+    bead: lp-zuh.10.2
+    note: "CLI prebaked in toolbox stage; inherited by agent-gateway."
+  ensure_default_projects:
+    present: true
+    bead: lp-zuh.10.7
+    helper: "/usr/local/lib/lanyard/seed-default-projects.py"
+    entrypoint: ensure_default_projects
+    note: "Cold start seeds Workspace primary_path under VAULT_ROOT/Projects/Workspace before gateway exec."
+  cron_enosys_rename_fallback:
+    present: true
+    note: "Inherited from LA main (mailbox-era pack includes ENOSYS overwrite)."
+  workflow_enosys_rename_fallback:
+    present: true
+    note: "Inherited from LA main (mailbox-era pack includes ENOSYS overwrite)."
+  kitchen_sink_config_seed:
+    present: true
+    note: "entrypoint ensure_agent_config + ensure_default_projects; durable cron/workflow under VAULT_ROOT=/mnt/vault"
+  mailbox:
+    present: true
+    agent_git: "8835654f4ecd200b12ef7a7744e804beee38be3d"
+    merged:
+      - lac-r9w.2.1  # mailbox.send #277
+      - lac-r9w.2.2  # 1:1 hidden wake #279
+      - lac-r9w.2.3  # room-tail wake #278
+      - lac-r9w.3.1  # hidden fuse #276
+      - lac-r9w.3.2  # Halt #280
+      - lac-r9w.3.3  # fuse-trip #281
+      - lac-r9w.4.1  # schedule/workflow default room #275
+  lanyard_agent:
+    present: true
+    version: "0.0.0-main.8835654f4ecd"
+    git_commit: "8835654f4ecd200b12ef7a7744e804beee38be3d"
+    sha256: "c3a1bc740e04e94c0bedfd157b5e582348c8924528a21a063ca2a77ee57f8865"
+    filename: "lanyard-agent-0.0.0-main.8835654f4ecd.tar.gz"
+    tree: "/opt/company-brain-backend/current/lanyard-agent"
+    gateway_main: "/opt/company-brain-backend/current/lanyard-agent/apps/gateway/dist/main.js"
+    wrapper: "not-fake-gateway"
+    note: "Mailbox-era pack from lanyard-agent origin/main (merge #281). LANYARD_REQUIRE_REAL_AGENT=1."
+  ecr:
+    repository: "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway"
+    digest: "sha256:e4b86539baba86d3487b5ff17a29ffe9f0be9ec9c08fb54a508d21d3a70b6832"
+    tag: "agent-gateway-v2026.08.26-mailbox"
+    pin_ref: "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway:agent-gateway-v2026.08.26-mailbox"
+    digest_pin_ref: "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway@sha256:e4b86539baba86d3487b5ff17a29ffe9f0be9ec9c08fb54a508d21d3a70b6832"
+    note: "Daytona snapshot register uses the tag (--ref-style tag); digest recorded for audit. @sha256 form is rejected by Daytona runners."
+  build_proof:
+    mode: publish
+    platform: linux/amd64
+    dockerfile_target: agent-gateway
+    require_real_agent: true
+    no_lanyard_agent_tree: false
+    no_gateway_bin: false
+    fake_gateway: false
+    platforms_proven:
+      - linux/amd64
+    mount_s3_version: "1.23.0"
+    mempalace_version: "3.7.0"
+    vault_root_uid_gid: "990:990"
+    platform_git: "62218130"
+    local_image_id: "sha256:4068f23cb6b98139d90a190e476d6086f9e7301eee9c2533e68a865ea8dc6183"
+    note: "Local bake + ECR push 2026-08-26. SM DAYTONA_DEFAULT_SNAPSHOT + MockLab agent_snapshot_id updated after snapshot active."
+  mocklab_instance:
+    tenant_id: "319d3808-e533-44db-bfdf-7b6ef8caaae1"
+    instance_id: "452b1348-772a-49d0-8038-a410eda8accf"
+    agent_snapshot_id: "f2095c1b-fbb0-4d8d-b357-9eeab3d3ab4f"
+    live_sandbox_id: "bb764395-7581-47fc-9951-988eff2a9076"
+    previous_sandbox_id: "c2aeb387-35f6-436a-8faa-26cdc97c6d16"
+    note: "Cold create 2026-08-26T02:40Z from mailbox snapshot. Guest real lanyard-agent 0.0.0-main.8835654f4ecd; PortalAdapter.connect ok; CP agent_ready=true. Send-swallowed residual is lp-j39s."
