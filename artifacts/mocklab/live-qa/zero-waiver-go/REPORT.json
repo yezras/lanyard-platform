@@ -1,0 +1,176 @@
+{
+  "bead": "lp-zuh.11.6",
+  "parent": "lp-zuh.11",
+  "title": "Zero-waiver kitchen-sink GO report + close gate",
+  "when_utc": "2026-08-17T00:00:00Z",
+  "aggregated_from": "2026-08-14 child packages + human MCP sign-off on PR #488",
+  "base_url": "https://app.withlanyard.com/mocklab",
+  "instance_id": "452b1348-772a-49d0-8038-a410eda8accf",
+  "snapshot": "lanyard-la-main-9bcada6780d2-seed-zuh111-20260814",
+  "snapshot_id": "f4d947f3-bd03-4f6c-b8a2-b2034872feba",
+  "overall_verdict": "GO",
+  "matrix_green": true,
+  "zero_waiver": true,
+  "partial_waived_used": false,
+  "silent_waivers": false,
+  "secrets_in_package": false,
+  "supersedes": {
+    "package": "artifacts/mocklab/live-qa/kitchen-sink-go/",
+    "bead": "lp-zuh.10.8",
+    "prior_verdict": "GO_WITH_WAIVERS"
+  },
+  "matrix": [
+    {
+      "surface": "shell_auth",
+      "verdict": "GO",
+      "child": "lp-zuh.11.2",
+      "evidence_path": "core/"
+    },
+    {
+      "surface": "vault_tree_write",
+      "verdict": "GO",
+      "child": "lp-zuh.11.2",
+      "evidence_path": "core/"
+    },
+    {
+      "surface": "projects_primary_path",
+      "verdict": "GO",
+      "child": "lp-zuh.11.2",
+      "evidence_path": "core/",
+      "primary_path": "/mnt/vault/Projects/Workspace",
+      "clears_prior": "lp-zuh.10.7 / 10.8 PARTIAL"
+    },
+    {
+      "surface": "tools_web_search",
+      "verdict": "GO",
+      "child": "lp-zuh.11.2",
+      "evidence_path": "core/"
+    },
+    {
+      "surface": "subagents",
+      "verdict": "GO",
+      "child": "lp-zuh.11.2",
+      "evidence_path": "core/"
+    },
+    {
+      "surface": "workflows_launch_durable",
+      "verdict": "GO",
+      "child": "lp-zuh.11.2",
+      "evidence_path": "core/"
+    },
+    {
+      "surface": "cron_ui_durable",
+      "verdict": "GO",
+      "child": "lp-zuh.11.2",
+      "fire_carry": "lp-zuh.10.4",
+      "evidence_path": "core/"
+    },
+    {
+      "surface": "onlyoffice_mint",
+      "verdict": "GO",
+      "child": "lp-zuh.11.3",
+      "evidence_path": "onlyoffice/",
+      "notes": "authenticated missing_file mint 422 JSON; vault_edit=true"
+    },
+    {
+      "surface": "onlyoffice_editor_host",
+      "verdict": "EXPLICIT_HARD_RESIDUAL",
+      "child": "lp-zuh.11.3",
+      "evidence_path": "onlyoffice/",
+      "allowed_by_acceptance": true,
+      "residuals": [
+        "vite_onlyoffice_editor_off",
+        "https_ds_residual",
+        "docsapi_not_mounted"
+      ],
+      "notes": "Do not claim DocsAPI host GO; operator SPA+HTTPS follow-up"
+    },
+    {
+      "surface": "mempalace_search",
+      "verdict": "GO",
+      "child": "lp-zuh.11.4",
+      "ui_reproof": "lp-zuh.11.7",
+      "evidence_path": "mempalace/"
+    },
+    {
+      "surface": "mcp",
+      "verdict": "PRODUCT_NA_SIGNED_WAIVER",
+      "child": "lp-zuh.11.5",
+      "evidence_path": "mcp/",
+      "human_signoff": {
+        "required": true,
+        "approved": true,
+        "source": "lp-zuh.11.5 close_reason / PR #488",
+        "signoff_doc": "mcp/PRODUCT-NA-SIGNOFF.md",
+        "fix_bead": "lp-vw3",
+        "external_la": "https://github.com/LanyardBrain/lanyard-agent/issues/239"
+      },
+      "live": {
+        "mcp_count": 0,
+        "tools_mcp_empty_honest": true
+      },
+      "offline_lab_echo": true
+    }
+  ],
+  "child_packages": [
+    {
+      "bead": "lp-zuh.11.1",
+      "path": "artifacts/daytona-pilot/lp-zuh.11-snapshot/",
+      "verdict": "GO"
+    },
+    {
+      "bead": "lp-zuh.11.2",
+      "path": "core/",
+      "verdict": "GO",
+      "partial_waived_used": false
+    },
+    {
+      "bead": "lp-zuh.11.3",
+      "path": "onlyoffice/",
+      "verdict": "GO_PARTIAL_MINT_PLATFORM_HARD_RESIDUAL_EDITOR_HOST"
+    },
+    {
+      "bead": "lp-zuh.11.4",
+      "path": "mempalace/",
+      "verdict": "GO"
+    },
+    {
+      "bead": "lp-zuh.11.5",
+      "path": "mcp/",
+      "verdict": "PRODUCT_NA_SIGNED_WAIVER"
+    },
+    {
+      "bead": "lp-zuh.11.7",
+      "path": "artifacts/ui/lp-zuh.11.7/",
+      "verdict": "UIQA_PASS_SOFT_VAULT",
+      "note": "MemPalace UI re-proof after disk-limit infra fix"
+    }
+  ],
+  "open_followups": [
+    {
+      "item": "lp-vw3",
+      "kind": "product",
+      "blocks": "live MCP inventory + chat MCP tools"
+    },
+    {
+      "item": "onlyoffice_spa_https_ds",
+      "kind": "operator",
+      "blocks": "DocsAPI editor host GO"
+    },
+    {
+      "item": "onlyoffice_production_license",
+      "kind": "human_commercial",
+      "checklist": "6.8 H"
+    },
+    {
+      "item": "snapshot_rebake_mempalace_shim_entrypoint_wait",
+      "kind": "platform",
+      "note": "shim durable in install; cold pin residual"
+    }
+  ],
+  "epic_close": {
+    "epic": "lp-zuh.11",
+    "ready": true,
+    "reason": "All child leaves closed or this gate; matrix green with no silent waivers"
+  }
+}
