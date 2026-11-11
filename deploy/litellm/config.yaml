@@ -1,0 +1,225 @@
+# LiteLLM proxy seed for Lanyard Agent hosts (lp-645.8.5)
+#
+# Non-secret model_list template. API keys and master key resolve only from
+# process environment (EnvironmentFile → $BACKEND_HOME/.env.secrets). Never
+# put raw credentials in this file.
+#
+# Host install (example):
+#   /etc/lanyard-agent/litellm/config.yaml   # or $BACKEND_HOME/litellm/config.yaml
+# Unit EnvironmentFile (both agent + litellm proxy):
+#   EnvironmentFile=-$BACKEND_HOME/.env.secrets
+#
+# OAuth models use configurable_clientside_auth_params so the Agent supplies
+# access_token (and optional api_base) per request from OAuthStore (oauth.enc).
+# Proxy Bearer auth for the Agent↔LiteLLM hop stays LITELLM_MASTER_KEY.
+#
+# Placeholders in the companion env file: env.secrets.example
+# Mapping contract: docs/architecture/lanyard-agent-multi-provider-secrets.md
+# Envelope: contracts/backend-runtime-v1/secrets-envelope.schema.json
+
+model_list:
+  # ---------------------------------------------------------------------------
+  # API-key providers (env-bound)
+  # ---------------------------------------------------------------------------
+  - model_name: openai/*
+    litellm_params:
+      model: openai/*
+      api_key: os.environ/OPENAI_API_KEY
+
+  - model_name: xai/*
+    litellm_params:
+      model: xai/*
+      api_key: os.environ/XAI_API_KEY
+
+  - model_name: anthropic/*
+    litellm_params:
+      model: anthropic/*
+      api_key: os.environ/ANTHROPIC_API_KEY
+
+  # Named OpenAI chat models (explicit allowlist; still env-bound)
+  - model_name: openai/gpt-4.1
+    litellm_params:
+      model: openai/gpt-4.1
+      api_key: os.environ/OPENAI_API_KEY
+
+  - model_name: openai/gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+
+  # Named xAI models
+  - model_name: xai/grok-3
+    litellm_params:
+      model: xai/grok-3
+      api_key: os.environ/XAI_API_KEY
+
+  - model_name: xai/grok-build-0.1
+    litellm_params:
+      model: xai/grok-build-0.1
+      api_key: os.environ/XAI_API_KEY
+
+  # Named Anthropic models
+  - model_name: anthropic/claude-sonnet-4-20250514
+    litellm_params:
+      model: anthropic/claude-sonnet-4-20250514
+      api_key: os.environ/ANTHROPIC_API_KEY
+
+  # ---------------------------------------------------------------------------
+  # OAuth models — clientside api_key / api_base from Agent OAuthStore
+  # Provider ids in oauth.enc: xai-grok, openai-codex
+  # ---------------------------------------------------------------------------
+  - model_name: xai/grok-3-oauth
+    litellm_params:
+      model: xai/grok-3
+      # No server-side api_key: Agent injects OAuth access_token as api_key
+      configurable_clientside_auth_params: ["api_key", "api_base"]
+    model_info:
+      lanyard_oauth_provider: xai-grok
+      description: "xAI Super Heavy / SuperGrok OAuth (Agent OAuthStore provider xai-grok)"
+
+  - model_name: xai/grok-build-oauth
+    litellm_params:
+      model: xai/grok-build-0.1
+      configurable_clientside_auth_params: ["api_key", "api_base"]
+    model_info:
+      lanyard_oauth_provider: xai-grok
+      description: "xAI Grok Build via Super Heavy OAuth (same OAuthStore provider xai-grok)"
+
+  - model_name: openai/codex-oauth
+    litellm_params:
+      model: openai/gpt-4.1
+      configurable_clientside_auth_params: ["api_key", "api_base"]
+    model_info:
+      lanyard_oauth_provider: openai-codex
+      description: "OpenAI Codex OAuth (Agent OAuthStore provider openai-codex; ChatGPT-Account-Id via store metadata)"
+
+  # ---------------------------------------------------------------------------
+  # Custom OpenAI-compatible endpoints (Meta teaching case + multi-entry stub)
+  # base_url is non-secret in this seed; secret lives only in META_API_KEY etc.
+  # Envelope custom_providers[] / env key_env → .env.secrets
+  # ---------------------------------------------------------------------------
+  - model_name: meta/llama-3.1-405b
+    litellm_params:
+      model: openai/llama-3.1-405b
+      api_base: https://api.llama.com/compat/v1
+      api_key: os.environ/META_API_KEY
+    model_info:
+      lanyard_custom_provider: meta
+      description: "Meta Llama OpenAI-compatible endpoint (teaching case)"
+
+  - model_name: meta/llama-3.1-70b
+    litellm_params:
+      model: openai/llama-3.1-70b
+      api_base: https://api.llama.com/compat/v1
+      api_key: os.environ/META_API_KEY
+    model_info:
+      lanyard_custom_provider: meta
+
+  - model_name: corp/proxy-default
+    litellm_params:
+      model: openai/default
+      api_base: https://llm.example.com/v1
+      api_key: os.environ/CORP_LLM_API_KEY
+    model_info:
+      lanyard_custom_provider: corp-proxy
+      description: "Second custom OpenAI-compat stub (proves multi-entry model_list)"
+
+  # Optional OpenRouter (env only; omit live if unused)
+  - model_name: openrouter/*
+    litellm_params:
+      model: openrouter/*
+      api_key: os.environ/OPENROUTER_API_KEY
+      api_base: https://openrouter.ai/api/v1
+
+  # Poolside (OpenAI-compatible chat completions)
+  # curl https://inference.poolside.ai/v1/chat/completions
+  #   Authorization: Bearer $POOLSIDE_API_KEY
+  #   model: poolside/laguna-s-2.1
+  - model_name: poolside/*
+    litellm_params:
+      model: openai/poolside/*
+      api_base: https://inference.poolside.ai/v1
+      api_key: os.environ/POOLSIDE_API_KEY
+    model_info:
+      lanyard_custom_provider: poolside
+      description: "Poolside inference (OpenAI-compatible)"
+
+  - model_name: poolside/laguna-s-2.1
+    litellm_params:
+      model: openai/poolside/laguna-s-2.1
+      api_base: https://inference.poolside.ai/v1
+      api_key: os.environ/POOLSIDE_API_KEY
+    model_info:
+      lanyard_custom_provider: poolside
+      description: "Poolside Laguna S 2.1 (primary pilot model)"
+
+  # ---------------------------------------------------------------------------
+  # Portal intelligence tiers + LiteLLM auto_router (lp-uxy.12 / ADR 0007)
+  # Portal Auto → lanyard-auto; manual Simple|Moderate|Complex → tier pins.
+  # Operators may re-point litellm_params.model under each pin; keep model_name
+  # stable so Portal's DEFAULT_LITELLM_INTELLIGENCE_MODELS still resolve.
+  # Classifier default is free heuristic (sub-ms). Optional LLM classifier:
+  # set classifier_type: llm + classifier_llm_config under complexity_router_config.
+  # ---------------------------------------------------------------------------
+  - model_name: lanyard-simple
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+    model_info:
+      lanyard_intelligence_tier: simple
+      description: "Portal Simple intelligence tier pin (fast / lighter)"
+
+  - model_name: lanyard-moderate
+    litellm_params:
+      model: xai/grok-3
+      api_key: os.environ/XAI_API_KEY
+    model_info:
+      lanyard_intelligence_tier: moderate
+      description: "Portal Moderate intelligence tier pin (balanced default)"
+
+  - model_name: lanyard-complex
+    litellm_params:
+      model: anthropic/claude-sonnet-4-20250514
+      api_key: os.environ/ANTHROPIC_API_KEY
+    model_info:
+      lanyard_intelligence_tier: complex
+      description: "Portal Complex intelligence tier pin (stronger tasks)"
+
+  - model_name: lanyard-reasoning
+    litellm_params:
+      model: xai/grok-build-0.1
+      api_key: os.environ/XAI_API_KEY
+    model_info:
+      lanyard_intelligence_tier: reasoning
+      description: "Optional REASONING tier for auto_router (not a Portal composer button)"
+
+  - model_name: lanyard-auto
+    litellm_params:
+      model: auto_router/complexity_router
+      drop_params: true
+      complexity_router_config:
+        # Values are model_name entries above (or any other model_list name).
+        # Portal sends model_name lanyard-auto and does not classify itself.
+        classifier_type: heuristic
+        tiers:
+          SIMPLE: lanyard-simple
+          MEDIUM: lanyard-moderate
+          COMPLEX: lanyard-complex
+          REASONING: lanyard-reasoning
+        # Optional LLM judge (extra cost). Replaces classifier_type above:
+        # classifier_type: llm
+        # classifier_llm_config:
+        #   model: lanyard-simple
+        #   timeout_ms: 2000
+      complexity_router_default_model: lanyard-moderate
+    model_info:
+      lanyard_intelligence_router: true
+      description: "LiteLLM complexity auto_router for Portal Auto intelligence"
+
+general_settings:
+  # Agent ↔ proxy Bearer auth. Value from EnvironmentFile only.
+  master_key: os.environ/LITELLM_MASTER_KEY
+
+litellm_settings:
+  # Keep request paths boring for Agent OpenAI-compatible clients.
+  drop_params: true
