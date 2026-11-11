@@ -1,0 +1,49 @@
+# Lab-only Portal Relay for local WSS smoke (lp-kng.3 residual).
+#
+# Purpose:
+#   Spin a single Relay container on the developer machine for loopback health /
+#   local gateway dial experiments while staging Relay DNS is dead under
+#   OPERATOR HOLD.
+#
+# NOT a substitute for:
+#   - Live product edge wss://relay.withlanyard.com
+#   - Daytona sandbox real-Relay e2e (sandbox cannot reach your laptop loopback)
+#
+# For Daytona e2e under hold, operators must publish a *public* lab host
+# (see residual-kng.3-relay-dns.md §3) and set domainAllowList + GATEWAY_RELAY_URL
+# to that host. This file stays local-only by design.
+#
+# Build context is monorepo portal/ (workspace Dockerfiles expect portal root).
+#
+# Usage (from repository root):
+#   docker compose -f docs/plans/0008-daytona-agent-sandboxes/drafts/lab-relay-compose.yml up -d --build
+#   curl -sf http://127.0.0.1:8787/health
+#   # Local dial target for non-Daytona clients:
+#   #   GATEWAY_RELAY_URL=ws://127.0.0.1:8787   # or wss via local TLS terminator
+#   docker compose -f docs/plans/0008-daytona-agent-sandboxes/drafts/lab-relay-compose.yml down
+#
+# Prefer existing full stack when you also need BFF/CP:
+#   cd portal && docker compose up -d --build relay
+#
+# Secrets: never put production GATEWAY_RELAY_SECRET / SM values in this file.
+
+services:
+  lab-relay:
+    image: lanyard/relay:lab-local
+    build:
+      context: ../../../portal
+      dockerfile: packages/relay/Dockerfile
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: "8787"
+      RELAY_PORT: "8787"
+      RELAY_HOST: "0.0.0.0"
+      # Lab defaults only — empty/unset internal tokens keep local smoke simple.
+      # Do not commit real tokens here.
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:8787/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 20s

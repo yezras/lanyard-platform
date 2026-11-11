@@ -1,0 +1,103 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyInsecureTransport",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}",
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "DenyPublicAcls",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:PutBucketAcl"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}",
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": [
+            "public-read",
+            "public-read-write",
+            "authenticated-read"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyPublicGrantReadWrite",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:PutBucketAcl"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}",
+        "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/*"
+      ],
+      "Condition": {
+        "StringLike": {
+          "s3:x-amz-grant-read": [
+            "*http://acs.amazonaws.com/groups/global/AllUsers*",
+            "*http://acs.amazonaws.com/groups/global/AuthenticatedUsers*"
+          ],
+          "s3:x-amz-grant-write": [
+            "*http://acs.amazonaws.com/groups/global/AllUsers*",
+            "*http://acs.amazonaws.com/groups/global/AuthenticatedUsers*"
+          ],
+          "s3:x-amz-grant-full-control": [
+            "*http://acs.amazonaws.com/groups/global/AllUsers*",
+            "*http://acs.amazonaws.com/groups/global/AuthenticatedUsers*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyIncorrectEncryptionHeader",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/*",
+      "Condition": {
+        "StringNotEquals": {
+          "s3:x-amz-server-side-encryption": [
+            "AES256",
+            "aws:kms"
+          ]
+        },
+        "Null": {
+          "s3:x-amz-server-side-encryption": "false"
+        }
+      }
+    },
+    {
+      "Sid": "DenyUnEncryptedObjectUploads",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::${LANYARD_VAULT_BUCKET}/*",
+      "Condition": {
+        "Null": {
+          "s3:x-amz-server-side-encryption": "true"
+        }
+      }
+    }
+  ]
+}
