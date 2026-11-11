@@ -1,0 +1,51 @@
+{
+  "bead_id": "lp-oop.31",
+  "title": "0015.31 Live no-tool turn proof",
+  "timestamp_utc": "2026-08-17T15:53:17.625Z",
+  "stamp": "20260817T155317Z",
+  "result": "PASS",
+  "environment": "mocklab_lab_la_harness_process",
+  "topology": {
+    "hop": "BFF → Harness (LA createHarnessTurnServer). Relay not on the hop.",
+    "chat_delivery": "harness",
+    "harness_kind": "lanyard-agent createHarnessTurnServer",
+    "harness_host": "127.0.0.1:49443",
+    "fake_harness_http": false,
+    "tenant_slug": "mocklab",
+    "note": "Live AWS MockLab chat_delivery stays default relay (lp-oop.30 runbook only; lp-oop.29 flip open; OPERATOR HOLD). This proof is the real LA process + BFF harness path."
+  },
+  "la": {
+    "pr": "https://github.com/LanyardBrain/lanyard-agent/pull/242",
+    "sha_expected": "cc37ff4dd9119d32db32ce8110ea508b7e7a3cb0",
+    "sha_observed": "cc37ff4dd9119d32db32ce8110ea508b7e7a3cb0"
+  },
+  "turn": {
+    "thread_id": "83731e06-640c-41d1-b90c-2ef3beb3d126",
+    "turn_id": "turn_1",
+    "instance_id": "inst-mocklab-short-stack",
+    "message_probe": "lp-oop.31 no-tool ping",
+    "echo": "echo: lp-oop.31 no-tool ping",
+    "event_types": [
+      "message_send"
+    ],
+    "tool_events": []
+  },
+  "relay": {
+    "deliverInbound_calls": 0,
+    "interruptInbound_calls": 0,
+    "openChatEventStream_calls": 0,
+    "fetchChatHistory_calls": 0
+  },
+  "checks": {
+    "chat.user_message_accepted": true,
+    "harness.unauthorized_without_token": true,
+    "harness.echo_no_tools": true,
+    "relay.not_on_hop": true,
+    "relay.deliverInbound_zero": true,
+    "sse.message_send_echo": true,
+    "sse.no_tool_progress": true,
+    "evidence.no_secrets": true
+  },
+  "needs_ui_qa": false,
+  "ui_qa_note": "Browser Playwright on the harness path is lp-oop.33. This leaf proves the hop (BFF → live LA harness, Relay unused)."
+}

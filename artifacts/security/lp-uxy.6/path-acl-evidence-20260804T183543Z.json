@@ -1,0 +1,58 @@
+{
+  "bead_id": "lp-uxy.6",
+  "check_provenance": {
+    "docs.omnibox_hook_residual_honest": "unit:omnibox-mode-a-hermes-hook.md",
+    "docs.sandbox_report_present": "unit:lp-uxy.6 report",
+    "host.sandbox_enforced.la_tools_sandbox": "unit:tools-sandbox.test.ts sha=e0e2032533c9fce2ff7306831f74b4244b241d05",
+    "omnibox.argv_builder_self_test": "unit:build-shell-exec-argv.py",
+    "omnibox.hl_product_wrap_unit": "unit:test_omnibox.py sha=72f6acac87e5bbf2bf0271f3ecc3128a3fd5462b wrap_file=4596ecd5876edfc509e7bbbf970a2bec1be5a882",
+    "omnibox.smoke_mode_a": "unit:smoke-omnibox.sh",
+    "path_escape.project_negative": "unit:test-project-path-escape.py"
+  },
+  "checks": {
+    "docs.omnibox_hook_residual_honest": true,
+    "docs.sandbox_report_present": true,
+    "host.sandbox_enforced.la_tools_sandbox": true,
+    "omnibox.argv_builder_self_test": true,
+    "omnibox.hl_product_wrap_unit": true,
+    "omnibox.smoke_mode_a": true,
+    "path_escape.project_negative": true
+  },
+  "failed": false,
+  "joint_go": "GO",
+  "log": "prove-20260804T183543Z.log",
+  "non_claims": [
+    "Not AWS staging Omnibox live table (lp-t7q.6)",
+    "Not production pen-test / security sign-off",
+    "Not Daytona multi-tenant isolation",
+    "No secrets in evidence"
+  ],
+  "notes": [],
+  "optional_checks": [
+    "host.sandbox_enforced.la_tools_sandbox",
+    "omnibox.hl_product_wrap_unit"
+  ],
+  "pins": {
+    "hermes_lanyard_omnibox_file_sha": "4596ecd5876edfc509e7bbbf970a2bec1be5a882",
+    "hermes_lanyard_sha": "72f6acac87e5bbf2bf0271f3ecc3128a3fd5462b",
+    "lanyard_agent_sha": "e0e2032533c9fce2ff7306831f74b4244b241d05"
+  },
+  "report": "docs/security/lp-uxy.6-agent-sandbox-path-acl-omnibox.md",
+  "required_checks": [
+    "path_escape.project_negative",
+    "omnibox.argv_builder_self_test",
+    "omnibox.smoke_mode_a",
+    "docs.sandbox_report_present",
+    "docs.omnibox_hook_residual_honest"
+  ],
+  "residuals": [
+    "LA bash absolute-path / .. escape when shell tool available",
+    "Omnibox Mode A default OMNIBOX_ENABLED=0 on host",
+    "LA has no Omnibox product wrap",
+    "Shared-kernel residual (bubblewrap) \u2014 see lp-kng for VM isolation",
+    "Admin shell_exec blast radius"
+  ],
+  "stamp": "20260804T183543Z",
+  "timestamp_utc": "2026-08-04T18:35:46Z",
+  "title": "Agent sandbox cwd path ACL proof + Omnibox Mode A wrap status"
+}
