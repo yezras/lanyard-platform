@@ -1,0 +1,141 @@
+{
+  "bead_id": "lp-uxy.15.8",
+  "shipped_feature": "lp-uxy.7",
+  "base_url": "http://demo.localhost:3010",
+  "login": "dev@demo.local",
+  "when": "2026-08-05T14:19:58.024442+00:00",
+  "passed": true,
+  "firecrawl_key_present": false,
+  "story_web_search": {
+    "ok": true,
+    "detail": "story web-search-results: cards=5 rich_cites=3 firecrawl_badge=True cost_gated=true open_ok=True",
+    "assertions": {
+      "data_firecrawl_live": "false",
+      "data_cost_gated": "true",
+      "tool_panel": true,
+      "results_panel": true,
+      "answer_panel": true,
+      "result_card_count": 5,
+      "fixture_title": true,
+      "snippet_visible": true,
+      "firecrawl_badge": true,
+      "scrape_content": true,
+      "x_result": true,
+      "scrape_panel": true,
+      "citation_rich": "true",
+      "citation_url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+      "citation_count": 3,
+      "citation_opens_external": true,
+      "opened": [
+        {
+          "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+          "target": "_blank",
+          "features": "noopener,noreferrer"
+        }
+      ],
+      "tool_labels": true
+    }
+  },
+  "live_web_search": {
+    "ok": true,
+    "detail": "live (no Firecrawl key): host refused \u2014 no web_search/firecrawl tools; structured_ui=False citation=False",
+    "assertions": {
+      "brain_rpc_enabled": true,
+      "backend_kind": "lanyard_agent",
+      "firecrawl_key_present": false,
+      "saw_searching_label": false,
+      "saw_structured_results_ui": false,
+      "saw_rich_citation": false,
+      "saw_firecrawl_badge_or_tool": false,
+      "final_text_preview": "Running a command\nNo web_search or firecrawl tools available in this environment. Cannot perform live web search or cite current sources.\n10:19 AM\n\u00b7\ngrok-4.5",
+      "host_refused_no_tools": true
+    },
+    "skipped_reason": "FIRECRAWL_API_KEY absent (cost-gated). Fixture story is the normative richer-results proof per lp-uxy.7."
+  },
+  "screenshot_paths": [
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/01-story-tool-rows.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/02-story-structured-results.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/03-story-rich-citations.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/04-story-full-page.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/10-live-home.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/11-live-prompt-sent.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/10-live-home.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/11-live-prompt-sent.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/12-live-chat-after-response.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/13-live-tools-expanded.png",
+    "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/15-live-final.png"
+  ],
+  "errors": [],
+  "notes": [
+    "firecrawl_key_present=False",
+    "login_ok",
+    "context brain_rpc=True kind=lanyard_agent",
+    "live agent reply: no web_search or firecrawl tools available",
+    "fix bead lp-uxy.18 filed (discovered-from lp-uxy.15.8)"
+  ],
+  "checks": [
+    {
+      "feature": "story-cost-gate",
+      "ok": true,
+      "detail": "data-firecrawl-live=false data-cost-gated=true",
+      "shot": "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/01-story-tool-rows.png"
+    },
+    {
+      "feature": "story-structured-cards",
+      "ok": true,
+      "detail": "cards=5 snippet=True firecrawl_badge=True scrape=True",
+      "shot": "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/02-story-structured-results.png"
+    },
+    {
+      "feature": "story-rich-citations",
+      "ok": true,
+      "detail": "rich=true url=https://en.wikipedia.org/wiki/2026_FIFA_World_Cup count=3 open_ok=True",
+      "shot": "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/03-story-rich-citations.png"
+    },
+    {
+      "feature": "story-tool-labels",
+      "ok": true,
+      "detail": "Searching the web / Browsing the web (or firecrawl_scrape) visible",
+      "shot": "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/01-story-tool-rows.png"
+    },
+    {
+      "feature": "live-login-home",
+      "ok": true,
+      "detail": "re-run live",
+      "shot": "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/10-live-home.png"
+    },
+    {
+      "feature": "live-prompt-sent",
+      "ok": true,
+      "detail": "web search prompt sent",
+      "shot": "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/11-live-prompt-sent.png"
+    },
+    {
+      "feature": "live-firecrawl-gated",
+      "ok": true,
+      "detail": "FIRECRAWL_API_KEY absent (cost-gated). Fixture story normative. Live host refused: no web_search/firecrawl tools \u2014 fix bead lp-uxy.18. live (no Firecrawl key): host refused \u2014 no web_search/firecrawl tools; structured_ui=False citation=False",
+      "shot": "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/13-live-tools-expanded.png"
+    },
+    {
+      "feature": "live-response-captured",
+      "ok": true,
+      "detail": "preview_len=157",
+      "shot": "/tmp/lp-bead-lp-uxy.15.8/artifacts/ui/lp-uxy-ship-qa/web-search/12-live-chat-after-response.png"
+    }
+  ],
+  "fix_bead": "lp-uxy.18",
+  "verdict": "PASS_FIXTURE_PATH_FIRECRAWL_GATED",
+  "portal_ui_ok": true,
+  "live_host_ok": false,
+  "pass_criteria": {
+    "story_required": true,
+    "story_ok": true,
+    "live_firecrawl_required_when_key": false,
+    "firecrawl_key_present": false,
+    "live_ok": true,
+    "live_note": "live (no Firecrawl key): host refused \u2014 no web_search/firecrawl tools; structured_ui=False citation=False",
+    "live_host_tools": false,
+    "fix_bead": "lp-uxy.18"
+  },
+  "summary": "Portal richer results UI PASS (story ?story=web-search-results). FIRECRAWL_API_KEY absent -> fixture path. Live LA: no web_search/firecrawl tools (refused). Fix bead lp-uxy.18."
+}
