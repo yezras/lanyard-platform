@@ -1,0 +1,13 @@
+# MockLab v1 harness inventory (lp-oop.38.14).
+# The tools runner advertises spawn_subagent only when this block is enabled.
+# Kitchen-sink overlay (skills/MCP/workflows) is lp-oop.38.18.
+subagents:
+  enabled: true
+  default_isolation: none
+  max_depth: 1
+# lp-oop.38.15: advertise workflow on the live inventory home
+# (/var/lib/lanyard-agent). Kitchen-sink overlay is a separate document.
+workflow:
+  enabled: true
+  agent_budget: 128
+  max_active_runs: 16
