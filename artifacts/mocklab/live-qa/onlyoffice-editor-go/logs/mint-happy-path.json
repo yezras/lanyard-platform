@@ -1,0 +1,81 @@
+{
+  "mint_view": {
+    "status": 201,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "session_id_present": true,
+    "document_key_present": true,
+    "document_key_prefix": "e373388df74c",
+    "mode": "view",
+    "file_type": "docx",
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "idempotent_replay": false,
+    "editor_config": {
+      "documentType": "word",
+      "document_fileType": "docx",
+      "document_title": "lp-zuh123-mint-proof.docx",
+      "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/TdCazN942GAb1AYSLO6qO544SMOeDkcuYL6BN7Vo890/content",
+      "permissions_edit": false,
+      "editor_mode": "view",
+      "callback_url_path_present": true,
+      "token_present": true
+    }
+  },
+  "mint_view_replay": {
+    "status": 200,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "session_id_present": true,
+    "document_key_present": true,
+    "document_key_prefix": "e373388df74c",
+    "mode": "view",
+    "file_type": "docx",
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "idempotent_replay": true,
+    "editor_config": {
+      "documentType": "word",
+      "document_fileType": "docx",
+      "document_title": "lp-zuh123-mint-proof.docx",
+      "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/TdCazN942GAb1AYSLO6qO544SMOeDkcuYL6BN7Vo890/content",
+      "permissions_edit": false,
+      "editor_mode": "view",
+      "callback_url_path_present": true,
+      "token_present": true
+    }
+  },
+  "mint_edit": {
+    "status": 201,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "session_id_present": true,
+    "document_key_present": true,
+    "document_key_prefix": "030c1a3fba44",
+    "mode": "edit",
+    "file_type": "docx",
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "idempotent_replay": false,
+    "editor_config": {
+      "documentType": "word",
+      "document_fileType": "docx",
+      "document_title": "lp-zuh123-mint-proof.docx",
+      "document_url_host_path": "https://app.withlanyard.com/mocklab/api/office/sessions/VSzw-N45qadSUpyWeczq_u229-unjpzwo2txXZVRdbM/content",
+      "permissions_edit": true,
+      "editor_mode": "edit",
+      "callback_url_path_present": true,
+      "token_present": true
+    }
+  },
+  "mint_missing": {
+    "status": 422,
+    "looks_like_spa_html": false,
+    "json": {
+      "error": "Vault file not found"
+    }
+  },
+  "vault_content_get": {
+    "status": 200,
+    "looks_like_spa_html": false,
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "size_bytes": 1368
+  }
+}
