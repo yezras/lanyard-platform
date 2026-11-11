@@ -1,0 +1,36 @@
+# Documentation-only example inputs for modules/product-artifact-infra.
+# Prefer environments/platform-staging for a full root module.
+# Do not commit live account IDs, OIDC ARNs from production, or real bucket names you care about secrecy for.
+
+name_prefix          = "lanyard-platform-staging"
+environment          = "staging"
+artifact_bucket_name = "lanyard-product-artifacts-staging-REPLACE"
+
+# Defaults: hermes/, client-core/, portal-web/
+# artifact_prefixes = {
+#   hermes      = "hermes/"
+#   client_core = "client-core/"
+#   portal_web  = "portal-web/"
+# }
+
+portal_services = ["web", "bff", "relay", "control-plane"]
+
+# Object Lock is always enabled at bucket creation (not toggleable after create).
+s3_force_destroy                      = false
+s3_object_lock_default_retention_mode = "GOVERNANCE"
+s3_object_lock_default_retention_days = 90
+# Lifecycle cannot delete locked noncurrent versions until retention ends.
+s3_noncurrent_version_expiration_days = 90
+# SSE-S3 default. For aws:kms set s3_kms_key_id to a customer-managed CMK ARN (see README).
+# s3_sse_algorithm = "AES256"
+# s3_kms_key_id    = null
+# Optional advanced: restrict to S3 VPC endpoints (leave empty until endpoints + admin exempts exist).
+# s3_vpc_endpoint_ids                   = []
+# s3_vpc_endpoint_exempt_principal_arns = []
+ecr_scan_on_push                      = true
+ecr_image_count_limit                 = 50
+
+# Keep false until an existing OIDC provider ARN is available (this module does not create the provider)
+enable_oidc_publishers = false
+# github_oidc_provider_arn = "arn:aws:iam::ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+# enable_oidc_publishers  = true
