@@ -1,0 +1,204 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lanyard.platform/compatibility/schema.json",
+  "title": "Lanyard Platform compatibility pins (schema_version 2)",
+  "description": "Immutable pin set for Portal images, backend runtime artifacts, and client-core seed. schema_version 2 replaces top-level hermes.* with backend.* (kind, version, url, sha256, contract majors). client_core remains a separate top-level block. No live git branches as versions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "backend",
+    "client_core",
+    "portal"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 2,
+      "description": "Pin document schema major. Version 2 is the platform monorepo shape (backend block). Bump only with breaking field changes."
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional operator notes. Not consumed by bootstrap install logic.",
+      "properties": {
+        "description": { "type": "string" },
+        "created_at": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "backend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "version", "sha256", "url", "contract"],
+      "description": "Selected backend product artifact. Replaces schema_version 1 hermes.* pins. Align kind/version/contract with the artifact's manifest/backend.json (contracts/backend-runtime-v1).",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["hermes_upstream", "hermes_lanyard", "lanyard_agent"],
+          "description": "Backend product family. Must match manifest kind and backend-runtime-v1."
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Immutable release label (e.g. v0.1.0). Not a git branch."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^([a-fA-F0-9]{64}|sha256:[a-fA-F0-9]{64})$",
+          "description": "SHA-256 of the backend tarball bytes. Plain 64-hex or sha256: prefix both accepted."
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "description": "s3:// or https:// object URL for the backend release tarball (backend.tar.gz or product-equivalent archive). Prefer arch-labeled object keys (…/<arch>/…) once labeled objects exist; do not silently fall back to unlabeled hermes/<version>/… paths."
+        },
+        "arch": {
+          "type": "string",
+          "enum": ["linux-x86_64", "linux-aarch64"],
+          "description": "CPU/OS platform label for the pinned backend runtime tarball (native wheels). Default product path is linux-x86_64 (mocklab / typical EC2). Optional linux-aarch64 only when an arm pack was published. Maps to Terraform backend_artifact_arch and env BACKEND_ARTIFACT_ARCH; product workflow may echo hermes.target_arch / hermes.arch with the same value. Operators must set arch intentionally and pin the matching arch-labeled URL."
+        },
+        "signature_b64": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional base64 raw Ed25519 signature over artifact bytes (maps to BACKEND_ARTIFACT_SIGNATURE_B64; legacy HERMES_ARTIFACT_SIGNATURE_B64)."
+        },
+        "contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["runtime_layout", "relay", "brain_rpc"],
+          "description": "Contract majors the pinned backend claims. Must agree with manifest/backend.json contract fields. relay supersedes schema_version 1 top-level relay_contract.major.",
+          "properties": {
+            "runtime_layout": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Backend home filesystem layout major (v1 = BACKEND_HOME layout)."
+            },
+            "relay": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Relay protocol major. Translated from v1 relay_contract.major (when that was 0, use 1 as the v1 platform floor)."
+            },
+            "brain_rpc": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Brain RPC method-set major implemented by this backend."
+            }
+          }
+        }
+      }
+    },
+    "client_core": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "sha256", "url"],
+      "description": "Client-core seed tarball (arch-neutral content/seed; no native-wheel arch label required unless native deps appear later). Always a separate top-level block — never nested under backend. Install target remains the vault root, independent of selected backend kind.",
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Immutable release label. Not a git branch."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^([a-fA-F0-9]{64}|sha256:[a-fA-F0-9]{64})$"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "description": "s3:// or https:// client-core.tar.gz object URL."
+        },
+        "signature_b64": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional base64 raw Ed25519 signature over artifact bytes (maps to CLIENT_CORE_ARTIFACT_SIGNATURE_B64)."
+        }
+      }
+    },
+    "portal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["images"],
+      "description": "Portal static web pin and/or container image pins. Unchanged from schema_version 1 shape.",
+      "properties": {
+        "web": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "sha256", "url"],
+          "description": "Optional static SPA pin (portal-web tarball). Preferred over a web runtime container.",
+          "properties": {
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Immutable release label. Not a git branch."
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^([a-fA-F0-9]{64}|sha256:[a-fA-F0-9]{64})$"
+            },
+            "url": {
+              "type": "string",
+              "minLength": 1,
+              "description": "s3:// or https:// portal-web.tar.gz object URL."
+            },
+            "signature_b64": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional base64 raw Ed25519 signature over artifact bytes."
+            }
+          }
+        },
+        "images": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["repository", "digest"],
+            "properties": {
+              "repository": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Image repository without mutable tag as the sole pin."
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$",
+                "description": "Immutable image digest (sha256: + 64 hex)."
+              },
+              "tag": {
+                "type": "string",
+                "description": "Optional human label; digest is authoritative."
+              }
+            }
+          }
+        }
+      }
+    },
+    "artifact_attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional Ed25519 publisher attestation. SHA-256 pins remain required. Carried over from schema_version 1.",
+      "properties": {
+        "alg": {
+          "type": "string",
+          "enum": ["ed25519"],
+          "description": "Signature algorithm; only ed25519 is implemented offline via openssl pkeyutl."
+        },
+        "signing_pubkey_b64": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Base64 of PEM public key (maps to ARTIFACT_SIGNING_PUBKEY_B64)."
+        },
+        "signing_identity": {
+          "type": "string",
+          "description": "Optional human label for the release key (maps to ARTIFACT_SIGNING_IDENTITY)."
+        },
+        "require": {
+          "type": "boolean",
+          "description": "When true, map to REQUIRE_ARTIFACT_ATTESTATION=1 (fail-closed if sig/pubkey missing)."
+        }
+      }
+    }
+  }
+}
