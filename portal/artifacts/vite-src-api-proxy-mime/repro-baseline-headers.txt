@@ -1,0 +1,30 @@
+=== captured_at: 2026-07-16T01:22:04Z ===
+=== host: localhost:3010 (vite pid LISTEN 0      511                              *:3010             *:*    users:(("MainThread",pid=2077823,fd=24))     ) ===
+
+=== FAILING: curl -sI http://localhost:3010/src/api/client.ts ===
+HTTP/1.1 404 Not Found
+Vary: Origin
+content-type: text/plain; charset=UTF-8
+date: Thu, 16 Jul 2026 01:22:04 GMT
+connection: close
+
+
+=== CONTROL: curl -sI http://localhost:3010/src/main.tsx ===
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/javascript
+Content-Length: 420
+Last-Modified: Wed, 08 Jul 2026 16:49:27 GMT
+ETag: W/"420-1783529367787"
+Cache-Control: no-cache
+Date: Thu, 16 Jul 2026 01:22:04 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+=== FAILING body (first 500 bytes): curl -s http://localhost:3010/src/api/client.ts ===
+404 Not Found
+
+=== CONTROL body head: curl -s http://localhost:3010/src/main.tsx | head -c 200 ===
+import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=fd132406"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import __vite__cjsIm
