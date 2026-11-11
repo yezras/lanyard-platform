@@ -1,0 +1,14 @@
+{
+  "source": "lanyard_agent",
+  "backend_home": "/home/operator/.lanyard-agent",
+  "models": [
+    {
+      "provider": "litellm",
+      "model": "grok-4.5",
+      "is_active": true,
+      "connected": true
+    }
+  ],
+  "skills_count": 11,
+  "crons_count": 3
+}
