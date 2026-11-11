@@ -1,0 +1,92 @@
+[
+  {
+    "method": "POST",
+    "url": "https://app.withlanyard.com/mocklab/api/office/sessions",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/web-apps/apps/api/documents/api.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/vendor/requirejs/require.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/resources/css/app.css",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/app.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/common/locale.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/common/IrregularStack.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/vendor/socketio/socket.io.min.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/locale/en.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/vendor/underscore/underscore.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/sdkjs/common/AllFonts.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/vendor/xregexp/xregexp-all-min.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/vendor/jquery/jquery.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/common/Gateway.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/common/Analytics.js",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/vendor/backbone/backbone.js",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "url": "https://app.withlanyard.com/mocklab/api/office/sessions",
+    "status": 200
+  }
+]

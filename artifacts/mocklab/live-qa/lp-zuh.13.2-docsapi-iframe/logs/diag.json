@@ -1,0 +1,44 @@
+{
+  "samples": [
+    {
+      "docsapi": true,
+      "iframe_dom": [],
+      "iframe_count": 0,
+      "host": false,
+      "host_html_len": 0,
+      "host_child_tags": [],
+      "loading": false,
+      "error": "Editor failed to load\nCould not load the Office editor. Check that Document Server is reachable and try again. (DocsAPI onError)",
+      "frame": false,
+      "frame_html_len": 0,
+      "frame_child_tags": [],
+      "vhost": true,
+      "vhost_open_mode": "edit",
+      "vhost_editing": "true",
+      "body_has_loading": false,
+      "label": "t=0s",
+      "frame_urls": [
+        "https://app.withlanyard.com/mocklab/vault"
+      ],
+      "page_frames": 1
+    }
+  ],
+  "console": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 401 ()"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 500 ()"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 500 ()"
+    },
+    {
+      "type": "error",
+      "text": "Mixed Content: The page at 'https://app.withlanyard.com/mocklab/vault' was loaded over HTTPS, but requested an insecure XMLHttpRequest endpoint 'http://d3sqcebajd6ueb.cloudfront.net/cache/files/data/0"
+    }
+  ]
+}

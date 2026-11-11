@@ -1,0 +1,18 @@
+{
+  "vault_document_host": true,
+  "editor_host": true,
+  "editor_frame": false,
+  "editor_error": null,
+  "loading_overlay_count": 0,
+  "loading_overlay_visible": false,
+  "loading_editor_text": false,
+  "docsapi_present": true,
+  "iframe_count": 1,
+  "iframe_srcs": [
+    "https://d3sqcebajd6ueb.cloudfront.net/9.4.0-1fd3daad6bb6a0e32491c0f87844e96d/web-apps/apps/documenteditor/main/index.html"
+  ],
+  "document_builder_not_online": false,
+  "mixed_content": false,
+  "body_excerpt": "Skip to content\nLanyard Portal\nAgents\nVault\nTools\nA\nagent-dev@mocklab.example.com\nSearch\ncron\nKnowledge\nlp-kng67-demo\nmempalace\nProjects\nWorkspace\nnotes\noffice\nlp-zuh123-mint-proof.docx\nlp-zuh123-mint-proof.docx\nSEED-NOTE.txt\nAGENTS.md\nwelcome.md\nhello-pilot.txt\nINDEX.md\nskills\nwf_201a8d6b422d6a9c\nwf_3c7074c04166c77c\nwf_4e8440b25d42613a\nwf_56a547dbdbd8842c\nwf_7fad97d2e324fa00\nwf_80ac44d36ec5f758\nwf_84a44a85ccd25697\nwf_c479abbbd1507563\nwf_d20a40c5e4236d12\nworkflows\nAGENTS.md\nentities.json\nIND\u2026",
+  "page_frames": 2
+}
