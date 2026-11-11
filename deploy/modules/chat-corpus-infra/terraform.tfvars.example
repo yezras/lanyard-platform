@@ -1,0 +1,26 @@
+# Documentation-only example — do not apply with REPLACE placeholders.
+# Copy to an untracked tfvars for a real environment and replace markers.
+
+name_prefix        = "lanyard-platform-lab"
+environment        = "lab"
+corpus_bucket_name = "lanyard-chat-corpus-lab-REPLACE"
+
+# L10 default retention when corpus enabled (lp-gkh.1)
+retention_days = 90
+
+# Lab-safe encryption; for prod prefer aws:kms + create_kms_key = true
+s3_sse_algorithm = "AES256"
+# create_kms_key   = true
+# s3_sse_algorithm = "aws:kms"
+
+s3_force_destroy      = false
+s3_versioning_enabled = true
+
+create_iam_roles = true
+# writer_principal_arns = ["arn:aws:iam::ACCOUNT_ID_REPLACE:role/portal-bff-task-REPLACE"]
+# reader_principal_arns = ["arn:aws:iam::ACCOUNT_ID_REPLACE:role/training-export-job-REPLACE"]
+
+# Optional extra vault ARN deny patterns (defaults already deny tenants/*/vault/*)
+# vault_object_arn_patterns = [
+#   "arn:aws:s3:::lanyard-*-vault-*/tenants/*/vault/*",
+# ]
