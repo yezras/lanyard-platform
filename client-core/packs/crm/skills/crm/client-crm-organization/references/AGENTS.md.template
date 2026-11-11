@@ -1,0 +1,25 @@
+# AGENTS.md Template
+
+**Business type**: [Asset Management / Insurance / Credit Origination / ...]
+**Folder bucket**: [Active / Discovery / Intro / Prospect / Graveyard]
+**CRM pipeline stage**: [Active | Discovery | Intro | Prospect | Graveyard]
+**Key contact**: [Name] ([email]) — [Role]
+**Contact / Role**: [How contact was established]
+
+## Next steps
+- [Action 1]
+- [Action 2]
+
+## Notes
+[Key context, calendar details, Granola notes filed, etc.]
+
+## Agent Instructions
+- Always query `clients_crm.db` before and after client interaction.
+- Update DB immediately after meetings.
+- Keep AGENTS.md in sync with the database.
+- For meeting notes/Granola → use native `mcp_granola_*` tools directly in Hermes (no delegation to Grok).
+
+## Recall (MemPalace)
+- Playbook: `./RECALL.md` (create from `client-crm-organization` → `references/RECALL.md.template` if missing)
+- Wing: `<slug>` (folder name lowercased, `_` → `-`, e.g. `acmeco`)
+- Before substantive client answers: load skill `mempalace` and run touchpoint + intent queries in RECALL.md.
