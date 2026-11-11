@@ -50,7 +50,7 @@ Issues in Beads are:
 - Works offline, syncs when you push
 - Fast, lightweight, and stays out of your way
 
-🔧 **Git Integration**
+🛠 **Git Integration**
 - Dolt-native sync via bd dolt push / bd dolt pull
 - Branch-aware issue tracking
 - Dolt-native three-way merge resolution
@@ -79,3 +79,5 @@ bd create "Try out Beads"
 ---
 
 *Beads: Issue tracking that moves at the speed of thought* ⚡
+
+Public snapshot: `.beads/issues.jsonl` is stored as ordered parts in `.beads/issues.d/`. Concatenate those files in numeric order to rebuild `issues.jsonl`.
