@@ -1,0 +1,155 @@
+{
+  "type": "brain_rpc_result",
+  "contract_version": 1,
+  "request_id": "01JEXAMPLEHIST001",
+  "ok": true,
+  "result": {
+    "path": "/Projects/Legal/memo.md",
+    "events": [
+      {
+        "schema_version": 1,
+        "record_type": "signed_operation",
+        "operation_id": "op_01HUMANWRITE0001",
+        "tenant_id": "ten_example",
+        "instance_id": "inst_example",
+        "occurred_at": "2026-07-12T00:00:01.200Z",
+        "kind": "file_replace",
+        "actor": {
+          "kind": "human",
+          "subject_id": "usr_example",
+          "portal_user_id": "usr_example",
+          "display_name": "Alex Example",
+          "session_id": "oo_sess_example",
+          "backend_profile": "contributor"
+        },
+        "target": {
+          "scope": "file",
+          "path": "/Projects/Legal/memo.md"
+        },
+        "parents": [
+          "op_01PRIORHUMAN0001"
+        ],
+        "body_hash": {
+          "alg": "sha256",
+          "hex": "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+          "size_bytes": 48
+        },
+        "result": {
+          "status": "committed",
+          "reason": "ok",
+          "revision": {
+            "token": "sha256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+            "kind": "content_hash",
+            "size_bytes": 48,
+            "modified_at": "2026-07-12T00:00:01.200Z"
+          },
+          "prior_revision": {
+            "token": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+            "kind": "content_hash",
+            "size_bytes": 40
+          },
+          "write_kind": "replace",
+          "created": false
+        },
+        "signature": {
+          "alg": "ed25519",
+          "key_id": "fixture-host-key-v1",
+          "value": "Zml4dHVyZS1zaWduYXR1cmUtaHVtYW4td3JpdGUtdjE",
+          "signed_at": "2026-07-12T00:00:01.210Z",
+          "signed_fields": [
+            "operation_id",
+            "tenant_id",
+            "kind",
+            "target",
+            "parents",
+            "body_hash",
+            "result.status",
+            "result.revision"
+          ]
+        },
+        "idempotency_key": "oo-callback-sess_example-memo-v2",
+        "vault_write_mode": "replace_if_match",
+        "advances_artifact_head": true,
+        "advances_workspace_head": true,
+        "meta": {
+          "request_id": "01JEXAMPLEVWRITE001",
+          "office_session_id": "oo_sess_example"
+        }
+      },
+      {
+        "schema_version": 1,
+        "record_type": "signed_operation",
+        "operation_id": "op_01CONFLICTREJ001",
+        "tenant_id": "ten_example",
+        "instance_id": "inst_example",
+        "occurred_at": "2026-07-12T00:00:02.050Z",
+        "kind": "operation_rejected",
+        "actor": {
+          "kind": "human",
+          "subject_id": "usr_example",
+          "portal_user_id": "usr_example",
+          "session_id": "oo_sess_stale",
+          "backend_profile": "contributor"
+        },
+        "target": {
+          "scope": "file",
+          "path": "/Projects/Legal/memo.md"
+        },
+        "parents": [
+          "op_01PRIORHUMAN0001"
+        ],
+        "body_hash": {
+          "alg": "sha256",
+          "hex": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "size_bytes": 52
+        },
+        "result": {
+          "status": "rejected",
+          "reason": "revision_mismatch",
+          "prior_revision": {
+            "token": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+            "kind": "content_hash",
+            "size_bytes": 40
+          },
+          "actual_revision": {
+            "token": "sha256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+            "kind": "content_hash",
+            "size_bytes": 48
+          },
+          "message": "revision_mismatch: expected base no longer current"
+        },
+        "signature": {
+          "alg": "ed25519",
+          "key_id": "fixture-host-key-v1",
+          "value": "Zml4dHVyZS1zaWduYXR1cmUtY29uZmxpY3QtdjE",
+          "signed_at": "2026-07-12T00:00:02.060Z",
+          "signed_fields": [
+            "operation_id",
+            "tenant_id",
+            "kind",
+            "target",
+            "parents",
+            "body_hash",
+            "result.status",
+            "result.reason"
+          ]
+        },
+        "idempotency_key": "oo-callback-sess_stale-memo-v2",
+        "vault_write_mode": "replace_if_match",
+        "advances_artifact_head": false,
+        "advances_workspace_head": false,
+        "meta": {
+          "request_id": "01JEXAMPLEVWRITE003",
+          "office_session_id": "oo_sess_stale"
+        }
+      }
+    ],
+    "next_cursor": null,
+    "truncated": false
+  },
+  "error": null,
+  "meta": {
+    "duration_ms": 12,
+    "host_time": "2026-07-12T00:00:01.300Z"
+  }
+}
