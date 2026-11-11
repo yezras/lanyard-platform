@@ -1,0 +1,28 @@
+# Guest probe after cold ensure_online (sandbox 2d6268ff-4df7-45e4-b6c9-d94bb8900014)
+# No secrets. 2026-08-14T16:48Z
+
+findmnt /mnt/vault:
+TARGET     SOURCE        FSTYPE OPTIONS
+/mnt/vault mountpoint-s3 fuse   rw,nosuid,nodev,noatime,user_id=990,group_id=990,default_permissions,allow_other
+
+uid=990(brain) gid=990(brain)
+
+seed listing (abbreviated):
+README.md
+Projects/
+skills/ (pilot-fixture.md)
+workflows/
+cron/
+mempalace/
+.lanyard-daytona-pilot-seed
+
+write:
+/mnt/vault/workflows/.lp-zuh9-proof 106 bytes
+/mnt/vault/workflows/lp-zuh94-dir/nested.txt OK
+
+kitchen-sink config durable paths:
+vault_root: /mnt/vault
+mempalace.path: /mnt/vault/mempalace
+cron.state_dir: /mnt/vault
+workflow.state_dir: /mnt/vault
+workflow.definition_roots: /mnt/vault/workflows

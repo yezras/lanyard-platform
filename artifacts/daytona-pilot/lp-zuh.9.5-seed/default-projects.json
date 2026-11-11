@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "bead": "lp-zuh.10.7",
+  "note": "Product default for MockLab Directory / projects.list. Applied to $BACKEND_HOME/projects.db by agent-gateway ensure_default_projects (seed-default-projects.py) and deploy/scripts/seed-mocklab-agent-projects.sh. Vault path content from lp-zuh.9.5 pack.",
+  "projects": [
+    {
+      "name": "Workspace",
+      "slug": "workspace",
+      "primary_path": "/mnt/vault/Projects/Workspace",
+      "folders": [
+        {
+          "path": "/mnt/vault/Projects/Workspace",
+          "label": null,
+          "is_primary": true
+        }
+      ]
+    }
+  ]
+}

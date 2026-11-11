@@ -1,0 +1,3 @@
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"lab_echo","version":"0.1.0-lp-zuh.10.6"}}}
+{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"lab_echo","description":"Lab-only MCP echo tool (MockLab product surface). Returns the input text; no secrets or side effects.","inputSchema":{"type":"object","properties":{"text":{"type":"string","description":"Text to echo back"}},"required":["text"],"additionalProperties":false}}]}}
+{"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"lp-zuh.11.5-mocklab-mcp-ok"}],"isError":false}}

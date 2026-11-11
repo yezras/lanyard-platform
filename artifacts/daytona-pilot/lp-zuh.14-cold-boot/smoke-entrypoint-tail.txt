@@ -1,0 +1,5 @@
+  PASS  install-agent-runtime installs backend-runtime-v1 tarball
+  PASS  install-agent-runtime wraps LA product tarball as company-brain-backend
+  PASS  README documents vault wait + gateway foreground + no install-on-boot
+
+RESULT: all entrypoint/image contract smoke checks passed (lp-b7w / lp-kng.9)

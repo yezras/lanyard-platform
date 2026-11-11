@@ -1,0 +1,5 @@
+ RUN  v3.2.7 /tmp/lp-bead-lp-zuh.12.5/portal/packages/bff
+ ✓ test/office-lab-roundtrip.integration.test.ts (5 tests) 26ms
+ ✓ test/office-callback.test.ts (39 tests) 102ms
+ Test Files  2 passed (2)
+      Tests  44 passed (44)

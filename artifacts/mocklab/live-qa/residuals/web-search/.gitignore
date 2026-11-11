@@ -1,0 +1,6 @@
+# never commit local auth / secrets
+.auth/
+storage_state.json
+*.env
+__pycache__/
+*.pyc

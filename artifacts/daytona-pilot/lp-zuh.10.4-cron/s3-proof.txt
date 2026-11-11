@@ -1,0 +1,8 @@
+# External S3 (AWS_PROFILE=lanyard-main) — no secrets
+# Bucket: lanyard-mocklab-vault-123456789012
+# Prefix: tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/cron/
+
+jobs.json  1156 bytes  — last_status=ok job_id=09b7330db248
+output/09b7330db248/20260814T171330Z.md  2299 bytes — GPU capacity brief body
+
+Verified after sandbox stop/start: same objects present; guest remount shows jobs + output.

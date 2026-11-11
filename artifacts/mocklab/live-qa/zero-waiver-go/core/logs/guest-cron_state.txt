@@ -1,0 +1,27 @@
+cron:
+  enabled: true
+  state_dir: /mnt/vault
+# Stable tools[] = builtins + search_tool + use_tool (hidden/MCP via search).
+tools:
+  catalog_search:
+    enabled: true
+# Nested subagents for Portal chips / activity pane (shared cwd — single-writer lab).
+subagents:
+total 5
+drwxr-xr-x 2 brain brain    0 Aug 14 22:45 .
+drwxr-xr-x 2 brain brain    0 Aug 14 22:45 ..
+-rw-r--r-- 1 brain brain    0 Aug 14 16:58 .keep
+-rw-r--r-- 1 brain brain    1 Aug 14 16:48 .lp-zuh9-keep
+-rw-r--r-- 1 brain brain   23 Aug 14 17:08 .lp-zuh96-probe
+-rw-r--r-- 1 brain brain    1 Aug 14 17:05 .t
+-rw-r--r-- 1 brain brain 1156 Aug 14 17:14 jobs.json
+-rw-r--r-- 1 brain brain   29 Aug 14 17:08 jobs.json.bak-zuh96
+-rw-r--r-- 1 brain brain    1 Aug 14 17:06 jobs2.json
+drwxr-xr-x 2 brain brain    0 Aug 14 22:45 output
+-rw-r--r-- 1 brain brain   15 Aug 14 22:57 ticker_heartbeat
+JOBS_JSON_YES
+JOB_COUNT 1
+JOBS_PATH_VAULT_YES
+CRON_STATE_DIR_VAULT_YES
+CRON_PROBE_OK
+

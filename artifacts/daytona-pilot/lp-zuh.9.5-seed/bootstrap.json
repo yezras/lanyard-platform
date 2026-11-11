@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1",
+  "s3_vault_prefix": "tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/",
+  "seed_version": "lp-zuh.9.5",
+  "seed_source": "deploy/artifacts/mocklab-vault-seed",
+  "seeded_at": "2026-08-14T16:59:05Z",
+  "object_count": 17,
+  "gate": "AGENTS.md"
+}

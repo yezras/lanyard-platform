@@ -1,0 +1,5 @@
+{
+  "sandbox_id": "32d6e20f-3c8e-4141-b20e-a11c514f5ba2",
+  "probe_exit": null,
+  "probe_stdout": "UID=990\nBACKEND_HOME=/var/lib/company-brain-backend\n-rw------- 1 brain brain 28672 Aug 14 16:56 /var/lib/company-brain-backend/projects.db\n/mnt/vault/Projects/Workspace/welcome.md\nHAS_DEFAULT_JSON\ndb ${BACKEND_HOME:-/var/lib/company-brain-backend}/projects.db exists False\n"
+}

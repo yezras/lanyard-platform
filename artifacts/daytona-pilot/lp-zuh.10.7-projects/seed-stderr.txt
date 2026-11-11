@@ -1,0 +1,5 @@
+[seed-default-projects] using project defs from /dev/fd/63
+[seed-default-projects] BACKEND_HOME=/tmp/tmp.OrceWqlQeP/home
+[seed-default-projects] projects.db=/tmp/tmp.OrceWqlQeP/home/projects.db
+[seed-default-projects] VAULT_ROOT=/tmp/tmp.OrceWqlQeP/vault
+[seed-default-projects] created: Workspace (workspace) id=p_f92b6101 → /tmp/tmp.OrceWqlQeP/vault/Projects/Workspace

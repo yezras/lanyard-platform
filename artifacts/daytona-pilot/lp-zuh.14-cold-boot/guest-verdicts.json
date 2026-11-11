@@ -1,0 +1,14 @@
+{
+  "sandbox_id": "453211ac-a711-4eb8-89ec-9f48588314c0",
+  "snapshot_id": "f4d947f3-bd03-4f6c-b8a2-b2034872feba",
+  "verdicts": {
+    "config_present": true,
+    "kitchen_sink_marker": true,
+    "vault_root_mnt": true,
+    "litellm_key": true,
+    "channels_key": true,
+    "gateway_process": true,
+    "no_ssh": true
+  },
+  "stamp": "20260819T204912Z"
+}

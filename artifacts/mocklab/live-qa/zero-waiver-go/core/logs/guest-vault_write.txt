@@ -1,0 +1,3 @@
+-rw-r--r-- 1 brain brain 103 Aug 14  2026 /mnt/vault/Projects/Workspace/notes/lp-zuh112-zw-lp-zuh.11.2-zw-20260814T225759Z.md
+WRITE_OK
+

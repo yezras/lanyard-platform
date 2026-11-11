@@ -1,0 +1,3 @@
+# Durable lab corpus objects may contain full chat I/O — never commit.
+.corpus-store/
+prove-*.log

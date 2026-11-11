@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "js_path": "/assets/index-Dp3vcifp.js",
+  "js_bytes": 1227045,
+  "wi_env_object": "wI={BASE_URL:\"/\",DEV:!1,MODE:\"production\",PROD:!0,SSR:!1}",
+  "string_presence": {
+    "VITE_ONLYOFFICE_EDITOR": true,
+    "VITE_ONLYOFFICE_DS_URL": true,
+    "DocsAPI": true,
+    "office/sessions": true
+  },
+  "note": "String presence \u2260 enablement; empty wI Vite keys means editor off."
+}

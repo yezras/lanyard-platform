@@ -1,0 +1,20 @@
+53:  state_dir: /mnt/vault
+65:# Explicit state_dir IS the workflowsDir: runs at {state_dir}/wf_*/ (program,
+66:# args, state, journal). Do not confuse with definition_roots (IR *.json).
+68:workflow:
+72:  state_dir: /mnt/vault
+73:  definition_roots:
+workflow:
+  enabled: true
+  agent_budget: 128
+  max_active_runs: 16
+  state_dir: /mnt/vault
+  definition_roots:
+    - /mnt/vault/workflows
+total 1
+drwxr-xr-x 2 brain brain  0 Aug 14 22:45 .
+drwxr-xr-x 2 brain brain  0 Aug 14 22:45 ..
+-rw-r--r-- 1 brain brain 38 Aug 14  2026 probe.txt
+WORKFLOW_STATE_DIR_VAULT_YES
+WORKFLOW_MKDIR_OK
+

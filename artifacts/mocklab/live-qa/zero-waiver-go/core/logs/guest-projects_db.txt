@@ -1,0 +1,3 @@
+PROJECTS [('p_b0f00f9e', 'Workspace', 'workspace', '/mnt/vault/Projects/Workspace')]
+PRIMARY_UNDER_VAULT_YES
+

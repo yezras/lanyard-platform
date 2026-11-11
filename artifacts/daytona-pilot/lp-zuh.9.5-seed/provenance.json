@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "product": "mocklab_vault_seed",
+  "bead": "lp-zuh.9.5",
+  "marker": "mocklab-vault-seed:lp-zuh.9.5",
+  "source": "deploy/artifacts/mocklab-vault-seed",
+  "installed_at": "2026-08-14T16:59:04Z",
+  "target": "s3",
+  "bucket": "lanyard-mocklab-vault-123456789012",
+  "s3_vault_prefix": "tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/",
+  "object_count": 16,
+  "seed_gate": "AGENTS.md"
+}

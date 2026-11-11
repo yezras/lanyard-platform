@@ -1,0 +1,20 @@
+# Guest probe after Daytona stop → start (sandbox 32d6e20f-3c8e-4141-b20e-a11c514f5ba2)
+# No secrets. 2026-08-14T17:15Z UTC
+
+findmnt /mnt/vault:
+TARGET     SOURCE        FSTYPE OPTIONS
+/mnt/vault mountpoint-s3 fuse   rw,...,user_id=990,group_id=990,...,allow_other
+
+config.yaml durable paths:
+vault_root: /mnt/vault
+cron.state_dir: /mnt/vault
+workflow.state_dir: /mnt/vault
+
+jobs.json survives on vault (not BACKEND_HOME hybrid):
+path /mnt/vault/cron/jobs.json size 1156
+id=09b7330db248 last_status=ok last_run_at=2026-08-14T17:14:47.327Z
+
+fire output survives:
+/mnt/vault/cron/output/09b7330db248/20260814T171330Z.md (2299 bytes)
+
+/var/lib/company-brain-backend/cron/ empty (no hybrid jobs.json)

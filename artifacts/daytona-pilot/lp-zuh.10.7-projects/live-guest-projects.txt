@@ -1,0 +1,23 @@
+{
+  "projects": [
+    {
+      "id": "p_e01d297b",
+      "slug": "workspace",
+      "name": "Workspace",
+      "primary_path": "/mnt/vault/Projects/Workspace",
+      "archived": false
+    }
+  ],
+  "folders": [
+    {
+      "project_id": "p_e01d297b",
+      "path": "/mnt/vault/Projects/Workspace",
+      "is_primary": true
+    }
+  ]
+}
+{"ok":true,"status":"ok","service":"lanyard-agent-gateway"}company-brain-backend (lanyard-agent) 0.0.0-main.508b0b736ad5
+-rw-r--r-- 1 brain brain 301 Aug 14 16:59 /mnt/vault/Projects/Workspace/welcome.md
+primary_exists True
+welcome_read # Welcome to MockLab Workspace  <!-- mocklab-vault-seed:lp-zuh.9.5 -->  This file is the **seeded read target** for vaul
+cwd_ok_for_tools True

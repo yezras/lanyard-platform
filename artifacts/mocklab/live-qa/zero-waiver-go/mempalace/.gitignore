@@ -1,0 +1,3 @@
+# Keep RESULT/REPORT/screenshots/logs (redacted). Never commit env or secrets.
+**/*.env
+**/secrets*

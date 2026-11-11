@@ -1,0 +1,8 @@
+# External S3 listing for stock admit run (lp-zuh.10.10)
+# bucket: lanyard-mocklab-vault-123456789012
+# prefix: tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/wf_4e8440b25d42613a/
+# (listing captured 2026-08-14T19:37Z via AWS CLI; sizes may match guest)
+2026-08-14 15:37:16         68 args.json
+2026-08-14 15:37:19        105 journal.jsonl
+2026-08-14 15:37:16       6694 program.json
+2026-08-14 15:37:20        703 state.json

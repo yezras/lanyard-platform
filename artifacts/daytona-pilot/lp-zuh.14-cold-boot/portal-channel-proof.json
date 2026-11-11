@@ -1,0 +1,38 @@
+{
+  "stamp": "20260819T205131Z",
+  "base": "https://app.withlanyard.com/mocklab",
+  "context": {
+    "status": 200,
+    "brain_rpc_enabled": true,
+    "chat_delivery": "harness",
+    "vault_plane": "cp_s3",
+    "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1"
+  },
+  "brain_ping": {
+    "status": 503,
+    "ok": false,
+    "body": {
+      "error": "Gateway not connected or handshake incomplete"
+    }
+  },
+  "brain_health": {
+    "status": 503,
+    "ok": false,
+    "body": {
+      "error": "Gateway not connected or handshake incomplete"
+    }
+  },
+  "thread": {
+    "status": 201,
+    "thread_id": "a2d4568d-56e3-4aad-bc97-cb6b34a9f3eb"
+  },
+  "message_send": {
+    "status": 200,
+    "ok": true,
+    "body_preview": "{'ok': True, 'thread_id': 'a2d4568d-56e3-4aad-bc97-cb6b34a9f3eb'}"
+  },
+  "chat_result": {
+    "ok": false,
+    "timeout": true
+  }
+}

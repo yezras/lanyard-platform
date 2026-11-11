@@ -1,0 +1,15 @@
+{
+  "result": "ok",
+  "projects_db": "/tmp/tmp.OrceWqlQeP/home/projects.db",
+  "actions": {
+    "workspace": "created"
+  },
+  "projects": [
+    {
+      "id": "p_f92b6101",
+      "slug": "workspace",
+      "name": "Workspace",
+      "primary_path": "/tmp/tmp.OrceWqlQeP/vault/Projects/Workspace"
+    }
+  ]
+}

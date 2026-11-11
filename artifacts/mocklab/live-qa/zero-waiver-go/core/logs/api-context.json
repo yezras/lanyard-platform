@@ -1,0 +1,34 @@
+{
+  "status": 200,
+  "body": {
+    "tenant_id": "319d3808-e533-44db-bfdf-7b6ef8caaae1",
+    "tenant_slug": "mocklab",
+    "display_name": "MockLab",
+    "host": "mocklab.withlanyard.com",
+    "hermes_profile": "admin",
+    "role_names": [
+      "admin"
+    ],
+    "brain_rpc_enabled": true,
+    "backend_capabilities": {
+      "source": "brain_rpc",
+      "kind": "lanyard_agent",
+      "version": "0.0.0",
+      "features": {
+        "chat": true,
+        "health": false,
+        "capabilities_discovery": true,
+        "vault_read": true,
+        "vault_write": false,
+        "settings_snapshot": true,
+        "settings_patch": true,
+        "projects_list": true,
+        "projects_create": true,
+        "models": false,
+        "cron": true,
+        "history_read": false,
+        "heads_read": false
+      }
+    }
+  }
+}

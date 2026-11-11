@@ -1,0 +1,7 @@
+# never commit auth/session material
+.auth/
+**/.auth/
+storage_state.json
+__pycache__/
+*.pyc
+.venv/

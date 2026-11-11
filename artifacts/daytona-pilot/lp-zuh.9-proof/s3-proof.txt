@@ -1,0 +1,11 @@
+# External S3 after guest write (AWS_PROFILE=lanyard-main)
+# 2026-08-14
+
+Object:
+s3://lanyard-mocklab-vault-123456789012/tenants/319d3808-e533-44db-bfdf-7b6ef8caaae1/vault/workflows/.lp-zuh9-proof
+Size: 106
+Body:
+lp-zuh.9.4 AUTO cold ensure_online mount-s3 20260814T164800Z sandbox=2d6268ff-4df7-45e4-b6c9-d94bb8900014
+
+Also:
+s3://…/workflows/lp-zuh94-dir/nested.txt (7 bytes)

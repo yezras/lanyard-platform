@@ -1,0 +1,15 @@
+{
+  "status": 200,
+  "keys": [
+    "exported_at",
+    "source",
+    "backend_home",
+    "hermes_home",
+    "skills",
+    "crons",
+    "mcp_servers",
+    "models",
+    "integrations",
+    "workflows"
+  ]
+}

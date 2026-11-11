@@ -1,0 +1,18 @@
+PASS: syntax OK (shell + python)
+pack primary_path OK: /mnt/vault/Projects/Workspace
+PASS: pack default-projects.json primary_path under /mnt/vault
+wrote local default-projects → /tmp/smoke-mocklab-projects.nhcSsL/vault/Projects/Workspace
+create: {'id': 'p_a54c7bf7', 'slug': 'workspace', 'name': 'Workspace', 'primary_path': '/tmp/smoke-mocklab-projects.nhcSsL/vault/Projects/Workspace'}
+PASS: created Workspace in projects.db
+idempotent ok
+PASS: idempotent re-run (ok)
+planted wrong path /tmp/smoke-mocklab-projects.nhcSsL/backend-home/workspace
+updated primary_path: /tmp/smoke-mocklab-projects.nhcSsL/vault/Projects/Workspace
+PASS: repairs wrong primary_path to vault Workspace
+list-only: /tmp/smoke-mocklab-projects.nhcSsL/vault/Projects/Workspace
+PASS: list-only
+PASS: dry-run does not write
+PASS: entrypoint wires ensure_default_projects
+PASS: Dockerfile copies seed-default-projects.py
+
+All smoke-seed-mocklab-agent-projects checks passed.

@@ -1,0 +1,12 @@
+11:vault_root: /mnt/vault
+13:skills_roots:
+44:mempalace:
+46:  path: /mnt/vault/mempalace
+53:  state_dir: /mnt/vault
+65:# Explicit state_dir IS the workflowsDir: runs at {state_dir}/wf_*/ (program,
+66:# args, state, journal). Do not confuse with definition_roots (IR *.json).
+72:  state_dir: /mnt/vault
+73:  definition_roots:
+VAULT_ROOT_YES
+HYBRID_RESIDUAL_NO
+

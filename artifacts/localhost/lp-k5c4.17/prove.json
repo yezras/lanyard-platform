@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "bead_id": "lp-k5c4.17",
+  "live": true,
+  "runner": "createEnvLiteLlmTurnRunner",
+  "complete": null,
+  "litellm_base_url": "https://api.meta.ai",
+  "chat_completions_url": "https://api.meta.ai/v1/chat/completions",
+  "model": "muse-spark-1.2-contributor",
+  "message_send": {
+    "count": 1,
+    "content_len": 4,
+    "content_preview": "pong",
+    "echo_prefix": false
+  },
+  "fetch_url": null
+}

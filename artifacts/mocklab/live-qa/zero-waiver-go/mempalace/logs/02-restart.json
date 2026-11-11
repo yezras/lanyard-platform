@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "action": "stop",
+      "status": 200
+    },
+    {
+      "action": "start",
+      "status": 409,
+      "body": "{\"path\":\"/api/sandbox/c5306e38-fe05-445d-9ec0-ba3b3f7d94fd/start\",\"timestamp\":\"2026-08-14T23:18:22.663Z\",\"statusCode\":409,\"error\":\"Conflict\",\"message\":\"Sandbox state change in progress\"}"
+    }
+  ],
+  "state": "stopped",
+  "ok": false
+}

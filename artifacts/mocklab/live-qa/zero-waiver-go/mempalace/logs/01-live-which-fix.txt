@@ -1,0 +1,11 @@
+=== pre-patch which probe ===
+command_spawn_err ENOENT
+command_spawn_close -2
+sed: couldn't open temporary file /opt/company-brain-backend/current/lanyard-agent/packages/memory/dist/sedWECB38: Permission denied
+PATCHED /opt/company-brain-backend/current/lanyard-agent/packages/memory/dist/spawn.js
+PATCH_COUNT=1
+/usr/local/bin/mempalace
+MemPalace 3.7.0
+which_spawn 0 /usr/local/bin/mempalace
+LIVE_FIX_APPLIED
+
