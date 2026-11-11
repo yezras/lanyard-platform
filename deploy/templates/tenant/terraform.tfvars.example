@@ -1,0 +1,281 @@
+region        = "us-east-1"
+tenant_slug   = "acme"
+project_name  = "acme-brain" # must be unique across production tenants
+hosting_track = "lanyard_hosted"
+
+# Agent compute path (plan §4.11 / lp-4nf). This template is EC2-only.
+# runtime_kind = "ec2"     # default — company-brain-ec2 + host bootstrap
+# runtime_kind = "daytona" # FORBIDDEN here — terraform check fails closed.
+#   For daytona: do NOT copy/apply this template. Use
+#   docs/plans/0008-daytona-agent-sandboxes/provision-runbook-daytona.md
+#   (CP register + S3 vault prefix; lazy sandbox on ensure_online).
+runtime_kind = "ec2"
+
+# Isolation — see references/tenant-isolation-decision.md
+# isolation_mode: account (prod target) | vpc_interim (interim) | customer_account
+isolation_mode    = "vpc_interim"
+production_intent = false # set true only when partitions are real (fail-closed validations)
+
+# Required when production_intent = true (examples are documentation placeholders only):
+# aws_account_id        = "123456789012"
+# dedicated_kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/00000000-0000-0000-0000-000000000000"
+# log_group_prefix      = "/company-brain/acme"
+
+# ---------------------------------------------------------------------------
+# Track A / Track B access wiring (cbd-mta.7.3)
+# Map outputs from modules/account-factory (Track A) or
+# modules/customer-account-access (Track B). Placeholder-safe only — never
+# commit live role ARNs, ExternalIds, or access keys.
+# Runbooks:
+#   references/runbooks/account-factory.md
+#   references/runbooks/track-b-customer-account-access.md
+# Dual-alias pattern: providers.tf.example
+# Remote state: backend.tf.example (per-tenant key; encrypt + lock)
+# ---------------------------------------------------------------------------
+# deploy_role_arn = null  # default: no assume_role (SSO/profile already in target account)
+# enable_deploy_role_session_tags = true
+# deploy_role_session_duration_seconds = 3600
+#
+# --- Track A (lanyard_hosted + isolation_mode=account) after account-factory baseline ---
+# hosting_track         = "lanyard_hosted"
+# isolation_mode        = "account"
+# production_intent     = true
+# aws_account_id        = "111122223333"  # account-factory account_id — private only
+# project_name          = "acme-brain"
+# dedicated_kms_key_arn = "arn:aws:kms:us-east-1:111122223333:key/00000000-0000-0000-0000-000000000000"  # kms_key_arn
+# log_group_prefix      = "/company-brain/acme"  # log_group_name
+# deploy_role_arn       = "arn:aws:iam::111122223333:role/company-brain/acme-brain-deploy"  # deploy_role_arn
+# # deploy_role_external_id = null  # only if factory role trust requires it (private)
+# state_backend_bucket         = "company-brain-tfstate-acme-brain-REPLACE"  # state_bucket_name
+# state_backend_dynamodb_table = "company-brain-tf-locks-acme-brain"         # state_lock_table_name
+# state_backend_key            = "company-brain/acme/terraform.tfstate"
+# artifact_cross_account_mode  = "same_account"
+#
+# --- Track B (customer_account) after customer-account-access apply ---
+# hosting_track     = "customer_account"
+# isolation_mode    = "customer_account"
+# production_intent = true
+# aws_account_id    = "444455556666"  # customer account — private only
+# deploy_role_arn   = "arn:aws:iam::444455556666:role/company-brain/acme-brain-lanyard-deploy"  # role_arn
+# deploy_role_external_id = "REPLACE_FROM_LANYARD_SECRET_STORE"  # sensitive; never commit real value
+# deploy_role_external_id_parameter_name = "/lanyard/track-b/acme/deploy-external-id"  # name only
+# enable_deploy_role_session_tags = true  # match customer-account-access enable_session_tags
+# state_backend_bucket         = "customer-tfstate-REPLACE"  # customer-owned — not platform
+# state_backend_dynamodb_table = "customer-tf-locks-REPLACE"
+# state_backend_key            = "company-brain/acme/terraform.tfstate"
+# artifact_cross_account_mode  = "platform_bucket_grant"  # or customer_mirror | https_pins
+# # After instance apply: attach platform_artifact_bucket_policy_statement_json
+# # (customer-account-access output) with INSTANCE_ROLE_ARN on the product-artifact bucket.
+
+# Access — SSM-first; leave SSH empty in production (see references/runbooks/ssm-break-glass.md)
+operator_ssh_cidrs = []
+# ssh_key_name = null
+enable_ssm_access = true
+# create_ssm_vpc_endpoints = true   # recommended when private subnet has no NAT for SSM
+# enable_ssm_session_log_group = true
+
+# Temporary SSH break-glass only (MFA-controlled process; never 0.0.0.0/0):
+# operator_ssh_cidrs = ["203.0.113.10/32"] # RFC 5737 documentation IP
+# ssh_key_name       = "acme-brain-hermes"
+
+instance_type       = "t3.medium"
+install_path        = "/opt/company-brain"
+hermes_install_path = "/opt/hermes-lanyard"
+
+# ---------------------------------------------------------------------------
+# Pilot cost profile (chat-first, 1–3 clients) — cbd-gj4.7
+# Not a readiness claim. Plan: references/plans/pilot-cost-rightsize/overview.md
+# Do NOT force instance_type = "t3.small"; t3.medium remains the documented MVP
+# until idle Hermes capacity is measured.
+# ---------------------------------------------------------------------------
+# Required-on (client host MVP):
+#   instance_type = "t3.medium"   # always-on EC2 is the expensive line; keep medium
+#   root volume ~40 GiB + daily DLM (company-brain-ec2 module defaults)
+#   data_volume_size_gb = 0       # module default; vault/chat on root until growth needs a second volume
+#   enable_ssm_access = true      # SSM-first; empty operator_ssh_cidrs
+#   artifact pins + relay secret via SSM (below)
+#
+# Leave-off unless needed (cost + complexity):
+#   enable_security_observability / VPC flow logs / host log shipping / snapshot-age alarms
+#   enable_cross_region_copy / enable_dr_account_share  (false below; fail-closed)
+#   enable_tailscale
+#   enable_packs beyond what the pilot actually uses (set [] if unused)
+#   Tier 3 dedicated relay — separate module/apply; not this template
+#   Platform-only layers (WAF, Valkey, portal DNS/TLS) — environments/platform-staging flags
+#
+# Pre-prod: enable security observability + CMKs; add data volume if vault outgrows root.
+
+# ---------------------------------------------------------------------------
+# Network — production private-by-default
+# ---------------------------------------------------------------------------
+# production requires real vpc_id + private subnet_id from the target account.
+# Do not invent live account IDs in git; replace placeholders at apply time.
+network_mode        = "production"
+vpc_id              = "vpc-REPLACE_ME"
+subnet_id           = "subnet-REPLACE_ME"
+associate_public_ip = false
+
+# Lab-only (non-prod): default VPC + public IP for quick bring-up
+# network_mode        = "lab"
+# vpc_id              = null
+# subnet_id           = null
+# associate_public_ip = true
+
+# Controlled egress (production default). See references/runbooks/controlled-egress.md
+# egress_mode = null  # → controlled in production
+# create_s3_gateway_endpoint = true
+# s3_gateway_endpoint_route_table_ids = ["rtb-REPLACE_ME"]
+# create_aws_interface_endpoints = true
+# create_ssm_vpc_endpoints = true
+
+# ---------------------------------------------------------------------------
+# Golden AMI / supply chain (production: pin ami_id)
+# ---------------------------------------------------------------------------
+# ami_id         = "ami-REPLACE_ME"
+# use_golden_ami = true
+# require_pinned_ami defaults to true when network_mode=production
+# See references/runbooks/golden-ami-supply-chain.md
+
+# ---------------------------------------------------------------------------
+# EBS CMK (strongly recommended for production) + snapshot BPA
+# ---------------------------------------------------------------------------
+# ebs_kms_key_id = "arn:aws:kms:us-east-1:111122223333:key/REPLACE_ME"
+enable_ebs_snapshot_block_public_access = true
+ebs_snapshot_block_public_access_state  = "block-all-sharing"
+
+# Artifact contract — replace UNCONFIGURED before real apply (see artifacts/README.md).
+# First real private GitHub release coordinates (private deploy repo):
+#   compatibility/pins.real-releases.yaml
+# Example (do not commit tokens; private GH HTTPS needs GITHUB_TOKEN/GH_TOKEN on host):
+# client_core_artifact_url     = "https://github.com/LanyardBrain/client-core/releases/download/v0.1.0-g7c2/client-core-v0.1.0-g7c2.tar.gz"
+# client_core_artifact_version = "v0.1.0-g7c2"
+# client_core_artifact_sha256  = "ef21c313525afdca9902c40814293bbe924f428c219d93cf80398941c1f181e1"
+# hermes_artifact_url     = "https://github.com/LanyardBrain/hermes-lanyard/releases/download/v0.1.0-g7h2/hermes-v0.1.0-g7h2.tar.gz"
+# hermes_artifact_version = "v0.1.0-g7h2"
+# hermes_artifact_sha256  = "046f9987b10ae6f19a0e1e74bf2e68e5ce8ddeb853dee6a50211bc5cdffa71f4"
+# Prefer s3:// + instance role when platform bucket mirrors the same SHA.
+client_core_artifact_url     = "UNCONFIGURED"
+client_core_artifact_version = "UNCONFIGURED"
+client_core_artifact_sha256  = "UNCONFIGURED"
+
+hermes_artifact_url     = "UNCONFIGURED"
+hermes_artifact_version = "UNCONFIGURED"
+hermes_artifact_sha256  = "UNCONFIGURED"
+
+relay_contract_major = "1"
+
+# Instance role S3 read — scope to product-artifact prefixes hermes/, client-core/
+# Track A (same_account): platform or tenant bucket ARNs below.
+# Track B platform_bucket_grant: same ARNs + platform bucket policy for INSTANCE_ROLE_ARN
+#   (customer-account-access output platform_artifact_bucket_policy_statement_json).
+# Track B customer_mirror: customer-owned bucket ARNs only.
+# Track B/A https_pins: leave lists empty; use HTTPS pins above.
+# artifact_s3_bucket_arns = ["arn:aws:s3:::example-artifacts"]
+# artifact_s3_object_arns = [
+#   "arn:aws:s3:::example-artifacts/hermes/*",
+#   "arn:aws:s3:::example-artifacts/client-core/*",
+# ]
+# artifact_s3_list_prefixes = ["hermes/", "hermes/*", "client-core/", "client-core/*"]
+
+# From control plane POST .../instances/provision
+# Production: put the one-time secret in SSM SecureString outside Terraform (never commit).
+#   aws ssm put-parameter --name /company-brain/acme/gateway-relay-secret \
+#     --type SecureString --value '<secret once>' --overwrite
+# See references/runbooks/relay-secret-lifecycle.md
+relay_wss_url                   = "wss://relay.withlanyard.com"
+relay_instance_id               = "REPLACE_INSTANCE_ID"
+deployment_mode                 = "production"
+relay_secret_source             = "ssm"
+relay_secret_ssm_parameter_name = "/company-brain/acme/gateway-relay-secret"
+# Leave empty in production (module rejects a set value when deployment_mode=production).
+# relay_instance_secret = ""
+# attach_relay_secret_iam = true
+
+email_provider = "google"
+enable_packs   = ["gws", "wacli"]
+
+# ---------------------------------------------------------------------------
+# Approved data processors / data-handling policy (cbd-zzx.13)
+# Catalog: references/approved-data-processors.md
+# Per-client template (copy privately): references/templates/client-data-handling-policy.md
+# New destinations: references/runbooks/data-processor-onboarding.md
+# Map domains → Network Firewall/proxy; SG controlled egress is port-level only.
+# ---------------------------------------------------------------------------
+# approved_processor_ids = [
+#   "lanyard-portal-relay",
+#   "aws-s3-artifacts",
+#   "aws-ssm",
+#   "aws-logs-kms-sts",
+#   "dns-resolver",
+#   "ntp-time",
+#   "model-anthropic",
+#   "email-google",
+# ]
+# data_handling_policy_ref     = "ticket-or-private-path-REPLACE"
+# processor_egress_domains     = ["relay.example.com", "api.model.example"] # docs for firewall team
+# require_data_handling_policy = true  # with production_intent: fail-closed if IDs/ref missing
+# enable_packs / email_provider must stay within approved email/CRM/tool processors
+
+# ---------------------------------------------------------------------------
+# Security observability (cbd-zzx.12) — optional; enable for production
+# See references/security-observability.md and runbooks/security-alert-triage.md
+# ---------------------------------------------------------------------------
+# enable_security_observability    = true
+# enable_vpc_flow_logs             = true
+# enable_host_log_shipping         = true
+# enable_ssm_managed_instance_core = true
+# require_observability_checklist  = true  # with production_intent=true: fail-closed
+# security_alert_email_endpoints   = ["ops@example.com"]  # private tfvars only; confirm SNS email
+#
+# Account-level (NOT in tenant stack — checklist only):
+#   - CloudTrail multi-region (or org) trail with log file validation
+#   - GuardDuty detector enabled in the account/region
+#
+# Snapshot-age / backup resilience (cbd-zzx.20) — requires security SNS for alarm actions:
+# enable_snapshot_age_alarm          = true
+# snapshot_max_age_hours             = 36
+# enable_snapshot_age_check_schedule = true  # daily SNS reminder to run check script
+# Schedule metric publisher (ops cron / Lambda / SSM):
+#   bash scripts/check-snapshot-age.sh --project acme-brain --publish-metric
+# Restore automation (dry-run default):
+#   bash scripts/restore-from-snapshot.sh --project acme-brain --pick-newest --mode volume --az us-east-1a
+# Runbook + RTO/RPO: references/runbooks/dlm-restore-drill.md
+
+# Snapshot-age alarms: interface via terraform output snapshot_age_monitor_interface (cbd-zzx.20)
+
+# Opt-in DLM DR copy / share (cbd-mta.7.4) — defaults OFF (fail-closed). Never commit live DR account IDs.
+enable_cross_region_copy = false
+enable_dr_account_share  = false
+# destination_region        = "us-west-2"  # when enable_cross_region_copy=true; != primary region
+# cross_region_copy_cmk_arn = "arn:aws:kms:us-west-2:000000000000:key/00000000-0000-0000-0000-000000000000"
+# dr_account_id             = "000000000000"  # dedicated DR only; private tfvars
+
+# ---------------------------------------------------------------------------
+# Omnibox Mode A (cbd-o9s.10) — default OFF until staging validation (phase 9)
+# Wraps agent tool children under bubblewrap; hermes-gateway ExecStart stays Hermes.
+# When true: user_data seeds OMNIBOX_* env; bootstrap calls ensure-omnibox after profiles.
+# See scripts/ensure-omnibox.sh and references/plans/omnibox-hermes-mode-a/
+# ---------------------------------------------------------------------------
+enable_omnibox = false
+# enable_omnibox = true  # lab/staging only until phase 9; keep gateway User=hermes
+
+# ---------------------------------------------------------------------------
+# Backend runtime secrets via AWS Secrets Manager (lp-645.4)
+# ARN + non-secret model defaults only. NEVER put API keys in tfvars.
+# ---------------------------------------------------------------------------
+# backend_runtime_secrets_arn = "arn:aws:secretsmanager:us-east-1:111122223333:secret:company-brain/acme/backend-runtime-XXXXXX"
+# backend_runtime_secrets_enabled = true
+# backend_runtime_secrets_region  = "us-east-1"
+# backend_model_provider = "xai"
+# backend_model_default  = "grok-3"
+
+# ---------------------------------------------------------------------------
+# Optional Tailscale secondary mesh (cbd-zzx.4) — default off; SSM remains primary
+# Store a one-time auth key in SSM/SM (never the key value here). Public SSH stays closed.
+# See references/runbooks/tailscale-operator-access.md
+# ---------------------------------------------------------------------------
+# enable_tailscale = true
+# tailscale_auth_secret_source        = "ssm"
+# tailscale_auth_secret_ssm_parameter = "/company-brain/acme-brain/tailscale-auth-key"
+# # tailscale_tags = []  # default tag:tenant=<project_name>, tag:role=company-brain
+# # tailscale_allow_direct_udp = false
