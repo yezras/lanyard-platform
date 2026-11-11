@@ -1,0 +1,41 @@
+TARGET     SOURCE        FSTYPE OPTIONS
+/mnt/vault mountpoint-s3 fuse   rw,nosuid,nodev,noatime,user_id=990,group_id=990,default_permissions,allow_other
+WRITABLE_YES
+total 9
+drwxr-xr-x 2 brain brain    0 Aug 14 18:15 .
+drwxr-xr-x 2 brain brain    0 Aug 14 18:15 ..
+-rw-r--r-- 1 brain brain   89 Aug 14 18:14 args.json
+-rw-r--r-- 1 brain brain  105 Aug 14 18:14 journal.jsonl
+-rw-r--r-- 1 brain brain 6694 Aug 14 18:14 program.json
+-rw-r--r-- 1 brain brain  703 Aug 14 18:14 state.json
+---state after remount---
+{
+  "run_id": "wf_7fad97d2e324fa00",
+  "display_name": "research-lite",
+  "workflow_name": "research-lite",
+  "status": "failed",
+  "phases": [
+    "plan"
+  ],
+  "current_phase": "plan",
+  "agents_used": 0,
+  "agents": [],
+  "budget_total": 8,
+  "created_at_ms": 1786731271289,
+  "updated_at_ms": 1786731278696,
+  "outcome": {
+    "kind": "failed",
+    "error": "journal io: EPERM: operation not permitted, open '/mnt/vault/wf_7fad97d2e324fa00/journal.jsonl'",
+    "cause": {
+      "code": "io",
+      "name": "JournalError"
+    }
+  },
+  "source_kind": "builtin",
+  "pause_requested": false,
+  "error": "journal io: EPERM: operation not permitted, open '/mnt/vault/wf_7fad97d2e324fa00/journal.jsonl'"
+}
+PROGRAM_OK
+JOURNAL_OK
+REMOUNT_VISIBLE_OK
+

@@ -1,0 +1,48 @@
+---workflow block---
+workflow:
+  enabled: true
+  agent_budget: 128
+  max_active_runs: 16
+  state_dir: /mnt/vault
+  definition_roots:
+    - /mnt/vault/workflows
+---run state---
+{
+  "run_id": "wf_7fad97d2e324fa00",
+  "display_name": "research-lite",
+  "workflow_name": "research-lite",
+  "status": "failed",
+  "phases": [
+    "plan"
+  ],
+  "current_phase": "plan",
+  "agents_used": 0,
+  "agents": [],
+  "budget_total": 8,
+  "created_at_ms": 1786731271289,
+  "updated_at_ms": 1786731278696,
+  "outcome": {
+    "kind": "failed",
+    "error": "journal io: EPERM: operation not permitted, open '/mnt/vault/wf_7fad97d2e324fa00/journal.jsonl'",
+    "cause": {
+      "code": "io",
+      "name": "JournalError"
+    }
+  },
+  "source_kind": "builtin",
+  "pause_requested": false,
+  "error": "journal io: EPERM: operation not permitted, open '/mnt/vault/wf_7fad97d2e324fa00/journal.jsonl'"
+}
+
+---args---
+{
+  "question": "GPU cluster planning residual lp-zuh.10.5 durable state_dir on vault"
+}
+
+---journal head---
+{"seq":0,"kind":"phase","reqHash":"d69f9388fdd1ecac02814a939c303b1b","result":null,"atMs":1786731278140}
+
+---hybrid checks---
+NO_BH_STATE_WORKFLOWS_DIR_OK
+WORKFLOW_MKDIR_OK
+

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "component": "agent-gateway",
+  "bead": "lp-zuh.9.3",
+  "mode": "publish",
+  "version": "la-main-508b0b736ad5-mounts3-20260814",
+  "git_sha": "43b9bb1c0ed7085b7a4df75082a4658188a22033",
+  "platform": "linux/amd64",
+  "platforms_proven": [
+    "linux/amd64",
+    "linux/arm64"
+  ],
+  "registry": "123456789012.dkr.ecr.us-east-1.amazonaws.com",
+  "ecr_name_prefix": "lanyard-platform-staging",
+  "repo_suffix": "daytona/agent-gateway",
+  "push": true,
+  "mount_s3_version": "1.23.0",
+  "image": {
+    "repository": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway",
+    "digest": "sha256:04ea0047592622cb0f0bdab9163622bbc6cb47b4e548b6d32f0bb64bf4645fa6",
+    "tag": "la-main-508b0b736ad5-mounts3-20260814",
+    "pin_ref": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway@sha256:04ea0047592622cb0f0bdab9163622bbc6cb47b4e548b6d32f0bb64bf4645fa6"
+  },
+  "note": "lp-zuh.9.3: mount-s3 1.23.0 + fuse/fusermount prebaked; kitchen-sink seed retained.",
+  "daytona_snapshot": {
+    "id": "a3008149-f1ac-4769-ba9f-e73bf61ed837",
+    "name": "lanyard-la-main-508b0b736ad5-mounts3-20260814c",
+    "state": "active",
+    "image_name": "123456789012.dkr.ecr.us-east-1.amazonaws.com/lanyard-platform-staging/daytona/agent-gateway:la-main-508b0b736ad5-mounts3-20260814"
+  }
+}
