@@ -1,0 +1,132 @@
+{
+  "auth_me": {
+    "status": 200,
+    "looks_like_spa_html": false
+  },
+  "context": {
+    "status": 200,
+    "looks_like_spa_html": false,
+    "vault_edit": true,
+    "vault_plane": "cp_s3",
+    "brain_rpc_enabled": true
+  },
+  "s3_backup": {
+    "ok": true,
+    "uri_bucket_key_present": true,
+    "backup_bytes": 1322
+  },
+  "vault_before": {
+    "status": 200,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "kind": "file",
+    "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "size_bytes": 1368,
+    "content_sha256": "282cf8fc6fb5c4f8e98579c90fb341825ccd595988a5f4c47b66cb1787365fcd",
+    "encoding": "base64"
+  },
+  "mint_edit": {
+    "status": 201,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "session_id_present": true,
+    "document_key_present": true,
+    "document_key_prefix": "030c1a3fba44",
+    "mode": "edit",
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "error": null,
+    "editor_config": {
+      "editor_mode": "edit",
+      "permissions_edit": true,
+      "callback_url_host_path": "https://app.withlanyard.com/mocklab/api/office/callback",
+      "callback_query_has_session_id": true,
+      "callback_query_has_nonce": true,
+      "token_present": true
+    }
+  },
+  "callback_target": {
+    "host": "app.withlanyard.com",
+    "path": "/mocklab/api/office/callback",
+    "query_redacted": true
+  },
+  "callback_status_1": {
+    "status": 200,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "body": {
+      "error": 0,
+      "code": "ignored"
+    }
+  },
+  "callback_status_2": {
+    "status": 200,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "assembled_url_host": "lanyard-platform-staging-docs-al-238458258.us-east-1.elb.amazonaws.com",
+    "assembled_url_path": "/healthcheck",
+    "assembled_body_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "body": {
+      "error": 0,
+      "code": "saved"
+    },
+    "vault_write_cas": true
+  },
+  "vault_after": {
+    "status": 200,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "kind": "file",
+    "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "size_bytes": 4,
+    "content_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "encoding": "base64"
+  },
+  "mint_edit_after_write": {
+    "status": 201,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "session_id_present": true,
+    "document_key_present": true,
+    "document_key_prefix": "013a352dda02",
+    "mode": "edit",
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "error": null,
+    "editor_config": {
+      "editor_mode": "edit",
+      "permissions_edit": true,
+      "callback_url_host_path": "https://app.withlanyard.com/mocklab/api/office/callback",
+      "callback_query_has_session_id": true,
+      "callback_query_has_nonce": true,
+      "token_present": true
+    }
+  },
+  "revision_advance": {
+    "vault_sha256_before": "282cf8fc6fb5c4f8e98579c90fb341825ccd595988a5f4c47b66cb1787365fcd",
+    "vault_sha256_after": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "assembled_body_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "sha256_changed": true,
+    "after_matches_assembled": true,
+    "document_key_prefix_before": "030c1a3fba44",
+    "document_key_prefix_after": "013a352dda02",
+    "document_key_changed": true,
+    "note": "DocumentRevision.token kind=content_hash equals sha256 of vault bytes; HTTP callback body is OnlyOffice {error,code} only \u2014 revision proved via vault content hash + document.key advance."
+  },
+  "s3_restore": {
+    "ok": true,
+    "uri_bucket_key_present": true
+  },
+  "vault_restored": {
+    "status": 200,
+    "content_type": "application/json",
+    "looks_like_spa_html": false,
+    "path": "/Projects/Workspace/office/lp-zuh123-mint-proof.docx",
+    "kind": "file",
+    "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "size_bytes": 1368,
+    "content_sha256": "282cf8fc6fb5c4f8e98579c90fb341825ccd595988a5f4c47b66cb1787365fcd",
+    "encoding": "base64",
+    "matches_backup_sha256": true
+  }
+}
