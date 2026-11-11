@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lanyard.platform/contracts/connectors-v1/catalog.schema.json",
+  "title": "Portal connectors v1 catalog",
+  "description": "First-class connector schema, action_class gates, and host command → action_class map (lp-xhf4.1 / lp-hdzm.4). This file is not the live connector list (that is CP canonical_connectors). The LLM does not pick a gate; unmapped commands are every_call.",
+  "$comment": "Bead lp-xhf4.1 / epic lp-xhf4. Design: docs/architecture/portal-connectors.md §1, §8, §11.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "connector_ids",
+    "connector_runtimes",
+    "connector_principals",
+    "connector_auth_kinds",
+    "action_classes",
+    "action_gates",
+    "unmapped_gate",
+    "action_class_gates",
+    "connectors",
+    "command_map"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Catalog schema major. Bump only with breaking enum or map shape changes."
+    },
+    "connector_ids": {
+      "type": "array",
+      "description": "First-class ConnectorId members with custom runtimes. Not the live registry; promote/custom ids live in CP canonical_connectors.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/connectorId" }
+    },
+    "connector_runtimes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/connectorRuntime" }
+    },
+    "connector_principals": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/connectorPrincipal" }
+    },
+    "connector_auth_kinds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/connectorAuthKind" }
+    },
+    "action_classes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/actionClass" }
+    },
+    "action_gates": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/actionGate" }
+    },
+    "unmapped_gate": {
+      "$ref": "#/$defs/actionGate",
+      "description": "Gate used when argv does not match command_map. v1 is every_call (do not run until approved)."
+    },
+    "action_class_gates": {
+      "type": "object",
+      "description": "Closed ActionClass → ActionGate table. Every action_class key is required; extra keys illegal.",
+      "additionalProperties": false,
+      "required": [
+        "gmail.read",
+        "gmail.draft",
+        "gmail.send",
+        "calendar.read",
+        "calendar.write",
+        "drive.read",
+        "drive.write",
+        "hubspot.read",
+        "hubspot.write",
+        "whatsapp.read",
+        "whatsapp.send"
+      ],
+      "properties": {
+        "gmail.read": { "$ref": "#/$defs/actionGate" },
+        "gmail.draft": { "$ref": "#/$defs/actionGate" },
+        "gmail.send": { "$ref": "#/$defs/actionGate" },
+        "calendar.read": { "$ref": "#/$defs/actionGate" },
+        "calendar.write": { "$ref": "#/$defs/actionGate" },
+        "drive.read": { "$ref": "#/$defs/actionGate" },
+        "drive.write": { "$ref": "#/$defs/actionGate" },
+        "hubspot.read": { "$ref": "#/$defs/actionGate" },
+        "hubspot.write": { "$ref": "#/$defs/actionGate" },
+        "whatsapp.read": { "$ref": "#/$defs/actionGate" },
+        "whatsapp.send": { "$ref": "#/$defs/actionGate" },
+        "github.read": { "$ref": "#/$defs/actionGate" },
+        "github.write": { "$ref": "#/$defs/actionGate" }
+      }
+    },
+    "connectors": {
+      "type": "array",
+      "description": "v1 shipped connector rows. id must be a ConnectorId. Outlook is not a member until it ships.",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/connectorRow" }
+    },
+    "command_map": {
+      "type": "array",
+      "description": "Host argv prefix → action_class. Longest matching prefix wins. Flags are not part of the prefix. Unmapped argv uses unmapped_gate.",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/commandMapEntry" }
+    }
+  },
+  "$defs": {
+    "connectorId": {
+      "type": "string",
+      "enum": ["google", "hubspot", "whatsapp", "github"]
+    },
+    "connectorRuntime": {
+      "type": "string",
+      "enum": ["api", "cli", "mcp", "skill"]
+    },
+    "connectorPrincipal": {
+      "type": "string",
+      "enum": ["user", "tenant"]
+    },
+    "connectorAuthKind": {
+      "type": "string",
+      "enum": ["oauth", "cli_qr", "cli_token"]
+    },
+    "actionClass": {
+      "type": "string",
+      "enum": [
+        "gmail.read",
+        "gmail.draft",
+        "gmail.send",
+        "calendar.read",
+        "calendar.write",
+        "drive.read",
+        "drive.write",
+        "hubspot.read",
+        "hubspot.write",
+        "whatsapp.read",
+        "whatsapp.send",
+        "github.read",
+        "github.write"
+      ]
+    },
+    "actionGate": {
+      "type": "string",
+      "enum": ["sticky", "every_call"]
+    },
+    "connectorRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "principal", "auth_kind", "runtimes"],
+      "properties": {
+        "id": { "$ref": "#/$defs/connectorId" },
+        "principal": { "$ref": "#/$defs/connectorPrincipal" },
+        "auth_kind": { "$ref": "#/$defs/connectorAuthKind" },
+        "runtimes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/connectorRuntime" }
+        }
+      }
+    },
+    "commandMapEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["argv", "action_class"],
+      "properties": {
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "action_class": { "$ref": "#/$defs/actionClass" }
+      }
+    }
+  }
+}
