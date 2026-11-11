@@ -48,5 +48,5 @@
     "cron_manager": "unsupported",
     "host_health": "supported"
   },
-  "notes": "Static fallback built from artifact manifest when brain.capabilities is method_not_found. models/cron flags true on the pin but methods not listed \\u2192 UI derives model_selector and cron_manager as unsupported until methods are advertised."
+  "notes": "Static fallback built from artifact manifest when brain.capabilities is method_not_found. models/cron flags true on the pin but methods not listed \u2192 UI derives model_selector and cron_manager as unsupported until methods are advertised."
 }
