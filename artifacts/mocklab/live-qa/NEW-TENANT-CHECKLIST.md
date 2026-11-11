@@ -2,7 +2,7 @@
 
 **Bead:** `lp-zuh.7.8` (initial) · **Gate re-QA:** `lp-zuh.10.8` · **Zero-waiver:** `lp-zuh.11.6`  
 **Parent epic:** `lp-zuh.7` / residuals `lp-zuh.10` / zero-waiver `lp-zuh.11` — MockLab kitchen-sink  
-**Audience:** operators / implementers provisioning a **new tenant** to match MockLab  
+**Audience:** operators / implementers provisioning a **new tenant** to match MockLab
 product posture (Lanyard Agent on Daytona + Portal kitchen-sink surfaces).  
 **No secrets:** this file names env keys, paths, flags, and failure codes only.
 
@@ -198,7 +198,7 @@ mkdir **GO** (`lp-zuh.9.6` / gate).
 **MockLab evidence (`lp-zuh.10.5` — vault run state GO):**  
 `workflow.state_dir=/mnt/vault`, research-lite run `wf_7fad97d2e324fa00` under
 `/mnt/vault/wf_*` (program/args/state/journal), S3 durable, survives Daytona
-stop/start remount; no hybrid BACKEND_HOME run store. See  
+stop/start remount; no hybrid BACKEND_HOME run store. See
 [lp-zuh.10.5/RESULT.md](./lp-zuh.10.5/RESULT.md).  
 Residual: bake workflow ENOSYS fallback in next agent-gateway pin (cron pin was
 `lp-zuh.10.9` only); journal append `EPERM` residual on Mountpoint after admit.
